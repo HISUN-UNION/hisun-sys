@@ -6,6 +6,7 @@ import org.hibernate.annotations.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="APP_SH_PC")
-public class Shpc extends TenantEntity{
+public class Shpc extends TenantEntity implements Serializable{
 
     public static String SHLX_BWH="1";
     public static String SHLX_CWH="2";
@@ -31,6 +32,8 @@ public class Shpc extends TenantEntity{
     @Column(name = "PC_SJ")
     @Temporal(TemporalType.TIMESTAMP)
     private Date pcsj;
+    @Column(name = "file_path")
+    private String filePath;
     @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<Sha01> sha01s;
@@ -77,5 +80,21 @@ public class Shpc extends TenantEntity{
 
     public void setSha01s(List<Sha01> sha01s) {
         this.sha01s = sha01s;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public List<Shtp> getShtps() {
+        return shtps;
+    }
+
+    public void setShtps(List<Shtp> shtps) {
+        this.shtps = shtps;
     }
 }

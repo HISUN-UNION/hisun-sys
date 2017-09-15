@@ -1,15 +1,17 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
+import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by zhouying on 2017/9/8.
  */
 @Entity
 @Table(name = "APP_SH_A01_SHGX")
-public class Sha01shgx {
+public class Sha01shgx extends TenantEntity implements Serializable{
 
 
     @Id
