@@ -29,7 +29,7 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
     private String csny;
     @Column(name = "NL",length = 10)
     private String nl;
-    @Column(name = "XB",length = 128)
+    @Column(name = "ZP_PATH",length = 128)
     private String zppath;
     @Column(name = "MZ",length = 24)
     private String mz;
