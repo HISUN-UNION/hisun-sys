@@ -165,9 +165,9 @@
 					<![CDATA[ jdbc:mysql://localhost:3306/zzb-app-console?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true  ]]>
 				</db.connection.url>
 				<encrypt.connection.username>root</encrypt.connection.username>
-				<encrypt.connection.password></encrypt.connection.password>
+				<encrypt.connection.password>123456</encrypt.connection.password>
 				<druidSource.connection.properties>config.decrypt=false</druidSource.connection.properties>
-				<upload.absolute.path>/Volumes/30ServiceCloud/store/30Cloud/upload</upload.absolute.path>
+				<upload.absolute.path>F:/30ServiceCloud/store/30Cloud/upload</upload.absolute.path>
 				<log4j.rootCategory>DEBUG,logfile,stdout</log4j.rootCategory>
 				<stdout.Threshold>DEBUG</stdout.Threshold>
 				<logfile.Threshold>DEBUG</logfile.Threshold>

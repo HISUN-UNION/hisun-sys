@@ -1,4 +1,4 @@
-package com.hisun.saas.zzb.app.console.shpc.entity;
+package com.hisun.saas.zzb.app.console.shpc.vo;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import org.hibernate.annotations.GenericGenerator;
@@ -9,25 +9,13 @@ import java.io.Serializable;
 /**
  * Created by zhouying on 2017/9/8.
  */
-@Entity
-@Table(name = "APP_SH_A01_GZJL")
-public class Sha01gzjl extends TenantEntity implements Serializable {
+public class Sha01gzjlVo extends TenantEntity implements Serializable {
 
-    @Id
-    @GenericGenerator(name="generator",strategy="uuid.hex")
-    @GeneratedValue(generator="generator")
-    @Column(name="ID",nullable=false,unique=true,length=32)
     private String id;
-    @ManyToOne(optional=true,fetch = FetchType.LAZY)
-    @JoinColumn(name="APP_SH_A01_ID")
-    private Sha01 sha01;
-    @Column(name = "C_SJ",length = 24)
+    private Sha01Vo sha01Vo;
     private String csj;
-    @Column(name = "Z_SJ",length = 24)
     private String zsj;
-    @Column(name = "JLSM",length = 255)//经历说明
     private String jlsm;
-    @Column(name = "GZJL_PX")
     private int px;
 
 
@@ -39,12 +27,12 @@ public class Sha01gzjl extends TenantEntity implements Serializable {
         this.id = id;
     }
 
-    public Sha01 getSha01() {
-        return sha01;
+    public Sha01Vo getSha01Vo() {
+        return sha01Vo;
     }
 
-    public void setSha01(Sha01 sha01) {
-        this.sha01 = sha01;
+    public void setSha01Vo(Sha01Vo sha01Vo) {
+        this.sha01Vo = sha01Vo;
     }
 
     public String getCsj() {
