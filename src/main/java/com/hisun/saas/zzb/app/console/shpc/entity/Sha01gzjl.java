@@ -27,7 +27,7 @@ public class Sha01gzjl extends TenantEntity implements Serializable {
     private String csj;
     @Column(name = "Z_SJ",length = 24)
     private String zsj;
-    @Column(name = "JLSM",length = 255)
+    @Column(name = "JLSM",length = 255)//经历说明
     private String jlsm;
     @Column(name = "GZJL_PX")
     private int px;
