@@ -167,7 +167,7 @@
 				<encrypt.connection.username>root</encrypt.connection.username>
 				<encrypt.connection.password></encrypt.connection.password>
 				<druidSource.connection.properties>config.decrypt=false</druidSource.connection.properties>
-				<upload.absolute.path>/Volumes/30ServiceCloud/store/30Cloud/upload</upload.absolute.path>
+				<upload.absolute.path>/Users/zhouying/Documents/workspace/store</upload.absolute.path>
 				<log4j.rootCategory>DEBUG,logfile,stdout</log4j.rootCategory>
 				<stdout.Threshold>DEBUG</stdout.Threshold>
 				<logfile.Threshold>DEBUG</logfile.Threshold>

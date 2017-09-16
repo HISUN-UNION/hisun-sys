@@ -1,11 +1,13 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -33,6 +35,8 @@ public class Sha01 extends TenantEntity implements Serializable {
     @Column(name = "CSNY", length = 24)
     private String csny;
     @Column(name = "CJGZSJ", length = 24)
+    private String cjgzsj;
+    @Column(name = "RDSJ", length = 24)
     private String rdsj;
     @Column(name = "WHCD", length = 40)
     private String whcd;
@@ -42,6 +46,8 @@ public class Sha01 extends TenantEntity implements Serializable {
     private String mztjqk;
     @Column(name = "YWFPJL", length = 10)
     private String ywfpjl;
+    @Column(name = "XGZDWJZW", length = 10)
+    private String xgzdwjzw;
     @Column(name = "NTZPBYJ", length = 24)
     private String ntzpbyj;
     @Column(name = "SHYJ", length = 24)
@@ -269,5 +275,68 @@ public class Sha01 extends TenantEntity implements Serializable {
 
     public void setShtpsjs(List<Shtpsj> shtpsjs) {
         this.shtpsjs = shtpsjs;
+    }
+
+    public String getCjgzsj() {
+        return cjgzsj;
+    }
+
+    public void setCjgzsj(String cjgzsj) {
+        this.cjgzsj = cjgzsj;
+    }
+
+    public String getXgzdwjzw() {
+        return xgzdwjzw;
+    }
+
+    public void setXgzdwjzw(String xgzdwjzw) {
+        this.xgzdwjzw = xgzdwjzw;
+    }
+
+    public String toInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" APP_SH_A01 ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append("APP_SH_PC_ID");
+        sb.append(",XM");
+        sb.append(",XB");
+        sb.append(",MZ");
+        sb.append(",JG");
+        sb.append(",CSNY");
+        sb.append(",CJGZSJ");
+        sb.append(",RDSJ");
+        sb.append(",WHCD");
+        sb.append(",RXJBSJ");
+        sb.append(",MZTJQK");
+        sb.append(",YWFPJL");
+        sb.append(",XGZDWJZW");
+        sb.append(",NTZPBYJ");
+        sb.append(",SHYJ");
+        sb.append(",A01_PX");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.transNull(id)+"'");
+        sb.append(",'"+ StringUtils.transNull(shpc.getId())+"'");
+        sb.append(",'"+ StringUtils.transNull(xm)+"'");
+        sb.append(",'"+ StringUtils.transNull(xb)+"'");
+        sb.append(",'"+ StringUtils.transNull(mz)+"'");
+        sb.append(",'"+ StringUtils.transNull(jg)+"'");
+        sb.append(",'"+ StringUtils.transNull(csny)+"'");
+        sb.append(",'"+ StringUtils.transNull(cjgzsj)+"'");
+        sb.append(",'"+ StringUtils.transNull(rdsj)+"'");
+        sb.append(",'"+ StringUtils.transNull(whcd)+"'");
+        sb.append(",'"+ StringUtils.transNull(rxjbsj)+"'");
+        sb.append(",'"+ StringUtils.transNull(mztjqk)+"'");
+        sb.append(",'"+ StringUtils.transNull(ywfpjl)+"'");
+        sb.append(",'"+ StringUtils.transNull(xgzdwjzw)+"'");
+        sb.append(",'"+ StringUtils.transNull(ntzpbyj)+"'");
+        sb.append(",'"+ StringUtils.transNull(shyj)+"'");
+        sb.append(","+ px+"");
+
+        sb.append(")");
+        return sb.toString();
     }
 }

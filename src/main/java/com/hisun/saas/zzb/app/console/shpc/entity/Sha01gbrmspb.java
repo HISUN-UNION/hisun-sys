@@ -1,9 +1,11 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -67,6 +69,10 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
     private String xrzw;
     @Column(name = "NRZW",length = 128)
     private String nrzw;
+
+    @Column(name = "NMZW",length = 128)
+    private String nmzw;
+
     @Column(name = "RMLY",length = 255)
     private String rmly;
     @Column(name = "CBDWYJ",length = 255)
@@ -75,6 +81,9 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
     private String spjgyj;
     @Column(name = "XZJGRMYJ",length = 24)
     private String xzjgrmyj;
+    @Column(name = "file_path",length = 128)
+    private String filepath;
+
 
 
     public String getId() {
@@ -292,4 +301,109 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
     public void setXzjgrmyj(String xzjgrmyj) {
         this.xzjgrmyj = xzjgrmyj;
     }
+
+    public String getNmzw() {
+        return nmzw;
+    }
+
+    public void setNmzw(String nmzw) {
+        this.nmzw = nmzw;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    public String toInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" APP_SH_A01_GBRMSPB ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append("APP_SH_A01_ID");
+        sb.append(",XM");
+        sb.append(",XB");
+        sb.append(",CSNY");
+        sb.append(",NL");
+        sb.append(",ZP_PATH");
+        sb.append(",MZ");
+        sb.append(",JG");
+        sb.append(",CSD");
+        sb.append(",RDSJ");
+        sb.append(",CJGZSJ");
+        sb.append(",JKZK");
+        sb.append(",ZYJSZW");
+        sb.append(",ZYTC");
+        sb.append(",XL_QRZ");
+        sb.append(",XW_QRZ");
+        sb.append(",XL_ZZ");
+        sb.append(",XW_ZZ");
+        sb.append(",QRZ_BYYX");
+        sb.append(",ZZ_BYYX");
+        sb.append(",XRZW");
+        sb.append(",NRZW");
+        sb.append(",NMZW");
+        sb.append(",RMLY");
+        sb.append(",CBDWYJ");
+        sb.append(",SPJGYJ");
+        sb.append(",XZJGRMYJ");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.transNull(id)+"'");
+        sb.append(",'"+ StringUtils.transNull(sha01.getId())+"'");
+        sb.append(",'"+ StringUtils.transNull(xm)+"'");
+        sb.append(",'"+ StringUtils.transNull(xb)+"'");
+        sb.append(",'"+ StringUtils.transNull(csny)+"'");
+        sb.append(",'"+ StringUtils.transNull(nl)+"'");
+
+        if (StringUtils.isEmpty(zppath)){
+            sb.append(",''");
+        }else{
+            String path ="img/"+zppath.substring(zppath.lastIndexOf(File.separator)+1);
+            sb.append("'"+path+"'");
+
+        }
+
+        sb.append(",'"+ StringUtils.transNull(mz)+"'");
+        sb.append(",'"+ StringUtils.transNull(jg)+"'");
+        sb.append(",'"+ StringUtils.transNull(csd)+"'");
+        sb.append(",'"+ StringUtils.transNull(rdsj)+"'");
+        sb.append(",'"+ StringUtils.transNull(cjgzsj)+"'");
+
+        sb.append(",'"+ StringUtils.transNull(jkzk)+"'");
+        sb.append(",'"+ StringUtils.transNull(zyjszw)+"'");
+        sb.append(",'"+ StringUtils.transNull(zytc)+"'");
+        sb.append(",'"+ StringUtils.transNull(xlqrz)+"'");
+        sb.append(",'"+ StringUtils.transNull(xwqrz)+"'");
+        sb.append(",'"+ StringUtils.transNull(xlzz)+"'");
+        sb.append(",'"+ StringUtils.transNull(xwzz)+"'");
+        sb.append(",'"+ StringUtils.transNull(qrz_byyx)+"'");
+
+
+        sb.append(",'"+ StringUtils.transNull(zz_byyx)+"'");
+        sb.append(",'"+ StringUtils.transNull(xrzw)+"'");
+        sb.append(",'"+ StringUtils.transNull(nrzw)+"'");
+        sb.append(",'"+ StringUtils.transNull(nmzw)+"'");
+
+        sb.append(",'"+ StringUtils.transNull(rmly)+"'");
+        sb.append(",'"+ StringUtils.transNull(cbdwyj)+"'");
+        sb.append(",'"+ StringUtils.transNull(spjgyj)+"'");
+        sb.append(",'"+ StringUtils.transNull(xzjgrmyj)+"'");
+        if (StringUtils.isEmpty(filepath)){
+            sb.append(",''");
+        }else{
+            String attsPath ="atts/"+filepath.substring(filepath.lastIndexOf(File.separator)+1);
+            sb.append("'"+attsPath+"'");
+
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+
 }

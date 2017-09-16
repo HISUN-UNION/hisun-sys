@@ -1,9 +1,11 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -78,4 +80,29 @@ public class Sha01gzjl extends TenantEntity implements Serializable {
     public void setPx(int px) {
         this.px = px;
     }
+
+    public String toInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" APP_SH_A01_GZJL ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append(",APP_SH_A01_ID");
+        sb.append(",C_SJ");
+        sb.append(",Z_SJ");
+        sb.append(",JLSM");
+        sb.append(",GZJL_PX");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.transNull(id)+"'");
+        sb.append(",'"+ StringUtils.transNull(sha01.getId())+"'");
+        sb.append("'"+ StringUtils.transNull(csj)+"'");
+        sb.append("'"+ StringUtils.transNull(zsj)+"'");
+        sb.append("'"+ StringUtils.transNull(jlsm)+"'");
+        sb.append(","+ px+"");
+        sb.append(")");
+        return sb.toString();
+    }
+
 }

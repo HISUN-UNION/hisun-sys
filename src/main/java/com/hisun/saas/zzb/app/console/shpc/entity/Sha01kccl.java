@@ -1,9 +1,11 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -48,4 +50,30 @@ public class Sha01kccl extends TenantEntity implements Serializable{
     public void setPath(String path) {
         this.path = path;
     }
+
+
+    public String toInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" APP_SH_A01_KCCL ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append(",APP_SH_A01_ID");
+        sb.append(",PATH");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.transNull(id)+"'");
+        sb.append(",'"+ StringUtils.transNull(sha01.getId())+"'");
+        if (StringUtils.isEmpty(path)){
+            sb.append(",''");
+        }else{
+            String filepath ="atts/"+path.substring(path.lastIndexOf(File.separator)+1);
+            sb.append("'"+filepath+"'");
+
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
 }

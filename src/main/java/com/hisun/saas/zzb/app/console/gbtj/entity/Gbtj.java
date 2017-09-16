@@ -1,6 +1,7 @@
 package com.hisun.saas.zzb.app.console.gbtj.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -12,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "APP_DWJG_TJ")
-public class Gbdwtj extends TenantEntity implements Serializable{
+public class Gbtj extends TenantEntity implements Serializable{
 
     @Id
     @GenericGenerator(name = "generator", strategy = "uuid.hex")
@@ -61,5 +62,27 @@ public class Gbdwtj extends TenantEntity implements Serializable{
 
     public void setPx(int px) {
         this.px = px;
+    }
+
+
+
+    private String toInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" APP_DWJG_TJ ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append(",TJ_MC");
+        sb.append(",TJ_JSON_DATA");
+        sb.append(",TJ_PX");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.transNull(id)+"'");
+        sb.append("'"+ StringUtils.transNull(tjmc)+"'");
+        sb.append("'"+ StringUtils.transNull(tjjsondata)+"'");
+        sb.append(","+ px+"");
+        sb.append(")");
+        return sb.toString();
     }
 }

@@ -1,12 +1,13 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
-import org.hibernate.annotations.*;
+import com.hisun.util.StringUtils;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -96,5 +97,31 @@ public class Shpc extends TenantEntity implements Serializable{
 
     public void setShtps(List<Shtp> shtps) {
         this.shtps = shtps;
+    }
+
+
+    public String toInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" APP_SH_PC ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append(",PC_MC");
+        sb.append(",SHLX");
+        sb.append(",PC_SJ");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.transNull(id)+"'");
+        sb.append(",'"+ StringUtils.transNull(pcmc)+"'");
+        sb.append(",'"+ StringUtils.transNull(shlx)+"'");
+        if(pcsj!=null){
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            sb.append(",'"+ df.format(pcsj)+"'");
+        }else{
+            sb.append(",''");
+        }
+        sb.append(")");
+        return sb.toString();
     }
 }

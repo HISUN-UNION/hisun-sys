@@ -32,7 +32,7 @@ public class BwhController extends BaseController {
                                   @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        return new ModelAndView("/saas/zzb/app/console/bwh/list", map);
+        return new ModelAndView("/saas/zzb/app/console/unuse", map);
     }
 
 
