@@ -126,7 +126,7 @@
 
     </div>
     <div class="navig_contact">
-        <a class="nav_a" href="#?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+        <a class="nav_a" href="/zzb/app/console/bwh/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco01.png"></dt>
                 <dd>

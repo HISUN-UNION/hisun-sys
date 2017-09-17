@@ -35,6 +35,31 @@
 			<artifactId>jasperreports</artifactId>
 			<version>6.1.1</version>
 		</dependency>
+		<!-- Word 转 PDF等格式(商业版) -->
+		<dependency>
+			<groupId>com.aspose</groupId>
+			<artifactId>aspose-words</artifactId>
+			<version>16.8.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/aspose-words-16.8.0-jdk16.jar</systemPath>
+			<!--<classifier>jdk16</classifier>-->
+		</dependency>
+		<dependency>
+			<groupId>com.aspose</groupId>
+			<artifactId>aspose-cells</artifactId>
+			<version>9.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/aspose-cells-9.0.0.jar</systemPath>
+			<!--<classifier>jdk16</classifier>-->
+		</dependency>
+		<dependency>
+			<groupId>com.aspose</groupId>
+			<artifactId>aspose-slides</artifactId>
+			<version>16.7.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/aspose.slides-16.7.0.jar</systemPath>
+			<!--<classifier>jdk16</classifier>-->
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -105,6 +130,24 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/lib</outputDirectory>
+							<includeScope>system</includeScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<configuration>
@@ -167,7 +210,7 @@
 				<encrypt.connection.username>root</encrypt.connection.username>
 				<encrypt.connection.password></encrypt.connection.password>
 				<druidSource.connection.properties>config.decrypt=false</druidSource.connection.properties>
-				<upload.absolute.path>/Volumes/30ServiceCloud/store/30Cloud/upload</upload.absolute.path>
+				<upload.absolute.path>/Users/zhouying/Documents/workspace/store</upload.absolute.path>
 				<log4j.rootCategory>DEBUG,logfile,stdout</log4j.rootCategory>
 				<stdout.Threshold>DEBUG</stdout.Threshold>
 				<logfile.Threshold>DEBUG</logfile.Threshold>

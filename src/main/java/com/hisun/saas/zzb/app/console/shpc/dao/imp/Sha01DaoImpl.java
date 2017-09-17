@@ -39,6 +39,7 @@ public class Sha01DaoImpl extends TenantBaseDaoImpl<Sha01, String> implements Sh
             }
         }
 
+        int px = 1;
         for (Map<String, String> map : list) {
             //构造每一行的insert语句
             String idValue = UUIDUtil.getUUID();
@@ -47,14 +48,14 @@ public class Sha01DaoImpl extends TenantBaseDaoImpl<Sha01, String> implements Sh
             insertSql.append(" (");
             //生成字段sql,值sql
             StringBuffer fieldSql = new StringBuffer();
-            fieldSql.append(" ID,APP_SH_PC_ID ");
+            fieldSql.append(" ID,APP_SH_PC_ID,A01_PX ");
             StringBuffer valueSql = new StringBuffer();
 
 
             valueSql.append("(");
             valueSql.append("'").append(idValue).append("'");
             valueSql.append(",'").append(pcId).append("'");
-
+            valueSql.append(",").append(px).append("");
 
             for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
@@ -73,11 +74,15 @@ public class Sha01DaoImpl extends TenantBaseDaoImpl<Sha01, String> implements Sh
             insertSql.append(valueSql);
             insertSql.append(")");
 
-            System.out.println(insertSql);
+            List<Object> paramList = new ArrayList<Object>();
+            this.executeNativeBulk(insertSql.toString(),paramList);
+            px++;
         }
 
 
     }
+
+
 
 
     private int getMaxRowFromWordDataMap(Map<String, String> dataMap) {

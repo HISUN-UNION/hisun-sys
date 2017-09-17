@@ -7,6 +7,7 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
@@ -15,6 +16,7 @@ import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
 import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
+import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -86,6 +88,7 @@ public class Sha01Controller extends BaseController {
     @RequestMapping(value="/ajax/execute")
     public @ResponseBody
     Map<String,Object> importExcel(String shpcId, String token, @RequestParam(value="attachFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String,Object> map = new HashMap<String,Object>();
         if(file==null || file.isEmpty()){
             map.put("code", -1);
@@ -109,8 +112,18 @@ public class Sha01Controller extends BaseController {
                     fos.flush();
                     fos.close();
 
+                    //处理上传文件
+                    //先将word转成Map
+                    String tmplateWordPath = fileDir+File.separator+"sha01.docx";
+                            //this.getClass().getClassLoader().getResource("sha01.docx").getPath();
+                    WordUtil wordUtil = WordUtil.newInstance();
 
-                    UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+                    Map<String,String> dataMap = wordUtil.convertMapByTemplate( savePath, tmplateWordPath,"");
+
+                    sha01Service.saveFromWordDataMap(userLoginDetails.getTenant(),dataMap,shpcId);
+
+
+
                     Shpc shpc = this.shpcService.getByPK(shpcId);
                     if (shpc != null) {
                         shpc.setFilePath(savePath);
@@ -118,6 +131,7 @@ public class Sha01Controller extends BaseController {
                         this.shpcService.update(shpc);
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     throw new GenericException(e);
                 }
             }else{
