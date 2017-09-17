@@ -1,8 +1,31 @@
 package com.hisun.saas.zzb.app.console.shpc.controller;
 
 import com.hisun.base.controller.BaseController;
+import com.hisun.base.exception.GenericException;
+import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01dascqk;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01dascqkService;
+import com.hisun.util.DateUtil;
+import com.hisun.util.WebUtil;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -10,6 +33,108 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/zzb/app/Sha01/dascqk")
 public class Sha01dascqkController extends BaseController {
+    @Autowired
+    private Sha01Service sha01Service;
 
+    @Autowired
+    private Sha01dascqkService sha01dascqkService;
+
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
+
+    @RequestMapping(value="/ajax/uploadFile")
+    public @ResponseBody
+    Map<String,Object> importExcel(String sha01Id, @RequestParam(value="dascqkFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(file==null || file.isEmpty()){
+            map.put("code", -1);
+            map.put("message", "文件没有内容");
+            return map;
+        }
+
+        try{
+            String fileName = file.getOriginalFilename();
+            if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
+                String fileDir = uploadAbsolutePath + "/dascqk";
+                File _fileDir = new File(fileDir);
+                if (_fileDir.exists() == false) {
+                    _fileDir.mkdirs();
+                }
+                String savePath = fileDir + "/" + DateUtil.formatDateByFormat(new Date(),"yyyyMMddHHmmssSSS")+"_"+fileName;
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(new File(savePath));
+                    fos.write(file.getBytes());
+                    fos.flush();
+                    fos.close();
+
+                    Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
+                    if(sha01.getDascqks()!=null &&sha01.getDascqks().size()>0){//修改
+                        Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
+                        sha01dascqk.setPath(savePath);
+                        sha01dascqk.setSha01(sha01);
+                        this.sha01dascqkService.update(sha01dascqk);
+                    }else{//创建
+                        Sha01dascqk sha01dascqk = new Sha01dascqk();
+                        sha01dascqk.setPath(savePath);
+                        sha01dascqk.setSha01(sha01);
+                        this.sha01dascqkService.save(sha01dascqk);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new GenericException(e);
+                }
+            }else{
+                map.put("code", -1);
+                map.put("message", "请上传word");
+                return map;
+            }
+        }catch(Exception e){
+            map.put("code", -1);
+            map.put("message", "读取文件错误，请检查word是否能正确打开");
+            return map;
+        }
+        try{
+
+        }catch(GenericException e){
+            logger.error(e, e);
+            map.put("code", -1);
+            map.put("message", e.getMessage());
+            return map;
+        }catch(Exception e){
+            logger.error(e, e);
+            map.put("code", -1);
+            map.put("message", "系统错误，请联系管理员");
+            return map;
+        }
+        map.put("code", 1);
+        return map;
+    }
+    @RequestMapping(value="/ajax/down")
+    public void templateDown(String sha01Id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
+        if(sha01.getDascqks()!=null &&sha01.getDascqks().size()>0){//修改
+            Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
+            resp.setContentType("multipart/form-data");
+            //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
+            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(sha01dascqk.getPath().substring(sha01dascqk.getPath().indexOf("_")+1)));
+            OutputStream output=resp.getOutputStream();
+            byte[] b= FileUtils.readFileToByteArray(new File(sha01dascqk.getPath()));
+            output.write(b);
+            output.flush();
+            output.close();
+        }
+
+    }
+    private String encode(String filename) throws UnsupportedEncodingException {
+        if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
+            filename = URLEncoder.encode(filename, "UTF-8");
+        } else {
+            filename = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
+        }
+        return filename;
+    }
     
 }

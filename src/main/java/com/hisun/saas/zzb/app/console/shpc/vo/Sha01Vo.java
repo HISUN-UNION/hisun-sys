@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class Sha01Vo {
     private String id;
-    private ShpcVo shpc;
+    private ShpcVo shpcVo;
     private String xm;
     private String xb;
     private String mz;
@@ -26,6 +26,8 @@ public class Sha01Vo {
     private String ywfpjl;
     private String ntzpbyj;
     private String shyj;
+    private String cjgzsj;
+    private String xgzdwjzw;
     private int px = 0;
 
     private List<Sha01dascqkVo> dascqks;
@@ -47,12 +49,12 @@ public class Sha01Vo {
         this.id = id;
     }
 
-    public ShpcVo getShpc() {
-        return shpc;
+    public ShpcVo getShpcVo() {
+        return shpcVo;
     }
 
-    public void setShpc(ShpcVo shpc) {
-        this.shpc = shpc;
+    public void setShpcVo(ShpcVo shpcVo) {
+        this.shpcVo = shpcVo;
     }
 
     public String getXm() {
@@ -230,5 +232,21 @@ public class Sha01Vo {
 
     public void setShtpsjs(List<ShtpsjVo> shtpsjs) {
         this.shtpsjs = shtpsjs;
+    }
+
+    public String getCjgzsj() {
+        return cjgzsj;
+    }
+
+    public void setCjgzsj(String cjgzsj) {
+        this.cjgzsj = cjgzsj;
+    }
+
+    public String getXgzdwjzw() {
+        return xgzdwjzw;
+    }
+
+    public void setXgzdwjzw(String xgzdwjzw) {
+        this.xgzdwjzw = xgzdwjzw;
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "APP_SH_A01_DASCQK")
-public class Sha01dascqk extends TenantEntity implements Serializable {
+public class Sha01dascqk implements Serializable {
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")

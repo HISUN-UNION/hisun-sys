@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
  */
 @Entity
 @Table(name = "APP_SH_A01_GRZDSX")
-public class Sha01grzdsx extends TenantEntity implements Serializable {
+public class Sha01grzdsx implements Serializable {
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")

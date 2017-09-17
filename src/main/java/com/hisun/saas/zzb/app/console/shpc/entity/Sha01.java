@@ -1,5 +1,6 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
+import com.hisun.base.entity.BaseEntity;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "APP_SH_A01")
-public class Sha01 extends TenantEntity implements Serializable {
+public class Sha01 extends BaseEntity implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "uuid.hex")
     @GeneratedValue(generator = "generator")

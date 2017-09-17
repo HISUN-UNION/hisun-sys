@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "APP_SH_A01_GBRMSPB")
-public class Sha01gbrmspb extends TenantEntity implements Serializable{
+public class Sha01gbrmspb implements Serializable{
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")

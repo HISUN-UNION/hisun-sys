@@ -19,7 +19,7 @@
 			<div class="span12 responsive">
 				<%-- 表格开始 --%>
 				<form class="portlet box grey"id="importForm" enctype="multipart/form-data">
-					<input type="hidden" id="shpcId" name="shpcId" value="${shpcId }"/>
+					<input type="hidden" id="shpcId" name="shpcId" value="${shpcId}"/>
 					<div class="portlet-title">
 						<div class="caption">上会人员列表</div>
 						<div class="clearfix fr">
@@ -34,15 +34,38 @@
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
 								<tr>
-									<th >批次名称</th>
-									<th width="30%">批次时间</th>
-									<th width="120px">操作</th>
+
+
+									<th width="60">姓名</th>
+									<th width="40">性别</th>
+									<th width="40">民族</th>
+									<th width="60">籍贯</th>
+									<th width="60">出生年月</th>
+									<th width="80">参加工</br>作时间</th>
+									<th width="80">入党时间</th>
+									<th width="80">文化程度</th>
+									<th width="80">任现级</br>别时间</th>
+
+									<th width="100" style="text-align:center">现工作</br>单位及职务</th>
+									<th >拟调整配备意见</th>
+									<th width="60">干部一</br>科意见</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
-
+										<td><a href="${path}/zzb/app/console/Sha01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>
+										<td><c:out value="${vo.xb}"></c:out></td>
+										<td><c:out value="${vo.mz}"></c:out></td>
+										<td><c:out value="${vo.jg}"></c:out></td>
+										<td title="${vo.csny}"><c:out value="${vo.csny}"></c:out></td>
+										<td title="${vo.cjgzsj}"><c:out value="${vo.cjgzsj}"></c:out></td>
+										<td title="${vo.rdsj}"><c:out value="${vo.rdsj}"></c:out></td>
+										<td title="${vo.whcd}"><c:out value="${vo.whcd}"></c:out></td>
+										<td title="${vo.rxjbsj}"><c:out value="${vo.rxjbsj}"></c:out></td>
+										<td title="${vo.xgzdwjzw}"><c:out value="${vo.xgzdwjzw}"></c:out></td>
+										<td title="${vo.ntzpbyj}"><c:out value="${vo.ntzpbyj}"></c:out></td>
+										<td title="${vo.shyj}"><c:out value="${vo.shyj}"></c:out></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -100,6 +123,7 @@
 						if(json.code == 1){
 							showTip("提示","操作成功",2000);
 							//loadCiList(ciObjectId);
+							window.location.href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}";
 						}else if(json.code == -1){
 							showTip("提示", json.message, 2000);
 						}else if(json.code == -2){

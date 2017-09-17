@@ -1,5 +1,6 @@
 package com.hisun.saas.zzb.app.console.shpc.controller;
 
+import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;
@@ -8,8 +9,7 @@ import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
-import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
-import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
+import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
@@ -18,15 +18,21 @@ import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -159,5 +165,99 @@ public class Sha01Controller extends BaseController {
         }
         map.put("code", 1);
         return map;
+    }
+
+    /**
+     * 调转到查看页面
+     * @return
+     */
+//    @RequiresPermissions("admin-assetStatus:edit")
+    @RequestMapping(value = "/view")
+    public ModelAndView view(@RequestParam(value="id")String id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            Sha01 sha01 = this.sha01Service.getByPK(id);
+            Sha01Vo shpa01Vo = new Sha01Vo();
+            boolean isHavagbrmspbFile = false;//是否存在干部详细信息
+            boolean isHavakcclFile = false;//是否存在考察材料
+            boolean isHavaDascqkFile = false;//是否存在档案审查情况
+            boolean isHavaGrzdsxFile = false;//是否存在个人重大事项
+
+            //判断干部详细信息是否有附件
+            if(sha01.getGbrmspbs()!=null &&sha01.getGbrmspbs().size()>0) {
+                Sha01gbrmspb sha01gbrmspb = sha01.getGbrmspbs().get(0);
+                if(sha01gbrmspb.getFilepath()!=null && !sha01gbrmspb.getFilepath().equals("")){
+                    isHavagbrmspbFile = true;
+                }
+            }
+            //判断干部详细信息是否有附件
+            if(sha01.getKccls()!=null &&sha01.getKccls().size()>0) {
+                Sha01kccl sha01Kccl = sha01.getKccls().get(0);
+                if(sha01Kccl.getPath()!=null && !sha01Kccl.getPath().equals("")){
+                    isHavakcclFile = true;
+                }
+            }
+            //判断干部详细信息是否有附件
+            if(sha01.getDascqks()!=null &&sha01.getDascqks().size()>0) {
+                Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
+                if(sha01dascqk.getPath()!=null && !sha01dascqk.getPath().equals("")){
+                    isHavaDascqkFile = true;
+                }
+            }
+            //判断个人重大事项是否有附件
+            if(sha01.getGrzdsxes()!=null &&sha01.getGrzdsxes().size()>0) {
+                Sha01grzdsx sha01grzdsx = sha01.getGrzdsxes().get(0);
+                if(sha01grzdsx.getPath()!=null && !sha01grzdsx.getPath().equals("")){
+                    isHavaGrzdsxFile = true;
+                }
+            }
+            if (sha01 == null) {
+                logger.error("数据不存在");
+                throw new GenericException("数据不存在");
+            }
+            BeanUtils.copyProperties(shpa01Vo, sha01);
+            map.put("shpa01Vo", shpa01Vo);
+            map.put("shpcId", sha01.getShpc().getId());
+
+            map.put("isHavagbrmspbFile", isHavagbrmspbFile);
+            map.put("isHavakcclFile", isHavakcclFile);
+            map.put("isHavaDascqkFile", isHavaDascqkFile);
+            map.put("isHavaGrzdsxFile", isHavaGrzdsxFile);
+
+        }catch(Exception e){
+            map.put("success", false);
+            map.put("msg", "修改失败！");
+            throw new GenericException(e);
+        }
+        return new ModelAndView("/saas/zzb/app/console/Sha01/view", map);
+    }
+
+
+    @RequestMapping("/photo/{sha01Id}")
+    public ResponseEntity<byte[]> photoToStream (@PathVariable("sha01Id")String sha01Id, HttpServletRequest request, HttpServletResponse response) throws IOException{
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        Sha01 shpa01 = this.sha01Service.getByPK(sha01Id);
+
+        String photoPath ="";
+        if(shpa01.getGbrmspbs()!=null &&shpa01.getGbrmspbs().size()>0){
+            photoPath = shpa01.getGbrmspbs().get(0).getZppath();
+        }
+
+        if (photoPath!=null && !photoPath.equals("")) {
+            File file = new File(photoPath);
+            if (file.exists()) {
+                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
+                        headers, HttpStatus.OK);
+            }else{
+                headers.setContentType(MediaType.IMAGE_PNG);
+                file = new File(request.getServletContext().getRealPath("/WEB-INF/images/defaultHeadImage.png"));
+                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),headers, HttpStatus.OK);
+            }
+        }else{
+            headers.setContentType(MediaType.IMAGE_PNG);
+            File file = new File(request.getServletContext().getRealPath("/WEB-INF/images/defaultHeadImage.png"));
+            return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),headers, HttpStatus.OK);
+        }
     }
 }
