@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "APP_SH_A01_KCCL")
-public class Sha01kccl implements Serializable{
+public class Sha01kccl extends TenantEntity implements Serializable{
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
@@ -25,6 +25,9 @@ public class Sha01kccl implements Serializable{
 
     @Column(name = "PATH",length = 255)
     private String path;
+
+    @Column(name = "FILE2IMG_PATH",length = 128)
+    private String file2imgPath;
 
 
     public String getId() {
@@ -51,6 +54,13 @@ public class Sha01kccl implements Serializable{
         this.path = path;
     }
 
+    public String getFile2imgPath() {
+        return file2imgPath;
+    }
+
+    public void setFile2imgPath(String file2imgPath) {
+        this.file2imgPath = file2imgPath;
+    }
 
     public String toInsertSql(){
         StringBuffer sb = new StringBuffer("");

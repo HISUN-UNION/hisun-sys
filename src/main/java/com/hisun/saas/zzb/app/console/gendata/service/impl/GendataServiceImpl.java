@@ -5,9 +5,7 @@ import com.hisun.saas.zzb.app.console.gbtj.dao.GbtjDao;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
 import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
-import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
-import com.hisun.saas.zzb.app.console.shpc.entity.Sha01gbrmspb;
-import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
+import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.util.SqliteDBUtil;
 import com.hisun.util.UUIDUtil;
 import org.springframework.stereotype.Service;
@@ -48,7 +46,8 @@ public class GendataServiceImpl implements GendataService {
         //3.拷贝附件至数据包目录
         //4.压缩数据包目录zip
         //5.返回数据包目录
-
+        map = new HashMap<String,String>();
+        map.put(GendataVo.BWH_DATA,"402880e95e8ad4ec015e8ad5df850001");
         try {
             if (map != null && map.size() > 0) {
                 //初始化数据存储目录
@@ -68,7 +67,7 @@ public class GendataServiceImpl implements GendataService {
 
                         String[] ids = value.split(",");
                         for(String id :ids){
-
+                            this.insertShpcData(id,dbdir + "zzb-app.db");
                         }
                     }
                 }
@@ -90,10 +89,30 @@ public class GendataServiceImpl implements GendataService {
             if(sha01s!=null) {
                 for (Sha01 sha01 : sha01s) {
                     sqliteDBUtil.insert(sqlite, sha01.toInsertSql());
+                    //干部任免审批表
                     List<Sha01gbrmspb> sha01gbrmspbs = sha01.getGbrmspbs();
                     if(sha01gbrmspbs!=null){
-
+                        for(Sha01gbrmspb gbrmspb : sha01gbrmspbs){
+                            sqliteDBUtil.insert(sqlite, gbrmspb.toInsertSql());
+                        }
                     }
+                    //考察材料
+                    List<Sha01kccl> sha01kccls = sha01.getKccls();
+                    if(sha01kccls!=null){
+                        for (Sha01kccl kccl : sha01kccls){
+                              sqliteDBUtil.insert(sqlite, kccl.toInsertSql());
+                        }
+                    }
+                    //档案任前审核表
+                    List<Sha01dascqk> sha01dascqks = sha01.getDascqks();
+
+                    //个人重大事项
+                    List<Sha01grzdsx> sha01grzdsxes = sha01.getGrzdsxes();
+
+
+
+
+
                 }
             }
         }

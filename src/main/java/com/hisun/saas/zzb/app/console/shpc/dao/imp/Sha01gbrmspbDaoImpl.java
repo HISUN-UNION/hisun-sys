@@ -8,6 +8,7 @@ import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.springframework.stereotype.Repository;
 
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.*;
 
 /**
@@ -16,32 +17,32 @@ import java.util.*;
 @Repository
 public class Sha01gbrmspbDaoImpl extends TenantBaseDaoImpl<Sha01gbrmspb, String> implements Sha01gbrmspbDao {
 
-    public void saveFromWordDataMap(Tenant tenant ,Map<String, String> dataMap,String a01pk) {
-
+    public String saveFromWord(Sha01gbrmspb gbrmspb , Map<String, String> wordDataMap) {
         String idValue = UUIDUtil.getUUID();
         StringBuffer insertSql = new StringBuffer("INSERT INTO ");
         insertSql.append("APP_SH_A01_GBRMSPB");
         insertSql.append(" (");
         //生成字段sql,值sql
         StringBuffer fieldSql = new StringBuffer();
-        fieldSql.append("ID,APP_SH_A01_ID");
+        fieldSql.append("ID,APP_SH_A01_ID,FILE2IMG_PATH,FILE_PATH");
         StringBuffer valueSql = new StringBuffer();
 
         valueSql.append("(");
         valueSql.append("'").append(idValue).append("'");
-        valueSql.append(",'").append(a01pk).append("'");
+        valueSql.append(",'").append(gbrmspb.getSha01().getId()).append("'");
+        valueSql.append(",'").append(gbrmspb.getFile2imgPath()).append("'");
+        valueSql.append(",'").append(gbrmspb.getFilepath()).append("'");
+
         Map<String,String> listDataMap = new HashMap<String,String>();
-        for (Iterator<String> it = dataMap.keySet().iterator(); it.hasNext(); ) {
+        for (Iterator<String> it = wordDataMap.keySet().iterator(); it.hasNext(); ) {
             String key = it.next();
-            String value = dataMap.get(key);
+            String value = wordDataMap.get(key);
             //组合主表以"["或"#image"开头的
-            if(key.startsWith(WordUtil.dataPrefix)||key.startsWith(WordUtil.imageSign)) {
+            if(key.startsWith(WordUtil.dataPrefix)) {
                 fieldSql.append(",");
                 fieldSql.append(WordUtil.getSqlField(key));
                 valueSql.append(",");
                 valueSql.append("'").append(value).append("'");
-            }else if(key.startsWith(WordUtil.listSign)){
-                listDataMap.put(key,value);
             }
         }
         insertSql.append(fieldSql);
@@ -51,39 +52,11 @@ public class Sha01gbrmspbDaoImpl extends TenantBaseDaoImpl<Sha01gbrmspb, String>
         insertSql.append(valueSql);
         insertSql.append(")");
 
-        this.saveSha01gzjlFromWordDataMap(tenant,listDataMap,idValue);
-    }
+        List<Object> paramList = new ArrayList<Object>();
+        this.executeNativeBulk(insertSql.toString(),paramList);
 
-
-    public void saveSha01gzjlFromWordDataMap(Tenant tenant ,Map<String,String> dataMap,String a01Pk){
-        for (Iterator<String> it = dataMap.keySet().iterator(); it.hasNext(); ) {
-            String key = it.next();
-            String value = dataMap.get(key);
-            if(key.toUpperCase().indexOf("APP_SH_A01_GZJL")>0){
-                List<String> list = Arrays.asList(value.split("\n"));
-                int i =0;
-                for(String str:list){
-                    i++;
-                    StringBuffer insertSql = new StringBuffer("INSERT INTO ");
-                    insertSql.append("APP_SH_A01_GZJL");
-                    insertSql.append(" (ID,APP_SH_A01_ID,JLSM)");
-                    insertSql.append(" VALUES ");
-                    insertSql.append("(");
-                    insertSql.append("'").append(UUIDUtil.getUUID()).append("',");
-                    insertSql.append("'").append(str).append("',");
-                    insertSql.append("'").append(a01Pk).append("',");
-                    insertSql.append(""+i);
-                    insertSql.append(")");
-                }
-            }
-        }
-    }
-
-
-
-    public void saveSha01shgxFromWordDataMap(Map<String,String> dataMap){
+        return idValue;
 
     }
-
 
 }

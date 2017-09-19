@@ -23,17 +23,16 @@
     <div class="mainone">
 
         <div class="mainoneleft">
-            <img class="imgtp" width="180" height="200" src="${path }/zzb/app/console/Sha01/photo/${shpa01Vo.id}">
+            <img class="imgtp" width="180" height="200" src="${path}/zzb/app/console/Sha01/${shpa01Vo.id}/photo?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" />
         </div>
         <div class="clearfix fr">
 							<span class="controllerClass btn file_but">
-                <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}"><i
-                        class="icon-remove-sign"></i> 返回</a>
+                <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}"><i class="icon-remove-sign"></i> 返回</a>
                 </span>
         </div>
         <div class="mainoneright">
             <div class="Fullname">${shpa01Vo.xm}</div>
-            <div class="gerenintrodu">${shpa01Vo.xm}，${shpa01Vo.xb}，1966年1月生（49岁）???，${shpa01Vo.jg}人，${shpa01Vo.cjgzsj}参加工作，${shpa01Vo.rdsj}加入中国共产党，${shpa01Vo.whcd}学历。</div>
+            <div class="gerenintrodu">${shpa01Vo.xb}，1966年1月生（49岁）???，${shpa01Vo.jg}人，${shpa01Vo.cjgzsj}参加工作，${shpa01Vo.rdsj}加入中国共产党，${shpa01Vo.whcd}学历。</div>
             <ul class="ulonleftjx">
                 <li><span>现工作单位及职务：</span>${shpa01Vo.xgzdwjzw}</li>
                 <li><span>拟调整配备意见：</span>${shpa01Vo.ntzpbyj}</li>

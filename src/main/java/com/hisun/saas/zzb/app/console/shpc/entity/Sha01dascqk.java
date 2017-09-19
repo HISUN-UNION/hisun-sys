@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "APP_SH_A01_DASCQK")
-public class Sha01dascqk implements Serializable {
+public class Sha01dascqk extends TenantEntity implements Serializable {
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
@@ -30,6 +30,9 @@ public class Sha01dascqk implements Serializable {
     @OneToMany(mappedBy = "sha01dascqk",fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<Sha01dascqktips> sha01dascqktips;
+
+    @Column(name = "FILE2IMG_PATH",length = 128)
+    private String file2imgPath;
 
     public String getId() {
         return id;
@@ -53,6 +56,22 @@ public class Sha01dascqk implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public List<Sha01dascqktips> getSha01dascqktips() {
+        return sha01dascqktips;
+    }
+
+    public void setSha01dascqktips(List<Sha01dascqktips> sha01dascqktips) {
+        this.sha01dascqktips = sha01dascqktips;
+    }
+
+    public String getFile2imgPath() {
+        return file2imgPath;
+    }
+
+    public void setFile2imgPath(String file2imgPath) {
+        this.file2imgPath = file2imgPath;
     }
 
     public String toInsertSql(){

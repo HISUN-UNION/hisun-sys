@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "APP_SH_A01_GBRMSPB")
-public class Sha01gbrmspb implements Serializable{
+public class Sha01gbrmspb extends TenantEntity implements Serializable{
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
@@ -55,7 +55,7 @@ public class Sha01gbrmspb implements Serializable{
     private String xlqrz;
     @Column(name = "XW_QRZ",length = 24)
     private String xwqrz;
-    @Column(name = "XLZZ",length = 24)
+    @Column(name = "XL_ZZ",length = 24)
     private String xlzz;
 
 
@@ -83,7 +83,8 @@ public class Sha01gbrmspb implements Serializable{
     private String xzjgrmyj;
     @Column(name = "file_path",length = 128)
     private String filepath;
-
+    @Column(name = "FILE2IMG_PATH",length = 128)
+    private String file2imgPath;
 
 
     public String getId() {
@@ -318,13 +319,22 @@ public class Sha01gbrmspb implements Serializable{
         this.filepath = filepath;
     }
 
+
+    public String getFile2imgPath() {
+        return file2imgPath;
+    }
+
+    public void setFile2imgPath(String file2imgPath) {
+        this.file2imgPath = file2imgPath;
+    }
+
     public String toInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_SH_A01_GBRMSPB ");
         sb.append("(");
         sb.append("ID");
-        sb.append("APP_SH_A01_ID");
+        sb.append(",APP_SH_A01_ID");
         sb.append(",XM");
         sb.append(",XB");
         sb.append(",CSNY");

@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "APP_SH_A01")
-public class Sha01 extends BaseEntity implements Serializable {
+public class Sha01 extends TenantEntity implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "uuid.hex")
     @GeneratedValue(generator = "generator")
@@ -55,6 +55,8 @@ public class Sha01 extends BaseEntity implements Serializable {
     private String shyj;
     @Column(name = "A01_PX")
     private int px = 0;
+    @Column(name = "ZP_PATH",length = 128)
+    private String zppath;
 
     @OneToMany(mappedBy = "sha01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
@@ -84,6 +86,8 @@ public class Sha01 extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "sha01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<Shtpsj> shtpsjs;
+
+
 
     public String getId() {
         return id;
@@ -205,6 +209,14 @@ public class Sha01 extends BaseEntity implements Serializable {
         this.px = px;
     }
 
+    public String getZppath() {
+        return zppath;
+    }
+
+    public void setZppath(String zppath) {
+        this.zppath = zppath;
+    }
+
     public List<Sha01dascqk> getDascqks() {
         return dascqks;
     }
@@ -300,7 +312,7 @@ public class Sha01 extends BaseEntity implements Serializable {
         sb.append(" APP_SH_A01 ");
         sb.append("(");
         sb.append("ID");
-        sb.append("APP_SH_PC_ID");
+        sb.append(",APP_SH_PC_ID");
         sb.append(",XM");
         sb.append(",XB");
         sb.append(",MZ");

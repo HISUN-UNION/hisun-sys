@@ -8,9 +8,9 @@ import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01gbrmspb;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01gbrmspbService;
-import com.hisun.util.DateUtil;
-import com.hisun.util.WebUtil;
+import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -25,6 +25,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +43,8 @@ public class Sha01gbrmspbController extends BaseController {
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
 
+
+
     @RequestMapping(value="/ajax/uploadFile")
     public @ResponseBody
     Map<String,Object> importExcel(String sha01Id, @RequestParam(value="gbrmspbFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -56,13 +59,15 @@ public class Sha01gbrmspbController extends BaseController {
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-                String fileDir = uploadAbsolutePath + "/gbrmspb";
-                File _fileDir = new File(fileDir);
+               /// String fileDir = uploadAbsolutePath +File.separator+ "sha01"+ File.separator+"gbrmspb";
+                File _fileDir = new File( Sha01gbrmspbService.ATTS_PATH );
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir + "/" + DateUtil.formatDateByFormat(new Date(),"yyyyMMddHHmmssSSS")+"_"+fileName;
-
+                //原附件存储路径
+                String savePath = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID()+"_"+fileName;
+                //模板路径
+                String wordTemplatePath = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH + "gbrmspb.docx";
                 try {
                     FileOutputStream fos = new FileOutputStream(new File(savePath));
                     fos.write(file.getBytes());
@@ -70,18 +75,10 @@ public class Sha01gbrmspbController extends BaseController {
                     fos.close();
 
                     Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
-                    if(sha01.getGbrmspbs()!=null &&sha01.getGbrmspbs().size()>0){//修改
-                        Sha01gbrmspb sha01gbrmspb = sha01.getGbrmspbs().get(0);
-                        sha01gbrmspb.setFilepath(savePath);
-                        sha01gbrmspb.setSha01(sha01);
-                        this.sha01gbrmspbService.update(sha01gbrmspb);
-                    }else{//创建
-                        Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                        sha01gbrmspb.setFilepath(savePath);
-                        sha01gbrmspb.setSha01(sha01);
-                        this.sha01gbrmspbService.save(sha01gbrmspb);
-                    }
-
+                    Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
+                    sha01gbrmspb.setFilepath(savePath);
+                    sha01gbrmspb.setSha01(sha01);
+                    this.sha01gbrmspbService.saveFromWord(sha01gbrmspb ,savePath,wordTemplatePath);
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);

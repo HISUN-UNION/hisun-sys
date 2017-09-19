@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
  */
 @Entity
 @Table(name = "APP_SH_A01_GRZDSX")
-public class Sha01grzdsx implements Serializable {
+public class Sha01grzdsx extends TenantEntity implements Serializable {
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
@@ -26,6 +26,8 @@ public class Sha01grzdsx implements Serializable {
     private Sha01 sha01;
     @Column(name = "PATH",length = 255)
     private String path;
+    @Column(name = "FILE2IMG_PATH",length = 128)
+    private String file2imgPath;
 
     public String getId() {
         return id;
@@ -49,6 +51,14 @@ public class Sha01grzdsx implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getFile2imgPath() {
+        return file2imgPath;
+    }
+
+    public void setFile2imgPath(String file2imgPath) {
+        this.file2imgPath = file2imgPath;
     }
 
     public String toInsertSql(){

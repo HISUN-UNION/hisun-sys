@@ -3,6 +3,8 @@ package com.hisun.saas.zzb.app.console.shpc.controller;
 import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrder;
+import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
@@ -58,6 +60,8 @@ public class Sha01Controller extends BaseController {
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
 
+    private final static String DEFAULT_IMG_HEAD_PATH = "/WEB-INF/images/defaultHeadImage.png";
+
     @RequestMapping("/list")
     public ModelAndView list(HttpServletRequest req,@RequestParam(value="shpcId")String shpcId,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -67,11 +71,11 @@ public class Sha01Controller extends BaseController {
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" shpc.id = :shpcId", "shpcId", shpcId));
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-//            CommonOrderBy orderBy = new CommonOrderBy();
-//            orderBy.add(CommonOrder.desc("updateDate"));
+            CommonOrderBy orderBy = new CommonOrderBy();
+           orderBy.add(CommonOrder.asc("px"));
 
             Long total = this.sha01Service.count(query);
-            List<Sha01> sha01s = this.sha01Service.list(query, null, pageNum,
+            List<Sha01> sha01s = this.sha01Service.list(query,orderBy, pageNum,
                     pageSize);
             List<Sha01Vo> shpcVos = new ArrayList<Sha01Vo>();
             if (sha01s != null) {// entity ==> vo
@@ -167,6 +171,37 @@ public class Sha01Controller extends BaseController {
         return map;
     }
 
+
+
+    @RequestMapping("/{id}/photo")
+    public ResponseEntity<byte[]> photoToStream (@PathVariable("id")String id,
+                                                 HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        Sha01 sha01 = this.sha01Service.getByPK(id);
+        if(sha01.getZppath()!=null){
+            File file = new File(sha01.getZppath());
+            if(file.exists()){
+                headers.setContentType(MediaType.IMAGE_JPEG);
+                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
+                        headers, HttpStatus.OK);
+            }else{
+                //为空或者没有返回默认图片
+                headers.setContentType(MediaType.IMAGE_PNG);
+                File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
+                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(defaultfile),
+                        headers, HttpStatus.OK);
+            }
+        }else{
+            //为空或者没有返回默认图片
+            headers.setContentType(MediaType.IMAGE_PNG);
+            File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
+            return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(defaultfile),
+                    headers, HttpStatus.OK);
+        }
+
+    }
+
+
     /**
      * 调转到查看页面
      * @return
@@ -232,32 +267,4 @@ public class Sha01Controller extends BaseController {
         return new ModelAndView("/saas/zzb/app/console/Sha01/view", map);
     }
 
-
-    @RequestMapping("/photo/{sha01Id}")
-    public ResponseEntity<byte[]> photoToStream (@PathVariable("sha01Id")String sha01Id, HttpServletRequest request, HttpServletResponse response) throws IOException{
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
-        Sha01 shpa01 = this.sha01Service.getByPK(sha01Id);
-
-        String photoPath ="";
-        if(shpa01.getGbrmspbs()!=null &&shpa01.getGbrmspbs().size()>0){
-            photoPath = shpa01.getGbrmspbs().get(0).getZppath();
-        }
-
-        if (photoPath!=null && !photoPath.equals("")) {
-            File file = new File(photoPath);
-            if (file.exists()) {
-                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
-                        headers, HttpStatus.OK);
-            }else{
-                headers.setContentType(MediaType.IMAGE_PNG);
-                file = new File(request.getServletContext().getRealPath("/WEB-INF/images/defaultHeadImage.png"));
-                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),headers, HttpStatus.OK);
-            }
-        }else{
-            headers.setContentType(MediaType.IMAGE_PNG);
-            File file = new File(request.getServletContext().getRealPath("/WEB-INF/images/defaultHeadImage.png"));
-            return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),headers, HttpStatus.OK);
-        }
-    }
 }

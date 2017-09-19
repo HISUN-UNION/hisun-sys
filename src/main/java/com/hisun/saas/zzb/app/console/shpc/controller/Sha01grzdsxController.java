@@ -9,10 +9,9 @@ import com.hisun.saas.zzb.app.console.shpc.entity.Sha01grzdsx;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01grzdsxService;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01kcclService;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
-import com.hisun.util.DateUtil;
-import com.hisun.util.WebUtil;
-import com.hisun.util.WordUtil;
+import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,12 +60,12 @@ public class Sha01grzdsxController extends BaseController {
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-                String fileDir = uploadAbsolutePath + "/grzdsx";
+                String fileDir = uploadAbsolutePath + Sha01grzdsxService.ATTS_PATH;
                 File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir + "/" + DateUtil.formatDateByFormat(new Date(),"yyyyMMddHHmmssSSS")+"_"+fileName;
+                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
 
                 try {
                     FileOutputStream fos = new FileOutputStream(new File(savePath));
@@ -74,16 +73,27 @@ public class Sha01grzdsxController extends BaseController {
                     fos.flush();
                     fos.close();
 
+
+                    //处理
+                    String pdfPath = uploadAbsolutePath+ Sha01grzdsxService.ATTS_PATH+ UUIDUtil.getUUID()+".pdf";
+                    String imgPath = uploadAbsolutePath+Sha01grzdsxService.ATTS_PATH+UUIDUtil.getUUID()+".jpg";
+                    //先将其转PDF
+                    WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
+                    //再将其转成图片
+                    Pdf2ImgUtil.toImg(pdfPath,imgPath);
+
                     Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
                     if(sha01.getGrzdsxes()!=null &&sha01.getGrzdsxes().size()>0){//修改
                         Sha01grzdsx sha01grzdsx = sha01.getGrzdsxes().get(0);
                         sha01grzdsx.setPath(savePath);
                         sha01grzdsx.setSha01(sha01);
+                        sha01grzdsx.setFile2imgPath(imgPath);
                         this.sha01grzdsxService.update(sha01grzdsx);
                     }else{//创建
                         Sha01grzdsx sha01grzdsx = new Sha01grzdsx();
                         sha01grzdsx.setPath(savePath);
                         sha01grzdsx.setSha01(sha01);
+                        sha01grzdsx.setFile2imgPath(imgPath);
                         this.sha01grzdsxService.save(sha01grzdsx);
                     }
 

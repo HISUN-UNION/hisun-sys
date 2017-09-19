@@ -8,8 +8,8 @@ import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01dascqk;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01dascqkService;
-import com.hisun.util.DateUtil;
-import com.hisun.util.WebUtil;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01gbrmspbService;
+import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,29 +56,38 @@ public class Sha01dascqkController extends BaseController {
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-                String fileDir = uploadAbsolutePath + "/dascqk";
+                String fileDir = uploadAbsolutePath + Sha01dascqkService.ATTS_PATH;
                 File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir + "/" + DateUtil.formatDateByFormat(new Date(),"yyyyMMddHHmmssSSS")+"_"+fileName;
+                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
 
                 try {
+                    //上传附件
                     FileOutputStream fos = new FileOutputStream(new File(savePath));
                     fos.write(file.getBytes());
                     fos.flush();
                     fos.close();
-
+                    //处理
+                    String pdfPath = uploadAbsolutePath+ Sha01dascqkService.ATTS_PATH+ UUIDUtil.getUUID()+".pdf";
+                    String imgPath = uploadAbsolutePath+Sha01dascqkService.ATTS_PATH+UUIDUtil.getUUID()+".jpg";
+                    //先将其转PDF
+                    WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
+                    //再将其转成图片
+                    Pdf2ImgUtil.toImg(pdfPath,imgPath);
                     Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
                     if(sha01.getDascqks()!=null &&sha01.getDascqks().size()>0){//修改
                         Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
                         sha01dascqk.setPath(savePath);
                         sha01dascqk.setSha01(sha01);
+                        sha01dascqk.setFile2imgPath(imgPath);
                         this.sha01dascqkService.update(sha01dascqk);
                     }else{//创建
                         Sha01dascqk sha01dascqk = new Sha01dascqk();
                         sha01dascqk.setPath(savePath);
                         sha01dascqk.setSha01(sha01);
+                        sha01dascqk.setFile2imgPath(imgPath);
                         this.sha01dascqkService.save(sha01dascqk);
                     }
 

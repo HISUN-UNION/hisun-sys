@@ -29,6 +29,7 @@ public class Sha01Vo {
     private String cjgzsj;
     private String xgzdwjzw;
     private int px = 0;
+    private String zppath;
 
     private List<Sha01dascqkVo> dascqks;
     private List<Sha01gbrmspbVo> gbrmspbs;
@@ -159,6 +160,14 @@ public class Sha01Vo {
 
     public void setPx(int px) {
         this.px = px;
+    }
+
+    public String getZppath() {
+        return zppath;
+    }
+
+    public void setZppath(String zppath) {
+        this.zppath = zppath;
     }
 
     public List<Sha01dascqkVo> getDascqks() {

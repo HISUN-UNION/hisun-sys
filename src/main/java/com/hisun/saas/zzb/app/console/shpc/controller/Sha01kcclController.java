@@ -7,9 +7,9 @@ import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01kccl;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01dascqkService;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01kcclService;
-import com.hisun.util.DateUtil;
-import com.hisun.util.WebUtil;
+import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,12 +56,12 @@ public class Sha01kcclController extends BaseController {
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-                String fileDir = uploadAbsolutePath + "/kccl";
+                String fileDir = uploadAbsolutePath + Sha01kcclService.ATTS_PATH;
                 File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir + "/" + DateUtil.formatDateByFormat(new Date(),"yyyyMMddHHmmssSSS")+"_"+fileName;
+                String savePath = fileDir  + UUIDUtil.getUUID()+"_"+fileName;
 
                 try {
                     FileOutputStream fos = new FileOutputStream(new File(savePath));
@@ -69,16 +69,26 @@ public class Sha01kcclController extends BaseController {
                     fos.flush();
                     fos.close();
 
+                    //处理
+                    String pdfPath = uploadAbsolutePath+ Sha01kcclService.ATTS_PATH+ UUIDUtil.getUUID()+".pdf";
+                    String imgPath = uploadAbsolutePath+Sha01kcclService.ATTS_PATH+UUIDUtil.getUUID()+".jpg";
+                    //先将其转PDF
+                    WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
+                    //再将其转成图片
+                    Pdf2ImgUtil.toImg(pdfPath,imgPath);
+
                     Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
                     if(sha01.getKccls()!=null &&sha01.getKccls().size()>0){//修改
                         Sha01kccl sha01kccl = sha01.getKccls().get(0);
                         sha01kccl.setPath(savePath);
                         sha01kccl.setSha01(sha01);
+                        sha01kccl.setFile2imgPath(imgPath);
                         this.sha01kcclService.update(sha01kccl);
                     }else{//创建
                         Sha01kccl sha01kccl = new Sha01kccl();
                         sha01kccl.setPath(savePath);
                         sha01kccl.setSha01(sha01);
+                        sha01kccl.setFile2imgPath(imgPath);
                         this.sha01kcclService.save(sha01kccl);
                     }
 

@@ -146,7 +146,7 @@
 		})();
 
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/console/bwh/list?pageNum="+pageNum+"&pageSize="+pageSize;
+			window.location.href ="${path}/zzb/app/console/Sha01/list?shpcId=${shpcId}&pageNum="+pageNum+"&pageSize="+pageSize;
 		}
 
 		function searchSubmit(){
