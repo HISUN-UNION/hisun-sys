@@ -27,6 +27,10 @@
 									<span><i class="icon-circle-arrow-up"></i>上传名单</span>
 									<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
 							</span>
+							<span class="controllerClass btn file_but" >
+									<span><i class="icon-circle-arrow-up"></i>批量上传</span>
+									<input class="file_progress" type="file" name="attachMoreFile" id="btn-MoreTemplate">
+							</span>
 							<a class="btn" href="${path }/zzb/app/console/bwh/">返回</a>
 						</div>
 
@@ -113,6 +117,62 @@
 				//hideErrorMsg();
 				$("#importForm").ajaxSubmit({
 					url : "${path }/zzb/app/console/Sha01/ajax/execute",
+					type : "post",
+					headers:{
+						OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+					},
+					beforeSend:function(XHR){
+						myLoading.show();
+					},
+					success : function(json){
+						if(json.code == 1){
+							showTip("提示","操作成功",500);
+							//loadCiList(ciObjectId);
+							window.location.href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}";
+						}else if(json.code == -1){
+							showTip("提示", json.message, 500);
+						}else if(json.code == -2){
+							showTip("提示", "导入数据存在错误，请及时下载已标记错误处的日志模板文件",500);
+							//$('#downloanErrorTd').show();
+							//$('#downloanError').attr('href','${path}/sacm/asset/export/downloanError?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&path='+encodeURIComponent(encodeURIComponent(json.path)));
+							//$('#errorMsg').text('导入数据存在错误，请及时下载已标记错误处的日志模板文件');
+						}else{
+							showTip("提示","出错了,请检查网络!",500);
+						}
+					},
+					error : function(arg1, arg2, arg3){
+						showTip("提示","出错了,请检查网络!",500);
+					},
+					complete : function(XHR, TS){
+						myLoading.hide();
+					}
+				});
+			}
+
+			//批量上传
+			$("#btn-MoreTemplate").bind("change",function(evt){
+				if($(this).val()){
+					ajaxMoreSubmit();
+				}
+				$(this).val('');
+			});
+			var myLoading = new MyLoading("${path}",{zindex:20000});
+			function ajaxMoreSubmit(){
+				var fileInput = document.getElementById("btn-MoreTemplate");
+				if(fileInput.files.length>0){
+					var name = fileInput.files[0].name
+					var arr = name.split(".");
+					if(arr.length<2 || !(arr[arr.length-1]=="zip" || arr[arr.length-1]=="ZIP")){
+						showTip("提示","请上传zip包文件",2000);
+						return;
+					}
+				}else{
+					showTip("提示","请选择文件上传",2000);
+					return;
+				}
+				//hideErrorMsg();
+				$("#importForm").ajaxSubmit({
+					url : "${path }/zzb/app/console/Sha01/ajax/moreExecute",
 					type : "post",
 					headers:{
 						OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
