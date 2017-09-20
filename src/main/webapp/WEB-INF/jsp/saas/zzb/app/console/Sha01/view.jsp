@@ -5,20 +5,21 @@
 <%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
 <c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<link rel="stylesheet" type="text/css" href="/WEB-INF/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/WEB-INF/css/style-metro.css">
-<link rel="stylesheet" type="text/css" href="/WEB-INF/css/bootstrap-fileupload.css">
-<script src="/WEB-INF/js/jquery-1.10.1.min.js"></script>
-<script src="js/bootstrap-fileupload.js"></script>
-<link href="css/style.css" rel="stylesheet" type="text/css">
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>“${shpa01Vo.xm}”个人信息</title>
+
+    <link rel="stylesheet" type="text/css" href="${path }/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${path }/css/style-metro.css">
+    <link rel="stylesheet" type="text/css" href="${path }/css/bootstrap-fileupload.css">
+    <script src="${path }/js/jquery-1.10.1.min.js"></script>
+    <script src="${path }/js/bootstrap-fileupload.js"></script>
+    <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
-<div class="xwbmain win1000">
+<div class="xwbmain">
 
     <div class="mainone">
 
@@ -26,9 +27,7 @@
             <img class="imgtp" width="180" height="200" src="${path}/zzb/app/console/Sha01/${shpa01Vo.id}/photo?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" />
         </div>
         <div class="clearfix fr">
-							<span class="controllerClass btn file_but">
-                <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}"><i class="icon-remove-sign"></i> 返回</a>
-                </span>
+                <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}">返回</a>
         </div>
         <div class="mainoneright">
             <div class="Fullname">${shpa01Vo.xm}</div>

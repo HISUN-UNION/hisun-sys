@@ -26,8 +26,10 @@
 							<span class="controllerClass btn file_but" >
 									<span><i class="icon-circle-arrow-up"></i>上传名单</span>
 									<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
-								</span>
+							</span>
+							<a class="btn" href="${path }/zzb/app/console/bwh/">返回</a>
 						</div>
+
 					</div>
 
 					<div class="portlet-body">
