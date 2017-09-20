@@ -60,7 +60,7 @@ public class Sha01gbrmspbController extends BaseController {
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
                /// String fileDir = uploadAbsolutePath +File.separator+ "sha01"+ File.separator+"gbrmspb";
-                File _fileDir = new File( Sha01gbrmspbService.ATTS_PATH );
+                File _fileDir = new File(uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH );
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }

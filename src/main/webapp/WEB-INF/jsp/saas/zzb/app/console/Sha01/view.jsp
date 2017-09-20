@@ -13,8 +13,7 @@
     <link rel="stylesheet" type="text/css" href="${path }/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${path }/css/style-metro.css">
     <link rel="stylesheet" type="text/css" href="${path }/css/bootstrap-fileupload.css">
-    <script src="${path }/js/jquery-1.10.1.min.js"></script>
-    <script src="${path }/js/bootstrap-fileupload.js"></script>
+
     <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -138,6 +137,7 @@
 <script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
 <script type="text/javascript" src="${path }/js/common/loading.js"></script>
+<script src="${path }/js/bootstrap-fileupload.js"></script>
 <!— 引入确认框模块 —>
 <%@ include file="/WEB-INF/jsp/inc/confirmModal.jsp" %>
 <script type="text/javascript">
