@@ -39,7 +39,6 @@
 						<!-- BEGIN FORM-->
 
 						<form action="" class="form-horizontal" id="form1" method="post">
-						<input type="hidden" name="shlx"  id="shlx" value="${shlx}">
 							<div id="pcmcGroup" class="control-group">
 								<label class="control-label">批次名称<span class="required">*</span></label>
 								<div class="controls">
@@ -47,7 +46,18 @@
 								</div>
 
 							</div>
+							<div class="control-group" id="shlxGroup">
 
+								<label class="control-label">上会类型<span class="required">*</span></label>
+								<div class="controls">
+									<select class="span6 m-wrap" id="shlx" name="shlx"  data-placeholder="Choose a Category" tabindex="1" required>
+										<option value="1" selected>部务会</option>
+										<option value="2" >常委会</option>
+									</select>
+
+								</div>
+
+							</div>
 							<div id="pcsjValueGroup" class="control-group">
 								<label class="control-label">批次时间<span class="required">*</span></label>
 								<div class="controls">

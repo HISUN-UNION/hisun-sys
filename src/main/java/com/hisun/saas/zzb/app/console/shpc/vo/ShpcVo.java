@@ -1,6 +1,7 @@
 package com.hisun.saas.zzb.app.console.shpc.vo;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,6 +20,7 @@ public class ShpcVo extends TenantEntity implements Serializable{
     private String id;
     private String pcmc;
     private String shlx;
+    private String shlxValue;
     private String pcsjValue;
     private String filePath;
     private int a01Count;
@@ -90,5 +92,18 @@ public class ShpcVo extends TenantEntity implements Serializable{
 
     public void setA01Count(int a01Count) {
         this.a01Count = a01Count;
+    }
+
+    public String getShlxValue() {
+        if(this.shlx.equals(Shpc.SHLX_BWH)){
+            return "部务会";
+        }else if(this.shlx.equals(Shpc.SHLX_CWH)){
+            return "常委会";
+        }
+        return "";
+    }
+
+    public void setShlxValue(String shlxValue) {
+        this.shlxValue = shlxValue;
     }
 }

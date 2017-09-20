@@ -11,7 +11,7 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 <!-- END PAGE LEVEL STYLES -->
-<title>部务会列表</title>
+<title>会议研究</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -21,7 +21,7 @@
 				<%-- 表格开始 --%>
 				<div class="portlet box grey">
 					<div class="portlet-title">
-						<div class="caption">部务会列表</div>
+						<div class="caption">会议研究批次</div>
 						<div class="clearfix fr">
 							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/bwh/add?shlx=1">
 								<i class="icon-plus"></i> 添加 
@@ -34,18 +34,20 @@
 							<thead>
 								<tr>
 									<th >批次名称</th>
-									<!-- <th width="20%">是否系统状态</th> -->
-									<th width="30%">批次时间</th>
-									<th width="120px">操作</th>
+									<th width="10%">上会类型</th>
+									<th width="10%">上会时间</th>
+									<th width="10%">上会名单</th>
+									<th width="15%">操作</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
 										<td><a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }"><c:out value="${vo.pcmc}"></c:out></a></td>
+										<td><c:out value="${vo.shlxValue}"></c:out></td>
 										<td><c:out value="${vo.pcsjValue}"></c:out></td>
+										<td><a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }" class="">共${vo.a01Count }人</a></td>
 										<td class="Left_alignment">
-											<a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }" class="">人员(${vo.a01Count })</a>|
 											<a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }" class="">编辑</a>|
 											<a href="javascript:del('${vo.id }','${vo.pcmc}')" class="">删除</a>
 										</td>
@@ -73,7 +75,7 @@
 		})();
 	
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/console/bwh/list?pageNum="+pageNum+"&pageSize="+pageSize;
+			window.location.href ="${path}/zzb/app/console/bwh/?pageNum="+pageNum+"&pageSize="+pageSize;
 		}
 		
 		function searchSubmit(){

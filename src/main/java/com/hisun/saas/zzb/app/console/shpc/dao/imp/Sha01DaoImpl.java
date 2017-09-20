@@ -48,7 +48,7 @@ public class Sha01DaoImpl extends TenantBaseDaoImpl<Sha01, String> implements Sh
             insertSql.append(" (");
             //生成字段sql,值sql
             StringBuffer fieldSql = new StringBuffer();
-            fieldSql.append(" ID,APP_SH_PC_ID,A01_PX ");
+            fieldSql.append(" ID,APP_SH_PC_ID,A01_PX,tenant_id ");
             StringBuffer valueSql = new StringBuffer();
 
 
@@ -56,6 +56,7 @@ public class Sha01DaoImpl extends TenantBaseDaoImpl<Sha01, String> implements Sh
             valueSql.append("'").append(idValue).append("'");
             valueSql.append(",'").append(pcId).append("'");
             valueSql.append(",").append(px).append("");
+            valueSql.append(",'").append(tenant.getId()).append("'");
 
             for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();

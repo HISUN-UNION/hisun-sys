@@ -11,7 +11,7 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 <!-- END PAGE LEVEL STYLES -->
-<title>上会人员列表</title>
+<title>上会名单</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -21,10 +21,10 @@
 				<form class="portlet box grey"id="importForm" enctype="multipart/form-data">
 					<input type="hidden" id="shpcId" name="shpcId" value="${shpcId}"/>
 					<div class="portlet-title">
-						<div class="caption">上会人员列表</div>
+						<div class="caption">上会名单</div>
 						<div class="clearfix fr">
 							<span class="controllerClass btn file_but" >
-									<span><i class="icon-circle-arrow-up"></i> 上传上会人员</span>
+									<span><i class="icon-circle-arrow-up"></i>上传名单</span>
 									<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
 								</span>
 						</div>
@@ -34,21 +34,19 @@
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
 								<tr>
-
-
-									<th width="60">姓名</th>
-									<th width="40">性别</th>
-									<th width="40">民族</th>
-									<th width="60">籍贯</th>
-									<th width="60">出生年月</th>
-									<th width="80">参加工</br>作时间</th>
-									<th width="80">入党时间</th>
-									<th width="80">文化程度</th>
-									<th width="80">任现级</br>别时间</th>
-
-									<th width="100" style="text-align:center">现工作</br>单位及职务</th>
-									<th >拟调整配备意见</th>
-									<th width="60">干部一</br>科意见</th>
+									<th width="6%">姓名</th>
+									<th width="5%">性别</th>
+									<th width="5%">民族</th>
+									<th width="5%">籍贯</th>
+									<th width="5%">出生<br><br>年月</th>
+									<th width="5%">参加<br>工作<br>时间</th>
+									<th width="5%">入党<br><br>时间</th>
+									<th width="8%">文化<br><br>程度</th>
+									<th width="5%">任现<br>级别<br>时间</th>
+									<th width="10%">民主<br>推荐<br>情况</th>
+									<th width="20%">现工作单位及职务</th>
+									<th>拟调整配备意见</th>
+									<th width="5%">干部<br>一科<br>意见</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -63,6 +61,7 @@
 										<td title="${vo.rdsj}"><c:out value="${vo.rdsj}"></c:out></td>
 										<td title="${vo.whcd}"><c:out value="${vo.whcd}"></c:out></td>
 										<td title="${vo.rxjbsj}"><c:out value="${vo.rxjbsj}"></c:out></td>
+										<td title="${vo.mztjqk}"><c:out value="${vo.mztjqk}"></c:out></td>
 										<td title="${vo.xgzdwjzw}"><c:out value="${vo.xgzdwjzw}"></c:out></td>
 										<td title="${vo.ntzpbyj}"><c:out value="${vo.ntzpbyj}"></c:out></td>
 										<td title="${vo.shyj}"><c:out value="${vo.shyj}"></c:out></td>
@@ -121,22 +120,22 @@
 					},
 					success : function(json){
 						if(json.code == 1){
-							showTip("提示","操作成功",2000);
+							showTip("提示","操作成功",500);
 							//loadCiList(ciObjectId);
 							window.location.href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}";
 						}else if(json.code == -1){
-							showTip("提示", json.message, 2000);
+							showTip("提示", json.message, 500);
 						}else if(json.code == -2){
-							showTip("提示", "导入数据存在错误，请及时下载已标记错误处的日志模板文件",2000);
+							showTip("提示", "导入数据存在错误，请及时下载已标记错误处的日志模板文件",500);
 							//$('#downloanErrorTd').show();
 							//$('#downloanError').attr('href','${path}/sacm/asset/export/downloanError?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&path='+encodeURIComponent(encodeURIComponent(json.path)));
 							//$('#errorMsg').text('导入数据存在错误，请及时下载已标记错误处的日志模板文件');
 						}else{
-							showTip("提示","出错了,请检查网络!",2000);
+							showTip("提示","出错了,请检查网络!",500);
 						}
 					},
 					error : function(arg1, arg2, arg3){
-						showTip("提示","出错了,请检查网络!",2000);
+						showTip("提示","出错了,请检查网络!",500);
 					},
 					complete : function(XHR, TS){
 						myLoading.hide();

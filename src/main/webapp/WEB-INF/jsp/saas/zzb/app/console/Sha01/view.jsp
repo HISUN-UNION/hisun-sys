@@ -32,7 +32,7 @@
         </div>
         <div class="mainoneright">
             <div class="Fullname">${shpa01Vo.xm}</div>
-            <div class="gerenintrodu">${shpa01Vo.xb}，1966年1月生（49岁）???，${shpa01Vo.jg}人，${shpa01Vo.cjgzsj}参加工作，${shpa01Vo.rdsj}加入中国共产党，${shpa01Vo.whcd}学历。</div>
+            <div class="gerenintrodu">${shpa01Vo.xb}，${shpa01Vo.csny}生，${shpa01Vo.jg}人，${shpa01Vo.cjgzsj}参加工作，${shpa01Vo.rdsj}加入中国共产党，${shpa01Vo.whcd}学历。</div>
             <ul class="ulonleftjx">
                 <li><span>现工作单位及职务：</span>${shpa01Vo.xgzdwjzw}</li>
                 <li><span>拟调整配备意见：</span>${shpa01Vo.ntzpbyj}</li>
@@ -40,30 +40,13 @@
         </div>
     </div>
     <div class="maintwo">
-        <h1 class="tith1">个人履历</h1>
-
-        <p>1984年7月浙江省平阳县物价局、县委办公室、县委组织部、党史研究室工作，历任县委办秘书、团支书（其间：1988年9月至-1990年12月杭州大学函授部中文系中文专业学习，获文学学士学位）；</p>
-
-        <p>1991年5月广东省人民检察院政治部科员、科室负责人、副科长、科长（其间：1992年2月至1992年5月借调最高人民检察院政治部工作，1992年9月至1995年7月广东广播电视大学法律专业学习）；</p>
-
-        <p>1995年5月广东省委组织部地方干部处主任科员（其间：1996年9月至1999年8月中山大学研究生院政治经济学专业学习，获经济学硕士学位；</p>
-
-        <p>1999年6月至-2000年1月带队驻韶关市翁源县阳东村抓农村基层组织建设）；</p>
-
-        <p>2000年2月广东省委组织部地方干部处助理调研员；2000年3月增城市委常委、组织部部长（其间：1999年9月至2002年5月暨南大学管理学院企业管理系产业经济学专业学习，获经济学博士学位）；</p>
-
-        <p>2003年3月增城市委常委、副市长（其间：2004年4月至-2006年4月南开大学经济学院人口、资源与环境经济学专业博士后）；</p>
-
-        <p>2006年9月广州市旅游局副局长、党委委员；</p>
-
-        <p>2011年4月广州市城市管理委员会党委副书记，广州市旅游局副局长、党委委员；</p>
-
-        <p>2011年5月广州市城市管理委员会党委副书记；</p>
-
-        <p>2013年1月广州市民政局党委副书记。 </p>
+        <h1 class="tith1">工作经历</h1>
+        <c:forEach items="${shpa01Vo.gzjls}" var="vo">
+            <p><c:out value="${vo.jlsm}"></c:out></p>
+        </c:forEach>
     </div>
     <div class="mainthree">
-        <h1 class="tith1" style="margin-bottom:30px;">个人资料</h1>
+        <h1 class="tith1" style="margin-bottom:30px;">其他材料</h1>
 
         <form class="form-horizontal" id="importForm" enctype="multipart/form-data">
             <div class="control-group">
@@ -197,7 +180,9 @@
                 success: function (json) {
                     if (json.code == 1) {
                         //showTip("提示","操作成功",2000);
+
                         window.document.getElementById("gbrmspbDownDiv").style.visibility = "visible";
+                        window.location.href="${path }/zzb/app/console/Sha01/view?id=${shpa01Vo.id}";
                     } else if (json.code == -1) {
                         showTip("提示", json.message, 2000);
                     } else {

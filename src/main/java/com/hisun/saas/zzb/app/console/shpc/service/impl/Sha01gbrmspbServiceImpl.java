@@ -63,6 +63,16 @@ public class Sha01gbrmspbServiceImpl extends BaseServiceImpl<Sha01gbrmspb, Strin
                 gb.setSha01(null);
                 this.sha01gbrmspbDao.delete(gb);
             }
+            //由于工作经历也是导入的,所以一并删除
+            List<Sha01gzjl> tempSha01gzjls = new ArrayList<Sha01gzjl>();
+            for(Sha01gzjl gzjl :sha01.getGzjls()){
+                tempSha01gzjls.add(gzjl);
+            }
+            for(Sha01gzjl gzjl :tempSha01gzjls){
+                sha01.getGzjls().remove(gzjl);
+                gzjl.setSha01(null);
+                this.sha01gzjlService.delete(gzjl);
+            }
         }
         String id = this.sha01gbrmspbDao.saveFromWord(gbrmspb,dataMap);
         this.sha01gzjlService.saveFromWord(gbrmspb.getSha01(),dataMap);

@@ -5,8 +5,7 @@ package com.hisun.saas.zzb.app.console.gendata.vo;
  */
 public class GendataVo {
 
-    public static String BWH_DATA="BWH";
-    public static String CWH_DATA="CWH";
+    public static String SHPC_DATA="SHPC";
     public static String GBTJ_DATA="GBTJ";
 
 }

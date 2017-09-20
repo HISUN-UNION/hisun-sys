@@ -75,11 +75,11 @@ public class Sha01kccl extends TenantEntity implements Serializable{
         sb.append("(");
         sb.append("'"+ StringUtils.transNull(id)+"'");
         sb.append(",'"+ StringUtils.transNull(sha01.getId())+"'");
-        if (StringUtils.isEmpty(path)){
+        if (StringUtils.isEmpty(file2imgPath)){
             sb.append(",''");
         }else{
-            String filepath ="atts/"+path.substring(path.lastIndexOf(File.separator)+1);
-            sb.append("'"+filepath+"'");
+            String attsPath ="atts/"+file2imgPath.substring(file2imgPath.lastIndexOf(File.separator)+1);
+            sb.append(",'"+attsPath+"'");
 
         }
         sb.append(")");

@@ -339,7 +339,6 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
         sb.append(",XB");
         sb.append(",CSNY");
         sb.append(",NL");
-        sb.append(",ZP_PATH");
         sb.append(",MZ");
         sb.append(",JG");
         sb.append(",CSD");
@@ -361,6 +360,7 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
         sb.append(",CBDWYJ");
         sb.append(",SPJGYJ");
         sb.append(",XZJGRMYJ");
+        sb.append(",PATH");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
@@ -370,14 +370,6 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
         sb.append(",'"+ StringUtils.transNull(xb)+"'");
         sb.append(",'"+ StringUtils.transNull(csny)+"'");
         sb.append(",'"+ StringUtils.transNull(nl)+"'");
-
-        if (StringUtils.isEmpty(zppath)){
-            sb.append(",''");
-        }else{
-            String path ="img/"+zppath.substring(zppath.lastIndexOf(File.separator)+1);
-            sb.append("'"+path+"'");
-
-        }
 
         sb.append(",'"+ StringUtils.transNull(mz)+"'");
         sb.append(",'"+ StringUtils.transNull(jg)+"'");
@@ -404,11 +396,11 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
         sb.append(",'"+ StringUtils.transNull(cbdwyj)+"'");
         sb.append(",'"+ StringUtils.transNull(spjgyj)+"'");
         sb.append(",'"+ StringUtils.transNull(xzjgrmyj)+"'");
-        if (StringUtils.isEmpty(filepath)){
+        if (StringUtils.isEmpty(file2imgPath)){
             sb.append(",''");
         }else{
-            String attsPath ="atts/"+filepath.substring(filepath.lastIndexOf(File.separator)+1);
-            sb.append("'"+attsPath+"'");
+            String attsPath ="atts/"+file2imgPath.substring(file2imgPath.lastIndexOf(File.separator)+1);
+            sb.append(",'"+attsPath+"'");
 
         }
         sb.append(")");

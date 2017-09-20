@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -327,6 +328,7 @@ public class Sha01 extends TenantEntity implements Serializable {
         sb.append(",XGZDWJZW");
         sb.append(",NTZPBYJ");
         sb.append(",SHYJ");
+        sb.append(",ZP_PATH");
         sb.append(",A01_PX");
         sb.append(")");
         sb.append(" VALUES");
@@ -347,6 +349,13 @@ public class Sha01 extends TenantEntity implements Serializable {
         sb.append(",'"+ StringUtils.transNull(xgzdwjzw)+"'");
         sb.append(",'"+ StringUtils.transNull(ntzpbyj)+"'");
         sb.append(",'"+ StringUtils.transNull(shyj)+"'");
+        if (StringUtils.isEmpty(zppath)){
+            sb.append(",''");
+        }else{
+            String filepath ="img/"+zppath.substring(zppath.lastIndexOf(File.separator)+1);
+            sb.append(",'"+filepath+"'");
+
+        }
         sb.append(","+ px+"");
 
         sb.append(")");

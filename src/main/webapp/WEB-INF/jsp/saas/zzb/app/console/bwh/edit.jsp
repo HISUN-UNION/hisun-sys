@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>编辑部务会批次信息</title>
+<title>修改会议研究批次</title>
 </head>
 <body>
 			<div class="container-fluid">
@@ -25,7 +25,7 @@
 
 									<i class="icon-reorder"></i>
 
-									<span class="hidden-480">编辑部务会批次信息</span>
+									<span class="hidden-480">修改会议研究批次</span>
 
 								</div>
 								<div class="tools">
@@ -39,11 +39,23 @@
 
 								<form action="${path }/zzb/app/console/bwh/save" class="form-horizontal" id="form1" method="post">
 									<input type="hidden" name="id" value="${shpc.id }" id="id">
-									<input type="hidden" name="shlx"  id="shlx" value="${shpc.shlx }">
 									<div id="pcmcGroup" class="control-group">
 										<label class="control-label">批次名称<span class="required">*</span></label>
 										<div class="controls">
 											<input type="text" class="span6 m-wrap" name="pcmc" required maxlength="200" id="pcmc" value="${shpc.pcmc }"/>
+										</div>
+
+									</div>
+
+									<div class="control-group" id="shlxGroup">
+
+										<label class="control-label">上会类型<span class="required">*</span></label>
+										<div class="controls">
+											<select class="span6 m-wrap" id="shlx" name="shlx"  data-placeholder="Choose a Category" tabindex="1" required>
+												<option value="1" <c:if test="${shpc.shlx eq '1'}">selected</c:if>>部务会</option>
+												<option value="2" <c:if test="${shpc.shlx eq '2'}">selected</c:if>>常委会</option>
+											</select>
+
 										</div>
 
 									</div>

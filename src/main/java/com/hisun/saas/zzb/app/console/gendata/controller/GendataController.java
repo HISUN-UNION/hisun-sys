@@ -42,23 +42,20 @@ public class GendataController extends BaseController{
         String pcs = request.getParameter("pcs");
         String tjs = request.getParameter("tjs");
 
-        String appDataPath=resourcesProperties.getProperty("upload.absolute.path");
-        appDataPath = appDataPath+ File.separator+"/appdata/";
-
+        String appDataPath=resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH;
         File appDataDir = new File(appDataPath);
         if(appDataDir.exists()==false){
             appDataDir.mkdirs();
         }
         Map<String,String> map = new HashMap<String,String>();
         if(pcs!=null &&pcs.length()>0){
-            map.put(GendataVo.BWH_DATA,pcs);
+            map.put(GendataVo.SHPC_DATA,pcs);
         }
         if(tjs!=null &&tjs.length()>0){
             map.put(GendataVo.GBTJ_DATA,tjs);
         }
 
         this.gendataService.genAppData(map,appDataPath);
-
         return new ModelAndView("saas/zzb/app/console/unuse");
     }
 

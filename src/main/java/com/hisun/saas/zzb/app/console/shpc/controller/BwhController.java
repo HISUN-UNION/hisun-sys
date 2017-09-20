@@ -37,7 +37,7 @@ public class BwhController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             CommonConditionQuery query = new CommonConditionQuery();
-            query.add(CommonRestrictions.and(" shlx = :shlx", "shlx", "1"));
+           // query.add(CommonRestrictions.and(" shlx = :shlx", "shlx", Shpc.SHLX_BWH));
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
 //            CommonOrderBy orderBy = new CommonOrderBy();
 //            orderBy.add(CommonOrder.desc("updateDate"));

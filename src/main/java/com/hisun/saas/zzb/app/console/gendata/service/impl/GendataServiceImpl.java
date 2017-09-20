@@ -8,16 +8,14 @@ import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.util.SqliteDBUtil;
 import com.hisun.util.UUIDUtil;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhouying on 2017/9/16.
@@ -32,54 +30,60 @@ public class GendataServiceImpl implements GendataService {
 
 
     @Override
-    public String genAppData(Map<String, String> map, String appDataDir) throws Exception {
+    public String genAppData(Map<String, String> map, String dataPath) throws Exception {
         String appDataZipPath = null;
-
+        //初始化数据目录
         String uuid = UUIDUtil.getUUID();
-        String dbdir = appDataDir + uuid + File.separator + "db" + File.separator;
-        String imgdir = appDataDir + uuid + File.separator + "img" + File.separator;
-        String attsdir = appDataDir + uuid + File.separator + "atts" + File.separator;
+        List<String> dirs = new ArrayList<>();
+        String dbdir = dataPath + uuid + File.separator + GendataService.DB_PATH;
+        dirs.add(dbdir);
+        String imgdir = dataPath + uuid + File.separator +GendataService.IMG_PATH ;
+        dirs.add(imgdir);
+        String attsdir = dataPath + uuid + File.separator + GendataService.ATTS_PATH;
+        dirs.add(attsdir);
+        //初始化非机构化数据存储目录
+        this.initDataDir(dirs);
 
-        //根据选择需要导出的数据,生成数据包
-        //1.读取需要导出的数据对象
-        //2.初始化sqlite,根据对象生成Insert语句,执行sql
-        //3.拷贝附件至数据包目录
-        //4.压缩数据包目录zip
-        //5.返回数据包目录
         map = new HashMap<String,String>();
-        map.put(GendataVo.BWH_DATA,"402880e95e8ad4ec015e8ad5df850001");
-        try {
-            if (map != null && map.size() > 0) {
-                //初始化数据存储目录
-                File db = new File(dbdir);
-                db.mkdirs();
-                File img = new File(imgdir);
-                img.mkdirs();
-                File atts = new File(attsdir);
-                atts.mkdirs();
-                //初始化sqlite数据库
-                this.initSqlite(dbdir + "zzb-app.db");
-
-                for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
-                    String key = it.next();
-                    String value = map.get(key);
-                    if (key.equals(GendataVo.BWH_DATA)) {
-
-                        String[] ids = value.split(",");
-                        for(String id :ids){
-                            this.insertShpcData(id,dbdir + "zzb-app.db");
-                        }
+        map.put(GendataVo.SHPC_DATA,"402881ea5e98e964015e990b91850020");
+        if (map != null && map.size() > 0) {
+            //初始化sqlite数据库
+            this.initSqlite(dbdir + GendataService.SQLITE_DB_NAME);
+            //生成数据包
+            for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
+                String key = it.next();
+                String value = map.get(key);
+                if (key.equals(GendataVo.SHPC_DATA)) {
+                    String[] ids = value.split(",");
+                    for(String id :ids){
+                        this.genShpcData(id,dbdir + GendataService.SQLITE_DB_NAME,imgdir,attsdir);
                     }
+                }else if (key.equals(GendataVo.GBTJ_DATA)){
+
                 }
             }
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            //初始化非机构化数据
+
         }
         return appDataZipPath;
     }
 
 
-    private void insertShpcData(String shpcId,String sqlite) throws Exception{
+    private void initDataDir(List<String> dirs){
+        if(dirs!=null){
+            for(String s : dirs){
+                //初始化数据存储目录
+                File dir = new File(s);
+                if(dir.exists()==false){
+                    dir.mkdirs();
+                }
+            }
+        }
+
+    }
+
+
+    private void genShpcData(String shpcId,String sqlite,String imgDir,String attsDir) throws Exception{
         Shpc shpc = shpcDao.getPK(shpcId);
         if(shpc!=null){
             SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
@@ -88,7 +92,12 @@ public class GendataServiceImpl implements GendataService {
             List<Sha01> sha01s = shpc.getSha01s();
             if(sha01s!=null) {
                 for (Sha01 sha01 : sha01s) {
+                    //初始化结构数据
                     sqliteDBUtil.insert(sqlite, sha01.toInsertSql());
+                    //初始化非机构化数据
+                    if(sha01.getZppath()!=null) {
+                        this.copyFile(sha01.getZppath(), imgDir);
+                    }
                     //干部任免审批表
                     List<Sha01gbrmspb> sha01gbrmspbs = sha01.getGbrmspbs();
                     if(sha01gbrmspbs!=null){
@@ -105,19 +114,35 @@ public class GendataServiceImpl implements GendataService {
                     }
                     //档案任前审核表
                     List<Sha01dascqk> sha01dascqks = sha01.getDascqks();
-
+                    if(sha01dascqks!=null){
+                        for(Sha01dascqk sha01dascqk : sha01dascqks){
+                            sqliteDBUtil.insert(sqlite,sha01dascqk.toInsertSql());
+                            //档案审查表提示表
+                            List<Sha01dascqktips> sha01dascqktipses = sha01dascqk.getSha01dascqktips();
+                            if(sha01dascqktipses!=null){
+                                for(Sha01dascqktips tip : sha01dascqktipses){
+                                    sqliteDBUtil.insert(sqlite,tip.toInsertSql());
+                                }
+                            }
+                        }
+                    }
                     //个人重大事项
                     List<Sha01grzdsx> sha01grzdsxes = sha01.getGrzdsxes();
-
-
-
-
-
+                    if(sha01grzdsxes!=null){
+                        for(Sha01grzdsx sha01grzdsx : sha01grzdsxes){
+                            sqliteDBUtil.insert(sqlite,sha01grzdsx.toInsertSql());
+                        }
+                    }
                 }
             }
         }
     }
 
+    public void copyFile(String source,String targetPath) throws IOException{
+        File sourceFile = new File(source);
+        File targetFile = new File(targetPath+sourceFile.getName());
+        FileUtils.copyFile(sourceFile,targetFile);
+    }
 
     private void initSqlite(String sqlite) throws Exception{
 

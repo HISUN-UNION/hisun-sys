@@ -1,6 +1,5 @@
 package com.hisun.saas.zzb.app.console.shpc.controller;
 
-import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
@@ -10,37 +9,32 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
-import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
@@ -173,30 +167,63 @@ public class Sha01Controller extends BaseController {
 
 
 
+//    @RequestMapping("/{id}/photo")
+//    public ResponseEntity<byte[]> photoToStream (@PathVariable("id")String id,
+//                                                 HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        HttpHeaders headers = new HttpHeaders();
+//        Sha01 sha01 = this.sha01Service.getByPK(id);
+//        if(sha01.getZppath()!=null){
+//            File file = new File(sha01.getZppath());
+//            if(file.exists()){
+//                headers.setContentType(MediaType.IMAGE_JPEG);
+//                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
+//                        headers, HttpStatus.OK);
+//            }else{
+//                //为空或者没有返回默认图片
+//                headers.setContentType(MediaType.IMAGE_PNG);
+//                File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
+//                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(defaultfile),
+//                        headers, HttpStatus.OK);
+//            }
+//        }else{
+//            //为空或者没有返回默认图片
+//            headers.setContentType(MediaType.IMAGE_PNG);
+//            File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
+//            return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(defaultfile),
+//                    headers, HttpStatus.OK);
+//        }
+//
+//    }
+
+
+
     @RequestMapping("/{id}/photo")
-    public ResponseEntity<byte[]> photoToStream (@PathVariable("id")String id,
-                                                 HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpHeaders headers = new HttpHeaders();
+    public HttpEntity<byte[]> getPhoto (@PathVariable("id")String id,
+                                             HttpServletRequest request, HttpServletResponse response) throws IOException {
         Sha01 sha01 = this.sha01Service.getByPK(id);
         if(sha01.getZppath()!=null){
             File file = new File(sha01.getZppath());
             if(file.exists()){
-                headers.setContentType(MediaType.IMAGE_JPEG);
-                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file),
-                        headers, HttpStatus.OK);
+                FileInputStream fis = new FileInputStream(file);
+                StreamUtils.copy(fis,response.getOutputStream());
+                response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+                return new HttpEntity(HttpStatus.OK);
             }else{
                 //为空或者没有返回默认图片
-                headers.setContentType(MediaType.IMAGE_PNG);
                 File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
-                return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(defaultfile),
-                        headers, HttpStatus.OK);
+                FileInputStream fis = new FileInputStream(defaultfile);
+                StreamUtils.copy(fis,response.getOutputStream());
+                response.setContentType(MediaType.IMAGE_PNG_VALUE);
+                return new HttpEntity(HttpStatus.OK);
             }
         }else{
             //为空或者没有返回默认图片
-            headers.setContentType(MediaType.IMAGE_PNG);
             File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
-            return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(defaultfile),
-                    headers, HttpStatus.OK);
+            FileInputStream fis = new FileInputStream(defaultfile);
+            StreamUtils.copy(fis,response.getOutputStream());
+
+            response.setContentType(MediaType.IMAGE_PNG_VALUE);
+            return new HttpEntity(HttpStatus.OK);
         }
 
     }

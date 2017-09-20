@@ -6,6 +6,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +21,10 @@ public class Sha01Vo {
     private String mz;
     private String jg;
     private String csny;
+    private String csnyStr;
+    private String nlStr;
     private String rdsj;
+    private String rdsjStr;
     private String whcd;
     private String rxjbsj;
     private String mztjqk;
@@ -27,9 +32,11 @@ public class Sha01Vo {
     private String ntzpbyj;
     private String shyj;
     private String cjgzsj;
+    private String cjgzsjStr;
     private String xgzdwjzw;
     private int px = 0;
     private String zppath;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 
     private List<Sha01dascqkVo> dascqks;
     private List<Sha01gbrmspbVo> gbrmspbs;
@@ -257,5 +264,39 @@ public class Sha01Vo {
 
     public void setXgzdwjzw(String xgzdwjzw) {
         this.xgzdwjzw = xgzdwjzw;
+    }
+
+
+    public String getCsnyStr() {
+        //sdf.format(new Date());
+        return csnyStr;
+    }
+
+    public void setCsnyStr(String csnyStr) {
+        this.csnyStr = csnyStr;
+    }
+
+    public String getNlStr() {
+        return nlStr;
+    }
+
+    public void setNlStr(String nlStr) {
+        this.nlStr = nlStr;
+    }
+
+    public String getRdsjStr() {
+        return rdsjStr;
+    }
+
+    public void setRdsjStr(String rdsjStr) {
+        this.rdsjStr = rdsjStr;
+    }
+
+    public String getCjgzsjStr() {
+        return cjgzsjStr;
+    }
+
+    public void setCjgzsjStr(String cjgzsjStr) {
+        this.cjgzsjStr = cjgzsjStr;
     }
 }

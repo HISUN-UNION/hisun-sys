@@ -63,7 +63,7 @@ public class Sha01dascqktips extends TenantEntity implements Serializable {
         sb.append("(");
         sb.append("'"+ StringUtils.transNull(id)+"'");
         sb.append(",'"+ StringUtils.transNull(sha01dascqk.getId())+"'");
-        sb.append("'"+ StringUtils.transNull(tip)+"'");
+        sb.append(",'"+ StringUtils.transNull(tip)+"'");
         sb.append(")");
         return sb.toString();
     }
