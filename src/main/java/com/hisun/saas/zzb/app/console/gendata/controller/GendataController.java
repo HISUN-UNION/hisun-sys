@@ -32,7 +32,7 @@ public class GendataController extends BaseController{
 
     @RequestMapping(value = "/")
     public ModelAndView list(){
-        return new ModelAndView("saas/zzb/app/console/unuse");
+        return new ModelAndView("saas/zzb/app/console/gendata/list");
     }
 
 
@@ -55,8 +55,8 @@ public class GendataController extends BaseController{
             map.put(GendataVo.GBTJ_DATA,tjs);
         }
 
-        this.gendataService.genAppData(map,appDataPath);
-        return new ModelAndView("saas/zzb/app/console/unuse");
+        String resultzip = this.gendataService.genAppData(map,appDataPath);
+        return new ModelAndView("saas/zzb/app/console/gendata/list");
     }
 
 

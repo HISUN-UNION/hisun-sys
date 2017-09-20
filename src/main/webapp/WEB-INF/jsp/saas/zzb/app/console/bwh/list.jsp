@@ -23,7 +23,7 @@
 					<div class="portlet-title">
 						<div class="caption">会议研究批次</div>
 						<div class="clearfix fr">
-							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/bwh/add?shlx=1">
+							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/bwh/add">
 								<i class="icon-plus"></i> 添加 
 							</a>
 						</div>

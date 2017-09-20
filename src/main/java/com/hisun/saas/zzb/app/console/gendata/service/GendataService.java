@@ -13,6 +13,7 @@ public interface GendataService {
    public static String ATTS_PATH="atts"+File.separator;
    public static String DB_PATH="db"+File.separator;
    public static String SQLITE_DB_NAME="zzb-app.db";
+   public static String DATA_PACKET_NAME="zzb-app-android";
 
 
    public String genAppData(Map<String,String> map,String appDataDir) throws Exception;

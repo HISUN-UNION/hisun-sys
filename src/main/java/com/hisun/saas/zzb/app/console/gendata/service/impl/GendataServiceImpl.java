@@ -1,11 +1,11 @@
 package com.hisun.saas.zzb.app.console.gendata.service.impl;
 
-import com.hisun.base.exception.GenericException;
 import com.hisun.saas.zzb.app.console.gbtj.dao.GbtjDao;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
 import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
+import com.hisun.util.CompressUtil;
 import com.hisun.util.SqliteDBUtil;
 import com.hisun.util.UUIDUtil;
 import org.apache.commons.io.FileUtils;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.*;
 
 /**
@@ -31,21 +29,23 @@ public class GendataServiceImpl implements GendataService {
 
     @Override
     public String genAppData(Map<String, String> map, String dataPath) throws Exception {
-        String appDataZipPath = null;
         //初始化数据目录
         String uuid = UUIDUtil.getUUID();
+        String dataDir = dataPath + uuid + File.separator;
+        String appDataZipPath = dataPath+UUIDUtil.getUUID()+".zip";
+
         List<String> dirs = new ArrayList<>();
-        String dbdir = dataPath + uuid + File.separator + GendataService.DB_PATH;
+        String dbdir =  dataDir+ GendataService.DB_PATH;
         dirs.add(dbdir);
-        String imgdir = dataPath + uuid + File.separator +GendataService.IMG_PATH ;
+        String imgdir = dataDir+GendataService.IMG_PATH ;
         dirs.add(imgdir);
-        String attsdir = dataPath + uuid + File.separator + GendataService.ATTS_PATH;
+        String attsdir = dataDir+ GendataService.ATTS_PATH;
         dirs.add(attsdir);
         //初始化非机构化数据存储目录
         this.initDataDir(dirs);
 
         map = new HashMap<String,String>();
-        map.put(GendataVo.SHPC_DATA,"402881ea5e98e964015e990b91850020");
+        map.put(GendataVo.SHPC_DATA,"402881ea5e98e964015e9ab756200080");
         if (map != null && map.size() > 0) {
             //初始化sqlite数据库
             this.initSqlite(dbdir + GendataService.SQLITE_DB_NAME);
@@ -62,9 +62,9 @@ public class GendataServiceImpl implements GendataService {
 
                 }
             }
-            //初始化非机构化数据
-
         }
+        //压缩数据文件
+        CompressUtil.zip(appDataZipPath,dataDir,GendataService.DATA_PACKET_NAME);
         return appDataZipPath;
     }
 
@@ -103,13 +103,19 @@ public class GendataServiceImpl implements GendataService {
                     if(sha01gbrmspbs!=null){
                         for(Sha01gbrmspb gbrmspb : sha01gbrmspbs){
                             sqliteDBUtil.insert(sqlite, gbrmspb.toInsertSql());
+                            if(gbrmspb.getFile2imgPath()!=null){
+                                this.copyFile(gbrmspb.getFile2imgPath(),attsDir);
+                            }
                         }
                     }
                     //考察材料
                     List<Sha01kccl> sha01kccls = sha01.getKccls();
                     if(sha01kccls!=null){
                         for (Sha01kccl kccl : sha01kccls){
-                              sqliteDBUtil.insert(sqlite, kccl.toInsertSql());
+                            sqliteDBUtil.insert(sqlite, kccl.toInsertSql());
+                            if(kccl.getFile2imgPath()!=null){
+                                this.copyFile(kccl.getFile2imgPath(),attsDir);
+                            }
                         }
                     }
                     //档案任前审核表
@@ -117,6 +123,9 @@ public class GendataServiceImpl implements GendataService {
                     if(sha01dascqks!=null){
                         for(Sha01dascqk sha01dascqk : sha01dascqks){
                             sqliteDBUtil.insert(sqlite,sha01dascqk.toInsertSql());
+                            if(sha01dascqk.getFile2imgPath()!=null){
+                                this.copyFile(sha01dascqk.getFile2imgPath(),attsDir);
+                            }
                             //档案审查表提示表
                             List<Sha01dascqktips> sha01dascqktipses = sha01dascqk.getSha01dascqktips();
                             if(sha01dascqktipses!=null){
@@ -131,6 +140,9 @@ public class GendataServiceImpl implements GendataService {
                     if(sha01grzdsxes!=null){
                         for(Sha01grzdsx sha01grzdsx : sha01grzdsxes){
                             sqliteDBUtil.insert(sqlite,sha01grzdsx.toInsertSql());
+                            if(sha01grzdsx.getFile2imgPath()!=null){
+                                this.copyFile(sha01grzdsx.getFile2imgPath(),attsDir);
+                            }
                         }
                     }
                 }
@@ -142,6 +154,7 @@ public class GendataServiceImpl implements GendataService {
         File sourceFile = new File(source);
         File targetFile = new File(targetPath+sourceFile.getName());
         FileUtils.copyFile(sourceFile,targetFile);
+
     }
 
     private void initSqlite(String sqlite) throws Exception{

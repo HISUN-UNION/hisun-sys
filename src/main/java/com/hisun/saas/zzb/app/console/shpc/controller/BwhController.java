@@ -67,12 +67,9 @@ public class BwhController extends BaseController {
      * 调转到新增页面
      * @return
      */
-//    @RequiresPermissions("admin-assetStatus:add")
     @RequestMapping(value = "/add")
-    public ModelAndView add(@RequestParam(value="shlx")String shlx) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("shlx", shlx);
-        return new ModelAndView("/saas/zzb/app/console/bwh/add",map);
+    public ModelAndView add() {
+        return new ModelAndView("/saas/zzb/app/console/bwh/add");
     }
 
     /**
