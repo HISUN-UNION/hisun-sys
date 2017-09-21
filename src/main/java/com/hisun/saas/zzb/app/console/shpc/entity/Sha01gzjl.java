@@ -97,9 +97,9 @@ public class Sha01gzjl extends TenantEntity implements Serializable {
         sb.append("(");
         sb.append("'"+ StringUtils.transNull(id)+"'");
         sb.append(",'"+ StringUtils.transNull(sha01.getId())+"'");
-        sb.append("'"+ StringUtils.transNull(csj)+"'");
-        sb.append("'"+ StringUtils.transNull(zsj)+"'");
-        sb.append("'"+ StringUtils.transNull(jlsm)+"'");
+        sb.append(",'"+ StringUtils.transNull(csj)+"'");
+        sb.append(",'"+ StringUtils.transNull(zsj)+"'");
+        sb.append(",'"+ StringUtils.transNull(jlsm)+"'");
         sb.append(","+ px+"");
         sb.append(")");
         return sb.toString();

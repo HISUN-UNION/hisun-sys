@@ -1,6 +1,8 @@
 package com.hisun.saas.zzb.app.console.shpc.controller;
 
 import com.hisun.base.controller.BaseController;
+import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
@@ -112,15 +114,17 @@ public class Sha01gbrmspbController extends BaseController {
 
 
 
-    @RequestMapping(value="/batch/upload")
+    @RequestMapping(value="/ajax/batch/upload")
     public @ResponseBody
-    Map<String,Object> batchUpload(String pcId, @RequestParam(value="gbrmspbFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    Map<String,Object> batchUpload(String shpcId, @RequestParam(value="attachMoreFile",required=false) MultipartFile file,
+                                   HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String,Object> map = new HashMap<String,Object>();
         if(file==null || file.isEmpty()){
             map.put("code", -1);
             map.put("message", "文件没有内容");
             return map;
+
         }
         //模板路径
         String wordTemplatePath = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH + "gbrmspb.docx";
@@ -133,6 +137,11 @@ public class Sha01gbrmspbController extends BaseController {
                 }
                 //原zip存储路径
                 String zipFile = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID()+".zip";
+                FileOutputStream fos = new FileOutputStream(new File(zipFile));
+                fos.write(file.getBytes());
+                fos.flush();
+                fos.close();
+
                 String tmpFilePath =  uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+File.separator;
                 //解压到临时目录
                 CompressUtil.unzip(zipFile,tmpFilePath);
@@ -140,8 +149,14 @@ public class Sha01gbrmspbController extends BaseController {
                 File tempFiles = new File(tmpFilePath);
                 if(tempFiles!=null){
                     for(File f : tempFiles.listFiles()){
+                        if(f.isDirectory()) continue;//如果是目录则跳过
                         String fname = f.getName();
-                        List<Sha01> sha01s = this.sha01Service.list();
+                        String xm = fname.substring(0,fname.lastIndexOf("."));
+                        CommonConditionQuery query = new CommonConditionQuery();
+                        query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%"+xm+"%"));
+                        query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
+                        query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+                        List<Sha01> sha01s = this.sha01Service.list(query,null);
                         if(sha01s!=null && sha01s.size()>0){
                             String ext = f.getName().substring(f.getName().lastIndexOf("."));
                             String savePath = _fileDir+UUIDUtil.getUUID()+ext;
@@ -173,6 +188,8 @@ public class Sha01gbrmspbController extends BaseController {
                 return map;
             }
         }catch(Exception e){
+            e.printStackTrace();
+
             map.put("code", -1);
             map.put("message", "读取文件错误!");
             return map;

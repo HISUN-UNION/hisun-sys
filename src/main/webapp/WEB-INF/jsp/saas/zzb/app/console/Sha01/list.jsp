@@ -40,10 +40,10 @@
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
 								<tr>
-									<th width="6%">姓名</th>
-									<th width="5%">性别</th>
-									<th width="5%">民族</th>
-									<th width="5%">籍贯</th>
+									<th width="6%">&nbsp;<br>姓名<br>&nbsp;</th>
+									<th width="5%">&nbsp;<br>性别<br>&nbsp;</th>
+									<th width="5%">&nbsp;<br>民族<br>&nbsp;</th>
+									<th width="5%">&nbsp;<br>籍贯<br>&nbsp;</th>
 									<th width="5%">出生<br><br>年月</th>
 									<th width="5%">参加<br>工作<br>时间</th>
 									<th width="5%">入党<br><br>时间</th>
@@ -172,7 +172,7 @@
 				}
 				//hideErrorMsg();
 				$("#importForm").ajaxSubmit({
-					url : "${path }/zzb/app/console/Sha01/ajax/moreExecute",
+					url : "${path }/zzb/app/Sha01/gbrmspb/ajax/batch/upload",
 					type : "post",
 					headers:{
 						OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
@@ -189,9 +189,6 @@
 							showTip("提示", json.message, 500);
 						}else if(json.code == -2){
 							showTip("提示", "导入数据存在错误，请及时下载已标记错误处的日志模板文件",500);
-							//$('#downloanErrorTd').show();
-							//$('#downloanError').attr('href','${path}/sacm/asset/export/downloanError?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&path='+encodeURIComponent(encodeURIComponent(json.path)));
-							//$('#errorMsg').text('导入数据存在错误，请及时下载已标记错误处的日志模板文件');
 						}else{
 							showTip("提示","出错了,请检查网络!",500);
 						}
