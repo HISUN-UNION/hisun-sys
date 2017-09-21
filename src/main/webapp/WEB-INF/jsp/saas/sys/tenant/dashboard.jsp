@@ -57,7 +57,7 @@
 <body>
 <div class="navig">
     <div class="navig_header">
-        <div class="naviglogo"><img src="${path}/images/${logo}"></div>
+        <div class="naviglogo"><img  style="max-height: 44px;" src="${path}/images/${logo}"></div>
         <ul class="ulnavheaderright">
             <c:if test="${!empty userId && username ne 'admin'}">
                 <li class="navli01 dropdown">

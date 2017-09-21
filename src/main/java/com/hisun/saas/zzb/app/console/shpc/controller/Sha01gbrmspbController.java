@@ -116,7 +116,7 @@ public class Sha01gbrmspbController extends BaseController {
 
     @RequestMapping(value="/ajax/batch/upload")
     public @ResponseBody
-    Map<String,Object> batchUpload(String shpcId, @RequestParam(value="attachMoreFile",required=false) MultipartFile file,
+    Map<String,Object> batchUpload(String shpcId, @RequestParam(value="gbrmspbFile",required=false) MultipartFile file,
                                    HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String,Object> map = new HashMap<String,Object>();

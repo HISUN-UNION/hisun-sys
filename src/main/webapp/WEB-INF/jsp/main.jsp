@@ -401,12 +401,12 @@ li {
 					<c:when test="${username ne 'admin'}">
 						<a class="brand" href="${path}/dashboard" style="margin-left: 0px;">
 								<%-- <img src="<%=path%>/images/logo-mid.png" alt="logo" /> --%>
-							<img src="<%=path%>/images/${logo}" alt="logo"/>
+							<img  style="max-height: 32px;" src="<%=path%>/images/${logo}" alt="logo"/>
 						</a>
 					</c:when>
 					<c:otherwise>
 						<a class="brand" href="javaScript:;" style="margin-left: 0px;">
-							<img src="<%=path%>/images/${logo}" alt="logo"/>
+							<img style="max-height: 32px;" src="<%=path%>/images/${logo}" alt="logo"/>
 						</a>
 					</c:otherwise>
 				</c:choose>
