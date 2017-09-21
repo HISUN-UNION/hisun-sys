@@ -28,7 +28,8 @@
 
         <div class=" number">
 
-            建设中...
+            <div style="text-align:center; margin-top:70px;"><img src="${pageContext.request.contextPath}/images/templateImage/jsym.jpg"></div>
+
 
         </div>
 
