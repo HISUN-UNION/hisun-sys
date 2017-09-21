@@ -78,10 +78,9 @@ public class GendataController extends BaseController{
     public @ResponseBody Map<String,Object> generator(HttpServletResponse response, HttpServletRequest request) throws Exception{
         Map<String,Object> rsmap = new HashMap<String,Object>();
         try{
-            String checkHyyjValues = request.getParameter("checkHyyjValues")==null?"":request.getParameter("checkHyyjValues").toString();//会议研究ID
             String checkBoxTypeValues = request.getParameter("checkBoxTypeValues")==null?"":request.getParameter("checkBoxTypeValues").toString();//选择需要导出的类型
 
-            String pcs = request.getParameter("pcs");
+            String pcs = request.getParameter("checkHyyjValues")==null?"":request.getParameter("checkHyyjValues").toString();//会议研究ID
             String tjs = request.getParameter("tjs");
 
             String appDataPath=resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH;

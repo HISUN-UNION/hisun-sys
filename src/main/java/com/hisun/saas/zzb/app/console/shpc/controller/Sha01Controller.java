@@ -293,5 +293,21 @@ public class Sha01Controller extends BaseController {
         }
         return new ModelAndView("/saas/zzb/app/console/Sha01/view", map);
     }
+    @RequestMapping(value = "/delete/{id}")
+    public @ResponseBody Map<String, Object> delete(@PathVariable("id")String id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try{
+            Sha01 sha01 = this.sha01Service.getByPK(id);
+            if(sha01 != null){
+                this.sha01Service.delete(sha01);
+            }
+            map.put("success", true);
+        }catch(Exception e){
+            map.put("success", false);
+            map.put("msg", "删除失败！");
+            throw new GenericException(e);
+        }
+        return map;
 
+    }
 }
