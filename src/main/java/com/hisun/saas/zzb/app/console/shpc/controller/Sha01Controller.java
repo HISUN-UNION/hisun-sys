@@ -165,65 +165,7 @@ public class Sha01Controller extends BaseController {
         return map;
     }
 
-    //批量上传
-    @RequestMapping(value="/ajax/moreExecute")
-    public @ResponseBody
-    Map<String,Object> importZip(String shpcId, String token, @RequestParam(value="attachMoreFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-        Map<String,Object> map = new HashMap<String,Object>();
-        if(file==null || file.isEmpty()){
-            map.put("code", -1);
-            map.put("message", "文件没有内容");
-            return map;
-        }
 
-        try{
-            String fileName = file.getOriginalFilename();
-            if(fileName.endsWith(".zip") ||fileName.endsWith(".ZIP")){
-                String fileDir = uploadAbsolutePath + File.separator+ "sha01";
-                File _fileDir = new File(fileDir);
-                if (_fileDir.exists() == false) {
-                    _fileDir.mkdirs();
-                }
-                String savePath = fileDir + File.separator + DateUtil.formatDateByFormat(new Date(),"yyyyMMddHHmmssSSS")+"_"+fileName;
-
-                try {
-                    FileOutputStream fos = new FileOutputStream(new File(savePath));
-                    fos.write(file.getBytes());
-                    fos.flush();
-                    fos.close();
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new GenericException(e);
-                }
-            }else{
-                map.put("code", -1);
-                map.put("message", "请上传ZIP文件");
-                return map;
-            }
-        }catch(Exception e){
-            map.put("code", -1);
-            map.put("message", "读取文件错误，请检查zip文件是否能正确打开");
-            return map;
-        }
-        try{
-
-        }catch(GenericException e){
-            logger.error(e, e);
-            map.put("code", -1);
-            map.put("message", e.getMessage());
-            return map;
-        }catch(Exception e){
-            logger.error(e, e);
-            map.put("code", -1);
-            map.put("message", "系统错误，请联系管理员");
-            return map;
-        }
-        map.put("code", 1);
-        return map;
-    }
 
 //    @RequestMapping("/{id}/photo")
 //    public ResponseEntity<byte[]> photoToStream (@PathVariable("id")String id,
