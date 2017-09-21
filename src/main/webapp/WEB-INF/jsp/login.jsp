@@ -20,7 +20,7 @@
     <div class="login">
     		<div class="login_header">
             	 <div class="login_header_1000">
-					 <div class="login_logo"><img src="${path }/images/templateImage/${loginLogo}"></div>
+					 <div class="login_logo"><img style="max-height: 46px;" src="${path }/images/templateImage/${loginLogo}"></div>
 					 <div class="Customer_name">${loginTitle}</div>
                  </div>
             </div>
