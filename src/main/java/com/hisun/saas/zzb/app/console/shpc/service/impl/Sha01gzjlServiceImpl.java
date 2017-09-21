@@ -62,7 +62,7 @@ public class Sha01gzjlServiceImpl extends BaseServiceImpl<Sha01gzjl,String> impl
         List<String> list = new ArrayList<String>();
         //工作经历正则
         String parttern = "([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3}).(?:0?[1-9]|1[0-2])"
-                +"-(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3}).(?:0?[1-9]|1[0-2]))?"
+                +"--(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3}).(?:0?[1-9]|1[0-2]))?"
                 +"\\s*\\S\\W*([^\\(\\（]*[\\)\\）])?";
         Pattern r = Pattern.compile(parttern);
         Matcher matcher = r.matcher(str);

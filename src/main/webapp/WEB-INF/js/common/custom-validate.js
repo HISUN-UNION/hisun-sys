@@ -214,7 +214,7 @@ jQuery.validator.addMethod("tenantEmailUnique", function(value, element, attrVal
 	}
 	var result = false;
 	$.ajax({
-		url : window.PATH + "/platform/tenant/user/un/checkEmail",
+		url : window.PATH + "/sys/tenant/user/un/checkEmail",
 		type : "post",
 		data : {"email": value},
 		dataType : "json",
@@ -251,7 +251,7 @@ jQuery.validator.addMethod("tenantUsernameUnique", function(value, element, attr
 	}
 	var result = false;
 	$.ajax({
-		url : window.PATH + "/platform/tenant/user/un/checkUserName",
+		url : window.PATH + "/sys/tenant/user/un/checkUserName",
 		type : "post",
 		data : {"username": value},
 		dataType : "json",
@@ -350,7 +350,7 @@ jQuery.validator.addMethod("adminEmailUnique", function(value, element, attrValu
 	}
 	var result = false;
 	$.ajax({
-		url : window.PATH + "/platform/admin/user/checkEmail",
+		url : window.PATH + "/sys/admin/user/checkEmail",
 		type : "get",
 		data : {"email": value},
 		dataType : "json",
@@ -387,7 +387,7 @@ jQuery.validator.addMethod("adminUsernameUnique", function(value, element, attrV
 	}
 	var result = false;
 	$.ajax({
-		url : window.PATH + "/platform/admin/user/checkUserName",
+		url : window.PATH + "/sys/admin/user/checkUserName",
 		type : "get",
 		data : {"username": value},
 		dataType : "json",
