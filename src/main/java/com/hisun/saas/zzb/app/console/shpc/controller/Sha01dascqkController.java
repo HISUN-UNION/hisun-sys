@@ -1,14 +1,18 @@
 package com.hisun.saas.zzb.app.console.shpc.controller;
 
 import com.hisun.base.controller.BaseController;
+import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01dascqk;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01grzdsx;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01dascqkService;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01gbrmspbService;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01grzdsxService;
 import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,7 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -121,6 +126,112 @@ public class Sha01dascqkController extends BaseController {
         map.put("code", 1);
         return map;
     }
+
+
+
+    @RequestMapping(value="/ajax/batch/upload")
+    public @ResponseBody
+    Map<String,Object> batchUpload(String shpcId, @RequestParam(value="attachMoreFile",required=false) MultipartFile file,
+                                   HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(file==null || file.isEmpty()){
+            map.put("code", -1);
+            map.put("message", "文件没有内容");
+            return map;
+
+        }
+        try{
+            String fileName = file.getOriginalFilename();
+            if(fileName.toLowerCase().endsWith(".zip")){
+                File _fileDir = new File(uploadAbsolutePath+ Sha01dascqkService.ATTS_PATH);
+                if (_fileDir.exists() == false) {
+                    _fileDir.mkdirs();
+                }
+                //原zip存储路径
+                String zipFile = uploadAbsolutePath+Sha01dascqkService.ATTS_PATH + UUIDUtil.getUUID()+".zip";
+                FileOutputStream fos = new FileOutputStream(new File(zipFile));
+                fos.write(file.getBytes());
+                fos.flush();
+                fos.close();
+
+                String tmpFilePath =  uploadAbsolutePath+Sha01dascqkService.ATTS_PATH+UUIDUtil.getUUID()+File.separator;
+                //解压到临时目录
+                CompressUtil.unzip(zipFile,tmpFilePath);
+                //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
+                File tempFiles = new File(tmpFilePath);
+                if(tempFiles!=null){
+                    for(File f : tempFiles.listFiles()){
+                        if(f.isDirectory()) continue;//如果是目录则跳过
+                        String fname = f.getName();
+                        String xm = fname.substring(0,fname.lastIndexOf("."));
+                        CommonConditionQuery query = new CommonConditionQuery();
+                        query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%"+xm+"%"));
+                        query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
+                        query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+                        List<Sha01> sha01s = this.sha01Service.list(query,null);
+                        if(sha01s!=null && sha01s.size()>0){
+                            String ext = f.getName().substring(f.getName().lastIndexOf("."));
+                            String savePath = _fileDir+UUIDUtil.getUUID()+ext;
+                            File desFile = new File(savePath);
+                            FileUtils.copyFile(f,desFile);
+                            //处理
+                            String pdfPath = uploadAbsolutePath+ Sha01dascqkService.ATTS_PATH+ UUIDUtil.getUUID()+".pdf";
+                            String imgPath = uploadAbsolutePath+Sha01dascqkService.ATTS_PATH+UUIDUtil.getUUID()+".jpg";
+                            //先将其转PDF
+                            WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
+                            //再将其转成图片
+                            Pdf2ImgUtil.toImg(pdfPath,imgPath);
+                            Sha01 sha01 = sha01s.get(0);
+                            if(sha01.getDascqks()!=null &&sha01.getDascqks().size()>0){//修改
+                                Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
+                                sha01dascqk.setPath(savePath);
+                                sha01dascqk.setSha01(sha01);
+                                sha01dascqk.setFile2imgPath(imgPath);
+                                this.sha01dascqkService.update(sha01dascqk);
+                            }else{//创建
+                                Sha01dascqk sha01dascqk = new Sha01dascqk();
+                                sha01dascqk.setPath(savePath);
+                                sha01dascqk.setSha01(sha01);
+                                sha01dascqk.setFile2imgPath(imgPath);
+                                this.sha01dascqkService.save(sha01dascqk);
+                            }
+                        }
+                    }
+                }
+            }else{
+                map.put("code", -1);
+                map.put("message", "请上传ZIP!");
+                return map;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+
+            map.put("code", -1);
+            map.put("message", "读取文件错误!");
+            return map;
+        }
+        try{
+
+        }catch(GenericException e){
+            logger.error(e, e);
+            map.put("code", -1);
+            map.put("message", e.getMessage());
+            return map;
+        }catch(Exception e){
+            logger.error(e, e);
+            map.put("code", -1);
+            map.put("message", "系统错误，请联系管理员");
+            return map;
+        }
+        map.put("code", 1);
+        return map;
+    }
+
+
+
+
+
     @RequestMapping(value="/ajax/down")
     public void templateDown(String sha01Id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
         Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
