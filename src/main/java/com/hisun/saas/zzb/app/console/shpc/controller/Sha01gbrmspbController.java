@@ -10,6 +10,7 @@ import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01gbrmspb;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01gbrmspbService;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01kcclService;
 import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.text.WordUtils;
@@ -61,15 +62,15 @@ public class Sha01gbrmspbController extends BaseController {
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-               /// String fileDir = uploadAbsolutePath +File.separator+ "sha01"+ File.separator+"gbrmspb";
-                File _fileDir = new File(uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH );
+                String fileDir = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH;
+                File _fileDir = new File( fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
                 //原附件存储路径
-                String savePath = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID()+"_"+fileName;
+                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
                 //模板路径
-                String wordTemplatePath = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH + "gbrmspb.docx";
+                String wordTemplatePath = fileDir + "gbrmspb.docx";
                 try {
                     FileOutputStream fos = new FileOutputStream(new File(savePath));
                     fos.write(file.getBytes());
@@ -127,22 +128,23 @@ public class Sha01gbrmspbController extends BaseController {
 
         }
         //模板路径
-        String wordTemplatePath = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH + "gbrmspb.docx";
+        String gbrmsbpAttsPath = uploadAbsolutePath+ Sha01gbrmspbService.ATTS_PATH;
+        String wordTemplatePath = gbrmsbpAttsPath + "gbrmspb.docx";
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.toLowerCase().endsWith(".zip")){
-                File _fileDir = new File(uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH);
+                File _fileDir = new File(gbrmsbpAttsPath);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
                 //原zip存储路径
-                String zipFile = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID()+".zip";
+                String zipFile = gbrmsbpAttsPath + UUIDUtil.getUUID()+".zip";
                 FileOutputStream fos = new FileOutputStream(new File(zipFile));
                 fos.write(file.getBytes());
                 fos.flush();
                 fos.close();
 
-                String tmpFilePath =  uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+File.separator;
+                String tmpFilePath =  gbrmsbpAttsPath+UUIDUtil.getUUID()+File.separator;
                 //解压到临时目录
                 CompressUtil.unzip(zipFile,tmpFilePath);
                 //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
@@ -159,7 +161,7 @@ public class Sha01gbrmspbController extends BaseController {
                         List<Sha01> sha01s = this.sha01Service.list(query,null);
                         if(sha01s!=null && sha01s.size()>0){
                             String ext = f.getName().substring(f.getName().lastIndexOf("."));
-                            String savePath = _fileDir+UUIDUtil.getUUID()+ext;
+                            String savePath = gbrmsbpAttsPath+UUIDUtil.getUUID()+ext;
                             File desFile = new File(savePath);
                             FileUtils.copyFile(f,desFile);
                             Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
@@ -221,7 +223,7 @@ public class Sha01gbrmspbController extends BaseController {
             Sha01gbrmspb sha01gbrmspb = sha01.getGbrmspbs().get(0);
             resp.setContentType("multipart/form-data");
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
-            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(sha01gbrmspb.getFilepath().substring(sha01gbrmspb.getFilepath().indexOf("_")+1)));
+            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(sha01gbrmspb.getFilepath().substring(sha01gbrmspb.getFilepath().lastIndexOf(File.separator)+1)));
             OutputStream output=resp.getOutputStream();
             byte[] b= FileUtils.readFileToByteArray(new File(sha01gbrmspb.getFilepath()));
             output.write(b);

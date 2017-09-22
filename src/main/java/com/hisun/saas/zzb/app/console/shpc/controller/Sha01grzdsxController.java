@@ -64,6 +64,7 @@ public class Sha01grzdsxController extends BaseController {
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
+
                 String fileDir = uploadAbsolutePath + Sha01grzdsxService.ATTS_PATH;
                 File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
@@ -79,8 +80,8 @@ public class Sha01grzdsxController extends BaseController {
 
 
                     //处理
-                    String pdfPath = uploadAbsolutePath+ Sha01grzdsxService.ATTS_PATH+ UUIDUtil.getUUID()+".pdf";
-                    String imgPath = uploadAbsolutePath+Sha01grzdsxService.ATTS_PATH+UUIDUtil.getUUID()+".jpg";
+                    String pdfPath = fileDir+ UUIDUtil.getUUID()+".pdf";
+                    String imgPath = fileDir+UUIDUtil.getUUID()+".jpg";
                     //先将其转PDF
                     WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
                     //再将其转成图片
@@ -149,19 +150,20 @@ public class Sha01grzdsxController extends BaseController {
         }
         try{
             String fileName = file.getOriginalFilename();
+            String grzdsxAttsPath = uploadAbsolutePath+Sha01grzdsxService.ATTS_PATH;
             if(fileName.toLowerCase().endsWith(".zip")){
-                File _fileDir = new File(uploadAbsolutePath+Sha01grzdsxService.ATTS_PATH);
+                File _fileDir = new File(grzdsxAttsPath);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
                 //原zip存储路径
-                String zipFile = uploadAbsolutePath+Sha01grzdsxService.ATTS_PATH + UUIDUtil.getUUID()+".zip";
+                String zipFile = grzdsxAttsPath + UUIDUtil.getUUID()+".zip";
                 FileOutputStream fos = new FileOutputStream(new File(zipFile));
                 fos.write(file.getBytes());
                 fos.flush();
                 fos.close();
 
-                String tmpFilePath =  uploadAbsolutePath+Sha01grzdsxService.ATTS_PATH+UUIDUtil.getUUID()+File.separator;
+                String tmpFilePath =  grzdsxAttsPath+UUIDUtil.getUUID()+File.separator;
                 //解压到临时目录
                 CompressUtil.unzip(zipFile,tmpFilePath);
                 //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
@@ -182,8 +184,8 @@ public class Sha01grzdsxController extends BaseController {
                             File desFile = new File(savePath);
                             FileUtils.copyFile(f,desFile);
                             //处理
-                            String pdfPath = uploadAbsolutePath+ Sha01grzdsxService.ATTS_PATH+ UUIDUtil.getUUID()+".pdf";
-                            String imgPath = uploadAbsolutePath+Sha01grzdsxService.ATTS_PATH+UUIDUtil.getUUID()+".jpg";
+                            String pdfPath = grzdsxAttsPath+ UUIDUtil.getUUID()+".pdf";
+                            String imgPath = grzdsxAttsPath+UUIDUtil.getUUID()+".jpg";
                             //先将其转PDF
                             WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
                             //再将其转成图片
@@ -243,7 +245,7 @@ public class Sha01grzdsxController extends BaseController {
             Sha01grzdsx sha01grzdsx = sha01.getGrzdsxes().get(0);
             resp.setContentType("multipart/form-data");
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
-            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(sha01grzdsx.getPath().substring(sha01grzdsx.getPath().indexOf("_")+1)));
+            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(sha01grzdsx.getPath().substring(sha01grzdsx.getPath().lastIndexOf(File.separator)+1)));
             OutputStream output=resp.getOutputStream();
             byte[] b=FileUtils.readFileToByteArray(new File(sha01grzdsx.getPath()));
             output.write(b);

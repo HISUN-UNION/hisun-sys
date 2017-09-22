@@ -26,37 +26,29 @@
 					<div class="portlet-title">
 						<div class="caption">上会名单</div>
 						<div class="clearfix fr">
-							<span class="controllerClass btn file_but" >
-									<span><i class="icon-circle-arrow-up"></i>上传名单</span>
+							<span class="controllerClass btn green file_but" >
+									<i class="icon-circle-arrow-up"></i>上传名单
 									<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
 							</span>
-							<%--<span class="controllerClass btn file_but" >--%>
-									<%--<span><i class="icon-circle-arrow-up"></i>批量上传</span>--%>
-									<%--<input class="file_progress" type="file" name="attachMoreFile" id="btn-MoreTemplate">--%>
-							<%--</span>--%>
 								<div class="btn-group">
-									<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+									<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
 										批量上传 <i class="icon-angle-down"></i>
 									</a>
 									<ul class="dropdown-menu">
 										<li >
-											<span onclick="uploadFile('gbrmspb')">干部详细信息</span>
+											<a onclick="uploadFile('gbrmspb')">干部详细信息</a>
 											<input type="file" style="display: none" name="gbrmspbFile" id="btn-gbrmspb"/>
 										</li>
 										<li>
-											<span  >
-											<span onclick="uploadFile('kccl')">考察材料</span>
+											<a onclick="uploadFile('kccl')">考察材料</a>
 											<input type="file"  style="display: none" name="kcclFile" id="btn-kccl"/>
-											</span>
 										</li>
 										<li>
-											<span >
-											<span onclick="uploadFile('dascqk')">档案审查情况</span>
+											<a onclick="uploadFile('dascqk')">档案审查情况</a>
 											 <input type="file" style="display: none" name="dascqkFile" id="btn-dascqk"/>
-											</span>
 										</li>
 										<li>
-											<span onclick="uploadFile('grzdsx')">个人重大事项</span>
+											<a onclick="uploadFile('grzdsx')">个人重大事项</a>
 											<input type="file"  style="display: none" name="grzdsxFile" id="btn-grzdsx"/>
 										</li>
 

@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@include file="common/top.jsp"%>
 <link href="${path }/css/login_style.css" rel="stylesheet" type="text/css"/>
-<title>三零优异云服务</title>
+<title>领导辅助决策APP数据管理平台</title>
 </head>
 
 <!-- BEGIN BODY -->
@@ -128,7 +128,7 @@
 									   </button>
 								   </div>
 
-								   <c:if test="${isSaas==true}"><div class="BackPassword"><a href="${path }/register">新租户注册</a> |</c:if> <a href="${path }/sys/tenant/user/forgot">忘记密码 ? 点击找回密码&gt;&gt;</a></div>
+								   <%--<c:if test="${isSaas==true}"><div class="BackPassword"><a href="${path }/register">新租户注册</a> |</c:if> <a href="${path }/sys/tenant/user/forgot">忘记密码 ? 点击找回密码&gt;&gt;</a></div>--%>
 
 							   </c:otherwise>
 						   </c:choose>
@@ -137,7 +137,7 @@
                   
                 </form>
             </div>
-            <div class="login_footer">2014-2015 版权所有©上海三零卫士信息安全有限公司 www.30ue.com </div>
+            <div class="login_footer">2014-2017 版权所有©广州三零卫士信息安全有限公司 www.30wish.net </div>
     </div>
 	
 

@@ -44,9 +44,6 @@ public class GendataServiceImpl implements GendataService {
         //初始化非机构化数据存储目录
         this.initDataDir(dirs);
 
-        map = new HashMap<String,String>();
-        map.put(GendataVo.SHPC_DATA,"402881ea5e9e71fe015ea1e0bffb004d");
-        map.put(GendataVo.SHPC_DATA,"402881ea5e9e71fe015ea1eae17a0094");
         if (map != null && map.size() > 0) {
             //初始化sqlite数据库
             this.initSqlite(dbdir + GendataService.SQLITE_DB_NAME);

@@ -103,7 +103,7 @@ public class GendataController extends BaseController{
         }catch(Exception e){
             logger.error(e, e);
             rsmap.put("success", false);
-            rsmap.put("message", "系统错误，请联系管理员aaa");
+            rsmap.put("message", "系统错误，请联系管理员!");
             return rsmap;
         }
         rsmap.put("success", true);
@@ -119,7 +119,6 @@ public class GendataController extends BaseController{
             appDataDir.mkdirs();
         }
             resp.setContentType("multipart/form-data");
-        //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
         resp.setHeader("Content-Disposition", "attachment;fileName="+encode(GendataService.DATA_PACKET_NAME+".zip"));
         OutputStream output=resp.getOutputStream();
         byte[] b= FileUtils.readFileToByteArray(new File(zipPath));
