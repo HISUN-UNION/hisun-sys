@@ -1,21 +1,35 @@
 package com.hisun.saas.zzb.app.console.gendata.controller;
 
 import com.hisun.base.controller.BaseController;
+import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonRestrictions;
+import com.hisun.base.exception.ErrorMsgShowException;
 import com.hisun.base.exception.GenericException;
+import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01gbrmspb;
+import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
+import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
+import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
+import com.hisun.util.DateUtil;
+import com.hisun.util.WebUtil;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
+import java.util.*;
 
 /**
  * Created by zhouying on 2017/9/16.
@@ -30,34 +44,96 @@ public class GendataController extends BaseController{
     @Resource(name="resourcesProperties")
     private Properties resourcesProperties;
 
+    @Autowired
+    private ShpcService shpcService;
     @RequestMapping(value = "/")
     public ModelAndView list(){
-        return new ModelAndView("saas/zzb/app/console/gendata/list");
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            CommonConditionQuery query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+
+            Long total = this.shpcService.count(query);
+            List<Shpc> shpcs = this.shpcService.list(query, null);
+            List<ShpcVo> shpcVos = new ArrayList<ShpcVo>();
+            if (shpcs != null) {// entity ==> vo
+                for (Shpc shpc : shpcs) {
+                    ShpcVo vo = new ShpcVo();
+                    BeanUtils.copyProperties(vo, shpc);
+                    vo.setPcsjValue(DateUtil.formatDateByFormat(shpc.getPcsj(), "yyyyMMdd"));
+                    vo.setA01Count(shpc.getSha01s().size());
+                    shpcVos.add(vo);
+                }
+            }
+            map.put("shpcVos", shpcVos);
+        }catch (Exception e) {
+            throw new GenericException(e);
+        }
+
+        return new ModelAndView("saas/zzb/app/console/gendata/list",map);
     }
 
 
     @RequestMapping(value = "/generator")
-    public ModelAndView generator(HttpServletRequest request) throws Exception{
+    public @ResponseBody Map<String,Object> generator(HttpServletResponse response, HttpServletRequest request) throws Exception{
+        Map<String,Object> rsmap = new HashMap<String,Object>();
+        try{
+            String checkBoxTypeValues = request.getParameter("checkBoxTypeValues")==null?"":request.getParameter("checkBoxTypeValues").toString();//选择需要导出的类型
 
-        String pcs = request.getParameter("pcs");
-        String tjs = request.getParameter("tjs");
+            String pcs = request.getParameter("checkHyyjValues")==null?"":request.getParameter("checkHyyjValues").toString();//会议研究ID
+            String tjs = request.getParameter("tjs");
 
-        String appDataPath=resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH;
-        File appDataDir = new File(appDataPath);
+            String appDataPath=resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH;
+            File appDataDir = new File(appDataPath);
+            if(appDataDir.exists()==false){
+                appDataDir.mkdirs();
+            }
+            Map<String,String> map = new HashMap<String,String>();
+            if(pcs!=null &&pcs.length()>0){
+                map.put(GendataVo.SHPC_DATA,pcs);
+            }
+            if(tjs!=null &&tjs.length()>0){
+                map.put(GendataVo.GBTJ_DATA,tjs);
+            }
+
+            String resultzip = this.gendataService.genAppData(map,appDataPath);
+            String[] tmps = resultzip.split("\\\\");
+            String fileName = tmps[tmps.length-1];
+            rsmap.put("zipName", fileName);
+        }catch(Exception e){
+            logger.error(e, e);
+            rsmap.put("success", false);
+            rsmap.put("message", "系统错误，请联系管理员aaa");
+            return rsmap;
+        }
+        rsmap.put("success", true);
+
+        return rsmap;
+    }
+
+    @RequestMapping(value="/zip/down")
+    public void zipDown(String zipName,HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        String zipPath = resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH+zipName;
+        File appDataDir = new File(zipPath);
         if(appDataDir.exists()==false){
             appDataDir.mkdirs();
         }
-        Map<String,String> map = new HashMap<String,String>();
-        if(pcs!=null &&pcs.length()>0){
-            map.put(GendataVo.SHPC_DATA,pcs);
-        }
-        if(tjs!=null &&tjs.length()>0){
-            map.put(GendataVo.GBTJ_DATA,tjs);
-        }
+            resp.setContentType("multipart/form-data");
+        //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
+        resp.setHeader("Content-Disposition", "attachment;fileName="+encode(GendataService.DATA_PACKET_NAME+".zip"));
+        OutputStream output=resp.getOutputStream();
+        byte[] b= FileUtils.readFileToByteArray(new File(zipPath));
+        output.write(b);
+        output.flush();
+        output.close();
 
-        String resultzip = this.gendataService.genAppData(map,appDataPath);
-        return new ModelAndView("saas/zzb/app/console/gendata/list");
     }
-
-
+    private String encode(String filename) throws UnsupportedEncodingException {
+        if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
+            filename = URLEncoder.encode(filename, "UTF-8");
+        } else {
+            filename = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
+        }
+        return filename;
+    }
 }

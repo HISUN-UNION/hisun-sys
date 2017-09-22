@@ -1,73 +1,167 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
 <%@include file="/WEB-INF/jsp/inc/taglib.jsp" %>
+<c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>生成APP数据包</title>
-	<link href="${path }/css/news.css" rel="stylesheet" type="text/css">
 	<style type="text/css">
-		form .form-hint {
-			display: block;
-			color: #888888;
-			line-height: 24px;
-			clear: both;
-			margin-left: 160px;
-			padding-left: 20px;
-		}
+
+
+		.header .brand { padding-top:8px;}
+
+		.caption_title{font-size:14px; float:left; border-left: solid 3px #219ae0; padding-left:10px; margin-top:8px;}
+		input[type="radio"], input[type="checkbox"]{ margin:0;}
+		.ulChoicelist{ overflow:hidden; margin-left:40px;}
+		.ulChoicelist li{ padding:4px 0; height:35px; overflow:hidden;}
+		.ulChoicelist li.heightauto{ height:auto;}
+		.ulChoicelist li h4{ font-weight:bold; font-size:15px; border-bottom: dashed 1px #DDDDDD; padding:0px 0 10px 0; margin:0; cursor:pointer;}
+		.ulChoicelist li h4 a{ display:inline-block; color:#333333;}
+		.ulChoicelist li h4 a:hover{ color:#0083f1}
+		.ulChoicelist li h4 label{ font-weight:bold; font-size:15px;}
+		.ulChoicelist li h4:hover{color:#1686E1;}
+		.ulChoicelist li .checkbox{  margin-right:5px;}
+		.Choicetwo{ padding-left:20px; padding-top:10px;}
+		.Choicetwo p{ padding:3px 0;}
 	</style>
 </head>
-<body>
-<c:set var="path" value="${pageContext.request.contextPath}"></c:set>
-<div class="container-fluid">
-	<%-- BEGIN PAGE CONTENT--%>
-	<div class="row-fluid">
-		<div class="span12">
-			<%-- BEGIN SAMPLE FORM PORTLET 表单主体--%>
-			<div class="portlet box grey">
-				<div class="portlet-title">
-					<div class="caption">
-						<span class="hidden-480">生成APP数据包</span>
-					</div>
-					<div class="tools">
-						<a type="button" class="btn green" href="${path }/zzb/app/console/gendata/generator"  style="color: #ffffff;height: auto"><i class="icon-download"></i>生成</a>
-						<a type="button" class="btn" style="height: 20px;" href="#" ><i class="icon-refresh"></i>刷新</a>
-					</div>
-				</div>
-
-				<div class="portlet-body form">
-					<form action="" class="form-horizontal" id="form1" method="post">
-
-						<div class="form-actions">
-							<a type="button" class="btn green" href="${path }/zzb/app/console/gendata/generator"  style="color: #ffffff;height: auto"><i class="icon-download"></i>生成</a>
-							<a type="button" class="btn" style="height: 20px;" href="#" ><i class="icon-refresh"></i>刷新</a>
-						</div>
-					</form>
-				</div>
-
-			</div>
-
-			<%-- END SAMPLE FORM PORTLET--%>
+<body class="page-header-fixed white">
+	<div class="row-fluid mb10">
+		<div class="caption_title">生成APP数据包</div>
+		<div class="fr">
+			<a type="button" class="btn green" href="javascript:formSubmit()"  style="color: #ffffff;height: auto"><i class="icon-download"></i>生成</a>
+			<a type="button" class="btn" style="height: 20px;" href="${path }/zzb/app/console/gendata/" ><i class="icon-refresh"></i>刷新</a>
 		</div>
 	</div>
+<form action="${path }/zzb/app/console/gendata/generator" class="form-horizontal" id="form1" method="post">
+	<input type="hidden" name="checkBoxTypeValues" value="" id="checkBoxTypeValues">
+	<input type="hidden" name="checkHyyjValues" value="" id="checkHyyjValues">
+	<div class="row-fluid mb10">
+		<ul class="ulChoicelist">
+			<li class="heightauto">
+				<h4 class=""><input class="checkbox"  name="checkBoxValue" id="CheckAllHyyj" type="checkbox" value="hyyj" /><a href="###">会议研究</a></h4>
+				<div class="Choicetwo">
+					<c:forEach items="${shpcVos}" var="vo">
+							<p><label><input clt="checkGroup"  name="checkBoxHyyjValue"  type="checkbox" value="${vo.id}" />${vo.pcmc}</label></p>
+					</c:forEach>
+				</div>
+			</li>
+			<li>
+				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="gbcx" /> 干部查询</h4>
+			</li>
+			<li>
+				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="zxcx" /> 职数查询</h4>
+			</li>
+			<li>
+				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="gbmc" /> 干部名册</h4>
+			</li>
+			<li>
+				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="gbdwtj" /> 干部队伍统计</h4>
+			</li>
+		</ul>
+	</div>
+</form>
 
-	<%-- END PAGE CONTENT--%>
-</div>
 
 
-<script type="text/javascript" src="${path }/js/common/est-validate-init.js"></script>
-<script type="text/javascript" src="${path }/js/common/validate-message.js"></script>
-<script type="text/javascript" src="${path }/js/common/custom-validate.js"></script>
-<script type="text/javascript" src="${path }/js/monitor/monitorInstSnmp.js"></script>
-<script type="text/javascript" src="${path }/js/monitor/monitorInstNotice.js"></script>
-<script type="text/javascript" src="${path }/js/monitorCommon.js"></script>
-<script type="text/javascript" src="${path }/js/saas/monitorMySql.js"></script>
+	<!--仪表盘结束-->
+
+
+
+
+
 <script src="${path }/js/common/loading.js" type="text/javascript" ></script>
+<script type="text/javascript" src="${path }/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="${path }/js/zTree/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="${path}/js/jquery.json-2.3.min.js"></script>
+<script type="text/javascript" src="${path}/js/monitor/common.js"></script>
+<script type="text/javascript" src="${path }/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="${path }/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="${path }/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+	<script type="text/javascript" src="${path }/js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="${path }/js/common/est-validate-init.js"></script>
+	<script type="text/javascript" src="${path }/js/common/validate-message.js"></script>
+	<script type="text/javascript" src="${path }/js/common/30CloudAjax.js"></script>
+	<script type="text/javascript" src="${path }/js/common/DataValidate.js"></script>
 <script type="text/javascript">
 	(function(){
 		App.init();
+
+		$("#CheckAllHyyj").click(function() {
+			if ($(this).attr("checked")) {
+				$("input[name=checkBoxHyyjValue]").each(function() {
+					$(this).attr("checked", true);
+				});
+			} else {
+				$("input[name=checkBoxHyyjValue]").each(function() {
+					$(this).attr("checked", false);
+				});
+			}
+		});
 	})();
+	$(function(){
+		$('.ulChoicelist li h4 a').click(function(e) {
+			$(this).parents('li').toggleClass('heightauto');
+		});
+	});
+
+
+	function formSubmit(){
+		var checkHyyjValues="";//会议研究列表记录值
+		var checkBoxTypeValues = "";//选择类型的值
+		var flag= true;
+		$("input[name=checkBoxHyyjValue]").each(function() {
+			if ($(this).attr("checked")) {
+				if(checkHyyjValues == ""){
+					checkHyyjValues = $(this).val();
+				}else{
+					checkHyyjValues = checkHyyjValues+","+$(this).val();
+				}
+			}
+		});
+
+		$("input[name=checkBoxValue]").each(function() {
+			if ($(this).attr("checked")) {
+				if(checkBoxTypeValues == ""){
+					checkBoxTypeValues = $(this).val();
+				}else{
+					checkBoxTypeValues = checkBoxTypeValues+","+$(this).val();
+				}
+			}
+		});
+		document.getElementById("checkHyyjValues").value = checkHyyjValues;
+		document.getElementById("checkBoxTypeValues").value = checkBoxTypeValues;
+		if(''==checkHyyjValues&&''==checkBoxTypeValues)
+		{
+			flag = false;
+			showTip('提示','请先选择需要生成数据的项', 1500);
+		}
+		var myVld = new EstValidate("form1");
+		if(myVld && flag){
+			$.cloudAjax({
+				path : '${path}',
+				url : "${path }/zzb/app/console/gendata/generator",
+				type : "post",
+				data : $("#form1").serialize(),
+				dataType : "json",
+				success : function(data){
+					if(data.success){
+						window.open("${path }/zzb/app/console/gendata/zip/down?zipName="+data.zipName);
+						//showTip("提示","操作成功",2000);
+						setTimeout(function(){window.location.href = "${path}/zzb/app/console/gendata/"},1000);
+					}else{
+						showTip("提示", json.message, 2000);
+					}
+				},
+				error : function(){
+					showTip("提示","出错了请联系管理员",2000);
+				}
+			});
+		}
+	}
 
 </script>
 </body>

@@ -10,10 +10,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>“${shpa01Vo.xm}”个人信息</title>
 
-    <link rel="stylesheet" type="text/css" href="${path }/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="${path }/css/style-metro.css">
     <link rel="stylesheet" type="text/css" href="${path }/css/bootstrap-fileupload.css">
-
+    <link rel="stylesheet"type="text/css" href="${path }/css/DT_bootstrap.css" />
     <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -26,7 +25,8 @@
             <img class="imgtp" width="180" height="200" src="${path}/zzb/app/console/Sha01/${shpa01Vo.id}/photo?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" />
         </div>
         <div class="clearfix fr">
-                <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}">返回</a>
+            <a class="btn" href="javascript:del('${shpa01Vo.xm }')"> 删除</a>
+            <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}">返回</a>
         </div>
         <div class="mainoneright">
             <div class="Fullname">${shpa01Vo.xm}</div>
@@ -345,6 +345,7 @@
                     myLoading.hide();
                 }
             });
+
         }
     })();
     function gbrmspbDown() {
@@ -360,7 +361,16 @@
         window.open("${path }/zzb/app/Sha01/grzdsx/ajax/down?sha01Id=${shpa01Vo.id}");
     }
 
-
+     function del(itemName){
+        actionByConfirm1(itemName, "${path}/zzb/app/console/Sha01/delete/${shpa01Vo.id}",{} ,function(data,status){
+            if (data.success == true) {
+                showTip("提示","删除成功", 1000);
+                setTimeout(function(){window.location.href = "${path}/zzb/app/console/Sha01/list?shpcId=${shpcId}"},1000);
+            }else{
+                showTip("提示", data.message, 2000);
+            }
+        });
+    }
 </script>
 </body>
 </html>
