@@ -65,13 +65,6 @@
 </form>
 
 
-
-	<!--仪表盘结束-->
-
-
-
-
-
 <script src="${path }/js/common/loading.js" type="text/javascript" ></script>
 <script type="text/javascript" src="${path }/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="${path }/js/zTree/jquery.ztree.all-3.5.js"></script>
@@ -141,6 +134,7 @@
 		}
 		var myVld = new EstValidate("form1");
 		if(myVld && flag){
+			var winopenRef = window.open("","_blank");
 			$.cloudAjax({
 				path : '${path}',
 				url : "${path }/zzb/app/console/gendata/generator",
@@ -149,7 +143,7 @@
 				dataType : "json",
 				success : function(data){
 					if(data.success){
-						window.open("${path }/zzb/app/console/gendata/zip/down?zipName="+data.zipName);
+						winopenRef.location="${path }/zzb/app/console/gendata/zip/down?id="+data.gendataId;
 						//showTip("提示","操作成功",2000);
 						setTimeout(function(){window.location.href = "${path}/zzb/app/console/gendata/"},1000);
 					}else{

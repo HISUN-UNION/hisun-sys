@@ -1,14 +1,21 @@
 package com.hisun.saas.zzb.app.console.gendata.service.impl;
 
+import com.hisun.base.dao.BaseDao;
+import com.hisun.base.service.BaseService;
+import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.zzb.app.console.gbtj.dao.GbtjDao;
+import com.hisun.saas.zzb.app.console.gendata.dao.GendataDao;
+import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
+import com.hisun.saas.zzb.app.console.shpc.dao.Sha01dascqkDao;
 import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.util.CompressUtil;
 import com.hisun.util.SqliteDBUtil;
 import com.hisun.util.UUIDUtil;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,16 +26,25 @@ import java.util.*;
  * Created by zhouying on 2017/9/16.
  */
 @Service
-public class GendataServiceImpl implements GendataService {
+public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implements GendataService {
 
     @Resource
     private ShpcDao shpcDao;
     @Resource
     private GbtjDao gbtjDao;
 
+    private GendataDao gendataDao;
+
+    @Autowired
+    public void setBaseDao(BaseDao<Gendata, String> gendataDao) {
+        this.baseDao = gendataDao;
+        this.gendataDao = (GendataDao) gendataDao;
+    }
+
+
 
     @Override
-    public String genAppData(Map<String, String> map, String dataPath) throws Exception {
+    public String saveAppData(Gendata gendata,Map<String, String> map, String dataPath) throws Exception {
         //初始化数据目录
         String uuid = UUIDUtil.getUUID();
         String dataDir = dataPath + uuid + File.separator;
@@ -63,7 +79,9 @@ public class GendataServiceImpl implements GendataService {
         }
         //压缩数据文件
         CompressUtil.zip(appDataZipPath,dataDir,GendataService.DATA_PACKET_NAME);
-        return appDataZipPath;
+        gendata.setPath(appDataZipPath);
+        this.save(gendata);
+        return gendata.getId();
     }
 
 
@@ -187,12 +205,4 @@ public class GendataServiceImpl implements GendataService {
         sqliteDBUtil.createTables(sqlite,sb.toString());
     }
 
-    public static void main(String[] args) throws Exception{
-
-        GendataServiceImpl impl = new GendataServiceImpl();
-        Map<String,String> map = new HashMap<String,String>();
-        map.put("a","a");
-        impl.genAppData(map,"/Users/zhouying/Documents/workspace/store/appdata/");
-
-    }
 }

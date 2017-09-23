@@ -25,8 +25,8 @@
             <img class="imgtp" width="180" height="200" src="${path}/zzb/app/console/Sha01/${shpa01Vo.id}/photo?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" />
         </div>
         <div class="clearfix fr">
-            <a class="btn" href="javascript:del('${shpa01Vo.xm }')"> 删除</a>
-            <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}">返回</a>
+            <a class="btn red" href="javascript:del('${shpa01Vo.xm }')"><i class=" icon-remove-sign"></i>删除</a>
+            <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright">
             <div class="Fullname">${shpa01Vo.xm}</div>

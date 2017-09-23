@@ -1,4 +1,4 @@
-package com.hisun.saas.zzb.app.console.shpc.dao.imp;
+package com.hisun.saas.zzb.app.console.shpc.dao.impl;
 
 import com.hisun.saas.sys.tenant.dao.imp.TenantBaseDaoImpl;
 import com.hisun.saas.zzb.app.console.shpc.dao.Sha01dascqkDao;

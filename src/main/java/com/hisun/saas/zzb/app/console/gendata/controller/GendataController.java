@@ -6,6 +6,9 @@ import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.ErrorMsgShowException;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
+import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
@@ -78,6 +81,7 @@ public class GendataController extends BaseController{
     public @ResponseBody Map<String,Object> generator(HttpServletResponse response, HttpServletRequest request) throws Exception{
         Map<String,Object> rsmap = new HashMap<String,Object>();
         try{
+            UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
             String checkBoxTypeValues = request.getParameter("checkBoxTypeValues")==null?"":request.getParameter("checkBoxTypeValues").toString();//选择需要导出的类型
 
             String pcs = request.getParameter("checkHyyjValues")==null?"":request.getParameter("checkHyyjValues").toString();//会议研究ID
@@ -95,11 +99,10 @@ public class GendataController extends BaseController{
             if(tjs!=null &&tjs.length()>0){
                 map.put(GendataVo.GBTJ_DATA,tjs);
             }
-
-            String resultzip = this.gendataService.genAppData(map,appDataPath);
-            String[] tmps = resultzip.split("\\\\");
-            String fileName = tmps[tmps.length-1];
-            rsmap.put("zipName", fileName);
+            Gendata gendata = new Gendata();
+            gendata.setTenant(userLoginDetails.getTenant());
+            String id = this.gendataService.saveAppData(gendata,map,appDataPath);
+            rsmap.put("gendataId", id);
         }catch(Exception e){
             logger.error(e, e);
             rsmap.put("success", false);
@@ -112,13 +115,9 @@ public class GendataController extends BaseController{
     }
 
     @RequestMapping(value="/zip/down")
-    public void zipDown(String zipName,HttpServletRequest req, HttpServletResponse resp) throws Exception{
-        String zipPath = resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH+zipName;
-        File appDataDir = new File(zipPath);
-        if(appDataDir.exists()==false){
-            appDataDir.mkdirs();
-        }
-            resp.setContentType("multipart/form-data");
+    public void zipDown(String id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        String zipPath = this.gendataService.getByPK(id).getPath();
+        resp.setContentType("multipart/form-data");
         resp.setHeader("Content-Disposition", "attachment;fileName="+encode(GendataService.DATA_PACKET_NAME+".zip"));
         OutputStream output=resp.getOutputStream();
         byte[] b= FileUtils.readFileToByteArray(new File(zipPath));
