@@ -28,7 +28,7 @@ public class Shtpsj extends TenantEntity implements Serializable{
     private Shtp shtp;
 
     @Column(name = "TP")
-    private int tp;
+    private int tp;//1-同意，2-不同意，3-弃权
 
 
     public String getId() {

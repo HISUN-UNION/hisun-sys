@@ -12,8 +12,8 @@ import java.io.Serializable;
 public class ShtpsjVo{
 
     private String id;
-    private Sha01Vo sha01;
-    private ShtpVo shtp;
+    private Sha01Vo sha01Vo;
+    private ShtpVo shtpVo;
     private int tp;
 
 
@@ -25,20 +25,20 @@ public class ShtpsjVo{
         this.id = id;
     }
 
-    public Sha01Vo getSha01() {
-        return sha01;
+    public Sha01Vo getSha01Vo() {
+        return sha01Vo;
     }
 
-    public void setSha01(Sha01Vo sha01) {
-        this.sha01 = sha01;
+    public void setSha01Vo(Sha01Vo sha01Vo) {
+        this.sha01Vo = sha01Vo;
     }
 
-    public ShtpVo getShtp() {
-        return shtp;
+    public ShtpVo getShtpVo() {
+        return shtpVo;
     }
 
-    public void setShtp(ShtpVo shtp) {
-        this.shtp = shtp;
+    public void setShtpVo(ShtpVo shtpVo) {
+        this.shtpVo = shtpVo;
     }
 
     public int getTp() {

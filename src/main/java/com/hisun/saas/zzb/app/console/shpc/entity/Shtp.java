@@ -1,11 +1,13 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhouying on 2017/9/15.
@@ -22,15 +24,18 @@ public class Shtp extends TenantEntity implements Serializable{
     @JoinColumn(name="APP_SH_PC_ID")
     private Shpc shpc;
     @Column(name = "TPQ_BH",length = 128)
-    private String tpq_bh;
+    private String tpq_bh;//编号
     @Column(name = "TPR_ID",length = 32)
-    private String tpr_id;
+    private String tpr_id;//投票人id
     @Column(name = "TPR_XM",length = 64)
-    private String tpr_xm;
+    private String tpr_xm;//投票人姓名
     @Column(name = "TP_SJ")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date tp_sj;
+    private Date tp_sj;//投票时间
 
+    @OneToMany(mappedBy="shtp",fetch= FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<Shtpsj> shtpsjs;
 
     public String getId() {
         return id;
@@ -78,5 +83,13 @@ public class Shtp extends TenantEntity implements Serializable{
 
     public void setShpc(Shpc shpc) {
         this.shpc = shpc;
+    }
+
+    public List<Shtpsj> getShtpsjs() {
+        return shtpsjs;
+    }
+
+    public void setShtpsjs(List<Shtpsj> shtpsjs) {
+        this.shtpsjs = shtpsjs;
     }
 }

@@ -147,7 +147,7 @@
 						//showTip("提示","操作成功",2000);
 						setTimeout(function(){window.location.href = "${path}/zzb/app/console/gendata/"},1000);
 					}else{
-						showTip("提示", json.message, 2000);
+						showTip("提示", "数据包生成失败", 2000);
 					}
 				},
 				error : function(){

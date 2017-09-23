@@ -12,11 +12,12 @@ import java.util.Date;
  */
 public class ShtpVo{
     private String id;
-    private ShpcVo shpc;
+    private ShpcVo shpcVo;
     private String tpq_bh;
     private String tpr_id;
     private String tpr_xm;
     private String tp_sj;
+    private int tpqkCount;
 
 
     public String getId() {
@@ -59,11 +60,19 @@ public class ShtpVo{
         this.tp_sj = tp_sj;
     }
 
-    public ShpcVo getShpc() {
-        return shpc;
+    public ShpcVo getShpcVo() {
+        return shpcVo;
     }
 
-    public void setShpc(ShpcVo shpc) {
-        this.shpc = shpc;
+    public void setShpcVo(ShpcVo shpcVo) {
+        this.shpcVo = shpcVo;
+    }
+
+    public int getTpqkCount() {
+        return tpqkCount;
+    }
+
+    public void setTpqkCount(int tpqkCount) {
+        this.tpqkCount = tpqkCount;
     }
 }

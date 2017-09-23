@@ -49,6 +49,11 @@ public class Sha01Vo {
 
     private List<ShtpsjVo> shtpsjs;
 
+    private int tyCount;//同意票数
+    private int btyCount;//不同意票数
+    private int qqCount;//弃权票数
+    private String dplCount;//得票率
+
     public String getId() {
         return id;
     }
@@ -298,5 +303,37 @@ public class Sha01Vo {
 
     public void setCjgzsjStr(String cjgzsjStr) {
         this.cjgzsjStr = cjgzsjStr;
+    }
+
+    public int getTyCount() {
+        return tyCount;
+    }
+
+    public void setTyCount(int tyCount) {
+        this.tyCount = tyCount;
+    }
+
+    public int getBtyCount() {
+        return btyCount;
+    }
+
+    public void setBtyCount(int btyCount) {
+        this.btyCount = btyCount;
+    }
+
+    public int getQqCount() {
+        return qqCount;
+    }
+
+    public void setQqCount(int qqCount) {
+        this.qqCount = qqCount;
+    }
+
+    public String getDplCount() {
+        return dplCount;
+    }
+
+    public void setDplCount(String dplCount) {
+        this.dplCount = dplCount;
     }
 }

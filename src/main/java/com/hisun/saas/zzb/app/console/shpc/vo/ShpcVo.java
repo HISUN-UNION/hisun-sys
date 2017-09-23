@@ -24,6 +24,7 @@ public class ShpcVo extends TenantEntity implements Serializable{
     private String pcsjValue;
     private String filePath;
     private int a01Count;
+    private int tpCount;//投票情况
     private List<Sha01Vo> sha01s;
 
     @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
@@ -105,5 +106,13 @@ public class ShpcVo extends TenantEntity implements Serializable{
 
     public void setShlxValue(String shlxValue) {
         this.shlxValue = shlxValue;
+    }
+
+    public int getTpCount() {
+        return tpCount;
+    }
+
+    public void setTpCount(int tpCount) {
+        this.tpCount = tpCount;
     }
 }
