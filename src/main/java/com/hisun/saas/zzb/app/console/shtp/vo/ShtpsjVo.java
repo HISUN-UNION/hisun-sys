@@ -1,10 +1,6 @@
-package com.hisun.saas.zzb.app.console.shpc.vo;
+package com.hisun.saas.zzb.app.console.shtp.vo;
 
-import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
-import java.io.Serializable;
+import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
 
 /**
  * Created by zhouying on 2017/9/15.

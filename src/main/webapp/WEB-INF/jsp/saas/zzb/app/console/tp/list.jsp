@@ -23,7 +23,6 @@
 					<div class="portlet-title">
 						<div class="caption">投票统计</div>
 						<div class="clearfix fr">
-
 						</div>
 					</div>
 			
@@ -44,9 +43,9 @@
 										<td><c:out value="${vo.pcmc}"></c:out></td>
 										<td><c:out value="${vo.shlxValue}"></c:out></td>
 										<td><c:out value="${vo.pcsjValue}"></c:out></td>
-										<td><a href="${path}/zzb/app/sh/tp/tplist?shpcId=${vo.id }" class="">${vo.tpCount }人已投</a></td>
+										<td><a href="${path}/zzb/app/console/tp/list?shpcId=${vo.id }" class="">${vo.tpCount }人已投</a></td>
 										<td class="Left_alignment">
-											<a href="${path}/zzb/app/console/Sha01/tpjglist?shpcId=${vo.id }" class="">查看</a>
+											<a href="${path}/zzb/app/console/tp/result?shpcId=${vo.id }" class="">查看</a>
 										</td>
 									</tr>
 								</c:forEach>
@@ -72,7 +71,7 @@
 		})();
 	
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/sh/tp/list?pageNum="+pageNum+"&pageSize="+pageSize;
+			window.location.href ="${path}/zzb/app/console/tp/?pageNum="+pageNum+"&pageSize="+pageSize;
 		}
 		
 		function searchSubmit(){

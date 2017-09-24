@@ -29,6 +29,9 @@ public class Gbtj extends TenantEntity implements Serializable{
     @Column(name = "TJ_JSON_DATA",columnDefinition = "CLOB",nullable = true)
     private String tjjsondata;
 
+    @Column(name = "TBLX")
+    private String tblx;
+
     @Column(name = "TJ_PX")
     private int px;
 
@@ -64,7 +67,13 @@ public class Gbtj extends TenantEntity implements Serializable{
         this.px = px;
     }
 
+    public String getTblx() {
+        return tblx;
+    }
 
+    public void setTblx(String tblx) {
+        this.tblx = tblx;
+    }
 
     private String toInsertSql(){
         StringBuffer sb = new StringBuffer("");
@@ -74,13 +83,15 @@ public class Gbtj extends TenantEntity implements Serializable{
         sb.append("ID");
         sb.append(",TJ_MC");
         sb.append(",TJ_JSON_DATA");
+        sb.append(",TBLX");
         sb.append(",TJ_PX");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
         sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append("'"+ StringUtils.transNull(tjmc)+"'");
-        sb.append("'"+ StringUtils.transNull(tjjsondata)+"'");
+        sb.append(",'"+ StringUtils.transNull(tjmc)+"'");
+        sb.append(",'"+ StringUtils.transNull(tjjsondata)+"'");
+        sb.append(",'"+ StringUtils.transNull(tblx)+"'");
         sb.append(","+ px+"");
         sb.append(")");
         return sb.toString();

@@ -12,8 +12,9 @@ import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
-import com.hisun.saas.zzb.app.console.shpc.service.ShtpsjService;
+import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
+import com.hisun.saas.zzb.app.console.shtp.entity.Shtpsj;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
 import com.hisun.util.WordUtil;
@@ -316,74 +317,4 @@ public class Sha01Controller extends BaseController {
 
     }
 
-    @RequestMapping("/tpjglist")
-    public ModelAndView tpjglist(HttpServletRequest req,@RequestParam(value="shpcId")String shpcId,
-                             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
-        Map<String, Object> map = new HashMap<String, Object>();
-        try {
-            String shpcmc = "";
-            CommonConditionQuery query = new CommonConditionQuery();
-            query.add(CommonRestrictions.and(" shpc.id = :shpcId", "shpcId", shpcId));
-            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-            CommonOrderBy orderBy = new CommonOrderBy();
-            orderBy.add(CommonOrder.asc("px"));
-
-            Long total = this.sha01Service.count(query);
-            List<Sha01> sha01s = this.sha01Service.list(query,orderBy, pageNum,
-                    pageSize);
-            List<Sha01Vo> shpcVos = new ArrayList<Sha01Vo>();
-            //查询该批次下的投票数据
-            query = new CommonConditionQuery();
-            query.add(CommonRestrictions.and(" sha01.shpc.id = :shpcId", "shpcId", shpcId));
-            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-            List<Shtpsj> shtpsjs = this.shtpsjService.list(query, null);
-
-            if (sha01s != null) {// entity ==> vo
-                for (Sha01 sha01 : sha01s) {
-                    if(shpcmc.equals("")){
-                        shpcmc = sha01.getShpc().getPcmc();
-                    }
-                    Sha01Vo vo = new Sha01Vo();
-                    BeanUtils.copyProperties(vo, sha01);
-                    int tyCount = 0;//同意票数
-                    int btyCount = 0;//不同意票数
-                    int qqCount = 0;//弃权票数
-                    String dplCount = "0";//得票率
-
-                    if(shtpsjs!=null){
-                        for(Shtpsj shtpsj : shtpsjs){
-                            if(shtpsj.getSha01().getId().equals(sha01.getId())){
-                                if(shtpsj.getTp()==1){
-                                    tyCount++;
-                                }else  if(shtpsj.getTp()==2){
-                                    btyCount++;
-                                }else  if(shtpsj.getTp()==3){
-                                    qqCount++;
-                                }
-                            }
-                        }
-                    }
-                    float num= (float)tyCount/(tyCount+btyCount+qqCount)*100;
-                    DecimalFormat df = new DecimalFormat("0.00");//格式化小数
-                    dplCount = df.format(num);//返回的是String类型
-
-                    vo.setTyCount(tyCount);
-                    vo.setBtyCount(btyCount);
-                    vo.setQqCount(qqCount);
-                    vo.setDplCount(dplCount);
-
-                    shpcVos.add(vo);
-                }
-            }
-            PagerVo<Sha01Vo> pager = new PagerVo<Sha01Vo>(shpcVos, total.intValue(),
-                    pageNum, pageSize);
-            map.put("pager", pager);
-            map.put("shpcId", shpcId);
-            map.put("shpcmc", shpcmc);
-        } catch (Exception e) {
-            throw new GenericException(e);
-        }
-        return new ModelAndView("/saas/zzb/app/console/Sha01/tpjglist", map);
-    }
 }

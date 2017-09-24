@@ -1,7 +1,7 @@
-package com.hisun.saas.zzb.app.console.shpc.dao;
+package com.hisun.saas.zzb.app.console.shtp.dao;
 
 import com.hisun.base.dao.BaseDao;
-import com.hisun.saas.zzb.app.console.shpc.entity.Shtpsj;
+import com.hisun.saas.zzb.app.console.shtp.entity.Shtpsj;
 
 /**
  * Created by zhouying on 2017/9/13.

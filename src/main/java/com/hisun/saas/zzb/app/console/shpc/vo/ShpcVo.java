@@ -2,12 +2,11 @@ package com.hisun.saas.zzb.app.console.shpc.vo;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
+import com.hisun.saas.zzb.app.console.shtp.vo.ShtpVo;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**

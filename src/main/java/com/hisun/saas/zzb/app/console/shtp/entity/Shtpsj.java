@@ -1,6 +1,7 @@
-package com.hisun.saas.zzb.app.console.shpc.entity;
+package com.hisun.saas.zzb.app.console.shtp.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

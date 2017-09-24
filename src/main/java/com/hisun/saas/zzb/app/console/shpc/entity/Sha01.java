@@ -1,7 +1,7 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
-import com.hisun.base.entity.BaseEntity;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.zzb.app.console.shtp.entity.Shtpsj;
 import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
@@ -9,7 +9,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**

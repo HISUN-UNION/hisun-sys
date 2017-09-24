@@ -1,10 +1,10 @@
-package com.hisun.saas.zzb.app.console.shpc.service.impl;
+package com.hisun.saas.zzb.app.console.shtp.service.impl;
 
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
-import com.hisun.saas.zzb.app.console.shpc.dao.ShtpsjDao;
-import com.hisun.saas.zzb.app.console.shpc.entity.Shtpsj;
-import com.hisun.saas.zzb.app.console.shpc.service.ShtpsjService;
+import com.hisun.saas.zzb.app.console.shtp.dao.ShtpsjDao;
+import com.hisun.saas.zzb.app.console.shtp.entity.Shtpsj;
+import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

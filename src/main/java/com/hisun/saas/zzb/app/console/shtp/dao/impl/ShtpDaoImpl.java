@@ -1,8 +1,8 @@
-package com.hisun.saas.zzb.app.console.shpc.dao.impl;
+package com.hisun.saas.zzb.app.console.shtp.dao.impl;
 
 import com.hisun.saas.sys.tenant.dao.imp.TenantBaseDaoImpl;
-import com.hisun.saas.zzb.app.console.shpc.dao.ShtpDao;
-import com.hisun.saas.zzb.app.console.shpc.entity.Shtp;
+import com.hisun.saas.zzb.app.console.shtp.dao.ShtpDao;
+import com.hisun.saas.zzb.app.console.shtp.entity.Shtp;
 import org.springframework.stereotype.Repository;
 
 /**

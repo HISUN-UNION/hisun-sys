@@ -151,7 +151,7 @@
 
 
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/sh/tpsj/list?shtpId=${shtpId}&pageNum="+pageNum+"&pageSize="+pageSize;
+			window.location.href ="${path}/zzb/app/console/tpsj/?shtpId=${shtpId}&pageNum="+pageNum+"&pageSize="+pageSize;
 		}
 
 

@@ -11,7 +11,7 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 <!-- END PAGE LEVEL STYLES -->
-<title>${pcmc}  投票情况</title>
+<title>干部统计</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -21,9 +21,11 @@
 				<%-- 表格开始 --%>
 				<div class="portlet box grey">
 					<div class="portlet-title">
-						<div class="caption">"${pcmc}"投票情况</div>
+						<div class="caption">干部统计数据</div>
 						<div class="clearfix fr">
-							<a class="btn" href="${path }/zzb/app/console/tp/"><i class="icon-undo"></i>返回</a>
+							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/gbtj/add">
+								<i class="icon-plus"></i> 添加 
+							</a>
 						</div>
 					</div>
 			
@@ -31,19 +33,22 @@
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
 								<tr>
-									<th >投票编号</th>
-									<th width="10%">投票人</th>
-									<th width="10%">投票时间</th>
-									<th width="10%">投票情况</th>
+									<th >统计名称</th>
+									<th width="10%">排序</th>
+									<th width="10%">预览</th>
+									<th width="15%">操作</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
-										<td><c:out value="${vo.tpq_bh}"></c:out></td>
-										<td><c:out value="${vo.tpr_xm}"></c:out></td>
-										<td><c:out value="${vo.tp_sj}"></c:out></td>
-										<td><a href="${path}/zzb/app/console/tpsj/?shtpId=${vo.id }" class="">查看</a></td>
+										<td><a href="${path}/zzb/app/console/gbtj/edit?id=${vo.id }"><c:out value="${vo.tjmc}"></c:out></a></td>
+										<td></td>
+										<td><c:out value="${vo.px}"></c:out></td>
+										<td class="Left_alignment">
+											<a href="${path}/zzb/app/console/gbtj/edit?id=${vo.id }" class="">编辑</a>|
+											<a href="javascript:del('${vo.id }','${vo.pcmc}')" class="">删除</a>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -68,13 +73,23 @@
 		})();
 	
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/console/tp/list?shpcId=${shpcId}&pageNum="+pageNum+"&pageSize="+pageSize;
+			window.location.href ="${path}/zzb/app/console/gbtj/?pageNum="+pageNum+"&pageSize="+pageSize;
 		}
 		
 		function searchSubmit(){
 			document.searchForm.submit();
 		}
-
+		
+		var del = function(id,itemName){
+			actionByConfirm1(itemName, "${path}/zzb/app/console/gbtj/delete/" + id,{} ,function(data,status){
+				if (data.success == true) {
+					showTip("提示","删除成功", 2000);
+					setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbtj/"},2000);
+				}else{
+					showTip("提示", data.message, 2000);	
+				}
+			});
+		};
 		
 
 	</script>

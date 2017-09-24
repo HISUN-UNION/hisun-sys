@@ -1,13 +1,8 @@
 package com.hisun.saas.zzb.app.console.shpc.vo;
 
-import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
+import com.hisun.saas.zzb.app.console.shtp.vo.ShtpsjVo;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**

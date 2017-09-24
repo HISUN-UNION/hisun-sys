@@ -1,4 +1,4 @@
-package com.hisun.saas.zzb.app.console.shpc.controller;
+package com.hisun.saas.zzb.app.console.shtp.controller;
 
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
@@ -7,12 +7,12 @@ import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
-import com.hisun.saas.zzb.app.console.shpc.entity.Shtpsj;
-import com.hisun.saas.zzb.app.console.shpc.service.ShtpsjService;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
+import com.hisun.saas.zzb.app.console.shtp.entity.Shtpsj;
+import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
-import com.hisun.saas.zzb.app.console.shpc.vo.ShtpVo;
-import com.hisun.saas.zzb.app.console.shpc.vo.ShtpsjVo;
-import com.hisun.util.DateUtil;
+import com.hisun.saas.zzb.app.console.shtp.vo.ShtpsjVo;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,12 +32,15 @@ import java.util.Map;
  * Created by zhouying on 2017/9/8.
  */
 @Controller
-@RequestMapping("/zzb/app/sh/tpsj")
+@RequestMapping("/zzb/app/console/tpsj")
 public class ShtpsjController extends BaseController {
-    @Autowired
+    @Resource
     private ShtpsjService shtpsjService;
+    @Resource
+    private Sha01Service sha01Service;
 
-    @RequestMapping("/list")
+
+    @RequestMapping("/")
     public ModelAndView list(HttpServletRequest req,@RequestParam(value="shtpId")String shtpId,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
@@ -54,7 +59,7 @@ public class ShtpsjController extends BaseController {
             List<Shtpsj> shtpsjs = this.shtpsjService.list(query, orderBy, pageNum,
                     pageSize);
             List<ShtpsjVo> shtpsjVos = new ArrayList<ShtpsjVo>();
-            if (shtpsjs != null) {// entity ==> vo
+            if (shtpsjs != null) {
                 for (Shtpsj shtpsj : shtpsjs) {
                     if(tprxm.equals("")){
                         tprxm = shtpsj.getShtp().getTpr_xm();
@@ -79,8 +84,7 @@ public class ShtpsjController extends BaseController {
         } catch (Exception e) {
             throw new GenericException(e);
         }
-        return new ModelAndView("/saas/zzb/app/console/tpqk/list", map);
+        return new ModelAndView("/saas/zzb/app/console/tpsj/list", map);
     }
 
-    
 }

@@ -2,6 +2,8 @@ package com.hisun.saas.zzb.app.console.shpc.controller;
 
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrder;
+import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
@@ -39,11 +41,11 @@ public class BwhController extends BaseController {
             CommonConditionQuery query = new CommonConditionQuery();
            // query.add(CommonRestrictions.and(" shlx = :shlx", "shlx", Shpc.SHLX_BWH));
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-//            CommonOrderBy orderBy = new CommonOrderBy();
-//            orderBy.add(CommonOrder.desc("updateDate"));
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.desc("pcsj"));
 
             Long total = this.shpcService.count(query);
-            List<Shpc> shpcs = this.shpcService.list(query, null, pageNum,
+            List<Shpc> shpcs = this.shpcService.list(query, orderBy, pageNum,
                     pageSize);
             List<ShpcVo> shpcVos = new ArrayList<ShpcVo>();
             if (shpcs != null) {// entity ==> vo
