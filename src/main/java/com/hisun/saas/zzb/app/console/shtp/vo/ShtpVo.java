@@ -14,6 +14,7 @@ import java.util.Date;
 public class ShtpVo{
     private String id;
     private ShpcVo shpcVo;
+    private String shpcId;
     private String tpq_bh;
     private String tpr_id;
     private String tpr_xm;

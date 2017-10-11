@@ -262,7 +262,7 @@
 				<log4j.rootCategory>DEBUG,logfile,stdout</log4j.rootCategory>
 				<stdout.Threshold>DEBUG</stdout.Threshold>
 				<logfile.Threshold>DEBUG</logfile.Threshold>
-				<domain>http://localhost</domain>
+				<domain>http://localhost:8080</domain>
 				<SSL-transport-guarantee>NONE</SSL-transport-guarantee>
 				<ticket.scheduled.run>false</ticket.scheduled.run>
 				<import.shiro>shiro.xml</import.shiro>
@@ -281,26 +281,26 @@
 				<hibernate.hbm2ddl.auto>none</hibernate.hbm2ddl.auto>
 				<hibernate.show_sql>false</hibernate.show_sql>
 				<es.cluster.name>30ue_elastic</es.cluster.name>
-				<es.ip>10.169.221.242</es.ip>
+				<es.ip>localhost</es.ip>
 				<es.port>9300</es.port>
 				<es.rest.port>9200</es.rest.port>
 				<db.connection.url>
-					<![CDATA[ jdbc:mysql://10.170.4.219:3306/servicecloud?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true  ]]>
+					<![CDATA[ jdbc:mysql://localhost:3306/zzb-app-console?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true  ]]>
 				</db.connection.url>
-				<encrypt.connection.username>bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA==</encrypt.connection.username>
-				<encrypt.connection.password>FS8suHIDGxxWITNRWqg97935TN89HWIDGSE8kVQyqnqqcA9+qJ/QEOg6VIqdmb9PK9tElR0DwssSbuGbPiOVeg==</encrypt.connection.password>
-				<druidSource.connection.properties>config.decrypt=true</druidSource.connection.properties>
-				<upload.absolute.path>/store/30Cloud/upload</upload.absolute.path>
+				<encrypt.connection.username>root</encrypt.connection.username>
+				<encrypt.connection.password></encrypt.connection.password>
+				<druidSource.connection.properties>config.decrypt=false</druidSource.connection.properties>
+				<upload.absolute.path>/Users/zhouying/Documents/workspace/store</upload.absolute.path>
 				<log4j.rootCategory>WARN,logfile,stdout</log4j.rootCategory>
 				<stdout.Threshold>WARN</stdout.Threshold>
 				<logfile.Threshold>WARN</logfile.Threshold>
-				<domain>http://console.30ue.com</domain>
+				<domain>http://localhost:8080</domain>
 				<SSL-transport-guarantee>NONE</SSL-transport-guarantee>
 				<ticket.scheduled.run>false</ticket.scheduled.run>
 				<import.shiro>shiro.xml</import.shiro>
 				<isdemo>false</isdemo>
-				<isSaas>false</isSaas>
-				<outernet>true</outernet>
+				<isSaas>true</isSaas>
+				<outernet>false</outernet>
 			</properties>
 		</profile>
 	</profiles>

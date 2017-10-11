@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by zhouying on 2017/9/8.
  */
-public class ShpcVo extends TenantEntity implements Serializable{
+public class ShpcVo extends TenantEntity {
 
     public static String SHLX_BWH="1";
     public static String SHLX_CWH="2";

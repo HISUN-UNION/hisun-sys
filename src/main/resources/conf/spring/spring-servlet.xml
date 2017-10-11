@@ -21,17 +21,27 @@
     <!-- 配置注解驱动 -->
 	<mvc:annotation-driven>
 	  <mvc:message-converters register-defaults="false">
-	    <bean id="jacksonMessageConverter" 
-	      class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
-	      <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
-	           <property name="supportedMediaTypes">
-	               <list>
-	                   <value>image/jpeg</value>
-	                   <value>image/png</value>
-	                   <value>application/octet-stream</value>
-	               </list>
-	           </property>
-	       </bean>
+		  <bean id="jacksonMessageConverter"
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			  	<property name="objectMapper">
+				  <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+					  <property name="dateFormat">
+						  <bean class="java.text.SimpleDateFormat">
+							  <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+						  </bean>
+					  </property>
+				  </bean>
+			  	</property>
+		  </bean>
+		  <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter">
+			   <property name="supportedMediaTypes">
+				   <list>
+					   <value>image/jpeg</value>
+					   <value>image/png</value>
+					   <value>application/octet-stream</value>
+				   </list>
+			   </property>
+		   </bean>
 	  </mvc:message-converters>
 	  <!-- <mvc:argument-resolvers>
         <bean class="com.hisun.cloud.auth.controller.method.CurrentUserMethodArgumentResolver"/>
