@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -92,5 +93,13 @@ public class Shtp extends TenantEntity implements Serializable{
 
     public void setShtpsjs(List<Shtpsj> shtpsjs) {
         this.shtpsjs = shtpsjs;
+    }
+
+    public void add(Shtpsj shtpsj){
+        if(this.shtpsjs==null){
+            this.shtpsjs = new ArrayList<Shtpsj>();
+        }
+        shtpsj.setShtp(this);
+        this.shtpsjs.add(shtpsj);
     }
 }

@@ -1,25 +1,26 @@
 package com.hisun.saas.zzb.app.console.shtp.vo;
 
-import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.sys.tenant.tenant.vo.TenantEntityVo;
 import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhouying on 2017/9/15.
  */
-public class ShtpVo{
+public class ShtpVo extends TenantEntityVo{
     private String id;
     private ShpcVo shpcVo;
     private String shpcId;
     private String tpq_bh;
     private String tpr_id;
     private String tpr_xm;
-    private String tp_sj;
+    private Date tp_sj;
+    private String tp_sj_str;
     private int tpqkCount;
+
+    private List<ShtpsjVo> tpsjs;
 
 
     public String getId() {
@@ -54,14 +55,6 @@ public class ShtpVo{
         this.tpr_xm = tpr_xm;
     }
 
-    public String getTp_sj() {
-        return tp_sj;
-    }
-
-    public void setTp_sj(String tp_sj) {
-        this.tp_sj = tp_sj;
-    }
-
     public ShpcVo getShpcVo() {
         return shpcVo;
     }
@@ -76,5 +69,37 @@ public class ShtpVo{
 
     public void setTpqkCount(int tpqkCount) {
         this.tpqkCount = tpqkCount;
+    }
+
+    public String getShpcId() {
+        return shpcId;
+    }
+
+    public void setShpcId(String shpcId) {
+        this.shpcId = shpcId;
+    }
+
+    public Date getTp_sj() {
+        return tp_sj;
+    }
+
+    public void setTp_sj(Date tp_sj) {
+        this.tp_sj = tp_sj;
+    }
+
+    public String getTp_sj_str() {
+        return tp_sj_str;
+    }
+
+    public void setTp_sj_str(String tp_sj_str) {
+        this.tp_sj_str = tp_sj_str;
+    }
+
+    public List<ShtpsjVo> getTpsjs() {
+        return tpsjs;
+    }
+
+    public void setTpsjs(List<ShtpsjVo> tpsjs) {
+        this.tpsjs = tpsjs;
     }
 }

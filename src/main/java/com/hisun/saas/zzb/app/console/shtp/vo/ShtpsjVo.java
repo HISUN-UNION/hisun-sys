@@ -1,15 +1,18 @@
 package com.hisun.saas.zzb.app.console.shtp.vo;
 
+import com.hisun.saas.sys.tenant.tenant.vo.TenantEntityVo;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
 
 /**
  * Created by zhouying on 2017/9/15.
  */
-public class ShtpsjVo{
+public class ShtpsjVo extends TenantEntityVo{
 
     private String id;
     private Sha01Vo sha01Vo;
+    private String sha01Id;
     private ShtpVo shtpVo;
+    private String shtpId;
     private int tp;
 
 
@@ -43,5 +46,21 @@ public class ShtpsjVo{
 
     public void setTp(int tp) {
         this.tp = tp;
+    }
+
+    public String getSha01Id() {
+        return sha01Id;
+    }
+
+    public void setSha01Id(String sha01Id) {
+        this.sha01Id = sha01Id;
+    }
+
+    public String getShtpId() {
+        return shtpId;
+    }
+
+    public void setShtpId(String shtpId) {
+        this.shtpId = shtpId;
     }
 }

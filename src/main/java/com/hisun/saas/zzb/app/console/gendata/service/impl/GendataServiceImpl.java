@@ -3,6 +3,8 @@ package com.hisun.saas.zzb.app.console.gendata.service.impl;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.BaseService;
 import com.hisun.base.service.impl.BaseServiceImpl;
+import com.hisun.saas.zzb.app.console.apiregister.dao.ApiRegisterDao;
+import com.hisun.saas.zzb.app.console.apiregister.entity.ApiRegister;
 import com.hisun.saas.zzb.app.console.gbtj.dao.GbtjDao;
 import com.hisun.saas.zzb.app.console.gendata.dao.GendataDao;
 import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
@@ -32,6 +34,8 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
     private ShpcDao shpcDao;
     @Resource
     private GbtjDao gbtjDao;
+    @Resource
+    private ApiRegisterDao apiRegisterDao;
 
     private GendataDao gendataDao;
 
@@ -63,7 +67,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
         if (map != null && map.size() > 0) {
             //初始化sqlite数据库
             this.initSqlite(dbdir + GendataService.SQLITE_DB_NAME);
-            //生成数据包
+            //生成会议研究数据包
             for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
                 String value = map.get(key);
@@ -76,6 +80,8 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
 
                 }
             }
+            //生成配置数据包
+            this.genConfigData(dbdir + GendataService.SQLITE_DB_NAME);
         }
         //压缩数据文件
         CompressUtil.zip(appDataZipPath,dataDir,GendataService.DATA_PACKET_NAME);
@@ -98,6 +104,16 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
 
     }
 
+    private void genConfigData(String sqlite)throws Exception{
+        SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
+        //api数据
+        List<ApiRegister> apiRegisters = this.apiRegisterDao.list();
+        if(apiRegisters!=null && apiRegisters.size()>0){
+            for(ApiRegister apiRegister : apiRegisters){
+                sqliteDBUtil.insert(sqlite,apiRegister.toInsertSql());
+            }
+        }
+    }
 
     private void genShpcData(String shpcId,String sqlite,String imgDir,String attsDir) throws Exception{
         Shpc shpc = shpcDao.getPK(shpcId);

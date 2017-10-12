@@ -67,7 +67,6 @@ public class Sha01gzjlServiceImpl extends BaseServiceImpl<Sha01gzjl,String> impl
         Pattern r = Pattern.compile(parttern);
         Matcher matcher = r.matcher(str);
         while (matcher.find()){
-            System.out.println("=="+matcher.group(0).trim());
             list.add(matcher.group(0));
         }
         return list;

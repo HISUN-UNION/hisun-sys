@@ -8,4 +8,6 @@ import com.hisun.saas.zzb.app.console.shtp.entity.Shtp;
  */
 public interface ShtpService extends BaseService<Shtp,String> {
 
+    public String saveByRestApi(Shtp shtp);
+
 }

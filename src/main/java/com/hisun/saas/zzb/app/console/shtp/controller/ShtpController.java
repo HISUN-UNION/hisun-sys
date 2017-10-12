@@ -106,7 +106,7 @@ public class ShtpController extends BaseController {
                 for (Shtp shtp : shtps) {
                     ShtpVo vo = new ShtpVo();
                     BeanUtils.copyProperties(vo, shtp);
-                    vo.setTp_sj(DateUtil.formatDateByFormat(shtp.getTp_sj(),"yyyyMMdd"));
+                    vo.setTp_sj_str(DateUtil.formatDateByFormat(shtp.getTp_sj(),"yyyyMMdd"));
                     vo.setTpqkCount(shtp.getShtpsjs().size());
                     shtpVos.add(vo);
                 }

@@ -1,6 +1,7 @@
 package com.hisun.saas.zzb.app.console.shpc.vo;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.sys.tenant.tenant.vo.TenantEntityVo;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.shtp.vo.ShtpVo;
 import org.hibernate.annotations.Cascade;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by zhouying on 2017/9/8.
  */
-public class ShpcVo extends TenantEntity {
+public class ShpcVo extends TenantEntityVo {
 
     public static String SHLX_BWH="1";
     public static String SHLX_CWH="2";

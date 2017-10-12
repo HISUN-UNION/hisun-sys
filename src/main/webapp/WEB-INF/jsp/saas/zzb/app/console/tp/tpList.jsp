@@ -42,7 +42,7 @@
 									<tr style="text-overflow:ellipsis;">
 										<td><c:out value="${vo.tpq_bh}"></c:out></td>
 										<td><c:out value="${vo.tpr_xm}"></c:out></td>
-										<td><c:out value="${vo.tp_sj}"></c:out></td>
+										<td><c:out value="${vo.tp_sj_str}"></c:out></td>
 										<td><a href="${path}/zzb/app/console/tpsj/?shtpId=${vo.id }" class="">查看</a></td>
 									</tr>
 								</c:forEach>

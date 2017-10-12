@@ -1,196 +1,208 @@
-DROP TABLE IF EXISTS `APP_SH_PC` ;
-CREATE TABLE IF NOT EXISTS APP_SH_PC (
-  `ID` VARCHAR(32) NOT NULL,
-  `PC_MC` VARCHAR(255) NULL ,
-  `PC_SJ` DATETIME NULL ,
-  `SHLX` VARCHAR(1) NULL ,
-  PRIMARY KEY (`ID`));
+drop table if exists `app_sh_pc` ;
+create table if not exists app_sh_pc (
+  `id` varchar(32) not null,
+  `pc_mc` varchar(255) null ,
+  `pc_sj` datetime null ,
+  `shlx` varchar(1) null ,
+  primary key (`id`));
 
-DROP TABLE IF EXISTS `APP_SH_TP` ;
-CREATE TABLE IF NOT EXISTS `APP_SH_TP` (
-  `ID` VARCHAR(32) NOT NULL,
-  `TPQ_BH` VARCHAR(128) NULL ,
-  `TPR_ID` VARCHAR(32) NULL ,
-  `TPR_XM` VARCHAR(64) NULL ,
-  `TP_SJ` DATETIME NULL ,
-  `APP_SH_PC_ID` VARCHAR(32) NOT NULL,
-  PRIMARY KEY (`ID`),
+drop table if exists `app_sh_tp` ;
+create table if not exists `app_sh_tp` (
+  `id` varchar(32) not null,
+  `tpq_bh` varchar(128) null ,
+  `tpr_id` varchar(32) null ,
+  `tpr_xm` varchar(64) null ,
+  `tp_sj` datetime null ,
+  `app_sh_pc_id` varchar(32) not null,
+  primary key (`id`),
 
-  CONSTRAINT `fk_RM_SH_TP_RM_SH_PC1`
-    FOREIGN KEY (`APP_SH_PC_ID`)
-    REFERENCES `APP_SH_PC` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  constraint `fk_rm_sh_tp_rm_sh_pc1`
+    foreign key (`app_sh_pc_id`)
+    references `app_sh_pc` (`id`)
+    on delete no action
+    on update no action);
 
-DROP TABLE IF EXISTS `APP_SH_A01` ;
-CREATE TABLE IF NOT EXISTS `APP_SH_A01` (
-  `ID` VARCHAR(32) NOT NULL,
-  `APP_SH_PC_ID` VARCHAR(32) NOT NULL,
-  `RMLX` VARCHAR(1) NULL ,
-  `RMLX_STR` VARCHAR(128) NULL,
-  `XM` VARCHAR(20) NULL,
-  `XB` VARCHAR(10) NULL,
-  `MZ` VARCHAR(20) NULL,
-  `JG` VARCHAR(20) NULL,
-  `CSNY` VARCHAR(24) NULL,
-  `CJGZSJ` VARCHAR(24) NULL,
-  `RDSJ` VARCHAR(24) NULL,
-  `WHCD` VARCHAR(40) NULL,
-  `RXJBSJ` VARCHAR(24) NULL,
-  `MZTJQK` VARCHAR(80) NULL,
-  `YWFPJL` VARCHAR(10) NULL,
-  `XGZDWJZW` VARCHAR(128) NULL,
-  `NTZPBYJ` VARCHAR(128) NULL,
-  `SHYJ` VARCHAR(10) NULL ,
-  `ZP_PATH` VARCHAR (128) NULL,
-  `A01_PX` INT NULL,
-  PRIMARY KEY (`ID`));
+drop table if exists `app_sh_a01` ;
+create table if not exists `app_sh_a01` (
+  `id` varchar(32) not null,
+  `app_sh_pc_id` varchar(32) not null,
+  `rmlx` varchar(1) null ,
+  `rmlx_str` varchar(128) null,
+  `xm` varchar(20) null,
+  `xb` varchar(10) null,
+  `mz` varchar(20) null,
+  `jg` varchar(20) null,
+  `csny` varchar(24) null,
+  `cjgzsj` varchar(24) null,
+  `rdsj` varchar(24) null,
+  `whcd` varchar(40) null,
+  `rxjbsj` varchar(24) null,
+  `mztjqk` varchar(80) null,
+  `ywfpjl` varchar(10) null,
+  `xgzdwjzw` varchar(128) null,
+  `ntzpbyj` varchar(128) null,
+  `shyj` varchar(10) null ,
+  `zp_path` varchar (128) null,
+  `a01_px` int null,
+  primary key (`id`));
 
-DROP TABLE IF EXISTS `APP_SH_TP_SJ` ;
+drop table if exists `app_sh_tp_sj` ;
 
-CREATE TABLE IF NOT EXISTS `APP_SH_TP_SJ` (
-  `ID` VARCHAR(32) NOT NULL,
-  `TP` INT NOT NULL ,
-  `APP_SH_TP_ID` VARCHAR(32) NOT NULL,
-  `APP_SH_A01_ID` VARCHAR(32) NOT NULL,
-  PRIMARY KEY (`ID`));
+create table if not exists `app_sh_tp_sj` (
+  `id` varchar(32) not null,
+  `tp` int not null ,
+  `app_sh_tp_id` varchar(32) not null,
+  `app_sh_a01_id` varchar(32) not null,
+  primary key (`id`));
 
-DROP TABLE IF EXISTS `APP_SH_A01_KCCL` ;
+drop table if exists `app_sh_a01_kccl` ;
 
-CREATE TABLE IF NOT EXISTS `APP_SH_A01_KCCL` (
-  `ID` VARCHAR(32) NOT NULL,
-  `PATH` VARCHAR(128) NULL,
-  `APP_SH_A01_ID` VARCHAR(32) NOT NULL,
-  PRIMARY KEY (`ID`));
-
-
-DROP TABLE IF EXISTS `APP_SH_A01_DASCQK` ;
-
-CREATE TABLE IF NOT EXISTS `APP_SH_A01_DASCQK` (
-  `ID` VARCHAR(32) NOT NULL,
-  `PATH` VARCHAR(128) NULL,
-  `APP_SH_A01_ID` VARCHAR(32) NOT NULL,
-  PRIMARY KEY (`ID`));
+create table if not exists `app_sh_a01_kccl` (
+  `id` varchar(32) not null,
+  `path` varchar(128) null,
+  `app_sh_a01_id` varchar(32) not null,
+  primary key (`id`));
 
 
+drop table if exists `app_sh_a01_dascqk` ;
 
-DROP TABLE IF EXISTS `APP_SH_A01_GRZDSX` ;
-
-CREATE TABLE IF NOT EXISTS `APP_SH_A01_GRZDSX` (
-  `ID` VARCHAR(32) NOT NULL,
-  `PATH` VARCHAR(128) NULL,
-  `APP_SH_A01_ID` VARCHAR(32) NOT NULL,
-  PRIMARY KEY (`ID`));
+create table if not exists `app_sh_a01_dascqk` (
+  `id` varchar(32) not null,
+  `path` varchar(128) null,
+  `app_sh_a01_id` varchar(32) not null,
+  primary key (`id`));
 
 
 
-DROP TABLE IF EXISTS `APP_SH_A01_DASCQK_TIPS` ;
+drop table if exists `app_sh_a01_grzdsx` ;
 
-CREATE TABLE IF NOT EXISTS `APP_SH_A01_DASCQK_TIPS` (
-  `ID` VARCHAR(32) NOT NULL,
-  `TIP` VARCHAR(256) NULL,
-  `APP_SH_A01_DASCQK_ID` VARCHAR(32) NOT NULL,
-  PRIMARY KEY (`ID`));
-
-
-
-DROP TABLE IF EXISTS `APP_SH_A01_GBRMSPB` ;
-
-CREATE TABLE IF NOT EXISTS `APP_SH_A01_GBRMSPB` (
-  `ID` VARCHAR(32) NOT NULL,
-  `XM` VARCHAR(20) NULL,
-  `XB` VARCHAR(10) NULL,
-  `CSNY` VARCHAR(24) NULL,
-  `NL` VARCHAR(10) NULL,
-  `MZ` VARCHAR(24) NULL,
-  `JG` VARCHAR(24) NULL,
-  `CSD` VARCHAR(24) NULL,
-  `RDSJ` VARCHAR(10) NULL,
-  `CJGZSJ` VARCHAR(10) NULL,
-  `JKZK` VARCHAR(24) NULL,
-  `ZYJSZW` VARCHAR(60) NULL,
-  `ZYTC` VARCHAR(60) NULL,
-  `XL_QRZ` VARCHAR(24) NULL,
-  `XW_QRZ` VARCHAR(24) NULL,
-  `XL_ZZ` VARCHAR(24) NULL,
-  `XW_ZZ` VARCHAR(24) NULL,
-  `QRZ_BYYX` VARCHAR(128) NULL,
-  `ZZ_BYYX` VARCHAR(128) NULL,
-  `XRZW` VARCHAR(128) NULL,
-  `NRZW` VARCHAR(128) NULL,
-  `NMZW` VARCHAR(128) NULL,
-  `RMLY` VARCHAR(255) NULL,
-  `CBDWYJ` VARCHAR(255) NULL,
-  `SPJGYJ` VARCHAR(255) NULL,
-  `XZJGRMYJ` VARCHAR(255) NULL,
-    `PATH` VARCHAR(128) NULL,
-  `APP_SH_A01_ID` VARCHAR(32) NOT NULL,
-  PRIMARY KEY (`ID`));
-
-DROP TABLE IF EXISTS `APP_SH_A01_GZJL` ;
-
-CREATE TABLE IF NOT EXISTS `APP_SH_A01_GZJL` (
-  `ID` VARCHAR(32) NOT NULL,
-  `C_SJ` VARCHAR(24) NULL,
-  `Z_SJ` VARCHAR(24) NULL,
-  `JLSM` VARCHAR(256) NULL,
-  `APP_SH_A01_ID` VARCHAR(32) NOT NULL,
-  `GZJL_PX` INT NULL,
-  PRIMARY KEY (`ID`));
-
-
-DROP TABLE IF EXISTS `APP_SH_A01_JC` ;
-
-CREATE TABLE IF NOT EXISTS `APP_SH_A01_JC` (
-  `ID` VARCHAR(32) NOT NULL,
-  `ND` VARCHAR(24) NULL,
-  `JCSM` VARCHAR(256) NULL,
-  `APP_SH_A01_ID` VARCHAR(32) NOT NULL,
-  `JC_PX` INT NULL,
-  PRIMARY KEY (`ID`));
+create table if not exists `app_sh_a01_grzdsx` (
+  `id` varchar(32) not null,
+  `path` varchar(128) null,
+  `app_sh_a01_id` varchar(32) not null,
+  primary key (`id`));
 
 
 
-DROP TABLE IF EXISTS `APP_SH_A01_NDKH` ;
+drop table if exists `app_sh_a01_dascqk_tips` ;
 
-CREATE TABLE IF NOT EXISTS `APP_SH_A01_NDKH` (
-  `ID` VARCHAR(32) NOT NULL,
-  `ND` VARCHAR(24) NULL,
-  `KHJG` VARCHAR(60) NULL,
-  `APP_SH_A01_ID` VARCHAR(32) NOT NULL,
-  `NDKH_PX` INT NULL,
-  PRIMARY KEY (`ID`));
+create table if not exists `app_sh_a01_dascqk_tips` (
+  `id` varchar(32) not null,
+  `tip` varchar(256) null,
+  `app_sh_a01_dascqk_id` varchar(32) not null,
+  primary key (`id`));
 
 
 
-DROP TABLE IF EXISTS `APP_SH_A01_SHGX` ;
+drop table if exists `app_sh_a01_gbrmspb` ;
 
-CREATE TABLE IF NOT EXISTS `APP_SH_A01_SHGX` (
-  `ID` VARCHAR(32) NOT NULL,
-  `CW` VARCHAR(24) NULL,
-  `XM` VARCHAR(24) NULL,
-  `NL` VARCHAR(10) NULL,
-  `ZZMM` VARCHAR(24) NULL,
-  `GZDWJZW` VARCHAR(128) NULL,
-  `APP_SH_A01_ID` VARCHAR(32) NOT NULL,
-  `SHGX_PX` INT NULL,
-  PRIMARY KEY (`ID`));
+create table if not exists `app_sh_a01_gbrmspb` (
+  `id` varchar(32) not null,
+  `xm` varchar(20) null,
+  `xb` varchar(10) null,
+  `csny` varchar(24) null,
+  `nl` varchar(10) null,
+  `mz` varchar(24) null,
+  `jg` varchar(24) null,
+  `csd` varchar(24) null,
+  `rdsj` varchar(10) null,
+  `cjgzsj` varchar(10) null,
+  `jkzk` varchar(24) null,
+  `zyjszw` varchar(60) null,
+  `zytc` varchar(60) null,
+  `xl_qrz` varchar(24) null,
+  `xw_qrz` varchar(24) null,
+  `xl_zz` varchar(24) null,
+  `xw_zz` varchar(24) null,
+  `qrz_byyx` varchar(128) null,
+  `zz_byyx` varchar(128) null,
+  `xrzw` varchar(128) null,
+  `nrzw` varchar(128) null,
+  `nmzw` varchar(128) null,
+  `rmly` varchar(255) null,
+  `cbdwyj` varchar(255) null,
+  `spjgyj` varchar(255) null,
+  `xzjgrmyj` varchar(255) null,
+    `path` varchar(128) null,
+  `app_sh_a01_id` varchar(32) not null,
+  primary key (`id`));
+
+drop table if exists `app_sh_a01_gzjl` ;
+
+create table if not exists `app_sh_a01_gzjl` (
+  `id` varchar(32) not null,
+  `c_sj` varchar(24) null,
+  `z_sj` varchar(24) null,
+  `jlsm` varchar(256) null,
+  `app_sh_a01_id` varchar(32) not null,
+  `gzjl_px` int null,
+  primary key (`id`));
 
 
-DROP TABLE IF EXISTS `APP_MENU_SETTING` ;
+drop table if exists `app_sh_a01_jc` ;
 
-CREATE TABLE IF NOT EXISTS `APP_MENU_SETTING` (
-  `ID` INT NOT NULL,
-  `MENU_CODE` VARCHAR(40) NOT NULL ,
-  `DISPLAY` INT NOT NULL DEFAULT 0 ,
-  PRIMARY KEY (`ID`));
+create table if not exists `app_sh_a01_jc` (
+  `id` varchar(32) not null,
+  `nd` varchar(24) null,
+  `jcsm` varchar(256) null,
+  `app_sh_a01_id` varchar(32) not null,
+  `jc_px` int null,
+  primary key (`id`));
 
 
-DROP TABLE IF EXISTS `APP_DWJG_TJ` ;
 
-CREATE TABLE IF NOT EXISTS `APP_DWJG_TJ` (
-  `ID` VARCHAR(32) NOT NULL,
-  `TJ_MC` VARCHAR(128) NULL ,
-  `TJ_JSON_DATA` TEXT NULL ,
-  `TJ_PX` INT NULL,
-  PRIMARY KEY (`ID`));
+drop table if exists `app_sh_a01_ndkh` ;
+
+create table if not exists `app_sh_a01_ndkh` (
+  `id` varchar(32) not null,
+  `nd` varchar(24) null,
+  `khjg` varchar(60) null,
+  `app_sh_a01_id` varchar(32) not null,
+  `ndkh_px` int null,
+  primary key (`id`));
+
+
+
+drop table if exists `app_sh_a01_shgx` ;
+
+create table if not exists `app_sh_a01_shgx` (
+  `id` varchar(32) not null,
+  `cw` varchar(24) null,
+  `xm` varchar(24) null,
+  `nl` varchar(10) null,
+  `zzmm` varchar(24) null,
+  `gzdwjzw` varchar(128) null,
+  `app_sh_a01_id` varchar(32) not null,
+  `shgx_px` int null,
+  primary key (`id`));
+
+
+drop table if exists `app_menu_setting` ;
+
+create table if not exists `app_menu_setting` (
+  `id` int not null,
+  `menu_code` varchar(40) not null ,
+  `display` int not null default 0 ,
+  primary key (`id`));
+
+
+drop table if exists `app_dwjg_tj` ;
+
+create table if not exists `app_dwjg_tj` (
+  `id` varchar(32) not null,
+  `tj_mc` varchar(128) null ,
+  `tj_json_data` text null ,
+  `tj_px` int null,
+  primary key (`id`));
+
+drop table if exists `app_api_register`;
+
+create table `app_api_register` (
+  `id` varchar(32) not null,
+  `ip` varchar(32) not null,
+  `port` varchar(10) not null,
+  `context` varchar(32) default null,
+  `uri` varchar(128) not null,
+  `api_code` varchar(32) not null,
+  `request_method` varchar(32) not null,
+  primary key (`id`));
