@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Clob;
 
 /**
  * Created by zhouying on 2017/9/15.
@@ -25,12 +26,11 @@ public class Gbtj extends TenantEntity implements Serializable{
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Type(type = "text")
-    @Column(name = "TJ_JSON_DATA",columnDefinition = "CLOB",nullable = true)
+    @Column(name = "TJ_JSON_DATA",columnDefinition = "TEXT",nullable = true)
     private String tjjsondata;
 
     @Column(name = "TBLX")
-    private String tblx;
+    private String tblx;//1 饼图 2柱状图 3折线图
 
     @Column(name = "TJ_PX")
     private int px;
@@ -90,7 +90,7 @@ public class Gbtj extends TenantEntity implements Serializable{
         sb.append("(");
         sb.append("'"+ StringUtils.transNull(id)+"'");
         sb.append(",'"+ StringUtils.transNull(tjmc)+"'");
-        sb.append(",'"+ StringUtils.transNull(tjjsondata)+"'");
+        sb.append(",'"+tjjsondata+"'");
         sb.append(",'"+ StringUtils.transNull(tblx)+"'");
         sb.append(","+ px+"");
         sb.append(")");

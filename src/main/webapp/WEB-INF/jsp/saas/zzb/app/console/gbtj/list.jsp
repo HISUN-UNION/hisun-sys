@@ -14,6 +14,34 @@
 <title>干部统计</title>
 </head>
 <body>
+<div id="jsonDataModal" class="modal container hide fade" tabindex="-1" data-width="700">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="title" >
+					编辑数据
+				</h3>
+			</div>
+			<div class="modal-body" id="jsonDataAddDiv">
+			</div>
+		</div>
+	</div>
+</div>
+<div id="jsonDataViewModal" class="modal container hide fade" tabindex="-1" data-width="700">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="titleView" >
+					干部年龄结构
+				</h3>
+			</div>
+			<div class="modal-body" id="jsonDataViewAddDiv">
+			</div>
+		</div>
+	</div>
+</div>
 	<div class="container-fluid">
 
 		<div class="row-fluid">
@@ -34,20 +62,23 @@
 							<thead>
 								<tr>
 									<th >统计名称</th>
-									<th width="10%">排序</th>
+									<th width="5%">排序</th>
 									<th width="10%">预览</th>
-									<th width="15%">操作</th>
+									<th width="10%">操作</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
 										<td><a href="${path}/zzb/app/console/gbtj/edit?id=${vo.id }"><c:out value="${vo.tjmc}"></c:out></a></td>
-										<td></td>
 										<td><c:out value="${vo.px}"></c:out></td>
 										<td class="Left_alignment">
+											<a href="javascript:viewJosnDate('${vo.id }','${vo.tblx}')" class="">预览</a>|
+											<a href="javascript:editJosnDate('${vo.id }','${vo.tjmc}')" class="">编辑数据</a>
+										</td>
+										<td class="Left_alignment">
 											<a href="${path}/zzb/app/console/gbtj/edit?id=${vo.id }" class="">编辑</a>|
-											<a href="javascript:del('${vo.id }','${vo.pcmc}')" class="">删除</a>
+											<a href="javascript:del('${vo.id }','${vo.tjmc}')" class="">删除</a>
 										</td>
 									</tr>
 								</c:forEach>
@@ -90,8 +121,52 @@
 				}
 			});
 		};
-		
-
+		var editJosnDate = function(id,itemName){
+			$.ajax({
+				url : "${path}/zzb/app/console/gbtj/ajax/editJsonData",
+				type : "post",
+				data: {"id":id},
+				headers:{
+					OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+				},
+				dataType : "html",
+				success : function(html){
+					$('#jsonDataAddDiv').html(html);
+					$('#jsonDataModal').modal({
+						keyboard: true
+					});
+				},
+				error : function(){
+					showTip("提示","出错了请联系管理员", 1500);
+				}
+			});
+		}
+		var viewJosnDate = function(id,tblx){
+			if(tblx == "1"){
+				$.ajax({
+					url : "${path}/zzb/app/console/gbtj/ajax/btView",
+					type : "post",
+					data: {"id":id},
+					headers:{
+						OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+					},
+					dataType : "html",
+					success : function(html){
+						$('#jsonDataViewAddDiv').html(html);
+						$('#jsonDataViewModal').modal({
+							keyboard: true
+						});
+					},
+					error : function(){
+						showTip("提示","出错了请联系管理员", 1500);
+					}
+				});
+			}else if(tblx == "2"){
+				showTip("提示","柱状图待开发", 1500);
+			}else if(tblx == "3"){
+				showTip("提示","折线图待开发", 1500);
+			}
+		}
 	</script>
 </body>
 </html>

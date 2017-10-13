@@ -39,33 +39,30 @@
 
 								<form action="${path }/zzb/app/console/gbtj/save" class="form-horizontal" id="form1" method="post">
 									<input type="hidden" name="id" value="${gbtj.id }" id="id">
-									<input type="hidden" name="tjjsondata" value="${gbtj.tjjsondata}" id="tjjsondata">
-									<div id="pcmcGroup" class="control-group">
+									<%--<input type="hidden" name="tjjsondata" value="${gbtj.tjjsondata}" id="tjjsondata">--%>
+									<div id="tjmcGroup" class="control-group">
 										<label class="control-label">统计名称<span class="required">*</span></label>
 										<div class="controls">
-											<input type="text" class="span6 m-wrap" name="pcmc" required maxlength="200" id="pcmc" value="${gbtj.tjmc }"/>
+											<input type="text" class="span6 m-wrap" name="tjmc" required maxlength="200" id="tjmc" value="${gbtj.tjmc }"/>
 										</div>
 
 									</div>
-
-									<div class="control-group" id="shlxGroup">
-
-										<label class="control-label">图表类型<span class="required">*</span></label>
+									<div class="control-group" id="groupArea">
+										<label class="control-label">图表类型<span style="color: red;">*</span></label>
 										<div class="controls">
-											<select class="span6 m-wrap" id="tblx" name="tblx"  data-placeholder="Choose a Category" tabindex="1" required>
+											<select class="m-wrap span6" name="tblx" id="tblx">
 												<option value="1" <c:if test="${gbtj.tblx eq '1'}">selected</c:if>>饼图</option>
 												<option value="2" <c:if test="${gbtj.tblx eq '2'}">selected</c:if>>柱状图</option>
 												<option value="3" <c:if test="${gbtj.tblx eq '3'}">selected</c:if>>折线图</option>
 											</select>
-
 										</div>
-
 									</div>
+
 
 									<div id="pxGroup" class="control-group">
 										<label class="control-label">排序<span class="required">*</span></label>
 										<div class="controls">
-											<input type="text" class="span6 m-wrap" id="px" name="px" required maxlength="200"  value="<c:out value="${gbtj.px}"></c:out>" />
+											<input type="text" class="span6 m-wrap" id="px" name="px" number="true" required maxlength="3"  value="${gbtj.px}" />
 										</div>
 
 									</div>

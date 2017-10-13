@@ -12,7 +12,8 @@ import java.io.Serializable;
 public class Sha01dascqktipsVo{
 
     private String id;
-    private Sha01dascqkVo sha01dascqk;
+    private Sha01dascqkVo sha01dascqkVo;
+    private String sha01Id;
     private String tip;
 
     public String getId() {
@@ -23,12 +24,12 @@ public class Sha01dascqktipsVo{
         this.id = id;
     }
 
-    public Sha01dascqkVo getSha01dascqk() {
-        return sha01dascqk;
+    public Sha01dascqkVo getSha01dascqkVo() {
+        return sha01dascqkVo;
     }
 
-    public void setSha01dascqk(Sha01dascqkVo sha01dascqk) {
-        this.sha01dascqk = sha01dascqk;
+    public void setSha01dascqk(Sha01dascqkVo sha01dascqkVo) {
+        this.sha01dascqkVo = sha01dascqkVo;
     }
 
     public String getTip() {
@@ -37,5 +38,13 @@ public class Sha01dascqktipsVo{
 
     public void setTip(String tip) {
         this.tip = tip;
+    }
+
+    public String getSha01Id() {
+        return sha01Id;
+    }
+
+    public void setSha01Id(String sha01Id) {
+        this.sha01Id = sha01Id;
     }
 }

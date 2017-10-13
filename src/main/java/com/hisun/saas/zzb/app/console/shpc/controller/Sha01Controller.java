@@ -250,7 +250,7 @@ public class Sha01Controller extends BaseController {
             boolean isHavakcclFile = false;//是否存在考察材料
             boolean isHavaDascqkFile = false;//是否存在档案审查情况
             boolean isHavaGrzdsxFile = false;//是否存在个人重大事项
-
+            String dascqkTipe = "";//是否存在档案审查情况备注
             //判断干部详细信息是否有附件
             if(sha01.getGbrmspbs()!=null &&sha01.getGbrmspbs().size()>0) {
                 Sha01gbrmspb sha01gbrmspb = sha01.getGbrmspbs().get(0);
@@ -265,12 +265,16 @@ public class Sha01Controller extends BaseController {
                     isHavakcclFile = true;
                 }
             }
-            //判断干部详细信息是否有附件
+            //判断档案审查情况是否有附件
             if(sha01.getDascqks()!=null &&sha01.getDascqks().size()>0) {
                 Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
                 if(sha01dascqk.getPath()!=null && !sha01dascqk.getPath().equals("")){
                     isHavaDascqkFile = true;
                 }
+                if(sha01dascqk.getSha01dascqktips().size()>0){
+                    dascqkTipe = sha01dascqk.getSha01dascqktips().get(0).getTip();
+                }
+
             }
             //判断个人重大事项是否有附件
             if(sha01.getGrzdsxes()!=null &&sha01.getGrzdsxes().size()>0) {
@@ -291,6 +295,7 @@ public class Sha01Controller extends BaseController {
             map.put("isHavakcclFile", isHavakcclFile);
             map.put("isHavaDascqkFile", isHavaDascqkFile);
             map.put("isHavaGrzdsxFile", isHavaGrzdsxFile);
+            map.put("dascqkTipe", dascqkTipe);
 
         }catch(Exception e){
             map.put("success", false);

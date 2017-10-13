@@ -45,20 +45,22 @@
 								</div>
 
 							</div>
-							<div id="shlxGroup" class="control-group" >
-								<label class="control-label">图表类型<span class="required">*</span></label>
+
+							<div class="control-group" id="groupArea">
+								<label class="control-label">图表类型<span style="color: red;">*</span></label>
 								<div class="controls">
-									<select class="span6 m-wrap" id="tblx" name="tblx"  data-placeholder="Choose a Category" tabindex="1" required>
+									<select class="m-wrap span6" name="tblx" id="tblx">
 										<option value="1" selected>饼图</option>
 										<option value="2" >柱状图</option>
 										<option value="3" >折线图</option>
 									</select>
 								</div>
 							</div>
+
 							<div id="pxGroup" class="control-group">
 								<label class="control-label">排序<span class="required">*</span></label>
 								<div class="controls">
-									<input type="text" class="span6 m-wrap" id="px" name="px" required maxlength="200"  value="<c:out value="${gbtj.px}"></c:out>" />
+									<input type="text" class="span6 m-wrap" id="px" name="px" number="true"  required maxlength="3"  value="<c:out value="${gbtj.px}"></c:out>" />
 								</div>
 
 							</div>
@@ -79,15 +81,13 @@
 		
 		<%-- END PAGE CONTENT--%>  
 	</div>
-
-<script type="text/javascript" src="${path }/js/jquery.validate.min.js"></script>
-<script type="text/javascript" src="${path }/js/common/est-validate-init.js"></script>
-<script type="text/javascript" src="${path }/js/common/validate-message.js"></script>
-<script type="text/javascript" src="${path }/js/common/30CloudAjax.js"></script>
-<script type="text/javascript" src="${path }/js/common/DataValidate.js"></script>
-<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
-
+	<script type="text/javascript" src="${path }/js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="${path }/js/common/est-validate-init.js"></script>
+	<script type="text/javascript" src="${path }/js/common/validate-message.js"></script>
+	<script type="text/javascript" src="${path }/js/common/30CloudAjax.js"></script>
+	<script type="text/javascript" src="${path }/js/common/DataValidate.js"></script>
+	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
 <script type="text/javascript">
 	
 //	(function(){

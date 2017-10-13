@@ -8,7 +8,7 @@ public class GbtjVo {
 
     private String id;
     private String tjmc;
-    private String tjjsondata;
+    private String tjjsondataValue;
     private String tblx;
     private int px;
 
@@ -28,12 +28,12 @@ public class GbtjVo {
         this.tjmc = tjmc;
     }
 
-    public String getTjjsondata() {
-        return tjjsondata;
+    public String getTjjsondataValue() {
+        return tjjsondataValue;
     }
 
-    public void setTjjsondata(String tjjsondata) {
-        this.tjjsondata = tjjsondata;
+    public void setTjjsondataValue(String tjjsondataValue) {
+        this.tjjsondataValue = tjjsondataValue;
     }
 
     public String getTblx() {

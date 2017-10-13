@@ -7,5 +7,5 @@ import com.hisun.saas.zzb.app.console.shpc.entity.Sha01dascqktips;
  * Created by zhouying on 2017/9/15.
  */
 public interface Sha01dascqktipsService extends BaseService<Sha01dascqktips,String> {
-
+    public void deleteBySql(String id) ;
 }
