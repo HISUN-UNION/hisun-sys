@@ -184,7 +184,8 @@ public class GbtjController extends BaseController {
                 jsonMap = JacksonUtil.nonDefaultMapper().fromJson(content, Sha01JsonVo.class);
                 map.put("data", jsonMap.getData());
             }else{
-                map.put("data",jsonMap);
+                List<Sha01JsonDataVo> data = new ArrayList<Sha01JsonDataVo>();
+                map.put("data",data);
             }
         }
 
