@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-<div id="dabzModal" class="modal container hide fade" tabindex="-1" data-width="500">
+<div id="dabzModal" class="modal container hide fade" tabindex="-1" data-width="600">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
