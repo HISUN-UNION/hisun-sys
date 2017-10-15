@@ -10,7 +10,7 @@
 		<div id="tipGroup" class="control-group" style="margin-bottom:20px !important">
 			<label class="control-label" style="width: 50px;">备注:</label>
 			<div class="controls" style="margin-left: 70px">
-				<textarea style="width:420px" required rows="10" name="tip" maxlength="255" id="tip" value="${vo.tip}">${vo.tip}</textarea>
+				<textarea style="width:420px" required rows="9" name="tip" maxlength="400" id="tip" value="${vo.tip}">${vo.tip}</textarea>
 			</div>
 
 		</div>
