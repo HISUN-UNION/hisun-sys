@@ -19,16 +19,33 @@
 		<div class="row-fluid">
 			<div class="span12 responsive">
 				<%-- 表格开始 --%>
-				<div class="portlet box grey">
-					<div class="portlet-title">
-						<div class="caption">干部名册</div>
-						<div class="clearfix fr">
-							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/gbmc/add">
-								<i class="icon-plus"></i> 添加 
-							</a>
+					<div class="portlet box grey">
+						<div class="portlet-title">
+							<div class="caption">干部名册</div>
+							<div class="clearfix fr">
+								<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/gbmc/add">
+									<i class="icon-plus"></i> 添加
+								</a>
+							</div>
 						</div>
+
+
+					<div class="clearfix">
+						<div class="control-group">
+							<div id="query" style="float: left;">
+								<form action="${path }/zzb/app/console/gbmc/" method="POST" id="searchForm" name="searchForm">
+								<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
+								<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
+								<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
+									名册名称：<input type="text" class="m-wrap" name="mcQuery" id="mcQuery" value="${mcQuery}" style="width: 100px;" />
+								<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
+								<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
+								</form>
+							</div>
+						</div>
+
 					</div>
-			
+
 					<div class="portlet-body">
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
@@ -70,14 +87,17 @@
 			App.init();
 		})();
 	
+
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/console/gbmc/?pageNum="+pageNum+"&pageSize="+pageSize;
+			<%--window.location.href ="${path}/zzb/app/console/tp/?pageNum="+pageNum+"&pageSize="+pageSize;--%>
+			$("#pageNum").val(pageNum);
+			$("#pageSize").val(pageSize);
+			$("#searchForm").submit();
 		}
-		
+
 		function searchSubmit(){
 			document.searchForm.submit();
 		}
-		
 		var del = function(id,itemName){
 			actionByConfirm1(itemName, "${path}/zzb/app/console/gbmc/delete/" + id,{} ,function(data,status){
 				if (data.success == true) {
@@ -88,8 +108,11 @@
 				}
 			});
 		};
-		
 
+		function clearData(){
+			$("#mcQuery").val('');
+			document.searchForm.submit();
+		}
 	</script>
 </body>
 </html>

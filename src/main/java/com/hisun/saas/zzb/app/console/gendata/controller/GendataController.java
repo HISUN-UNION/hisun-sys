@@ -8,6 +8,12 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.gbmc.entity.GbMc;
+import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
+import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcVo;
+import com.hisun.saas.zzb.app.console.gbtj.entity.Gbtj;
+import com.hisun.saas.zzb.app.console.gbtj.service.GbtjService;
+import com.hisun.saas.zzb.app.console.gbtj.vo.GbtjVo;
 import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
@@ -46,16 +52,19 @@ public class GendataController extends BaseController{
 
     @Resource(name="resourcesProperties")
     private Properties resourcesProperties;
-
+    @Resource
+    private GbtjService gbtjService;
+    @Autowired
+    private GbMcService gbMcService;
     @Autowired
     private ShpcService shpcService;
     @RequestMapping(value = "/")
     public ModelAndView list(){
         Map<String, Object> map = new HashMap<String, Object>();
         try {
+            //获取会议研究列表数据
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-
             Long total = this.shpcService.count(query);
             List<Shpc> shpcs = this.shpcService.list(query, null);
             List<ShpcVo> shpcVos = new ArrayList<ShpcVo>();
@@ -68,7 +77,37 @@ public class GendataController extends BaseController{
                     shpcVos.add(vo);
                 }
             }
+
+            //获取干部名册数据
+            query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            total = this.shpcService.count(query);
+            List<GbMc> gbmcs = this.gbMcService.list(query, null);
+            List<GbMcVo> gbmcVos = new ArrayList<GbMcVo>();
+            if (gbmcs != null) {// entity ==> vo
+                for (GbMc gbMc : gbmcs) {
+                    GbMcVo vo = new GbMcVo();
+                    BeanUtils.copyProperties(vo, gbMc);
+                    gbmcVos.add(vo);
+                }
+            }
+
+            //获取队伍统计数据
+            query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            total = this.shpcService.count(query);
+            List<Gbtj> gbtjs = this.gbtjService.list(query, null);
+            List<GbtjVo> gbtjVos = new ArrayList<GbtjVo>();
+            if (gbmcs != null) {// entity ==> vo
+                for (Gbtj gbmc : gbtjs) {
+                    GbtjVo vo = new GbtjVo();
+                    BeanUtils.copyProperties(vo, gbmc);
+                    gbtjVos.add(vo);
+                }
+            }
             map.put("shpcVos", shpcVos);
+            map.put("gbmcVos", gbmcVos);
+            map.put("gbtjVos", gbtjVos);
         }catch (Exception e) {
             throw new GenericException(e);
         }
@@ -85,7 +124,9 @@ public class GendataController extends BaseController{
             String checkBoxTypeValues = request.getParameter("checkBoxTypeValues")==null?"":request.getParameter("checkBoxTypeValues").toString();//选择需要导出的类型
 
             String pcs = request.getParameter("checkHyyjValues")==null?"":request.getParameter("checkHyyjValues").toString();//会议研究ID
-            String tjs = request.getParameter("tjs");
+            String gbmcs = request.getParameter("checkGbmcValues")==null?"":request.getParameter("checkGbmcValues").toString();//干部名册ID
+            String tjs = request.getParameter("checkGbtjValues")==null?"":request.getParameter("checkGbtjValues").toString();//干部统计ID
+
 
             String appDataPath=resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH;
             File appDataDir = new File(appDataPath);

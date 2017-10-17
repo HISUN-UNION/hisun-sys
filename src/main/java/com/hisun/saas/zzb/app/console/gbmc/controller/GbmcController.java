@@ -35,7 +35,7 @@ public class GbmcController extends BaseController{
     private GbMcService gbMcService;
 
     @RequestMapping("/")
-    public ModelAndView list(HttpServletRequest req, String pId,
+    public ModelAndView list(HttpServletRequest req, String mcQuery,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -43,6 +43,10 @@ public class GbmcController extends BaseController{
             CommonConditionQuery query = new CommonConditionQuery();
             // query.add(CommonRestrictions.and(" shlx = :shlx", "shlx", Shpc.SHLX_BWH));
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            if(mcQuery!=null && !mcQuery.equals("")){
+                query.add(CommonRestrictions.and(" mc like:mcQuery", "mcQuery", "%"+ mcQuery+ "%"));
+            }
+
 //            CommonOrderBy orderBy = new CommonOrderBy();
 //            orderBy.add(CommonOrder.desc("pcsj"));
 
@@ -60,6 +64,7 @@ public class GbmcController extends BaseController{
             PagerVo<GbMcVo> pager = new PagerVo<GbMcVo>(gbMcVos, total.intValue(),
                     pageNum, pageSize);
             map.put("pager", pager);
+            map.put("mcQuery", mcQuery);
         } catch (Exception e) {
             throw new GenericException(e);
         }

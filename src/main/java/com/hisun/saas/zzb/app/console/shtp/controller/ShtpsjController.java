@@ -9,7 +9,9 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
+import com.hisun.saas.zzb.app.console.shtp.entity.Shtp;
 import com.hisun.saas.zzb.app.console.shtp.entity.Shtpsj;
+import com.hisun.saas.zzb.app.console.shtp.service.ShtpService;
 import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
 import com.hisun.saas.zzb.app.console.shtp.vo.ShtpsjVo;
@@ -38,10 +40,11 @@ public class ShtpsjController extends BaseController {
     private ShtpsjService shtpsjService;
     @Resource
     private Sha01Service sha01Service;
-
+    @Resource
+    private ShtpService shtpService;
 
     @RequestMapping("/")
-    public ModelAndView list(HttpServletRequest req,@RequestParam(value="shtpId")String shtpId,
+    public ModelAndView list(HttpServletRequest req,@RequestParam(value="shtpId")String shtpId,String tpyj,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -50,6 +53,9 @@ public class ShtpsjController extends BaseController {
             String shpcId = "";
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" shtp.id = :shtpId", "shtpId", shtpId));
+            if(tpyj!=null && !tpyj.equals("") && !tpyj.equals("all")){
+                query.add(CommonRestrictions.and(" tp = :tpyj", "tpyj",  Integer.valueOf(tpyj)));
+            }
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
 
             CommonOrderBy orderBy = new CommonOrderBy();
@@ -59,14 +65,12 @@ public class ShtpsjController extends BaseController {
             List<Shtpsj> shtpsjs = this.shtpsjService.list(query, orderBy, pageNum,
                     pageSize);
             List<ShtpsjVo> shtpsjVos = new ArrayList<ShtpsjVo>();
+            Shtp shtp = this.shtpService.getByPK(shtpId);
+            tprxm = shtp.getTpr_xm();
+            shpcId = shtp.getShpc().getId();
             if (shtpsjs != null) {
                 for (Shtpsj shtpsj : shtpsjs) {
-                    if(tprxm.equals("")){
-                        tprxm = shtpsj.getShtp().getTpr_xm();
-                    }
-                    if(shpcId.equals("")){
-                        shpcId = shtpsj.getSha01().getShpc().getId();
-                    }
+
                     ShtpsjVo vo = new ShtpsjVo();
                     Sha01Vo sha01Vo = new Sha01Vo();
                     BeanUtils.copyProperties(vo, shtpsj);
@@ -81,6 +85,7 @@ public class ShtpsjController extends BaseController {
             map.put("shtpId", shtpId);
             map.put("shpcId", shpcId);
             map.put("tprxm", tprxm);
+            map.put("tpyj", tpyj);
         } catch (Exception e) {
             throw new GenericException(e);
         }

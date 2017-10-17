@@ -21,8 +21,7 @@
 		<div class="row-fluid">
 			<div class="span12 responsive">
 				<%-- 表格开始 --%>
-				<form class="portlet box grey"id="importForm" enctype="multipart/form-data">
-					<input type="hidden" id="mcid" name="mcid" value="${mcid}"/>
+				<form class="portlet box grey"id="importForm" enctype="multipart/form-data"  action="${path }/zzb/app/console/gbmc/b01/list">
 					<div class="portlet-title">
 						<div class="caption">单位列表</div>
 						<div class="clearfix fr">
@@ -34,13 +33,30 @@
                             </div>
 
                         </div>
+					</form>
+					<div class="clearfix">
+						<div class="control-group">
+							<div id="query" style="float: left;">
+								<form action="${path }/zzb/app/console/gbmc/b01/list" method="POST" id="searchForm" name="searchForm">
+									<input type="hidden" id="mcid" name="mcid" value="${mcid}"/>
+									<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
+									<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
+									<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
+									单位名称：<input type="text" class="m-wrap" name="b0101Query" id="b0101Query" value="${b0101Query}" style="width: 100px;" />
+									<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
+									<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
+								</form>
+							</div>
+						</div>
 
+					</div>
                         <div class="portlet-body">
 							 <table class="table table-striped table-bordered table-hover dataTable table-set">
                                 <thead>
                                     <tr>
                                         <th>单位名称</th>
                                         <th width="100">排序</th>
+										<th width="100">操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,7 +64,11 @@
                                         <tr style="text-overflow:ellipsis;">
                                             <td><a href="${path}/zzb/app/console/gbmc/a01/list?mcid=${mcid}&mcb01id=${vo.id }"><c:out value="${vo.b0101}"></c:out></a></td>
                                             <td><c:out value="${vo.px}"></c:out></td>
+											<td class="Left_alignment">
+												<a href="javascript:del('${vo.id }','${vo.b0101}')" class="">删除</a>
+											</td>
                                         </tr>
+
                                     </c:forEach>
                                 </tbody>
                             </table>
@@ -60,6 +80,7 @@
                             </jsp:include>
                         </div>
                     </div>
+
                     <%-- 表格结束 --%>
 			</div>
 		</div>
@@ -133,18 +154,33 @@
 		})();
 
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/console/gbmc/b01/list?mcid=${mcid}&pageNum="+pageNum+"&pageSize="+pageSize;
+			<%--window.location.href ="${path}/zzb/app/console/gbmc/b01/list?mcid=${mcid}&pageNum="+pageNum+"&pageSize="+pageSize;--%>
+			$("#pageNum").val(pageNum);
+			$("#pageSize").val(pageSize);
+			$("#searchForm").submit();
 		}
 
 		function searchSubmit(){
 			document.searchForm.submit();
 		}
 
-
+		var del = function(id,itemName){
+			actionByConfirm1(itemName, "${path}/zzb/app/console/gbmc/b01/delete/" + id,{} ,function(data,status){
+				if (data.success == true) {
+					showTip("提示","删除成功", 2000);
+					setTimeout(function(){window.location.href = "${path }/zzb/app/console/gbmc/b01/list?mcid=${mcid}"},2000);
+				}else{
+					showTip("提示", data.message, 2000);
+				}
+			});
+		};
 		function uploadFile(fileName){
 			document.getElementById("btn-"+fileName).click();
 		}
-
+		function clearData(){
+			$("#b0101Query").val('');
+			document.searchForm.submit();
+		}
 	</script>
 </body>
 </html>

@@ -11,6 +11,7 @@ import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
+import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcB01;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01Vo;
@@ -21,6 +22,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,13 +49,16 @@ public class GbmcA01Controller extends BaseController{
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
     @RequestMapping("/list")
-    public ModelAndView list(HttpServletRequest req, @RequestParam(value="mcb01id")String mcb01id,@RequestParam(value="mcid")String mcid,
-                             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public ModelAndView list(HttpServletRequest req, @RequestParam(value="mcb01id")String mcb01id,@RequestParam(value="mcid")String mcid
+            ,String xmQuery,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" gbMcB01.id = :mcb01id", "mcb01id", mcb01id));
+            if(xmQuery!=null && !xmQuery.equals("")){
+                query.add(CommonRestrictions.and(" xm like :xmQuery", "xmQuery", "%"+ xmQuery+ "%"));
+            }
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
             CommonOrderBy orderBy = new CommonOrderBy();
 //            orderBy.add(CommonOrder.asc("px"));
@@ -74,7 +79,7 @@ public class GbmcA01Controller extends BaseController{
             map.put("pager", pager);
             map.put("mcb01id", mcb01id);
             map.put("mcid", mcid);
-
+            map.put("xmQuery", xmQuery);
         } catch (Exception e) {
             throw new GenericException(e);
         }
@@ -144,5 +149,28 @@ public class GbmcA01Controller extends BaseController{
         }
         map.put("code", 1);
         return map;
+    }
+    /**
+     * 调转到修改页面
+     * @return
+     */
+//    @RequiresPermissions("admin-assetStatus:delete")
+    @RequestMapping(value = "/delete/{id}")
+    public @ResponseBody
+    Map<String, Object> delete(@PathVariable("id")String id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try{
+            GbMcA01 gbMcA01 = this.gbMcA01Service.getByPK(id);
+            if(gbMcA01 != null){
+                this.gbMcA01Service.delete(gbMcA01);
+            }
+            map.put("success", true);
+        }catch(Exception e){
+            map.put("success", false);
+            map.put("msg", "删除失败！");
+            throw new GenericException(e);
+        }
+        return map;
+
     }
 }

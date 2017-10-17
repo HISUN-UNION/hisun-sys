@@ -18,14 +18,29 @@
 
 		<div class="row-fluid">
 			<div class="span12 responsive">
-				<%-- 表格开始 --%>
-				<div class="portlet box grey">
-					<div class="portlet-title">
-						<div class="caption">投票统计</div>
-						<div class="clearfix fr">
+				<div class="row-fluid mb10" style="">
+					<div class="caption_title">投票统计</div>
+					<%--<a href="javascript:;" onclick="add();" class="btn fr" style="margin-right: 5px;"><i class="icon-plus"></i> 添加</a>--%>
+				</div>
+
+				<div class="clearfix">
+
+					<div class="control-group">
+
+
+						<div id="query" style="float: left;">
+							<form action="${path }/zzb/app/console/tp/" method="POST" id="searchForm" name="searchForm">
+							<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
+							<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
+							<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
+							批次名称：<input type="text" class="m-wrap" name="pcmc" id="pcmc" value="${pcmc}" style="width: 100px;" />
+							<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
+							<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
+							</form>
 						</div>
 					</div>
-			
+
+				</div>
 					<div class="portlet-body">
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
@@ -71,14 +86,20 @@
 		})();
 	
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/console/tp/?pageNum="+pageNum+"&pageSize="+pageSize;
+			<%--window.location.href ="${path}/zzb/app/console/tp/?pageNum="+pageNum+"&pageSize="+pageSize;--%>
+			$("#pageNum").val(pageNum);
+			$("#pageSize").val(pageSize);
+			$("#searchForm").submit();
 		}
 		
 		function searchSubmit(){
 			document.searchForm.submit();
 		}
 
-		
+		function clearData(){
+			$("#pcmc").val('');
+			document.searchForm.submit();
+		}
 
 	</script>
 </body>

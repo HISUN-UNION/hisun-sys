@@ -22,8 +22,7 @@
 		<div class="span12 responsive">
 			<%-- 表格开始 --%>
 			<form class="portlet box grey"id="importForm" enctype="multipart/form-data">
-				<input type="hidden" id="mcb01id" name="mcb01id" value="${mcb01id}"/>
-				<input type="hidden" id="mcid" name="mcid" value="${mcid}"/>
+
 				<div class="portlet-title">
 					<div class="caption">人员列表</div>
 					<div class="clearfix fr">
@@ -34,7 +33,24 @@
 						<a class="btn" href="${path }/zzb/app/console/gbmc/b01/list?mcid=${mcid}"><i class="icon-undo"></i>返回</a>
 					</div>
 				</div>
+			</form>
+			<div class="clearfix">
+				<div class="control-group">
+					<div id="query" style="float: left;">
+						<form action="${path }/zzb/app/console/gbmc/a01/list" method="POST" id="searchForm" name="searchForm">
+							<input type="hidden" id="mcb01id" name="mcb01id" value="${mcb01id}"/>
+							<input type="hidden" id="mcid" name="mcid" value="${mcid}"/>
+							<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
+							<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
+							<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
+							姓名：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
+							<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
+							<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
+						</form>
+					</div>
+				</div>
 
+			</div>
 				<div class="portlet-body">
 					<table class="table table-striped table-bordered table-hover dataTable table-set">
 						<thead>
@@ -56,6 +72,7 @@
 							</th>
 							<th width="60">任现职<br>级时间
 							</th>
+							<th width="40">操作</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -73,6 +90,9 @@
 								<td><c:out value="${vo.zyjszw}"></c:out></td>
 								<td><c:out value="${vo.xrzwsj}"></c:out></td>
 								<td><c:out value="${vo.xrzjsj}"></c:out></td>
+								<td class="Left_alignment">
+									<a href="javascript:del('${vo.id }','${vo.xm}')" class="">删除</a>
+								</td>
 							</tr>
 						</c:forEach>
 						</tbody>
@@ -158,18 +178,33 @@
 	})();
 
 	function pagehref (pageNum ,pageSize){
-		window.location.href ="${path}/zzb/app/console/gbmc/a01/list?mcb01id=${mcb01id}&mcid=${mcid}&pageNum="+pageNum+"&pageSize="+pageSize;
+		<%--window.location.href ="${path}/zzb/app/console/gbmc/a01/list?mcb01id=${mcb01id}&mcid=${mcid}&pageNum="+pageNum+"&pageSize="+pageSize;--%>
+		$("#pageNum").val(pageNum);
+		$("#pageSize").val(pageSize);
+		$("#searchForm").submit();
 	}
 
 	function searchSubmit(){
 		document.searchForm.submit();
 	}
 
-
+	var del = function(id,itemName){
+		actionByConfirm1(itemName, "${path}/zzb/app/console/gbmc/a01/delete/" + id,{} ,function(data,status){
+			if (data.success == true) {
+				showTip("提示","删除成功", 2000);
+				setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/a01/list?mcb01id=${mcb01id}&mcid=${mcid}"},2000);
+			}else{
+				showTip("提示", data.message, 2000);
+			}
+		});
+	};
 	function uploadFile(fileName){
 		document.getElementById("btn-"+fileName).click();
 	}
-
+	function clearData(){
+		$("#xmQuery").val('');
+		document.searchForm.submit();
+	}
 </script>
 </body>
 </html>
