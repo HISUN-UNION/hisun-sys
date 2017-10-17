@@ -75,7 +75,7 @@ public class Gbtj extends TenantEntity implements Serializable{
         this.tblx = tblx;
     }
 
-    private String toInsertSql(){
+    public String toInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_DWJG_TJ ");

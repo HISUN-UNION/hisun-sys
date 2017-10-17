@@ -6,6 +6,7 @@ import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.zzb.app.console.apiregister.dao.ApiRegisterDao;
 import com.hisun.saas.zzb.app.console.apiregister.entity.ApiRegister;
 import com.hisun.saas.zzb.app.console.gbtj.dao.GbtjDao;
+import com.hisun.saas.zzb.app.console.gbtj.entity.Gbtj;
 import com.hisun.saas.zzb.app.console.gendata.dao.GendataDao;
 import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
@@ -63,10 +64,11 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
         dirs.add(attsdir);
         //初始化非机构化数据存储目录
         this.initDataDir(dirs);
+        String sqliteDB = dbdir + GendataService.SQLITE_DB_NAME;
 
         if (map != null && map.size() > 0) {
             //初始化sqlite数据库
-            this.initSqlite(dbdir + GendataService.SQLITE_DB_NAME);
+            this.initSqlite(sqliteDB);
             //生成会议研究数据包
             for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
@@ -74,9 +76,17 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
                 if (key.equals(GendataVo.SHPC_DATA)) {
                     String[] ids = value.split(",");
                     for(String id :ids){
-                        this.genShpcData(id,dbdir + GendataService.SQLITE_DB_NAME,imgdir,attsdir);
+                        this.genShpcData(id,sqliteDB,imgdir,attsdir);
+                    }
+                    List<Gbtj> gbtjs = this.gbtjDao.list();
+                    if(gbtjs!=null && gbtjs.size()>0){
+                        for(Gbtj gbtj : gbtjs){
+                            this.genGbtjData(gbtj.getId(),sqliteDB);
+                        }
                     }
                 }else if (key.equals(GendataVo.GBTJ_DATA)){
+
+                }else if(key.equals(GendataVo.GBMC_DATA)){
 
                 }
             }
@@ -113,6 +123,13 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
                 sqliteDBUtil.insert(sqlite,apiRegister.toInsertSql());
             }
         }
+    }
+
+
+    private void genGbtjData(String gbtjId,String sqlite)throws Exception{
+        SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
+        Gbtj gbtj = this.gbtjDao.getByPK(gbtjId);
+        sqliteDBUtil.insert(sqlite,gbtj.toInsertSql());
     }
 
     private void genShpcData(String shpcId,String sqlite,String imgDir,String attsDir) throws Exception{

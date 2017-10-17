@@ -14,6 +14,7 @@ create table if not exists `app_sh_tp` (
   `tpr_xm` varchar(64) null ,
   `tp_sj` datetime null ,
   `app_sh_pc_id` varchar(32) not null,
+  `is_posted` varchar(1) not null DEFAULT 0,
   primary key (`id`),
 
   constraint `fk_rm_sh_tp_rm_sh_pc1`
@@ -193,10 +194,10 @@ create table if not exists `app_dwjg_tj` (
   `tj_mc` varchar(128) null ,
   `tj_json_data` text null ,
   `tj_px` int null,
+  `tblx` varchar(1) not null,
   primary key (`id`));
 
 drop table if exists `app_api_register`;
-
 create table `app_api_register` (
   `id` varchar(32) not null,
   `ip` varchar(32) not null,
@@ -206,3 +207,42 @@ create table `app_api_register` (
   `api_code` varchar(32) not null,
   `request_method` varchar(32) not null,
   primary key (`id`));
+
+  drop table if exists `app_mc`;
+  CREATE TABLE `app_mc` (
+  `id` varchar(32) NOT NULL,
+  `mc` varchar(255) NOT NULL,
+  `px` int(11) NOT NULL DEFAULT '99',
+  PRIMARY KEY (`id`)
+);
+
+drop table if exists `app_mc_b01`;
+CREATE TABLE `app_mc_b01` (
+  `id` varchar(32) NOT NULL,
+  `b0101` varchar(255) NOT NULL,
+  `px` int(11) NOT NULL DEFAULT '99',
+  `mc_id` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `app_mc_b01_app_mc_id_fk` FOREIGN KEY (`mc_id`) REFERENCES `app_mc` (`id`)
+);
+
+drop table if exists `app_mc_a01`;
+CREATE TABLE `app_mc_a01` (
+  `id` varchar(32) NOT NULL,
+  `xm` varchar(10) DEFAULT NULL,
+  `mz` varchar(10) DEFAULT NULL,
+  `zw` varchar(255) DEFAULT NULL,
+  `csd` varchar(40) DEFAULT NULL,
+  `jg` varchar(20) DEFAULT NULL,
+  `csny` varchar(20) DEFAULT NULL,
+  `cjgzsj` varchar(20) DEFAULT NULL,
+  `rdsj` varchar(20) DEFAULT NULL,
+  `qrzxlxwjzy` varchar(100) DEFAULT NULL,
+  `zzxlxwjzy` varchar(100) DEFAULT NULL,
+  `zyjszw` varchar(100) DEFAULT NULL,
+  `xrzwsj` varchar(20) DEFAULT NULL,
+  `xrzjsj` varchar(40) DEFAULT NULL,
+  `b01_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `app_mc_a01_app_mc_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES `app_mc_b01` (`id`)
+);
