@@ -25,16 +25,38 @@
 					<div class="portlet-title">
 						<div class="caption">"${tprxm}"  投票情况
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            注：各颜色代表的含义  &nbsp;  &nbsp;<h style="color: #00FF40 ">同意</h>
+                            注：各颜色代表的含义  &nbsp;  &nbsp;<h style="color:#00BF35">同意</h>
                             <h style="color: #FF0000 ">不同意</h>
                             <h style="color: #C0C0C0 "> 弃权</h>
                         </div>
 						<div class="clearfix fr">
-                                <a class="btn" href="${path }/zzb/app/sh/tp/tplist?shpcId=${shpcId}"><i class="icon-undo"></i>返回</a>
+                                <a class="btn" href="${path }/zzb/app/console/tp/list?shpcId=${shpcId}"><i class="icon-undo"></i>返回</a>
                             </div>
 
                         </div>
+                    </form>
+                        <div class="clearfix">
+                            <div class="control-group">
+                                <div id="query" style="float: left;">
+                                    <form action="${path }/zzb/app/console/tpsj/" method="POST" id="searchForm" name="searchForm">
+                                        <input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
+                                        <input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
+                                        <input type="hidden" name="shtpId" value="${shtpId }" id="shtpId">
+                                        <input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
+                                        投票意见：
+                                        <select name="tpyj"  style="margin: 0px;width: 80px;" onchange="searchSubmit()">
+                                            <option value="all" ${"all" eq tpyj?'selected':''}></option>
+                                            <option value="1" ${"1" eq tpyj?'selected':''}>同意</option>
+                                            <option value="2" ${"2" eq tpyj?'selected':''}>不同意</option>
+                                            <option value="3" ${"3" eq tpyj?'selected':''}>弃权</option>
+                                        </select>
+                                        <%--<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>--%>
+                                        <%--<button type="button" class="btn Short_but" onclick="clearData()">清空</button>--%>
+                                    </form>
+                                </div>
+                            </div>
 
+                        </div>
                         <div class="portlet-body">
                             <table class="table table-striped table-bordered table-hover dataTable table-set">
                                 <thead>
@@ -57,67 +79,67 @@
                                 <tbody>
                                     <c:forEach items="${pager.datas}" var="vo">
                                         <tr style="text-overflow:ellipsis;" >
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if>>
                                                 <c:out value="${vo.sha01Vo.xm}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if>>
                                                 <c:out value="${vo.sha01Vo.xb}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if>>
                                                 <c:out value="${vo.sha01Vo.mz}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if>>
                                                 <c:out value="${vo.sha01Vo.jg}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if> title="${vo.sha01Vo.csny}">
                                                 <c:out value="${vo.sha01Vo.csny}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if> title="${vo.sha01Vo.cjgzsj}">
                                                 <c:out value="${vo.sha01Vo.cjgzsj}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if> title="${vo.sha01Vo.rdsj}">
                                                 <c:out value="${vo.sha01Vo.rdsj}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if> title="${vo.sha01Vo.whcd}">
                                                 <c:out value="${vo.sha01Vo.whcd}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if> title="${vo.sha01Vo.rxjbsj}">
                                                 <c:out value="${vo.sha01Vo.rxjbsj}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if> title="${vo.sha01Vo.mztjqk}">
                                                 <c:out value="${vo.sha01Vo.mztjqk}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if> title="${vo.sha01Vo.xgzdwjzw}">
                                                 <c:out value="${vo.sha01Vo.xgzdwjzw}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if> title="${vo.sha01Vo.ntzpbyj}">
                                                 <c:out value="${vo.sha01Vo.ntzpbyj}"></c:out>
                                             </td>
-                                            <td <c:if test="${vo.tp eq 1}">style="color: #00FF40"</c:if>
+                                            <td <c:if test="${vo.tp eq 1}">style="color: #00BF35"</c:if>
                                                 <c:if test="${vo.tp eq 2}">style="color: #FF0000"</c:if>
                                                 <c:if test="${vo.tp eq 3}">style="color: #C0C0C0"</c:if> title="${vo.sha01Vo.shyj}">
                                                 <c:out value="${vo.sha01Vo.shyj}"></c:out>
@@ -151,11 +173,19 @@
 
 
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/console/tpsj/?shtpId=${shtpId}&pageNum="+pageNum+"&pageSize="+pageSize;
+			<%--window.location.href ="${path}/zzb/app/console/tpsj/?shtpId=${shtpId}&pageNum="+pageNum+"&pageSize="+pageSize;--%>
+            $("#pageNum").val(pageNum);
+            $("#pageSize").val(pageSize);
+            $("#searchForm").submit();
 		}
 
-
-
+        function searchSubmit(){
+            document.searchForm.submit();
+        }
+        function clearData(){
+            $("#tpyj").val('');
+            document.searchForm.submit();
+        }
 	</script>
 </body>
 </html>

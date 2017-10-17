@@ -54,13 +54,16 @@ public class ShtpController extends BaseController {
     private ShtpsjService shtpsjService;
 
     @RequestMapping("/")
-    public ModelAndView list(HttpServletRequest req, String pId,
+    public ModelAndView list(HttpServletRequest req, String pcmc,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            if(pcmc!=null && !pcmc.equals("")){
+                query.add(CommonRestrictions.and(" pcmc like :pcmc", "pcmc",  "%"+pcmc+ "%"));
+            }
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.desc("pcsj"));
 
@@ -79,6 +82,7 @@ public class ShtpController extends BaseController {
             PagerVo<ShpcVo> pager = new PagerVo<ShpcVo>(shpcVos, total.intValue(),
                     pageNum, pageSize);
             map.put("pager", pager);
+            map.put("pcmc", pcmc);
         } catch (Exception e) {
             throw new GenericException(e);
         }

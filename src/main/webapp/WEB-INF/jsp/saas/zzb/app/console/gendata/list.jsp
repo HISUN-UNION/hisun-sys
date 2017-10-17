@@ -38,13 +38,16 @@
 <form action="${path }/zzb/app/console/gendata/generator" class="form-horizontal" id="form1" method="post">
 	<input type="hidden" name="checkBoxTypeValues" value="" id="checkBoxTypeValues">
 	<input type="hidden" name="checkHyyjValues" value="" id="checkHyyjValues">
+	<input type="hidden" name="checkGbmcValues" value="" id="checkGbmcValues">
+	<input type="hidden" name="checkGbtjValues" value="" id="checkGbtjValues">
+
 	<div class="row-fluid mb10">
 		<ul class="ulChoicelist">
 			<li class="heightauto">
 				<h4 class=""><input class="checkbox"  name="checkBoxValue" id="CheckAllHyyj" type="checkbox" value="hyyj" /><a href="###">会议研究</a></h4>
 				<div class="Choicetwo">
 					<c:forEach items="${shpcVos}" var="vo">
-							<p><label><input clt="checkGroup"  name="checkBoxHyyjValue"  type="checkbox" value="${vo.id}" />${vo.pcmc}</label></p>
+							<p><label><input clt="checkBoxHyyjValueGroup"  name="checkBoxHyyjValue"  type="checkbox" value="${vo.id}" />${vo.pcmc}</label></p>
 					</c:forEach>
 				</div>
 			</li>
@@ -54,11 +57,21 @@
 			<li>
 				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="zxcx" /> 职数查询</h4>
 			</li>
-			<li>
-				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="gbmc" /> 干部名册</h4>
+			<li class="heightauto">
+				<h4  class=""><input class="checkbox" type="checkbox" name="checkBoxValue" id="CheckAllGbmc" value="gbmc" /> <a href="###">干部名册</a></h4>
+				<div class="Choicetwo">
+					<c:forEach items="${gbmcVos}" var="vo">
+						<p><label><input clt="checkBoxGbmcValueGroup"  name="checkBoxGbmcValue"  type="checkbox" value="${vo.id}" />${vo.mc}</label></p>
+					</c:forEach>
+				</div>
 			</li>
-			<li>
-				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="gbdwtj" /> 干部队伍统计</h4>
+			<li class="heightauto">
+				<h4  class=""><input class="checkbox" type="checkbox" name="checkBoxValue" id="CheckAllGbtj" value="gbdwtj" /> 干部队伍统计</h4>
+				<div class="Choicetwo">
+					<c:forEach items="${gbtjVos}" var="vo">
+						<p><label><input clt="checkBoxGbtjValueGroup"  name="checkBoxGbtjValue"  type="checkbox" value="${vo.id}" />${vo.tjmc}</label></p>
+					</c:forEach>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -86,15 +99,46 @@
 		$("#CheckAllHyyj").click(function() {
 			if ($(this).attr("checked")) {
 				$("input[name=checkBoxHyyjValue]").each(function() {
-					$(this).attr("checked", true);
+					$(this).parent().addClass("checked");
+					$(this).attr("checked",true);
 				});
 			} else {
 				$("input[name=checkBoxHyyjValue]").each(function() {
+					$(this).parent().removeClass("checked")
+					$(this).attr("checked",false);
+				});
+			}
+		});
+
+		$("#CheckAllGbmc").click(function() {
+			if ($(this).attr("checked")) {
+				$("input[name=checkBoxGbmcValue]").each(function() {
+					$(this).parent().addClass("checked");
+					$(this).attr("checked", true);
+				});
+			} else {
+				$("input[name=checkBoxGbmcValue]").each(function() {
+					$(this).parent().removeClass("checked")
+					$(this).attr("checked", false);
+				});
+			}
+		});
+
+		$("#CheckAllGbtj").click(function() {
+			if ($(this).attr("checked")) {
+				$("input[name=checkBoxGbtjValue]").each(function() {
+					$(this).parent().addClass("checked");
+					$(this).attr("checked", true);
+				});
+			} else {
+				$("input[name=checkBoxGbtjValue]").each(function() {
+					$(this).parent().removeClass("checked")
 					$(this).attr("checked", false);
 				});
 			}
 		});
 	})();
+
 	$(function(){
 		$('.ulChoicelist li h4 a').click(function(e) {
 			$(this).parents('li').toggleClass('heightauto');
@@ -104,7 +148,8 @@
 
 	function formSubmit(){
 		var checkHyyjValues="";//会议研究列表记录值
-		var checkBoxTypeValues = "";//选择类型的值
+		var checkGbmcValues="";//干部名册列表记录值
+		var checkGbtjValues="";//干部统计列表记录值
 		var flag= true;
 		$("input[name=checkBoxHyyjValue]").each(function() {
 			if ($(this).attr("checked")) {
@@ -116,18 +161,29 @@
 			}
 		});
 
-		$("input[name=checkBoxValue]").each(function() {
+		$("input[name=checkBoxGbmcValue]").each(function() {
 			if ($(this).attr("checked")) {
-				if(checkBoxTypeValues == ""){
-					checkBoxTypeValues = $(this).val();
+				if(checkGbmcValues == ""){
+					checkGbmcValues = $(this).val();
 				}else{
-					checkBoxTypeValues = checkBoxTypeValues+","+$(this).val();
+					checkGbmcValues = checkGbmcValues+","+$(this).val();
+				}
+			}
+		});
+
+		$("input[name=checkBoxGbtjValue]").each(function() {
+			if ($(this).attr("checked")) {
+				if(checkGbtjValues == ""){
+					checkGbtjValues = $(this).val();
+				}else{
+					checkGbtjValues = checkGbtjValues+","+$(this).val();
 				}
 			}
 		});
 		document.getElementById("checkHyyjValues").value = checkHyyjValues;
-		document.getElementById("checkBoxTypeValues").value = checkBoxTypeValues;
-		if(''==checkHyyjValues&&''==checkBoxTypeValues)
+		document.getElementById("checkGbmcValues").value = checkGbmcValues;
+		document.getElementById("checkGbtjValues").value = checkGbtjValues;
+		if(''==checkHyyjValues&&''==checkGbmcValues&&''==checkGbtjValues)
 		{
 			flag = false;
 			showTip('提示','请先选择需要生成数据的项', 1500);
