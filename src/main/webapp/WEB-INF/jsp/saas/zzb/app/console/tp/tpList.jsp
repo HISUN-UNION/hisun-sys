@@ -11,7 +11,7 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 <!-- END PAGE LEVEL STYLES -->
-<title>${pcmc}  投票情况</title>
+<title>${pcmc}  票决情况</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -21,7 +21,7 @@
 				<%-- 表格开始 --%>
 				<div class="portlet box grey">
 					<div class="portlet-title">
-						<div class="caption">"${pcmc}"投票情况</div>
+						<div class="caption">"${pcmc}"票决情况</div>
 						<div class="clearfix fr">
 							<a class="btn" href="${path }/zzb/app/console/tp/"><i class="icon-undo"></i>返回</a>
 						</div>
@@ -31,10 +31,10 @@
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
 								<tr>
-									<th >投票编号</th>
-									<th width="10%">投票人</th>
-									<th width="10%">投票时间</th>
-									<th width="10%">投票情况</th>
+									<th >票决编号</th>
+									<th width="10%">票决人</th>
+									<th width="10%">票决时间</th>
+									<th width="15%">具体票决情况</th>
 								</tr>
 							</thead>
 							<tbody>

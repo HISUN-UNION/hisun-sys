@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加部务会批次信息</title>
+<title>添加会议研究批次</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -26,7 +26,7 @@
 
 							<i class="icon-reorder"></i>
 
-							<span class="hidden-480">添加部务会批次信息</span>
+							<span class="hidden-480">添加会议研究批次</span>
 
 						</div>
 						<div class="tools">

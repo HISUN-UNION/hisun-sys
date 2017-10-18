@@ -11,7 +11,7 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 <!-- END PAGE LEVEL STYLES -->
-<title>投票统计</title>
+<title>票决统计</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -19,7 +19,7 @@
 		<div class="row-fluid">
 			<div class="span12 responsive">
 				<div class="row-fluid mb10" style="">
-					<div class="caption_title">投票统计</div>
+					<div class="caption_title">票决统计</div>
 					<%--<a href="javascript:;" onclick="add();" class="btn fr" style="margin-right: 5px;"><i class="icon-plus"></i> 添加</a>--%>
 				</div>
 
@@ -48,8 +48,8 @@
 									<th >批次名称</th>
 									<th width="10%">上会类型</th>
 									<th width="10%">上会时间</th>
-									<th width="10%">投票情况</th>
-									<th width="10%">投票结果</th>
+									<th width="10%">票决情况</th>
+									<th width="10%">票决结果</th>
 								</tr>
 							</thead>
 							<tbody>

@@ -50,6 +50,7 @@ public class ShtpsjController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             String tprxm ="";
+            String tpqbh="";
             String shpcId = "";
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" shtp.id = :shtpId", "shtpId", shtpId));
@@ -67,6 +68,7 @@ public class ShtpsjController extends BaseController {
             List<ShtpsjVo> shtpsjVos = new ArrayList<ShtpsjVo>();
             Shtp shtp = this.shtpService.getByPK(shtpId);
             tprxm = shtp.getTpr_xm();
+            tpqbh = shtp.getTpq_bh();
             shpcId = shtp.getShpc().getId();
             if (shtpsjs != null) {
                 for (Shtpsj shtpsj : shtpsjs) {
@@ -84,7 +86,7 @@ public class ShtpsjController extends BaseController {
             map.put("pager", pager);
             map.put("shtpId", shtpId);
             map.put("shpcId", shpcId);
-            map.put("tprxm", tprxm);
+            map.put("tpqbh", tpqbh);
             map.put("tpyj", tpyj);
         } catch (Exception e) {
             throw new GenericException(e);

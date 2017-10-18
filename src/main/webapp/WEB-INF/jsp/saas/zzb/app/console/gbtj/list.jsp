@@ -62,8 +62,8 @@
 							<thead>
 								<tr>
 									<th >统计名称</th>
+									<th width="20%">预览</th>
 									<th width="5%">排序</th>
-									<th width="10%">预览</th>
 									<th width="10%">操作</th>
 								</tr>
 							</thead>
@@ -71,11 +71,11 @@
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
 										<td><a href="${path}/zzb/app/console/gbtj/edit?id=${vo.id }"><c:out value="${vo.tjmc}"></c:out></a></td>
-										<td><c:out value="${vo.px}"></c:out></td>
 										<td class="Left_alignment">
 											<a href="javascript:viewJosnDate('${vo.id }','${vo.tblx}')" class="">预览</a>|
 											<a href="javascript:editJosnDate('${vo.id }','${vo.tjmc}')" class="">编辑数据</a>
 										</td>
+										<td><c:out value="${vo.px}"></c:out></td>
 										<td class="Left_alignment">
 											<a href="${path}/zzb/app/console/gbtj/edit?id=${vo.id }" class="">编辑</a>|
 											<a href="javascript:del('${vo.id }','${vo.tjmc}')" class="">删除</a>

@@ -14,7 +14,7 @@
 
 <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 <!-- END PAGE LEVEL STYLES -->
-<title>单位列表</title>
+<title>名册目录</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -24,7 +24,7 @@
 				<form class="portlet box grey"id="importForm" enctype="multipart/form-data"  action="${path }/zzb/app/console/gbmc/b01/list">
 					<input type="hidden" id="mcid" name="mcid" value="${mcid}"/>
 					<div class="portlet-title">
-						<div class="caption">单位列表</div>
+						<div class="caption">名册目录</div>
 						<div class="clearfix fr">
 							<span class="controllerClass btn green file_but" >
 									<i class="icon-circle-arrow-up"></i>上传单位
@@ -43,7 +43,7 @@
 									<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
 									<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
 									<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
-									单位名称：<input type="text" class="m-wrap" name="b0101Query" id="b0101Query" value="${b0101Query}" style="width: 100px;" />
+									目录名称：<input type="text" class="m-wrap" name="b0101Query" id="b0101Query" value="${b0101Query}" style="width: 100px;" />
 									<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
 									<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
 								</form>
@@ -55,7 +55,7 @@
 							 <table class="table table-striped table-bordered table-hover dataTable table-set">
                                 <thead>
                                     <tr>
-                                        <th>单位名称</th>
+                                        <th>目录名称</th>
                                         <th width="100">排序</th>
 										<th width="100">操作</th>
                                     </tr>

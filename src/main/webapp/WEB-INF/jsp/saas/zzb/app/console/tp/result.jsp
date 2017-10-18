@@ -14,7 +14,7 @@
 
 <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 <!-- END PAGE LEVEL STYLES -->
-<title>"${shpcmc}" 投票结果</title>
+<title>"${shpcmc}" 票决结果</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -24,7 +24,7 @@
 				<form class="portlet box grey"id="importForm" enctype="multipart/form-data">
 					<input type="hidden" id="shpcId" name="shpcId" value="${shpcId}"/>
 					<div class="portlet-title">
-						<div class="caption">"${shpcmc}" 投票结果</div>
+						<div class="caption">"${shpcmc}" 票决结果</div>
 						<div class="clearfix fr">
                                 <a class="btn" href="${path }/zzb/app/console/tp/"><i class="icon-undo"></i>返回</a>
                             </div>
@@ -35,7 +35,7 @@
                                 <thead>
                                     <tr>
                                         <th width="20%" style="text-align: center;border-right-color: rgb(225, 230, 235);border-right-style: solid;border-right-width: 1px" rowspan=2>姓名</th>
-										<th colspan="3" style="text-align: center;border-right-color: rgb(225, 230, 235);border-right-style: solid;border-right-width: 1px">投票结果</th>
+										<th colspan="3" style="text-align: center;border-right-color: rgb(225, 230, 235);border-right-style: solid;border-right-width: 1px">票决结果</th>
 										<th width="20%" style="text-align: center;" rowspan=2>得票率</th>
                                     </tr>
 									<tr>

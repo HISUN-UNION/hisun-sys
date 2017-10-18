@@ -14,7 +14,7 @@
 
 <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 <!-- END PAGE LEVEL STYLES -->
-<title>"${tprxm}"  投票情况</title>
+<title>"${tpqbh}"  票决情况</title>
 </head>
 <body>
 	<div class="container-fluid">
@@ -23,7 +23,7 @@
 				<%-- 表格开始 --%>
 				<form class="portlet box grey"id="importForm">
 					<div class="portlet-title">
-						<div class="caption">"${tprxm}"  投票情况
+						<div class="caption">"${tpqbh}"  票决情况
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             注：各颜色代表的含义  &nbsp;  &nbsp;<h style="color:#00BF35">同意</h>
                             <h style="color: #FF0000 ">不同意</h>
@@ -43,7 +43,7 @@
                                         <input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
                                         <input type="hidden" name="shtpId" value="${shtpId }" id="shtpId">
                                         <input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
-                                        投票意见：
+                                        票决意见：
                                         <select name="tpyj"  style="margin: 0px;width: 80px;" onchange="searchSubmit()">
                                             <option value="all" ${"all" eq tpyj?'selected':''}></option>
                                             <option value="1" ${"1" eq tpyj?'selected':''}>同意</option>
