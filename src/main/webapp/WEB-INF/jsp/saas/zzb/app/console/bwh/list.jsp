@@ -28,7 +28,7 @@
 							</a>
 						</div>
 					</div>
-			
+					<form action="" class="form-horizontal" id="form1" method="post">
 					<div class="portlet-body">
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
@@ -36,8 +36,9 @@
 									<th >批次名称</th>
 									<th width="10%">上会类型</th>
 									<th width="10%">上会时间</th>
+									<th width="10%">上会状态</th>
 									<th width="10%">上会名单</th>
-									<th width="15%">操作</th>
+									<th width="10%">操作</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -46,6 +47,7 @@
 										<td><a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }"><c:out value="${vo.pcmc}"></c:out></a></td>
 										<td><c:out value="${vo.shlxValue}"></c:out></td>
 										<td><c:out value="${vo.pcsjValue}"></c:out></td>
+										<td><a href="javascript:changeShZt('${vo.id}')" id="${vo.id }_shZt"><c:out value="${vo.shZtValue}"></c:out></a></td>
 										<td><a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }" class="">共${vo.a01Count }人</a></td>
 										<td class="Left_alignment">
 											<a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }" class="">编辑</a>|
@@ -62,6 +64,7 @@
 							<jsp:param value="${pager.pageNum }" name="page"/>
 						</jsp:include>
 					</div>
+					</form>
 				</div>
 				<%-- 表格结束 --%>
 			</div>
@@ -69,6 +72,7 @@
 		
 		<%-- END PAGE CONTENT--%>  
 	</div>
+	<script type="text/javascript" src="${path }/js/common/30CloudAjax.js"></script>
 	<script type="text/javascript">
 		(function(){
 			App.init();
@@ -92,7 +96,27 @@
 				}
 			});
 		};
-		
+		function changeShZt(id){
+			$.cloudAjax({
+				path : '${path}',
+				url : "${path }/zzb/app/console/bwh/changeShZt/"+id,
+				type : "post",
+				data : $("#form1").serialize(),
+				dataType : "json",
+				success : function(data){
+					if(data.success){
+						document.getElementById(id+"_shZt").innerHTML  = data.shZtValue;
+						showTip("提示","上会状态成功修改为“"+data.shZtValue+"”",2000);
+						//setTimeout(function(){window.location.href = "${path}/zzb/app/console/bwh/"},2000);
+					}else{
+						showTip("提示", json.message, 2000);
+					}
+				},
+				error : function(){
+					showTip("提示","出错了请联系管理员",2000);
+				}
+			});
+		}
 
 	</script>
 </body>

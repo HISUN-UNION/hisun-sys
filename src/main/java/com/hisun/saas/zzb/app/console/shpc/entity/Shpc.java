@@ -36,6 +36,9 @@ public class Shpc extends TenantEntity implements Serializable{
     private Date pcsj;
     @Column(name = "file_path")
     private String filePath;
+    @Column(name = "sh_zt")//0-未上会，1-已上会
+    private int shZt;
+
     @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<Sha01> sha01s;
@@ -100,6 +103,13 @@ public class Shpc extends TenantEntity implements Serializable{
         this.shtps = shtps;
     }
 
+    public int getShZt() {
+        return shZt;
+    }
+
+    public void setShZt(int shZt) {
+        this.shZt = shZt;
+    }
 
     public String toInsertSql(){
         StringBuffer sb = new StringBuffer("");
@@ -110,6 +120,7 @@ public class Shpc extends TenantEntity implements Serializable{
         sb.append(",PC_MC");
         sb.append(",SHLX");
         sb.append(",PC_SJ");
+        sb.append(",sh_zt");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
@@ -122,6 +133,7 @@ public class Shpc extends TenantEntity implements Serializable{
         }else{
             sb.append(",''");
         }
+        sb.append(",'"+ shZt+"'");
         sb.append(")");
         return sb.toString();
     }

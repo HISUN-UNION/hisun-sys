@@ -15,14 +15,19 @@
 <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 <!-- END PAGE LEVEL STYLES -->
 <title>上会名单</title>
+	<style type="text/css">
+		form {
+			margin: 0 0 0px;
+		}
+	</style>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span12 responsive">
 				<%-- 表格开始 --%>
-				<form class="portlet box grey"id="importForm" enctype="multipart/form-data">
-					<input type="hidden" id="shpcId" name="shpcId" value="${shpcId}"/>
+				<form class=""id="importForm" enctype="multipart/form-data">
+
 					<div class="portlet-title">
 						<div class="caption">上会名单</div>
 						<div class="clearfix fr">
@@ -59,7 +64,23 @@
                             </div>
 
                         </div>
+				</form>
+					<div class="clearfix">
+						<div class="control-group">
+							<div id="query" style="float: left;">
+								<form action="${path }/zzb/app/console/Sha01/list/" method="POST" id="searchForm" name="searchForm">
+									<input type="hidden" id="shpcId" name="shpcId" value="${shpcId}"/>
+									<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
+									<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
+									<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
+									姓名：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
+									<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
+									<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
+								</form>
+							</div>
+						</div>
 
+					</div>
                         <div class="portlet-body">
                             <table class="table table-striped table-bordered table-hover dataTable table-set">
                                 <thead>
@@ -376,7 +397,10 @@
 		})();
 
 		function pagehref (pageNum ,pageSize){
-			window.location.href ="${path}/zzb/app/console/Sha01/list?shpcId=${shpcId}&pageNum="+pageNum+"&pageSize="+pageSize;
+			<%--window.location.href ="${path}/zzb/app/console/Sha01/list?shpcId=${shpcId}&pageNum="+pageNum+"&pageSize="+pageSize;--%>
+			$("#pageNum").val(pageNum);
+			$("#pageSize").val(pageSize);
+			$("#searchForm").submit();
 		}
 
 		function searchSubmit(){
@@ -397,7 +421,10 @@
 		function uploadFile(fileName){
 			document.getElementById("btn-"+fileName).click();
 		}
-
+		function clearData(){
+			$("#xmQuery").val('');
+			document.searchForm.submit();
+		}
 	</script>
 </body>
 </html>

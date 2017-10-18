@@ -65,6 +65,7 @@ public class GendataController extends BaseController{
             //获取会议研究列表数据
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            query.add(CommonRestrictions.and(" shZt = :shZt", "shZt", 0));
             Long total = this.shpcService.count(query);
             List<Shpc> shpcs = this.shpcService.list(query, null);
             List<ShpcVo> shpcVos = new ArrayList<ShpcVo>();

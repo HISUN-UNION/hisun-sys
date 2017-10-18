@@ -12,6 +12,11 @@
 <link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 <!-- END PAGE LEVEL STYLES -->
 <title>干部名册</title>
+	<style type="text/css">
+		form {
+			margin: 0 0 0px;
+		}
+	</style>
 </head>
 <body>
 	<div class="container-fluid">

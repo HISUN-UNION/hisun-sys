@@ -16,7 +16,7 @@
     <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
     <style type="text/css">
         .showdabzcss{width:450px;;overflow:hidden;text-overflow:ellipsis; display: inline-block; white-space: nowrap; color: #333; font-size: 13px;
-            vertical-align: middle; cursor: pointer;  }
+            vertical-align: middle; cursor: pointer; background-color: #f8f8f8; height: 34px; line-height: 34px; padding-left: 10px;  }
         .showdabzcss:hover{  color:#009ae1;}
     </style>
 </head>
@@ -121,8 +121,8 @@
                                 <a class="btn"  id="btn-dabzAdd" herf="javascript:void(0)">添加备注</a>
                             </div>
                         </div>
-                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a herf="javascript:void(0)" title="删除备注" id="dabzDelete" onclick="dabzDelete()"  class="close fileupload-exists" style="float: none; <c:if test="${fn:length(dascqkTipe)>0}">display:inline-block</c:if>"></a>
-                        <a herf="javascript:void(0)" onclick="dabzUpdate()" class="showdabzcss" id='dabzshowspan' title="${dascqkTipe}">${dascqkTipe}</a>
+                        <a herf="javascript:void(0)" onclick="dabzUpdate()" <c:if test="${fn:length(dascqkTipe)==0}">style="display:none"</c:if> class="showdabzcss" id='dabzshowspan' title="${dascqkTipe}">${dascqkTipe}</a>
+                        <a herf="javascript:void(0)" title="删除备注" id="dabzDelete" onclick="dabzDelete()"  class="close fileupload-exists" style="float: none; <c:if test="${fn:length(dascqkTipe)>0}">display:inline-block</c:if>"></a>
 
                     </div>
                 </div>
@@ -158,8 +158,6 @@
 <script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
 <script type="text/javascript" src="${path }/js/common/loading.js"></script>
 <script src="${path }/js/bootstrap-fileupload.js"></script>
-<!— 引入确认框模块 —>
-<%@ include file="/WEB-INF/jsp/inc/confirmModal.jsp" %>
 <script type="text/javascript">
 
     var dasc={};
@@ -221,10 +219,11 @@
         actionByConfirm1("档案审查备注", "${path}/zzb/app/Sha01/dascqk/dascqktips/delete/${shpa01Vo.id}",{} ,function(data){
             if (data.success == true) {
                 showTip("提示","删除成功", 1000);
-                window.location.href="${path }/zzb/app/console/Sha01/view?id=${shpa01Vo.id}";
-//                document.getElementById('dabzAddbtnDiv').style.display="inline-block";
-//                document.getElementById('dabzshowspan').innerHTML="";
-//                document.getElementById('dabzDelete').style.display="none";
+                <%--window.location.href="${path }/zzb/app/console/Sha01/view?id=${shpa01Vo.id}";--%>
+                document.getElementById('dabzAddbtnDiv').style.display="inline-block";
+                document.getElementById('dabzshowspan').innerHTML="";
+                document.getElementById('dabzshowspan').style.display="none";
+                document.getElementById('dabzDelete').style.display="none";
             }else{
                 showTip("提示", data.message, 1000);
             }

@@ -63,13 +63,16 @@ public class Sha01Controller extends BaseController {
     private ShtpsjService shtpsjService;
 
     @RequestMapping("/list")
-    public ModelAndView list(HttpServletRequest req,@RequestParam(value="shpcId")String shpcId,
+    public ModelAndView list(HttpServletRequest req,@RequestParam(value="shpcId")String shpcId,String xmQuery,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" shpc.id = :shpcId", "shpcId", shpcId));
+            if(xmQuery!=null && !xmQuery.equals("")){
+                query.add(CommonRestrictions.and(" xm like:xmQuery", "xmQuery", "%"+ xmQuery+ "%"));
+            }
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
             CommonOrderBy orderBy = new CommonOrderBy();
            orderBy.add(CommonOrder.asc("px"));
@@ -89,6 +92,7 @@ public class Sha01Controller extends BaseController {
                     pageNum, pageSize);
             map.put("pager", pager);
             map.put("shpcId", shpcId);
+            map.put("xmQuery", xmQuery);
         } catch (Exception e) {
             throw new GenericException(e);
         }

@@ -26,7 +26,8 @@ public class ShpcVo extends TenantEntityVo {
     private int a01Count;
     private int tpCount;//投票情况
     private List<Sha01Vo> sha01s;
-
+    private int shZt;
+    private String shZtValue;
     @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<ShtpVo> shtps;
@@ -114,5 +115,24 @@ public class ShpcVo extends TenantEntityVo {
 
     public void setTpCount(int tpCount) {
         this.tpCount = tpCount;
+    }
+
+    public int getShZt() {
+        return shZt;
+    }
+
+    public void setShZt(int shZt) {
+        this.shZt = shZt;
+    }
+    public String getShZtValue(){
+        if(this.shZt==0){
+            return "未上会";
+        }else if(this.shZt==1){
+            return "已上会";
+        }
+        return "";
+    }
+    public void setShZtValue(String shZtValue){
+        this.shZtValue = shZtValue;
     }
 }

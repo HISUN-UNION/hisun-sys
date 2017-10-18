@@ -164,5 +164,33 @@ public class BwhController extends BaseController {
         }
         return map;
     }
+    /**
+     * 调转到修改页面
+     * @return
+     */
+    @RequestMapping(value ="/changeShZt/{id}")
+    public @ResponseBody Map<String, Object> changeShZt(@PathVariable("id")String id) {
+        Map<String, Object> map = new HashMap<String, Object>();
 
+        try {
+            String shZtValue = "";
+            Shpc shpc = this.shpcService.getByPK(id);
+            if(shpc.getShZt()==0){
+                shpc.setShZt(1);
+                shZtValue = "已上会";
+            }else{
+                shpc.setShZt(0);
+                shZtValue = "未上会";
+            }
+            UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+            BeanTrans.setBaseProperties(shpc, userLoginDetails, "update");
+            this.shpcService.update(shpc);
+            map.put("success", true);
+            map.put("shZtValue", shZtValue);
+        } catch (Exception e) {
+            map.put("success", false);
+            throw new GenericException(e);
+        }
+        return map;
+    }
 }

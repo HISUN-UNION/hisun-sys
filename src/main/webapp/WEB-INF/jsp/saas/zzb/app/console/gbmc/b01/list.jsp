@@ -15,14 +15,19 @@
 <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 <!-- END PAGE LEVEL STYLES -->
 <title>名册目录</title>
+	<style type="text/css">
+		form {
+			margin: 0 0 0px;
+		}
+	</style>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span12 responsive">
 				<%-- 表格开始 --%>
-				<form class="portlet box grey"id="importForm" enctype="multipart/form-data"  action="${path }/zzb/app/console/gbmc/b01/list">
-					<input type="hidden" id="mcid" name="mcid" value="${mcid}"/>
+				<form class=""id="importForm" enctype="multipart/form-data"  action="${path }/zzb/app/console/gbmc/b01/list">
+					<input type="hidden"  name="mcid" value="${mcid}"/>
 					<div class="portlet-title">
 						<div class="caption">名册目录</div>
 						<div class="clearfix fr">

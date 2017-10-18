@@ -40,6 +40,7 @@
 					if(data.success){
 						$('#dabzModal').modal('hide');
 						document.getElementById('dabzAddbtnDiv').style.display="none";
+						document.getElementById('dabzshowspan').style.display="inline-block";
 						document.getElementById('dabzshowspan').innerHTML=data.tip;
 						document.getElementById('dabzshowspan').title=data.tip;
 						document.getElementById('dabzDelete').style.display="inline-block";
