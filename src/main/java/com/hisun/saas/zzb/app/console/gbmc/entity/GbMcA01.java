@@ -52,6 +52,8 @@ public class GbMcA01 extends TenantEntity implements Serializable{
     private String xrzwsj;
     @Column(name = "xrzjsj",length = 40)
     private String xrzjsj;
+    @Column(name = "a01_PX")
+    private int px = 0;
 
     public String getId() {
         return id;
@@ -171,5 +173,13 @@ public class GbMcA01 extends TenantEntity implements Serializable{
 
     public void setXrzjsj(String xrzjsj) {
         this.xrzjsj = xrzjsj;
+    }
+
+    public int getPx() {
+        return px;
+    }
+
+    public void setPx(int px) {
+        this.px = px;
     }
 }

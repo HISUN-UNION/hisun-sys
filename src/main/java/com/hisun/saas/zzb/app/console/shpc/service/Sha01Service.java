@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface Sha01Service extends BaseService<Sha01,String> {
 
-    public static String ATTS_PATH = File.separator+"sha01"+ File.separator;;
+    public static String ATTS_PATH = File.separator+"sha01"+ File.separator;
 
     public void saveFromWordDataMap(Tenant tenant, Map<String, String> dataMap, String pcId);
 

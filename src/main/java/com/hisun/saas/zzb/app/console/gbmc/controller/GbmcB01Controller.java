@@ -1,5 +1,8 @@
 package com.hisun.saas.zzb.app.console.gbmc.controller;
 
+import com.aspose.words.Document;
+import com.aspose.words.NodeType;
+import com.aspose.words.Paragraph;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
@@ -12,10 +15,12 @@ import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMc;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcB01;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcB01Service;
+import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcB01Vo;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
+import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +33,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -42,11 +46,14 @@ import java.util.*;
 @RequestMapping("/zzb/app/console/gbmc/b01")
 public class GbmcB01Controller extends BaseController{
 
-    @Autowired
+    @Resource
     private GbMcB01Service gbMcB01Service;
+    @Resource
+    private GbMcService gbMcService;
 
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
+
     @RequestMapping("/list")
     public ModelAndView list(HttpServletRequest req, @RequestParam(value="mcid")String mcid,String b0101Query,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -98,26 +105,43 @@ public class GbmcB01Controller extends BaseController{
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-                String fileDir = uploadAbsolutePath + "/gbmc";
+                String fileDir = uploadAbsolutePath +GbMcB01Service.ATTS_PATH;
                 File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir + File.separator + DateUtil.formatDateByFormat(new Date(),"yyyyMMddHHmmssSSS")+"_"+fileName;
+                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
 
                 try {
-                    FileOutputStream fos = new FileOutputStream(new File(savePath));
+                    File tmpFile = new File(savePath);
+                    FileOutputStream fos = new FileOutputStream(tmpFile);
                     fos.write(file.getBytes());
                     fos.flush();
                     fos.close();
 
-                    //处理上传文件
-                    //先将word转成Map
-                    String tmplateWordPath = fileDir+File.separator+"gbmcb01.docx";
-                    //this.getClass().getClassLoader().getResource("sha01.docx").getPath();
+                    GbMc gbMc = this.gbMcService.getByPK(mcid);
+                    //处理上传word
                     WordUtil wordUtil = WordUtil.newInstance();
-
-
+                    InputStream stream = new FileInputStream(new File(savePath));
+                    Document doc = new Document(stream);
+                    GbMcB01 b01 = null;
+                    String b0101 = "";
+                    int px = 1;
+                    for (Paragraph para : (Iterable<Paragraph>) doc.getChildNodes(NodeType.PARAGRAPH, true)) {
+                        //取得目录...之前的数据
+                        if(para.getText().indexOf("...")>0) {
+                            b0101 = para.getText().substring(0,para.getText().indexOf("."));
+                            b01= new GbMcB01();
+                            b01.setB0101(b0101);
+                            b01.setPx(px);
+                            b01.setTenant(userLoginDetails.getTenant());
+                            b01.setGbMc(gbMc);
+                            this.gbMcB01Service.save(b01);
+                            px++;
+                        }
+                    }
+                    //删除临时文件
+                    tmpFile.delete();
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);

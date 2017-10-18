@@ -31,6 +31,7 @@ public class GbMcA01Vo {
     private String zyjszw;
     private String xrzwsj;
     private String xrzjsj;
+    private int px = 0;
 
     public String getId() {
         return id;
@@ -150,5 +151,13 @@ public class GbMcA01Vo {
 
     public void setXrzjsj(String xrzjsj) {
         this.xrzjsj = xrzjsj;
+    }
+
+    public int getPx() {
+        return px;
+    }
+
+    public void setPx(int px) {
+        this.px = px;
     }
 }

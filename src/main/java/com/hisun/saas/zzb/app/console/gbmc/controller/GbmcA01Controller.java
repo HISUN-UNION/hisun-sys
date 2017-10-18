@@ -17,6 +17,7 @@ import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01Vo;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01Vo;
 import com.hisun.util.DateUtil;
+import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +62,10 @@ public class GbmcA01Controller extends BaseController{
             }
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
             CommonOrderBy orderBy = new CommonOrderBy();
-//            orderBy.add(CommonOrder.asc("px"));
+            orderBy.add(CommonOrder.asc("px"));
 
             Long total = this.gbMcA01Service.count(query);
-            List<GbMcA01> sha01s = this.gbMcA01Service.list(query,null, pageNum,
+            List<GbMcA01> sha01s = this.gbMcA01Service.list(query,orderBy, pageNum,
                     pageSize);
             List<GbMcA01Vo> shpcVos = new ArrayList<GbMcA01Vo>();
             if (sha01s != null) {// entity ==> vo
@@ -100,26 +101,25 @@ public class GbmcA01Controller extends BaseController{
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-                String fileDir = uploadAbsolutePath + "/gbmc";
+                String fileDir = uploadAbsolutePath + GbMcA01Service.ATTS_PATH;
                 File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir + File.separator + DateUtil.formatDateByFormat(new Date(),"yyyyMMddHHmmssSSS")+"_"+fileName;
+                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
 
                 try {
-                    FileOutputStream fos = new FileOutputStream(new File(savePath));
+                    File tempFile = new File(savePath);
+                    FileOutputStream fos = new FileOutputStream(tempFile);
                     fos.write(file.getBytes());
                     fos.flush();
                     fos.close();
-
-                    //处理上传文件
                     //先将word转成Map
-                    String tmplateWordPath = fileDir+File.separator+"gbmca01.docx";
-                    //this.getClass().getClassLoader().getResource("sha01.docx").getPath();
+                    String tmplateWordPath = uploadAbsolutePath + GbMcA01Service.IMPORT_DOC_TEMPLATE;
                     WordUtil wordUtil = WordUtil.newInstance();
-
-
+                    Map<String,String> dataMap = wordUtil.convertMapByTemplate(savePath,tmplateWordPath);
+                    this.gbMcA01Service.saveFromWordDataMap(userLoginDetails.getTenant(),dataMap,mcb01id);
+                    tempFile.delete();
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);

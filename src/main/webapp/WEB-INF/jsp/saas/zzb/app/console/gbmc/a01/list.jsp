@@ -22,7 +22,7 @@
 		<div class="span12 responsive">
 			<%-- 表格开始 --%>
 			<form class="portlet box grey"id="importForm" enctype="multipart/form-data">
-
+				<input type="hidden" id="mcb01id" name="mcb01id" value="${mcb01id}"/>
 				<div class="portlet-title">
 					<div class="caption">人员列表</div>
 					<div class="clearfix fr">
