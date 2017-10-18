@@ -9,6 +9,8 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.apiregister.entity.ApiRegister;
+import com.hisun.saas.zzb.app.console.apiregister.service.ApiRegisterService;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -32,8 +35,10 @@ import java.util.*;
 @Controller
 @RequestMapping("/zzb/app/console/bwh")
 public class BwhController extends BaseController {
-    @Autowired
+    @Resource
     private ShpcService shpcService;
+    @Resource
+    private ApiRegisterService apiRegisterService;
 
     @RequestMapping("/")
     public ModelAndView list(HttpServletRequest req, String pId,
@@ -41,6 +46,17 @@ public class BwhController extends BaseController {
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
+
+            //临时处理,将当前服务IP,端口,context写入ApiRegister
+            List<ApiRegister> apiRegisters = this.apiRegisterService.list();
+            if(apiRegisters!=null && apiRegisters.size()>0){
+                for(ApiRegister apiRegister : apiRegisters){
+                    apiRegister.setIp(req.getServerName());
+                    apiRegister.setPort(""+req.getServerPort());
+                    apiRegister.setContext(req.getContextPath());
+                    this.apiRegisterService.update(apiRegister);
+                }
+            }
             CommonConditionQuery query = new CommonConditionQuery();
            // query.add(CommonRestrictions.and(" shlx = :shlx", "shlx", Shpc.SHLX_BWH));
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
