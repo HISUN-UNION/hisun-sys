@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface GbMcA01Service extends BaseService<GbMcA01,String> {
 
-    public static String ATTS_PATH = File.separator+"gbmc"+File.separator+"mca01"+ File.separator;
+    public static String ATTS_PATH = File.separator+"mca01"+ File.separator;
     public static String IMPORT_DOC_TEMPLATE = ATTS_PATH +"gbmca01.docx";
 
 

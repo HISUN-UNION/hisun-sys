@@ -11,5 +11,5 @@ import java.io.File;
  */
 public interface GbMcB01Service extends BaseService<GbMcB01,String> {
 
-    public static String ATTS_PATH = File.separator+"gbmc"+File.separator+"mcb01"+ File.separator;
+    public static String ATTS_PATH = File.separator+"mcb01"+ File.separator;
 }
