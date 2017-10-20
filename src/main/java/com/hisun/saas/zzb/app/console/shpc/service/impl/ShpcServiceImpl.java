@@ -7,8 +7,6 @@ import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.service.impl.BaseServiceImpl;
-import com.hisun.saas.sys.auth.UserLoginDetails;
-import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
@@ -17,19 +15,9 @@ import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
 import com.hisun.saas.zzb.app.console.shtp.entity.Shtpsj;
 import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
-import com.hisun.saas.zzb.app.console.shtp.vo.ShtpVo;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.fop.fo.pagination.Region;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.hibernate.SQLQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +25,8 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by zhouying on 2017/9/15.
