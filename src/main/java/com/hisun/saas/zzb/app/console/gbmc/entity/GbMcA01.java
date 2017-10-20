@@ -1,10 +1,12 @@
 package com.hisun.saas.zzb.app.console.gbmc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -54,6 +56,16 @@ public class GbMcA01 extends TenantEntity implements Serializable{
     private String xrzjsj;
     @Column(name = "a01_PX")
     private int px = 0;
+    @Column(name = "ZP_PATH",length = 128)
+    private String zppath;
+
+    @OneToMany(mappedBy = "gbMcA01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<GbMcA01gzjl> gbMca01gzjls;
+
+    @OneToMany(mappedBy = "gbMcA01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<GbMcA01gbrmspb> gbMca01gbrmspbs;
 
     public String getId() {
         return id;
@@ -181,5 +193,29 @@ public class GbMcA01 extends TenantEntity implements Serializable{
 
     public void setPx(int px) {
         this.px = px;
+    }
+
+    public String getZppath() {
+        return zppath;
+    }
+
+    public void setZppath(String zppath) {
+        this.zppath = zppath;
+    }
+
+    public List<GbMcA01gzjl> getGbMca01gzjls() {
+        return gbMca01gzjls;
+    }
+
+    public void setGbMca01gzjls(List<GbMcA01gzjl> gbMca01gzjls) {
+        this.gbMca01gzjls = gbMca01gzjls;
+    }
+
+    public List<GbMcA01gbrmspb> getGbMca01gbrmspbs() {
+        return gbMca01gbrmspbs;
+    }
+
+    public void setGbMca01gbrmspbs(List<GbMcA01gbrmspb> gbMca01gbrmspbs) {
+        this.gbMca01gbrmspbs = gbMca01gbrmspbs;
     }
 }

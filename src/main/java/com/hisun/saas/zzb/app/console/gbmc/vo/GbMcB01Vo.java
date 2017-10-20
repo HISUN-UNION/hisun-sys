@@ -17,7 +17,7 @@ public class GbMcB01Vo{
     private String b0101;
     private int px;
     private List<GbMcA01Vo> gbMcA01Vos;
-
+    private int a01Count;
     public String getId() {
         return id;
     }
@@ -57,5 +57,13 @@ public class GbMcB01Vo{
 
     public void setGbMcA01Vos(List<GbMcA01Vo> gbMcA01Vos) {
         this.gbMcA01Vos = gbMcA01Vos;
+    }
+
+    public int getA01Count() {
+        return a01Count;
+    }
+
+    public void setA01Count(int a01Count) {
+        this.a01Count = a01Count;
     }
 }

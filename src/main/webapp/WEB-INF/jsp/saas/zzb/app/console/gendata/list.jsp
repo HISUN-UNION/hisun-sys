@@ -66,7 +66,7 @@
 				</div>
 			</li>
 			<li class="heightauto">
-				<h4  class=""><input class="checkbox" type="checkbox" name="checkBoxValue" id="CheckAllGbtj" value="gbdwtj" /> 干部队伍统计</h4>
+				<h4  class=""><input class="checkbox" type="checkbox" name="checkBoxValue" id="CheckAllGbtj" value="gbdwtj" />  <a href="###">干部队伍统计</a></h4>
 				<div class="Choicetwo">
 					<c:forEach items="${gbtjVos}" var="vo">
 						<p><label><input clt="checkBoxGbtjValueGroup"  name="checkBoxGbtjValue"  type="checkbox" value="${vo.id}" />${vo.tjmc}</label></p>

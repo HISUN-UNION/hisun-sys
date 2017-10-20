@@ -1,5 +1,6 @@
 package com.hisun.saas.zzb.app.console.shtp.vo;
 
+import com.google.common.collect.Lists;
 import com.hisun.saas.sys.tenant.tenant.vo.TenantEntityVo;
 import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * Created by zhouying on 2017/9/15.
  */
 public class ShtpVo extends TenantEntityVo{
+
     private String id;
     private ShpcVo shpcVo;
     private String shpcId;
@@ -102,4 +104,6 @@ public class ShtpVo extends TenantEntityVo{
     public void setTpsjs(List<ShtpsjVo> tpsjs) {
         this.tpsjs = tpsjs;
     }
+
+
 }

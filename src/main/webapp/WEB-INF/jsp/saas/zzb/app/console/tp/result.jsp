@@ -26,8 +26,9 @@
 					<div class="portlet-title">
 						<div class="caption">"${shpcmc}" 票决结果</div>
 						<div class="clearfix fr">
-                                <a class="btn" href="${path }/zzb/app/console/tp/"><i class="icon-undo"></i>返回</a>
-                            </div>
+							<a class="btn green" id="btn-export" onclick="exportCi()"><i class="icon-circle-arrow-down" ></i>导出</a>
+							<a class="btn" href="${path }/zzb/app/console/tp/"><i class="icon-undo"></i>返回</a>
+						</div>
 
                         </div>
 
@@ -93,7 +94,11 @@
 		function searchSubmit(){
 			document.searchForm.submit();
 		}
-
+		//导出方法
+		function exportCi(){
+			window.open('${path}/zzb/app/console/tp/ajax/exportToExcel?shpcId=${shpcId}&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}');
+			<%--window.open('${path }/zzb/app/console/tp/exportToExcel?shpcId=${shpcId}');--%>
+		}
 
 	</script>
 </body>

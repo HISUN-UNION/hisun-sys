@@ -19,12 +19,15 @@ import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
 import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
 import com.hisun.saas.zzb.app.console.shtp.vo.ShtpVo;
 import com.hisun.util.DateUtil;
+import com.hisun.util.WebUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +35,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -149,12 +158,10 @@ public class ShtpController extends BaseController {
             query.add(CommonRestrictions.and(" shtp.shpc.id = :shpcId", "shpcId", shpcId));
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
             List<Shtpsj> shtpsjs = this.shtpsjService.list(query, null);
-
+            Shpc shpc = this.shpcService.getByPK(shpcId);
+            shpcmc = shpc.getPcmc();
             if (sha01s != null) {// entity ==> vo
                 for (Sha01 sha01 : sha01s) {
-                    if(shpcmc.equals("")){
-                        shpcmc = sha01.getShpc().getPcmc();
-                    }
                     Sha01Vo vo = new Sha01Vo();
                     BeanUtils.copyProperties(vo, sha01);
                     int tyCount = 0;//同意票数
@@ -201,4 +208,32 @@ public class ShtpController extends BaseController {
         return new ModelAndView("/saas/zzb/app/console/tp/result", map);
     }
 
+
+
+    @RequestMapping(value = "/ajax/exportToExcel")
+    public void exportToExcel(@RequestParam(value="shpcId")String shpcId,
+            HttpServletRequest request,HttpServletResponse response) {
+        try {
+            Shpc shpc = this.shpcService.getByPK(shpcId);
+            String fileName ="“"+ shpc.getPcmc()+"”票决结果";
+            response.setContentType("multipart/form-data");
+            response.setHeader("Content-Disposition", "attachment;fileName="+encode(fileName+".xls"));
+            OutputStream output=response.getOutputStream();
+            this.shpcService.exportExcel(fileName,shpcService.getShpcById(shpcId),output);
+            output.flush();
+            output.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private String encode(String filename) throws UnsupportedEncodingException {
+        if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
+            filename = URLEncoder.encode(filename, "UTF-8");
+        } else {
+            filename = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
+        }
+        return filename;
+    }
 }

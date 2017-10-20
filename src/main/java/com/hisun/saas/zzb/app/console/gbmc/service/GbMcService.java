@@ -8,4 +8,5 @@ import com.hisun.saas.zzb.app.console.gbtj.entity.Gbtj;
  * Created by zhouying on 2017/9/16.
  */
 public interface GbMcService extends BaseService<GbMc,String> {
+    int getA01Count(String id) throws Exception;
 }

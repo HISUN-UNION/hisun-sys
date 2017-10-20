@@ -31,6 +31,9 @@
 					<div class="portlet-title">
 						<div class="caption">名册目录</div>
 						<div class="clearfix fr">
+							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/gbmc/b01/add?mcid=${mcid}">
+								<i class="icon-plus"></i> 添加
+							</a>
 							<span class="controllerClass btn green file_but" >
 									<i class="icon-circle-arrow-up"></i>上传单位
 									<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
@@ -61,6 +64,7 @@
                                 <thead>
                                     <tr>
                                         <th>目录名称</th>
+										<th width="10%">人员</th>
                                         <th width="100">排序</th>
 										<th width="100">操作</th>
                                     </tr>
@@ -69,8 +73,10 @@
                                     <c:forEach items="${pager.datas}" var="vo">
                                         <tr style="text-overflow:ellipsis;">
                                             <td><a href="${path}/zzb/app/console/gbmc/a01/list?mcid=${mcid}&mcb01id=${vo.id }"><c:out value="${vo.b0101}"></c:out></a></td>
+											<td>共<b><c:out value="${vo.a01Count}"></c:out></b>人</td>
                                             <td><c:out value="${vo.px}"></c:out></td>
 											<td class="Left_alignment">
+												<a href="${path}/zzb/app/console/gbmc/b01/edit?id=${vo.id }" class="">编辑</a>|
 												<a href="javascript:del('${vo.id }','${vo.b0101}')" class="">删除</a>
 											</td>
                                         </tr>

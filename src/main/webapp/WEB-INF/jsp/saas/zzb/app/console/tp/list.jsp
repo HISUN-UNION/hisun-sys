@@ -12,6 +12,11 @@
 <link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 <!-- END PAGE LEVEL STYLES -->
 <title>票决统计</title>
+	<style type="text/css">
+		form {
+			margin: 0 0 0px;
+		}
+	</style>
 </head>
 <body>
 	<div class="container-fluid">
@@ -24,10 +29,7 @@
 				</div>
 
 				<div class="clearfix">
-
 					<div class="control-group">
-
-
 						<div id="query" style="float: left;">
 							<form action="${path }/zzb/app/console/tp/" method="POST" id="searchForm" name="searchForm">
 							<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
@@ -39,7 +41,6 @@
 							</form>
 						</div>
 					</div>
-
 				</div>
 					<div class="portlet-body">
 						<table class="table table-striped table-bordered table-hover dataTable table-set">

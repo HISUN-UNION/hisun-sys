@@ -1,5 +1,6 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
+import com.google.common.collect.Lists;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import com.hisun.saas.zzb.app.console.shtp.entity.Shtp;
 import com.hisun.util.StringUtils;
@@ -10,7 +11,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2017/9/8.

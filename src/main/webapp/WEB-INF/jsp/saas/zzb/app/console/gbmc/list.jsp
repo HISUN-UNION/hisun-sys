@@ -56,6 +56,7 @@
 							<thead>
 								<tr>
 									<th >名册名称</th>
+									<th width="10%">人员</th>
 									<th width="10%">排序</th>
 									<th width="15%">操作</th>
 								</tr>
@@ -64,6 +65,7 @@
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
 										<td><a href="${path}/zzb/app/console/gbmc/b01/list?mcid=${vo.id }"><c:out value="${vo.mc}"></c:out></a></td>
+										<td>共<b><c:out value="${vo.a01Count}"></c:out></b>人</td>
 										<td><c:out value="${vo.px}"></c:out></td>
 										<td class="Left_alignment">
 											<a href="${path}/zzb/app/console/gbmc/edit?id=${vo.id }" class="">编辑</a>|

@@ -1,10 +1,12 @@
 package com.hisun.saas.zzb.app.console.gbmc.vo;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.zzb.app.console.shpc.vo.Sha01gbrmspbVo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -31,6 +33,8 @@ public class GbMcA01Vo {
     private String zyjszw;
     private String xrzwsj;
     private String xrzjsj;
+    private List<GbMcA01gzjlVo> gzjlVos;
+    private List<GbMcA01gbrmspbVo> gbrmspbVos;
     private int px = 0;
 
     public String getId() {
@@ -159,5 +163,21 @@ public class GbMcA01Vo {
 
     public void setPx(int px) {
         this.px = px;
+    }
+
+    public List<GbMcA01gzjlVo> getGzjlVos() {
+        return gzjlVos;
+    }
+
+    public void setGzjlVos(List<GbMcA01gzjlVo> gzjlVos) {
+        this.gzjlVos = gzjlVos;
+    }
+
+    public List<GbMcA01gbrmspbVo> getGbrmspbVos() {
+        return gbrmspbVos;
+    }
+
+    public void setGbrmspbVos(List<GbMcA01gbrmspbVo> gbrmspbVos) {
+        this.gbrmspbVos = gbrmspbVos;
     }
 }

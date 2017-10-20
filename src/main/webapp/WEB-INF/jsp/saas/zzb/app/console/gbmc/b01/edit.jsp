@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>修改干部名册</title>
+<title>修改名册目录</title>
 </head>
 <body>
 			<div class="container-fluid">
@@ -25,7 +25,7 @@
 
 									<i class="icon-reorder"></i>
 
-									<span class="hidden-480">修改干部名册</span>
+									<span class="hidden-480">修改名册目录</span>
 
 								</div>
 								<div class="tools">
@@ -38,12 +38,13 @@
 								<!-- BEGIN FORM-->
 
 								<form action="" class="form-horizontal" id="form1" method="post">
-									<input type="hidden" name="id" value="${gbMc.id }" id="id">
+									<input type="hidden" name="id" value="${gbMcB01.id }" id="id">
+									<input type="hidden" name="mcid" value="${mcid }" id="mcid">
 									<%--<input type="hidden" name="tjjsondata" value="${gbtj.tjjsondata}" id="tjjsondata">--%>
-									<div id="mcGroup" class="control-group">
-										<label class="control-label">名册名称<span class="required">*</span></label>
+									<div id="b0101Group" class="control-group">
+										<label class="control-label">目录名称<span class="required">*</span></label>
 										<div class="controls">
-											<input type="text" class="span6 m-wrap" name="mc" required maxlength="200" id="mc" value="${gbMc.mc }"/>
+											<input type="text" class="span6 m-wrap" name="b0101" required maxlength="200" id="b0101" value="${gbMcB01.b0101 }"/>
 										</div>
 
 									</div>
@@ -53,7 +54,7 @@
 									<div id="pxGroup" class="control-group">
 										<label class="control-label">排序<span class="required">*</span></label>
 										<div class="controls">
-											<input type="text" class="span6 m-wrap" id="px" name="px" number="true" required maxlength="3"  value="${gbMc.px}" />
+											<input type="text" class="span6 m-wrap" id="px" name="px" number="true" required maxlength="3"  value="${gbMcB01.px}" />
 										</div>
 
 									</div>
@@ -62,7 +63,7 @@
 
 										<button type="button" class="btn green" onclick="formUpdate()"><i class="icon-ok"></i> 确定</button>
 
-										<a class="btn" href="${path }/zzb/app/console/gbmc/"><i class="icon-remove-sign"></i> 取消</a>
+										<a class="btn" href="${path }/zzb/app/console/gbmc/b01/list?mcid=${mcid}"><i class="icon-remove-sign"></i> 取消</a>
 
 									</div>
 								</form>
@@ -106,14 +107,14 @@
 		if(bool){
 			$.cloudAjax({
 				path : '${path}',
-				url : "${path }/zzb/app/console/gbmc/save",
+				url : "${path }/zzb/app/console/gbmc/b01/save",
 				type : "post",
 				data : $("#form1").serialize(),
 				dataType : "json",
 				success : function(data){
 					if(data.success){
 						showTip("提示","操作成功",2000);
-						setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/"},2000);
+						setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/b01/list?mcid=${mcid}"},2000);
 					}else{
 						showTip("提示", json.message, 2000);
 					}

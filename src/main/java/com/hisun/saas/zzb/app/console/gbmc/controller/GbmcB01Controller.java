@@ -17,19 +17,15 @@ import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcB01;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcB01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcB01Vo;
-import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
+import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -70,13 +66,14 @@ public class GbmcB01Controller extends BaseController{
             orderBy.add(CommonOrder.asc("px"));
 
             Long total = this.gbMcB01Service.count(query);
-            List<GbMcB01> sha01s = this.gbMcB01Service.list(query,orderBy, pageNum,
+            List<GbMcB01> gbMcB01s = this.gbMcB01Service.list(query,orderBy, pageNum,
                     pageSize);
             List<GbMcB01Vo> shpcVos = new ArrayList<GbMcB01Vo>();
-            if (sha01s != null) {// entity ==> vo
-                for (GbMcB01 sha01 : sha01s) {
+            if (gbMcB01s != null) {// entity ==> vo
+                for (GbMcB01 gbMcB01 : gbMcB01s) {
                     GbMcB01Vo vo = new GbMcB01Vo();
-                    BeanUtils.copyProperties(vo, sha01);
+                    BeanUtils.copyProperties(vo, gbMcB01);
+                    vo.setA01Count(gbMcB01.getGbMcA01s().size());
                     shpcVos.add(vo);
                 }
             }
@@ -89,6 +86,75 @@ public class GbmcB01Controller extends BaseController{
             throw new GenericException(e);
         }
         return new ModelAndView("/saas/zzb/app/console/gbmc/b01/list", map);
+    }
+
+    @RequestMapping(value = "/add")
+    public ModelAndView add(@RequestParam(value="mcid")String mcid) {
+        GbMcB01Vo vo = new GbMcB01Vo();
+        vo.setPx(99);
+        GbMcVo gbMcVo = new GbMcVo();
+        gbMcVo.setId(mcid);
+        vo.setGbMcVo(gbMcVo);
+        return new ModelAndView("/saas/zzb/app/console/gbmc/b01/add","gbMcB01",vo);
+
+    }
+
+
+    @RequestMapping(value = "/edit")
+    public ModelAndView edit(@RequestParam(value="id")String id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            GbMcB01 gbMcB01 = this.gbMcB01Service.getByPK(id);
+            GbMcB01Vo gbMcB01Vo = new  GbMcB01Vo();
+            if (gbMcB01 == null) {
+                logger.error("数据不存在");
+                throw new GenericException("数据不存在");
+            }
+            BeanUtils.copyProperties(gbMcB01Vo, gbMcB01);
+            map.put("gbMcB01", gbMcB01Vo);
+            map.put("mcid", gbMcB01.getGbMc().getId());
+        }catch(Exception e){
+            map.put("success", false);
+            map.put("msg", "修改失败！");
+            throw new GenericException(e);
+        }
+        return new ModelAndView("/saas/zzb/app/console/gbmc/b01/edit", map);
+    }
+
+    /**
+     * 保存名册目录信息
+     * @return
+     */
+    @RequestMapping(value = "/save")
+    public @ResponseBody Map<String, Object> save(@ModelAttribute GbMcB01Vo gbMcB01Vo, HttpServletRequest req,@RequestParam(value="mcid")String mcid) throws GenericException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        GbMcB01 gbMcB01 = null;
+        try {
+            GbMc gbMc = this.gbMcService.getByPK(mcid);
+            if (gbMcB01Vo != null) {
+                String id = gbMcB01Vo.getId();
+                if (id != null && id.length() > 0) {//修改
+                    gbMcB01 = this.gbMcB01Service.getByPK(id);
+                } else {//新增
+                    gbMcB01 = new GbMcB01();
+                }
+                UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+                BeanUtils.copyProperties(gbMcB01, gbMcB01Vo);
+                gbMcB01.setTenant(userLoginDetails.getTenant());
+                gbMcB01.setGbMc(gbMc);
+                if (id != null && id.length() > 0) {
+                    BeanTrans.setBaseProperties(gbMcB01, userLoginDetails, "update");
+                    this.gbMcB01Service.update(gbMcB01);
+                } else {
+                    BeanTrans.setBaseProperties(gbMcB01, userLoginDetails, "save");
+                    this.gbMcB01Service.save(gbMcB01);
+                }
+                map.put("success", true);
+            }
+        } catch (Exception e) {
+            throw new GenericException(e);
+        }
+        return map;
     }
 
     @RequestMapping(value="/ajax/execute")

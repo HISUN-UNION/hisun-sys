@@ -58,6 +58,7 @@ public class GbmcController extends BaseController{
                 for (GbMc gbMc : gbmcs) {
                     GbMcVo vo = new GbMcVo();
                     BeanUtils.copyProperties(vo, gbMc);
+                    vo.setA01Count(this.gbMcService.getA01Count(gbMc.getId()));
                     gbMcVos.add(vo);
                 }
             }
@@ -125,7 +126,7 @@ public class GbmcController extends BaseController{
     }
 
     /**
-     * 保存部务会信息
+     * 保存名册信息
      * @return
      */
     @RequestMapping(value = "/save")

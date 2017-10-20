@@ -9,20 +9,24 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
-import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
-import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcB01;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01Vo;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01Vo;
+import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01gzjlVo;
 import com.hisun.util.DateUtil;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
@@ -49,6 +54,9 @@ public class GbmcA01Controller extends BaseController{
 
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
+
+    private final static String DEFAULT_IMG_HEAD_PATH = "/WEB-INF/images/defaultHeadImage.png";
+
     @RequestMapping("/list")
     public ModelAndView list(HttpServletRequest req, @RequestParam(value="mcb01id")String mcb01id,@RequestParam(value="mcid")String mcid
             ,String xmQuery,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -65,13 +73,13 @@ public class GbmcA01Controller extends BaseController{
             orderBy.add(CommonOrder.asc("px"));
 
             Long total = this.gbMcA01Service.count(query);
-            List<GbMcA01> sha01s = this.gbMcA01Service.list(query,orderBy, pageNum,
+            List<GbMcA01> gbMcA01s = this.gbMcA01Service.list(query,orderBy, pageNum,
                     pageSize);
             List<GbMcA01Vo> shpcVos = new ArrayList<GbMcA01Vo>();
-            if (sha01s != null) {// entity ==> vo
-                for (GbMcA01 sha01 : sha01s) {
+            if (gbMcA01s != null) {// entity ==> vo
+                for (GbMcA01 gbMcA01 : gbMcA01s) {
                     GbMcA01Vo vo = new GbMcA01Vo();
-                    BeanUtils.copyProperties(vo, sha01);
+                    BeanUtils.copyProperties(vo, gbMcA01);
                     shpcVos.add(vo);
                 }
             }
@@ -172,5 +180,84 @@ public class GbmcA01Controller extends BaseController{
         }
         return map;
 
+    }
+    @RequestMapping("/{id}/photo")
+    public HttpEntity<byte[]> getPhoto (@PathVariable("id")String id,
+                                        HttpServletRequest request, HttpServletResponse response) throws IOException {
+        GbMcA01 gbMcA01 = this.gbMcA01Service.getByPK(id);
+        if(gbMcA01.getZppath()!=null){
+            File file = new File(gbMcA01.getZppath());
+            if(file.exists()){
+                FileInputStream fis = new FileInputStream(file);
+                StreamUtils.copy(fis,response.getOutputStream());
+                response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+                return new HttpEntity(HttpStatus.OK);
+            }else{
+                //为空或者没有返回默认图片
+                File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
+                FileInputStream fis = new FileInputStream(defaultfile);
+                StreamUtils.copy(fis,response.getOutputStream());
+                response.setContentType(MediaType.IMAGE_PNG_VALUE);
+                return new HttpEntity(HttpStatus.OK);
+            }
+        }else{
+            //为空或者没有返回默认图片
+            File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
+            FileInputStream fis = new FileInputStream(defaultfile);
+            StreamUtils.copy(fis,response.getOutputStream());
+
+            response.setContentType(MediaType.IMAGE_PNG_VALUE);
+            return new HttpEntity(HttpStatus.OK);
+        }
+
+    }
+    /**
+     * 调转到查看页面
+     * @return
+     */
+//    @RequiresPermissions("admin-assetStatus:edit")
+    @RequestMapping(value = "/view")
+    public ModelAndView view(@RequestParam(value="id")String id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+           GbMcA01 gbMcA01 = this.gbMcA01Service.getByPK(id);
+           GbMcA01Vo gbMcA01Vo = new GbMcA01Vo();
+            boolean isHavagbrmspbFile = false;//是否存在干部详细信息
+            //判断干部详细信息是否有附件
+            if(gbMcA01.getGbMca01gbrmspbs()!=null &&gbMcA01.getGbMca01gbrmspbs().size()>0) {
+                GbMcA01gbrmspb gbMcA01gbrmspb = gbMcA01.getGbMca01gbrmspbs().get(0);
+                if(gbMcA01gbrmspb.getFilepath()!=null && !gbMcA01gbrmspb.getFilepath().equals("")){
+                    isHavagbrmspbFile = true;
+                }
+            }
+
+            if (gbMcA01 == null) {
+                logger.error("数据不存在");
+                throw new GenericException("数据不存在");
+            }
+            BeanUtils.copyProperties(gbMcA01Vo, gbMcA01);
+            List<GbMcA01gzjlVo> gzjlVos = new ArrayList<GbMcA01gzjlVo>();
+            if(gbMcA01.getGbMca01gzjls()!=null){
+                for(GbMcA01gzjl gbMcA01gzjl : gbMcA01.getGbMca01gzjls()){
+                    GbMcA01gzjlVo gbMcA01gzjlVo = new GbMcA01gzjlVo();
+                    BeanUtils.copyProperties(gbMcA01gzjlVo, gbMcA01gzjl);
+                    gzjlVos.add(gbMcA01gzjlVo);
+                }
+            }
+            gbMcA01Vo.setGzjlVos(gzjlVos);
+
+            map.put("gbMcA01Vo", gbMcA01Vo);
+            map.put("mcb01id", gbMcA01.getGbMcB01().getId());
+            map.put("mcid", gbMcA01.getGbMcB01().getGbMc().getId());
+            map.put("mcb01id", gbMcA01.getGbMcB01().getId());
+
+            map.put("isHavagbrmspbFile", isHavagbrmspbFile);
+
+        }catch(Exception e){
+            map.put("success", false);
+            map.put("msg", "修改失败！");
+            throw new GenericException(e);
+        }
+        return new ModelAndView("/saas/zzb/app/console/gbmc/a01/view", map);
     }
 }

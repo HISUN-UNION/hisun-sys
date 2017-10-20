@@ -32,8 +32,12 @@
 					<div class="caption">人员列表</div>
 					<div class="clearfix fr">
 							<span class="controllerClass btn green file_but" >
-									<i class="icon-circle-arrow-up"></i>上传人员
-									<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
+								<i class="icon-circle-arrow-up"></i>批量上传人员审批表
+								<input class="file_progress" type="file" name="moreAttFile" id="btn-moreAttTemplate">
+							</span>
+							<span class="controllerClass btn green file_but" >
+								<i class="icon-circle-arrow-up"></i>上传人员
+								<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
 							</span>
 						<a class="btn" href="${path }/zzb/app/console/gbmc/b01/list?mcid=${mcid}"><i class="icon-undo"></i>返回</a>
 					</div>
@@ -60,7 +64,7 @@
 					<table class="table table-striped table-bordered table-hover dataTable table-set">
 						<thead>
 						<tr>
-							<th width="60">姓名</th>
+							<th width="70">姓名</th>
 							<th width="80">职务</th>
 							<th width="60">籍贯</th>
 							<th width="60">出生地</th>
@@ -73,18 +77,18 @@
 							</th>
 							<th width="100">专业技<br>术职务
 							</th>
-							<th width="60">任现职<br>务时间
+							<th width="65">任现职<br>务时间
 							</th>
-							<th width="60">任现职<br>级时间
+							<th width="100">任现职<br>级时间
 							</th>
-							<th width="40">操作</th>
+							<%--<th width="40">操作</th>--%>
 						</tr>
 						</thead>
 						<tbody>
 						<c:forEach items="${pager.datas}" var="vo">
 							<tr style="text-overflow:ellipsis;">
-								<td><c:out value="${vo.xm}"></c:out></td>
-								<td><c:out value="${vo.zw}"></c:out></td>
+								<td title="${vo.xm}"><a href="${path}/zzb/app/console/gbmc/a01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>
+								<td title="${vo.zw}"><c:out value="${vo.zw}"></c:out></td>
 								<td><c:out value="${vo.jg}"></c:out></td>
 								<td><c:out value="${vo.csd}"></c:out></td>
 								<td><c:out value="${vo.csny}"></c:out></td>
@@ -94,10 +98,10 @@
 								<td><c:out value="${vo.zzxlxwjzy}"></c:out></td>
 								<td><c:out value="${vo.zyjszw}"></c:out></td>
 								<td><c:out value="${vo.xrzwsj}"></c:out></td>
-								<td><c:out value="${vo.xrzjsj}"></c:out></td>
-								<td class="Left_alignment">
-									<a href="javascript:del('${vo.id }','${vo.xm}')" class="">删除</a>
-								</td>
+								<td title="${vo.xrzjsj}"><c:out value="${vo.xrzjsj}"></c:out></td>
+								<%--<td class="Left_alignment">--%>
+									<%--<a href="javascript:del('${vo.id }','${vo.xm}')" class="">删除</a>--%>
+								<%--</td>--%>
 							</tr>
 						</c:forEach>
 						</tbody>
@@ -180,6 +184,54 @@
 			});
 		}
 
+		//批量上传干部人员审批表
+		$("#btn-moreAttTemplate").bind("change", function (evt) {
+			if ($(this).val()) {
+				gbrmspbSubmit();
+			}
+			$(this).val('');
+		});
+
+		function gbrmspbSubmit() {
+			var fileInput = document.getElementById("btn-moreAttTemplate");
+			if (fileInput.files.length > 0) {
+				var name = fileInput.files[0].name
+				var arr = name.split(".");
+				if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
+					showTip("提示", "请上传zip文件", 2000);
+					return;
+				}
+			} else {
+				showTip("提示", "请选择文件上传", 2000);
+				return;
+			}
+			$("#importForm").ajaxSubmit({
+				url: "${path }/zzb/app/console/GbMca01/gbrmspb/ajax/batch/upload",
+				type: "post",
+				headers: {
+					OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
+				},
+				beforeSend: function (XHR) {
+					myLoading.show();
+				},
+				success: function (json) {
+					if (json.code == 1) {
+						showTip("提示","上传成功",2000);
+						<%--window.location.href="${path}/zzb/app/console/gbmc/a01/list?mcb01id=${mcb01id}&mcid=${mcid}";--%>
+					} else if (json.code == -1) {
+						showTip("提示", json.message, 2000);
+					} else {
+						showTip("提示", "出错了,请检查网络!", 2000);
+					}
+				},
+				error: function (arg1, arg2, arg3) {
+					showTip("提示", "出错了,请检查网络!", 2000);
+				},
+				complete: function (XHR, TS) {
+					myLoading.hide();
+				}
+			});
+		}
 	})();
 
 	function pagehref (pageNum ,pageSize){
