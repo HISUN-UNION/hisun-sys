@@ -138,15 +138,16 @@ public class Sha01gbrmspbController extends BaseController {
                     _fileDir.mkdirs();
                 }
                 //原zip存储路径
-                String zipFile = gbrmsbpAttsPath + UUIDUtil.getUUID()+".zip";
-                FileOutputStream fos = new FileOutputStream(new File(zipFile));
+                String zipFilePath = gbrmsbpAttsPath + UUIDUtil.getUUID()+".zip";
+                File zipFile = new File(zipFilePath);
+                FileOutputStream fos = new FileOutputStream(zipFile);
                 fos.write(file.getBytes());
                 fos.flush();
                 fos.close();
 
                 String tmpFilePath =  gbrmsbpAttsPath+UUIDUtil.getUUID()+File.separator;
                 //解压到临时目录
-                CompressUtil.unzip(zipFile,tmpFilePath);
+                CompressUtil.unzip(zipFilePath,tmpFilePath);
                 //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
                 File tempFiles = new File(tmpFilePath);
                 if(tempFiles!=null){
@@ -171,6 +172,9 @@ public class Sha01gbrmspbController extends BaseController {
                         }
                     }
                 }
+
+                FileUtils.deleteDirectory(tempFiles);
+                FileUtils.deleteQuietly(zipFile);
 
                 //模板路径
 //                String wordTemplatePath = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH + "gbrmspb.docx";

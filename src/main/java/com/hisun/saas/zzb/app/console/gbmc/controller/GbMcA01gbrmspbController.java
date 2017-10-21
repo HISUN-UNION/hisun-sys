@@ -137,15 +137,17 @@ public class GbMcA01gbrmspbController extends BaseController {
                     _fileDir.mkdirs();
                 }
                 //原zip存储路径
-                String zipFile = gbrmsbpAttsPath + UUIDUtil.getUUID()+".zip";
-                FileOutputStream fos = new FileOutputStream(new File(zipFile));
+
+                String zipFilePath = gbrmsbpAttsPath + UUIDUtil.getUUID()+".zip";
+                File zipFile = new File(zipFilePath);
+                FileOutputStream fos = new FileOutputStream(zipFile);
                 fos.write(file.getBytes());
                 fos.flush();
                 fos.close();
 
                 String tmpFilePath =  gbrmsbpAttsPath+UUIDUtil.getUUID()+File.separator;
                 //解压到临时目录
-                CompressUtil.unzip(zipFile,tmpFilePath);
+                CompressUtil.unzip(zipFilePath,tmpFilePath);
                 //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
                 File tempFiles = new File(tmpFilePath);
                 if(tempFiles!=null){
@@ -170,19 +172,8 @@ public class GbMcA01gbrmspbController extends BaseController {
                         }
                     }
                 }
-
-                //模板路径
-//                String wordTemplatePath = uploadAbsolutePath+GbMcA01gbrmspbService.ATTS_PATH + "gbrmspb.docx";
-//                FileOutputStream fos = new FileOutputStream(new File(savePath));
-//                fos.write(file.getBytes());
-//                fos.flush();
-//                fos.close();
-//
-//                GbMcA01 gbMcA01 = this.gbMcA01Service.getByPK(gbMcA01Id);
-//                GbMcA01gbrmspb gbMcA01gbrmspb = new GbMcA01gbrmspb();
-//                gbMcA01gbrmspb.setFilepath(savePath);
-//                gbMcA01gbrmspb.setGbMcA01(gbMcA01);
-//                this.gbMcA01gbrmspbService.saveFromWord(gbMcA01gbrmspb ,savePath,wordTemplatePath);
+                FileUtils.deleteDirectory(tempFiles);
+                FileUtils.deleteQuietly(zipFile);
             }else{
                 map.put("code", -1);
                 map.put("message", "请上传ZIP!");

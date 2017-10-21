@@ -27,108 +27,106 @@
 			<div class="span12 responsive">
 				<%-- 表格开始 --%>
 				<form class=""id="importForm" enctype="multipart/form-data">
+				<div class="portlet-title">
+					<div class="caption">上会名单</div>
+					<div class="clearfix fr">
+						<span class="controllerClass btn green file_but" >
+								<i class="icon-circle-arrow-up"></i>上传名单
+								<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
+						</span>
+							<div class="btn-group">
+								<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+									批量上传 <i class="icon-angle-down"></i>
+								</a>
+								<ul class="dropdown-menu">
+									<li >
+										<a onclick="uploadFile('gbrmspb')">干部详细信息</a>
+										<input type="file" style="display: none" name="gbrmspbFile" id="btn-gbrmspb"/>
+									</li>
+									<li>
+										<a onclick="uploadFile('kccl')">考察材料</a>
+										<input type="file"  style="display: none" name="kcclFile" id="btn-kccl"/>
+									</li>
+									<li>
+										<a onclick="uploadFile('dascqk')">档案审查情况</a>
+										 <input type="file" style="display: none" name="dascqkFile" id="btn-dascqk"/>
+									</li>
+									<li>
+										<a onclick="uploadFile('grzdsx')">个人重大事项</a>
+										<input type="file"  style="display: none" name="grzdsxFile" id="btn-grzdsx"/>
+									</li>
 
-					<div class="portlet-title">
-						<div class="caption">上会名单</div>
-						<div class="clearfix fr">
-							<span class="controllerClass btn green file_but" >
-									<i class="icon-circle-arrow-up"></i>上传名单
-									<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
-							</span>
-								<div class="btn-group">
-									<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
-										批量上传 <i class="icon-angle-down"></i>
-									</a>
-									<ul class="dropdown-menu">
-										<li >
-											<a onclick="uploadFile('gbrmspb')">干部详细信息</a>
-											<input type="file" style="display: none" name="gbrmspbFile" id="btn-gbrmspb"/>
-										</li>
-										<li>
-											<a onclick="uploadFile('kccl')">考察材料</a>
-											<input type="file"  style="display: none" name="kcclFile" id="btn-kccl"/>
-										</li>
-										<li>
-											<a onclick="uploadFile('dascqk')">档案审查情况</a>
-											 <input type="file" style="display: none" name="dascqkFile" id="btn-dascqk"/>
-										</li>
-										<li>
-											<a onclick="uploadFile('grzdsx')">个人重大事项</a>
-											<input type="file"  style="display: none" name="grzdsxFile" id="btn-grzdsx"/>
-										</li>
-
-									</ul>
-								</div>
-
-                                <a class="btn" href="${path }/zzb/app/console/bwh/"><i class="icon-undo"></i>返回</a>
-                            </div>
-
-                        </div>
-				</form>
-					<div class="clearfix">
-						<div class="control-group">
-							<div id="query" style="float: left;">
-								<form action="${path }/zzb/app/console/Sha01/list/" method="POST" id="searchForm" name="searchForm">
-									<input type="hidden" id="shpcId" name="shpcId" value="${shpcId}"/>
-									<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
-									<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
-									<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
-									姓名：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
-									<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
-									<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
-								</form>
+								</ul>
 							</div>
-						</div>
 
+							<a class="btn" href="${path }/zzb/app/console/bwh/"><i class="icon-undo"></i>返回</a>
+						</div>
 					</div>
-                        <div class="portlet-body">
-                            <table class="table table-striped table-bordered table-hover dataTable table-set">
-                                <thead>
-                                    <tr>
-                                        <th width="6%">&nbsp;<br>姓名<br>&nbsp;</th>
-                                        <th width="5%">&nbsp;<br>性别<br>&nbsp;</th>
-                                        <th width="5%">&nbsp;<br>民族<br>&nbsp;</th>
-                                        <th width="5%">&nbsp;<br>籍贯<br>&nbsp;</th>
-                                        <th width="5%">出生<br><br>年月</th>
-                                        <th width="5%">参加<br>工作<br>时间</th>
-                                        <th width="5%">入党<br><br>时间</th>
-                                        <th width="8%">文化<br><br>程度</th>
-                                        <th width="5%">任现<br>级别<br>时间</th>
-                                        <th width="10%">民主<br>推荐<br>情况</th>
-                                        <th width="20%">&nbsp;<br>现工作单位及职务<br>&nbsp;</th>
-                                        <th>&nbsp;<br>拟调整配备意见<br>&nbsp;</th>
-                                        <th width="5%">干部<br>一科<br>意见</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="${pager.datas}" var="vo">
-                                        <tr style="text-overflow:ellipsis;">
-                                            <td><a href="${path}/zzb/app/console/Sha01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>
-                                            <td><c:out value="${vo.xb}"></c:out></td>
-                                            <td><c:out value="${vo.mz}"></c:out></td>
-                                            <td><c:out value="${vo.jg}"></c:out></td>
-                                            <td title="${vo.csny}"><c:out value="${vo.csny}"></c:out></td>
-                                            <td title="${vo.cjgzsj}"><c:out value="${vo.cjgzsj}"></c:out></td>
-                                            <td title="${vo.rdsj}"><c:out value="${vo.rdsj}"></c:out></td>
-                                            <td title="${vo.whcd}"><c:out value="${vo.whcd}"></c:out></td>
-                                            <td title="${vo.rxjbsj}"><c:out value="${vo.rxjbsj}"></c:out></td>
-                                            <td title="${vo.mztjqk}"><c:out value="${vo.mztjqk}"></c:out></td>
-                                            <td title="${vo.xgzdwjzw}"><c:out value="${vo.xgzdwjzw}"></c:out></td>
-                                            <td title="${vo.ntzpbyj}"><c:out value="${vo.ntzpbyj}"></c:out></td>
-                                            <td title="${vo.shyj}"><c:out value="${vo.shyj}"></c:out></td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                            <jsp:include page="/WEB-INF/jsp/common/page.jsp">
-                                <jsp:param value="${pager.total }" name="total"/>
-                                <jsp:param value="${pager.pageCount }" name="endPage"/>
-                                <jsp:param value="${pager.pageSize }" name="pageSize"/>
-                                <jsp:param value="${pager.pageNum }" name="page"/>
-                            </jsp:include>
-                        </div>
-                    </div>
-                    <%-- 表格结束 --%>
+				</form>
+				<%-- 表格结束 --%>
+				<div class="clearfix">
+					<div class="control-group">
+						<div id="query" style="float: left;">
+							<form action="${path }/zzb/app/console/Sha01/list/" method="POST" id="searchForm" name="searchForm">
+								<input type="hidden" id="shpcId" name="shpcId" value="${shpcId}"/>
+								<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
+								<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
+								<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
+								姓名：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
+								<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
+								<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
+							</form>
+						</div>
+					</div>
+
+				</div>
+					<div class="portlet-body">
+						<table class="table table-striped table-bordered table-hover dataTable table-set">
+							<thead>
+								<tr>
+									<th width="6%">&nbsp;<br>姓名<br>&nbsp;</th>
+									<th width="5%">&nbsp;<br>性别<br>&nbsp;</th>
+									<th width="5%">&nbsp;<br>民族<br>&nbsp;</th>
+									<th width="5%">&nbsp;<br>籍贯<br>&nbsp;</th>
+									<th width="5%">出生<br><br>年月</th>
+									<th width="5%">参加<br>工作<br>时间</th>
+									<th width="5%">入党<br><br>时间</th>
+									<th width="8%">文化<br><br>程度</th>
+									<th width="5%">任现<br>级别<br>时间</th>
+									<th width="10%">民主<br>推荐<br>情况</th>
+									<th width="20%">&nbsp;<br>现工作单位及职务<br>&nbsp;</th>
+									<th>&nbsp;<br>拟调整配备意见<br>&nbsp;</th>
+									<th width="5%">干部<br>一科<br>意见</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${pager.datas}" var="vo">
+									<tr style="text-overflow:ellipsis;">
+										<td><a href="${path}/zzb/app/console/Sha01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>
+										<td><c:out value="${vo.xb}"></c:out></td>
+										<td><c:out value="${vo.mz}"></c:out></td>
+										<td><c:out value="${vo.jg}"></c:out></td>
+										<td title="${vo.csny}"><c:out value="${vo.csny}"></c:out></td>
+										<td title="${vo.cjgzsj}"><c:out value="${vo.cjgzsj}"></c:out></td>
+										<td title="${vo.rdsj}"><c:out value="${vo.rdsj}"></c:out></td>
+										<td title="${vo.whcd}"><c:out value="${vo.whcd}"></c:out></td>
+										<td title="${vo.rxjbsj}"><c:out value="${vo.rxjbsj}"></c:out></td>
+										<td title="${vo.mztjqk}"><c:out value="${vo.mztjqk}"></c:out></td>
+										<td title="${vo.xgzdwjzw}"><c:out value="${vo.xgzdwjzw}"></c:out></td>
+										<td title="${vo.ntzpbyj}"><c:out value="${vo.ntzpbyj}"></c:out></td>
+										<td title="${vo.shyj}"><c:out value="${vo.shyj}"></c:out></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+						<jsp:include page="/WEB-INF/jsp/common/page.jsp">
+							<jsp:param value="${pager.total }" name="total"/>
+							<jsp:param value="${pager.pageCount }" name="endPage"/>
+							<jsp:param value="${pager.pageSize }" name="pageSize"/>
+							<jsp:param value="${pager.pageNum }" name="page"/>
+						</jsp:include>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -165,7 +163,7 @@
 				}
 				//hideErrorMsg();
 				$("#importForm").ajaxSubmit({
-					url : "${path }/zzb/app/console/Sha01/ajax/execute",
+					url : "${path }/zzb/app/console/Sha01/ajax/execute?shpcId=${shpcId}",
 					type : "post",
 					headers:{
 						OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
@@ -221,7 +219,7 @@
 					return;
 				}
 				$("#importForm").ajaxSubmit({
-					url: "${path }/zzb/app/Sha01/gbrmspb/ajax/batch/upload?sha01Id=${shpa01Vo.id}",
+					url: "${path }/zzb/app/Sha01/gbrmspb/ajax/batch/upload?shpcId=${shpcId}",
 					type: "post",
 					headers: {
 						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
@@ -271,7 +269,7 @@
 					return;
 				}
 				$("#importForm").ajaxSubmit({
-					url: "${path }/zzb/app/Sha01/kccl/ajax/batch/upload?sha01Id=${shpa01Vo.id}",
+					url: "${path }/zzb/app/Sha01/kccl/ajax/batch/upload?shpcId=${shpcId}",
 					type: "post",
 					headers: {
 						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
@@ -320,7 +318,7 @@
 					return;
 				}
 				$("#importForm").ajaxSubmit({
-					url: "${path }/zzb/app/Sha01/dascqk/ajax/batch/upload?sha01Id=${shpa01Vo.id}",
+					url: "${path }/zzb/app/Sha01/dascqk/ajax/batch/upload?shpcId=${shpcId}",
 					type: "post",
 					headers: {
 						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
@@ -369,7 +367,7 @@
 					return;
 				}
 				$("#importForm").ajaxSubmit({
-					url: "${path }/zzb/app/Sha01/grzdsx/ajax/batch/upload?sha01Id=${shpa01Vo.id}",
+					url: "${path }/zzb/app/Sha01/grzdsx/ajax/batch/upload?shpcId=${shpcId}",
 					type: "post",
 					headers: {
 						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"

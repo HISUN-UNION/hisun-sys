@@ -27,7 +27,6 @@
 			<div class="span12 responsive">
 				<%-- 表格开始 --%>
 				<form class=""id="importForm" enctype="multipart/form-data"  action="${path }/zzb/app/console/gbmc/b01/list">
-					<input type="hidden"  name="mcid" value="${mcid}"/>
 					<div class="portlet-title">
 						<div class="caption">名册目录</div>
 						<div class="clearfix fr">
@@ -43,6 +42,7 @@
 
                         </div>
 					</form>
+					<%-- 表格结束 --%>
 					<div class="clearfix">
 						<div class="control-group">
 							<div id="query" style="float: left;">
@@ -92,8 +92,6 @@
                             </jsp:include>
                         </div>
                     </div>
-
-                    <%-- 表格结束 --%>
 			</div>
 		</div>
 
@@ -130,7 +128,7 @@
 				}
 				//hideErrorMsg();
 				$("#importForm").ajaxSubmit({
-					url : "${path }/zzb/app/console/gbmc/b01/ajax/execute",
+					url : "${path }/zzb/app/console/gbmc/b01/ajax/execute?mcid=${mcid}",
 					type : "post",
 					headers:{
 						OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"

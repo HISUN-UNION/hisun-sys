@@ -14,6 +14,7 @@ import com.hisun.util.Pdf2ImgUtil;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordConvertUtil;
 import com.hisun.util.WordUtil;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -107,6 +108,7 @@ public class GbMcA01gbrmspbServiceImpl extends BaseServiceImpl<GbMcA01gbrmspb, S
         //再将其转成图片
         Pdf2ImgUtil.toImg(pdfPath,imgPath);
         gbrmspb.setFile2imgPath(imgPath);
+        FileUtils.deleteQuietly(new File(pdfPath));
     }
 
 }
