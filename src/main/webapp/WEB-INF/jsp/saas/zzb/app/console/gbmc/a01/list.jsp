@@ -31,13 +31,14 @@
 				<div class="portlet-title">
 					<div class="caption">人员列表</div>
 					<div class="clearfix fr">
-							<span class="controllerClass btn green file_but" >
-								<i class="icon-circle-arrow-up"></i>批量上传人员审批表
-								<input class="file_progress" type="file" name="moreAttFile" id="btn-moreAttTemplate">
-							</span>
+
 							<span class="controllerClass btn green file_but" >
 								<i class="icon-circle-arrow-up"></i>上传人员
 								<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
+							</span>
+							<span class="controllerClass btn green file_but" >
+								<i class="icon-circle-arrow-up"></i>批量上传人员审批表
+								<input class="file_progress" type="file" name="moreAttFile" id="btn-moreAttTemplate">
 							</span>
 						<a class="btn" href="${path }/zzb/app/console/gbmc/b01/list?mcid=${mcid}"><i class="icon-undo"></i>返回</a>
 					</div>

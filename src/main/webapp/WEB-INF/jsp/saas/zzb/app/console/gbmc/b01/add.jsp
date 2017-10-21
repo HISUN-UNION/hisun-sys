@@ -58,7 +58,7 @@
 
 							<div class="form-actions">
 								<button type="button" class="btn green" onclick="formSubmit()"><i class="icon-ok"></i> 确定</button>
-								<a class="btn" href="${path }/zzb/app/console/gbmc/b01/"><i class="icon-remove-sign"></i> 取消</a>
+								<a class="btn" href="${path }/zzb/app/console/gbmc/b01/list?mcid=${gbMcB01.gbMcVo.id}"><i class="icon-remove-sign"></i> 取消</a>
 
 							</div>
 						</form>
