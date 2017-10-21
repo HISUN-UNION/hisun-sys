@@ -15,13 +15,17 @@
 <link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 <!-- END PAGE LEVEL STYLES -->
 <title>"${tpqbh}"  票决情况</title>
+    <style type="text/css">
+        form {
+            margin: 0 0 0px;
+        }
+    </style>
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span12 responsive">
 				<%-- 表格开始 --%>
-				<form class="portlet box grey"id="importForm">
 					<div class="portlet-title">
 						<div class="caption">"${tpqbh}"  票决情况
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -34,7 +38,6 @@
                             </div>
 
                         </div>
-                    </form>
                         <div class="clearfix">
                             <div class="control-group">
                                 <div id="query" style="float: left;">
@@ -71,8 +74,8 @@
                                         <th width="8%">文化<br><br>程度</th>
                                         <th width="5%">任现<br>级别<br>时间</th>
                                         <th width="10%">民主<br>推荐<br>情况</th>
-                                        <th width="20%">现工作单位及职务</th>
-                                        <th>拟调整配备意见</th>
+                                        <th width="20%">&nbsp;<br>现工作单位及职务<br>&nbsp;</th>
+                                        <th>&nbsp;<br>拟调整配备意见<br>&nbsp;</th>
                                         <th width="5%">干部<br>一科<br>意见</th>
                                     </tr>
                                 </thead>
