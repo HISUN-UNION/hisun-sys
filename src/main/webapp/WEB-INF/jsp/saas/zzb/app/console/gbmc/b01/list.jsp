@@ -33,13 +33,12 @@
 							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/gbmc/b01/add?mcid=${mcid}">
 								<i class="icon-plus"></i> 添加
 							</a>
-							<span class="controllerClass btn green file_but" >
-									<i class="icon-circle-arrow-up"></i>上传单位
-									<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
+							<span class="controllerClass btn green file_but">
+								<i class="icon-circle-arrow-up"></i>上传名册目录
+								<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
 							</span>
-                                <a class="btn" href="${path }/zzb/app/console/gbmc/"><i class="icon-undo"></i>返回</a>
-                            </div>
-
+							<a class="btn" href="${path }/zzb/app/console/gbmc/"><i class="icon-undo"></i>返回</a>
+						</div>
                         </div>
 					</form>
 					<%-- 表格结束 --%>
