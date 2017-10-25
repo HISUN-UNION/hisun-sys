@@ -332,7 +332,7 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
     public String toInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
-        sb.append(" APP_SH_A01_GBRMSPB ");
+        sb.append(" APP_MC_A01_GBRMSPB ");
         sb.append("(");
         sb.append("ID");
         sb.append(",APP_MC_A01_ID");

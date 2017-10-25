@@ -243,6 +243,54 @@ CREATE TABLE `app_mc_a01` (
   `xrzwsj` varchar(20) DEFAULT NULL,
   `xrzjsj` varchar(40) DEFAULT NULL,
   `b01_id` varchar(32) NOT NULL,
+  `a01_px` int(11) NOT NULL,
+  `zp_path` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `app_mc_a01_app_mc_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES `app_mc_b01` (`id`)
 );
+
+
+drop table if exists `app_mc_a01_gbrmspb` ;
+
+create table if not exists `app_mc_a01_gbrmspb` (
+  `id` varchar(32) not null,
+  `xm` varchar(20) null,
+  `xb` varchar(10) null,
+  `csny` varchar(24) null,
+  `nl` varchar(10) null,
+  `mz` varchar(24) null,
+  `jg` varchar(24) null,
+  `csd` varchar(24) null,
+  `rdsj` varchar(10) null,
+  `cjgzsj` varchar(10) null,
+  `jkzk` varchar(24) null,
+  `zyjszw` varchar(60) null,
+  `zytc` varchar(60) null,
+  `xl_qrz` varchar(24) null,
+  `xw_qrz` varchar(24) null,
+  `xl_zz` varchar(24) null,
+  `xw_zz` varchar(24) null,
+  `qrz_byyx` varchar(128) null,
+  `zz_byyx` varchar(128) null,
+  `xrzw` varchar(128) null,
+  `nrzw` varchar(128) null,
+  `nmzw` varchar(128) null,
+  `rmly` varchar(255) null,
+  `cbdwyj` varchar(255) null,
+  `spjgyj` varchar(255) null,
+  `xzjgrmyj` varchar(255) null,
+    `path` varchar(128) null,
+  `app_mc_a01_id` varchar(32) not null,
+  primary key (`id`));
+
+
+drop table if exists `app_mc_a01_gzjl` ;
+
+create table if not exists `app_mc_a01_gzjl` (
+  `id` varchar(32) not null,
+  `c_sj` varchar(24) null,
+  `z_sj` varchar(24) null,
+  `jlsm` varchar(256) null,
+  `app_mc_a01_id` varchar(32) not null,
+  `gzjl_px` int null,
+  primary key (`id`));

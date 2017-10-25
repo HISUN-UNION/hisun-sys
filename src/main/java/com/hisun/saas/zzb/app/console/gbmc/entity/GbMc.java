@@ -1,11 +1,13 @@
 package com.hisun.saas.zzb.app.console.gbmc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -59,4 +61,24 @@ public class GbMc extends TenantEntity implements Serializable{
     public void setGbMcB01s(List<GbMcB01> gbMcB01s) {
         this.gbMcB01s = gbMcB01s;
     }
+
+    public String toInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" app_mc ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",mc");
+        sb.append(",px");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.transNull(id)+"'");
+        sb.append(",'"+ StringUtils.transNull(mc)+"'");
+        sb.append(","+px);
+        sb.append(")");
+        return sb.toString();
+    }
+
+
 }

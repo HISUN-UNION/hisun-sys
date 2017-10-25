@@ -1,10 +1,12 @@
 package com.hisun.saas.zzb.app.console.gbmc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 
@@ -217,5 +219,60 @@ public class GbMcA01 extends TenantEntity implements Serializable{
 
     public void setGbMca01gbrmspbs(List<GbMcA01gbrmspb> gbMca01gbrmspbs) {
         this.gbMca01gbrmspbs = gbMca01gbrmspbs;
+    }
+
+
+
+
+    public String toInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" insert into ");
+        sb.append(" app_mc_a01 ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",b01_id");
+        sb.append(",xm");
+        sb.append(",mz");
+        sb.append(",zw");
+        sb.append(",csd");
+        sb.append(",jg");
+        sb.append(",csny");
+        sb.append(",cjgzsj");
+        sb.append(",rdsj");
+        sb.append(",qrzxlxwjzy");
+        sb.append(",zzxlxwjzy");
+        sb.append(",zyjszw");
+        sb.append(",xrzwsj");
+        sb.append(",xrzjsj");
+        sb.append(",zp_path");
+        sb.append(",a01_px");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.transNull(id)+"'");
+        sb.append(",'"+ StringUtils.transNull(gbMcB01.getId())+"'");
+        sb.append(",'"+ StringUtils.transNull(xm)+"'");
+        sb.append(",'"+ StringUtils.transNull(mz)+"'");
+        sb.append(",'"+ StringUtils.transNull(zw)+"'");
+        sb.append(",'"+ StringUtils.transNull(csd)+"'");
+        sb.append(",'"+ StringUtils.transNull(jg)+"'");
+        sb.append(",'"+ StringUtils.transNull(csny)+"'");
+        sb.append(",'"+ StringUtils.transNull(cjgzsj)+"'");
+        sb.append(",'"+ StringUtils.transNull(rdsj)+"'");
+        sb.append(",'"+ StringUtils.transNull(qrzxlxwjzy)+"'");
+        sb.append(",'"+ StringUtils.transNull(zzxlxwjzy)+"'");
+        sb.append(",'"+ StringUtils.transNull(zyjszw)+"'");
+        sb.append(",'"+ StringUtils.transNull(xrzwsj)+"'");
+        sb.append(",'"+ StringUtils.transNull(xrzjsj)+"'");
+        if (StringUtils.isEmpty(zppath)){
+            sb.append(",''");
+        }else{
+            String filepath ="img/"+zppath.substring(zppath.lastIndexOf(File.separator)+1);
+            sb.append(",'"+filepath+"'");
+
+        }
+        sb.append(","+ px+"");
+        sb.append(")");
+        return sb.toString();
     }
 }

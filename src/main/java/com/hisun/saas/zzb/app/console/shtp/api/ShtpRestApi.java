@@ -38,7 +38,7 @@ public class ShtpRestApi {
     private Sha01Service sha01Service;
 
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/save", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public  ResponseEntity<Map> add( @RequestBody ShtpVo shtpVo) {
         Map<String,String> resultMap = new HashMap<String,String>();
         Shtp shtp = new Shtp();

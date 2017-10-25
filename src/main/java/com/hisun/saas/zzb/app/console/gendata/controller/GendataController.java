@@ -138,6 +138,11 @@ public class GendataController extends BaseController{
             if(pcs!=null &&pcs.length()>0){
                 map.put(GendataVo.SHPC_DATA,pcs);
             }
+
+            if(gbmcs!=null &&gbmcs.length()>0){
+                map.put(GendataVo.GBMC_DATA,gbmcs);
+            }
+
             if(tjs!=null &&tjs.length()>0){
                 map.put(GendataVo.GBTJ_DATA,tjs);
             }

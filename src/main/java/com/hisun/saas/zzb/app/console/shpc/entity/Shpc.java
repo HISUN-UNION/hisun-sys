@@ -123,7 +123,7 @@ public class Shpc extends TenantEntity implements Serializable{
         sb.append(",PC_MC");
         sb.append(",SHLX");
         sb.append(",PC_SJ");
-        sb.append(",sh_zt");
+        //sb.append(",sh_zt");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
@@ -136,7 +136,7 @@ public class Shpc extends TenantEntity implements Serializable{
         }else{
             sb.append(",''");
         }
-        sb.append(",'"+ shZt+"'");
+        //sb.append(",'"+ shZt+"'");
         sb.append(")");
         return sb.toString();
     }

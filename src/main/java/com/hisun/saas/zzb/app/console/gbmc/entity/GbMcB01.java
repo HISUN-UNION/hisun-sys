@@ -1,6 +1,7 @@
 package com.hisun.saas.zzb.app.console.gbmc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -69,5 +70,26 @@ public class GbMcB01 extends TenantEntity implements Serializable {
 
     public void setGbMcA01s(List<GbMcA01> gbMcA01s) {
         this.gbMcA01s = gbMcA01s;
+    }
+
+
+    public String toInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" app_mc_b01 ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",b0101");
+        sb.append(",mc_id");
+        sb.append(",px");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.transNull(id)+"'");
+        sb.append(",'"+ StringUtils.transNull(b0101)+"'");
+        sb.append(",'"+ StringUtils.transNull(gbMc.getId())+"'");
+        sb.append(","+px);
+        sb.append(")");
+        return sb.toString();
     }
 }
