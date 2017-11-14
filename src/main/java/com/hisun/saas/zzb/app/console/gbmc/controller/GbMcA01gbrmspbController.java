@@ -78,7 +78,7 @@ public class GbMcA01gbrmspbController extends BaseController {
 
                     GbMcA01 gbMcA01 = this.gbMcA01Service.getByPK(gbMcA01Id);
                     GbMcA01gbrmspb gbMcA01gbrmspb = new GbMcA01gbrmspb();
-                    gbMcA01gbrmspb.setFilepath(savePath);
+                    gbMcA01gbrmspb.setFilepath(savePath.replaceAll("\\\\", "\\\\\\\\"));
                     gbMcA01gbrmspb.setGbMcA01(gbMcA01);
                     this.gbMcA01gbrmspbService.saveFromWord(gbMcA01gbrmspb ,savePath,wordTemplatePath);
                 } catch (Exception e) {
@@ -166,7 +166,7 @@ public class GbMcA01gbrmspbController extends BaseController {
                             File desFile = new File(savePath);
                             FileUtils.copyFile(f,desFile);
                             GbMcA01gbrmspb gbMcA01gbrmspb = new GbMcA01gbrmspb();
-                            gbMcA01gbrmspb.setFilepath(savePath);
+                            gbMcA01gbrmspb.setFilepath(savePath.replaceAll("\\\\", "\\\\\\\\"));
                             gbMcA01gbrmspb.setGbMcA01(gbMcA01s.get(0));
                             this.gbMcA01gbrmspbService.saveFromWord(gbMcA01gbrmspb,savePath,wordTemplatePath);
                         }

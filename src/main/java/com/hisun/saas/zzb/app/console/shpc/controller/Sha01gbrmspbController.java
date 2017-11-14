@@ -79,7 +79,8 @@ public class Sha01gbrmspbController extends BaseController {
 
                     Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
                     Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                    sha01gbrmspb.setFilepath(savePath);
+//                    savePath=savePath.replaceAll("\\\\", "\\\\\\\\");
+                    sha01gbrmspb.setFilepath(savePath.replaceAll("\\\\", "\\\\\\\\"));
                     sha01gbrmspb.setSha01(sha01);
                     this.sha01gbrmspbService.saveFromWord(sha01gbrmspb ,savePath,wordTemplatePath);
                 } catch (Exception e) {
@@ -166,7 +167,7 @@ public class Sha01gbrmspbController extends BaseController {
                             File desFile = new File(savePath);
                             FileUtils.copyFile(f,desFile);
                             Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                            sha01gbrmspb.setFilepath(savePath);
+                            sha01gbrmspb.setFilepath(savePath.replaceAll("\\\\", "\\\\\\\\"));
                             sha01gbrmspb.setSha01(sha01s.get(0));
                             this.sha01gbrmspbService.saveFromWord(sha01gbrmspb,savePath,wordTemplatePath);
                         }
