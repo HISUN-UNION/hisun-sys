@@ -285,12 +285,12 @@
 				<es.port>9300</es.port>
 				<es.rest.port>9200</es.rest.port>
 				<db.connection.url>
-					<![CDATA[ jdbc:mysql://localhost:3306/zzb-app-console?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true  ]]>
+					<![CDATA[ jdbc:mysql://localhost:3306/zzbappconsole?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true  ]]>
 				</db.connection.url>
 				<encrypt.connection.username>root</encrypt.connection.username>
-				<encrypt.connection.password></encrypt.connection.password>
+				<encrypt.connection.password>30cloud</encrypt.connection.password>
 				<druidSource.connection.properties>config.decrypt=false</druidSource.connection.properties>
-				<upload.absolute.path>/Users/zhouying/Documents/workspace/store</upload.absolute.path>
+				<upload.absolute.path>C:/Program Files/store</upload.absolute.path>
 				<log4j.rootCategory>WARN,logfile,stdout</log4j.rootCategory>
 				<stdout.Threshold>WARN</stdout.Threshold>
 				<logfile.Threshold>WARN</logfile.Threshold>

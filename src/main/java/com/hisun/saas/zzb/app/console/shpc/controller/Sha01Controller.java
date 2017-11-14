@@ -12,11 +12,10 @@ import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
-import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
-import com.hisun.saas.zzb.app.console.shtp.entity.Shtpsj;
+import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
-import com.hisun.util.DateUtil;
+import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -113,12 +114,12 @@ public class Sha01Controller extends BaseController {
         try{
             String fileName = file.getOriginalFilename();
             if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-                String fileDir = uploadAbsolutePath + "/sha01";
+                String fileDir = uploadAbsolutePath +Sha01Service.ATTS_PATH;
                 File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir + "/" + DateUtil.formatDateByFormat(new Date(),"yyyyMMddHHmmssSSS")+"_"+fileName;
+                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
 
                 try {
                     FileOutputStream fos = new FileOutputStream(new File(savePath));
@@ -154,6 +155,7 @@ public class Sha01Controller extends BaseController {
                 return map;
             }
         }catch(Exception e){
+            e.printStackTrace();
             map.put("code", -1);
             map.put("message", "读取文件错误，请检查word是否能正确打开");
             return map;
