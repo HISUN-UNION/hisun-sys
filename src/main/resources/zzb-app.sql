@@ -4,6 +4,8 @@ create table if not exists app_sh_pc (
   `pc_mc` varchar(255) null ,
   `pc_sj` datetime null ,
   `shlx` varchar(1) null ,
+  `sjlx` varchar(1) null ,
+  `path` varchar(128) null ,
   primary key (`id`));
 
 drop table if exists `app_sh_tp` ;

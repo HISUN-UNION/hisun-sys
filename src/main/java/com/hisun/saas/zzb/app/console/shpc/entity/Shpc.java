@@ -8,6 +8,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +25,8 @@ public class Shpc extends TenantEntity implements Serializable{
 
     public static String SHLX_BWH="1";
     public static String SHLX_CWH="2";
+    public static String SJLX_GB="1";
+    public static String SJLX_CL="2";
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
@@ -41,6 +44,8 @@ public class Shpc extends TenantEntity implements Serializable{
     private String filePath;
     @Column(name = "sh_zt")//0-未上会，1-已上会
     private int shZt;
+    @Column(name = "SJLX",length = 1)
+    private String sjlx=SJLX_GB;
 
     @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
@@ -114,6 +119,14 @@ public class Shpc extends TenantEntity implements Serializable{
         this.shZt = shZt;
     }
 
+    public String getSjlx() {
+        return sjlx;
+    }
+
+    public void setSjlx(String sjlx) {
+        this.sjlx = sjlx;
+    }
+
     public String toInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
@@ -124,6 +137,8 @@ public class Shpc extends TenantEntity implements Serializable{
         sb.append(",SHLX");
         sb.append(",PC_SJ");
         //sb.append(",sh_zt");
+        sb.append(",SJLX");
+        sb.append(",PATH");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
@@ -131,12 +146,20 @@ public class Shpc extends TenantEntity implements Serializable{
         sb.append(",'"+ StringUtils.transNull(pcmc)+"'");
         sb.append(",'"+ StringUtils.transNull(shlx)+"'");
         if(pcsj!=null){
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             sb.append(",'"+ df.format(pcsj)+"'");
         }else{
             sb.append(",''");
         }
         //sb.append(",'"+ shZt+"'");
+        sb.append(",'"+ StringUtils.transNull(sjlx)+"'");
+        if (StringUtils.isEmpty(filePath)){
+            sb.append(",''");
+        }else{
+            String attsPath ="atts/"+filePath.substring(filePath.lastIndexOf(File.separator)+1);
+            sb.append(",'"+attsPath+"'");
+
+        }
         sb.append(")");
         return sb.toString();
     }

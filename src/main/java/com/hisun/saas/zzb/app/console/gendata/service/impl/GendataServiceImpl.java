@@ -139,6 +139,9 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
         if(shpc!=null){
             SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
             sqliteDBUtil.insert(sqlite,shpc.toInsertSql());
+            if(shpc.getFilePath()!=null&& shpc.getFilePath().equals("")==false){
+                this.copyFile(shpc.getFilePath(),attsDir);
+            }
             //干部
             List<Sha01> sha01s = shpc.getSha01s();
             if(sha01s!=null) {
