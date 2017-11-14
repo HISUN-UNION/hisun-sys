@@ -179,7 +179,7 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
                 cell.setCellValue(Sha01Vo.getXm());
 
                 cell = row.createCell(1);
-                cell.setCellValue(Sha01Vo.getBtyCount());
+                cell.setCellValue(Sha01Vo.getTyCount());
 				cell.setCellStyle(cellStyle2);
 
                 cell = row.createCell(2);
