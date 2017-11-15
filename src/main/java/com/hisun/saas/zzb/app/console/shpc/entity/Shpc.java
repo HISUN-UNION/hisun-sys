@@ -25,8 +25,8 @@ public class Shpc extends TenantEntity implements Serializable{
 
     public static String SHLX_BWH="1";
     public static String SHLX_CWH="2";
-    public static String SJLX_GB="1";
-    public static String SJLX_CL="2";
+    public static String SJLX_GB="1";//干部数据
+    public static String SJLX_CL="2";//材料数据
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")

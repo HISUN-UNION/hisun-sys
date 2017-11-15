@@ -11,22 +11,36 @@ import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.apiregister.entity.ApiRegister;
 import com.hisun.saas.zzb.app.console.apiregister.service.ApiRegisterService;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01gbrmspb;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01gbrmspbService;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
+import com.hisun.util.UUIDUtil;
+import com.hisun.util.WebUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -40,6 +54,8 @@ public class BwhController extends BaseController {
     @Resource
     private ApiRegisterService apiRegisterService;
 
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
     @RequestMapping("/")
     public ModelAndView list(HttpServletRequest req, String pId,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -148,9 +164,10 @@ public class BwhController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/save")
-    public @ResponseBody Map<String, Object> save(@ModelAttribute ShpcVo shpcVo, HttpServletRequest req) throws GenericException {
+    public @ResponseBody Map<String, Object> save(@ModelAttribute ShpcVo shpcVo, HttpServletRequest req,@RequestParam(value="clFile",required = false) MultipartFile clFile) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         Shpc shpc = null;
+
         try {
             if (shpcVo != null) {
                 String id = shpcVo.getId();
@@ -166,6 +183,32 @@ public class BwhController extends BaseController {
                     shpc.setPcsj(pcsjDate);
                 }
                 shpc.setTenant(userLoginDetails.getTenant());
+                if(clFile!=null && !clFile.isEmpty() && shpcVo.getSjlx().equals("2")) {
+                    String fileName = clFile.getOriginalFilename();
+                    if (fileName.endsWith(".doc") || fileName.endsWith(".DOC") || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
+                        String fileDir = uploadAbsolutePath + ShpcService.ATTS_PATH;
+                        File _fileDir = new File(fileDir);
+                        if (_fileDir.exists() == false) {
+                            _fileDir.mkdirs();
+                        }
+                        //原附件存储路径
+                        String savePath = fileDir + UUIDUtil.getUUID() + "_" + fileName;
+                        try {
+                            FileOutputStream fos = new FileOutputStream(new File(savePath));
+                            fos.write(clFile.getBytes());
+                            fos.flush();
+                            fos.close();
+
+                            shpc.setFilePath(savePath);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            throw new GenericException(e);
+                        }
+                    }
+                }
+                if(shpcVo.getSjlx().equals("1")){
+                    shpc.setFilePath("");
+                }
                 if (id != null && id.length() > 0) {
                     BeanTrans.setBaseProperties(shpc, userLoginDetails, "update");
                     this.shpcService.update(shpc);
@@ -208,5 +251,30 @@ public class BwhController extends BaseController {
             throw new GenericException(e);
         }
         return map;
+    }
+
+    @RequestMapping(value="/ajax/down")
+    public void templateDown(String id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        Shpc shpc = this.shpcService.getByPK(id);
+        if(shpc.getFilePath()!=null &&!shpc.getFilePath().equals("")){
+           String filePath = shpc.getFilePath();
+            resp.setContentType("multipart/form-data");
+            //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
+            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(filePath.substring(filePath.lastIndexOf(File.separator)+1)));
+            OutputStream output=resp.getOutputStream();
+            byte[] b= FileUtils.readFileToByteArray(new File(filePath));
+            output.write(b);
+            output.flush();
+            output.close();
+        }
+
+    }
+    private String encode(String filename) throws UnsupportedEncodingException {
+        if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
+            filename = URLEncoder.encode(filename, "UTF-8");
+        } else {
+            filename = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
+        }
+        return filename;
     }
 }

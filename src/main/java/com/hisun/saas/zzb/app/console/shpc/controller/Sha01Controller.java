@@ -139,12 +139,12 @@ public class Sha01Controller extends BaseController {
 
 
 
-                    Shpc shpc = this.shpcService.getByPK(shpcId);
-                    if (shpc != null) {
-                        shpc.setFilePath(savePath);
-                        BeanTrans.setBaseProperties(shpc, userLoginDetails, "update");
-                        this.shpcService.update(shpc);
-                    }
+//                    Shpc shpc = this.shpcService.getByPK(shpcId);
+//                    if (shpc != null) {
+//                        shpc.setFilePath(savePath);
+//                        BeanTrans.setBaseProperties(shpc, userLoginDetails, "update");
+//                        this.shpcService.update(shpc);
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);

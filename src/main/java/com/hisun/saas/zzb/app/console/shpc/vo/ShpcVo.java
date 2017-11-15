@@ -5,8 +5,10 @@ import com.hisun.saas.sys.tenant.tenant.vo.TenantEntityVo;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.shtp.vo.ShtpVo;
 import org.hibernate.annotations.Cascade;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.io.FileFilter;
 import java.io.Serializable;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class ShpcVo extends TenantEntityVo {
     private List<Sha01Vo> sha01s;
     private int shZt;
     private String shZtValue;
+    private String sjlx;
+    private String sjlxValue;
+//    private MultipartFile clFile;
     @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<ShtpVo> shtps;
@@ -135,4 +140,33 @@ public class ShpcVo extends TenantEntityVo {
     public void setShZtValue(String shZtValue){
         this.shZtValue = shZtValue;
     }
+
+    public String getSjlxValue() {
+        if(this.sjlx.equals(Shpc.SJLX_GB)){
+            return "干部数据";
+        }else if(this.sjlx.equals(Shpc.SJLX_CL)){
+            return "材料数据";
+        }
+        return "";
+    }
+
+    public void setSjlxValue(String sjlxValue) {
+        this.sjlxValue = sjlxValue;
+    }
+
+    public String getSjlx() {
+        return sjlx;
+    }
+
+    public void setSjlx(String sjlx) {
+        this.sjlx = sjlx;
+    }
+
+//    public MultipartFile getClFile() {
+//        return clFile;
+//    }
+//
+//    public void setClFile(MultipartFile clFile) {
+//        this.clFile = clFile;
+//    }
 }

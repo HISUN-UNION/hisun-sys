@@ -14,6 +14,20 @@
 <title>会议研究</title>
 </head>
 <body>
+<div id="attsModal" class="modal container hide fade" tabindex="-1" data-width="700">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="title" >
+					附件列表
+				</h3>
+			</div>
+			<div class="modal-body" id="attsAddDiv">
+			</div>
+		</div>
+	</div>
+</div>
 	<div class="container-fluid">
 
 		<div class="row-fluid">
@@ -35,10 +49,11 @@
 								<tr>
 									<th >批次名称</th>
 									<th width="10%">上会类型</th>
+									<th width="10%">数据类型</th>
 									<th width="10%">上会时间</th>
 									<th width="10%">上会状态</th>
 									<th width="10%">上会名单</th>
-									<th width="10%">操作</th>
+									<th width="12%">操作</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -46,12 +61,22 @@
 									<tr style="text-overflow:ellipsis;">
 										<td><a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }"><c:out value="${vo.pcmc}"></c:out></a></td>
 										<td><c:out value="${vo.shlxValue}"></c:out></td>
+										<td><c:out value="${vo.sjlxValue}"></c:out></td>
 										<td><c:out value="${vo.pcsjValue}"></c:out></td>
 										<td><a href="javascript:changeShZt('${vo.id}')" id="${vo.id }_shZt"><c:out value="${vo.shZtValue}"></c:out></a></td>
-										<td><a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }" class="">共${vo.a01Count }人</a></td>
+										<td>
+											<c:if test="${vo.sjlx eq '1'}">
+												<a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }" class="">共${vo.a01Count }人</a>
+											</c:if>
+											<c:if test="${vo.sjlx eq '2'}">---</c:if>
+										</td>
 										<td class="Left_alignment">
+
 											<a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }" class="">编辑</a>|
 											<a href="javascript:del('${vo.id }','${vo.pcmc}')" class="">删除</a>
+											<c:if test="${vo.sjlx eq '2'}">
+												|<a href="javascript:addAtts('${vo.id }')" class="">附件</a>
+											</c:if>
 										</td>
 									</tr>
 								</c:forEach>
@@ -73,11 +98,34 @@
 		<%-- END PAGE CONTENT--%>  
 	</div>
 	<script type="text/javascript" src="${path }/js/common/30CloudAjax.js"></script>
+<script type="text/javascript" src="${path }/js/common/loading.js"></script>
+<%--<%@ include file="/WEB-INF/jsp/inc/confirmModal.jsp" %>--%>
 	<script type="text/javascript">
 		(function(){
 			App.init();
 		})();
-	
+		var myLoading = new MyLoading("${path}",{zindex:20000});
+		var addAtts = function(shpcId){
+			$.ajax({
+				url : "${path}/zzb/app/console/shpcAtts/ajax/editAtts",
+				type : "post",
+				data: {"shpcId":shpcId},
+				headers:{
+					OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+				},
+				dataType : "html",
+				success : function(html){
+					$('#attsAddDiv').html(html);
+					$('#attsModal').modal({
+						keyboard: true
+					});
+				},
+				error : function(){
+					showTip("提示","出错了请联系管理员", 1500);
+				}
+			});
+		}
+
 		function pagehref (pageNum ,pageSize){
 			window.location.href ="${path}/zzb/app/console/bwh/?pageNum="+pageNum+"&pageSize="+pageSize;
 		}
