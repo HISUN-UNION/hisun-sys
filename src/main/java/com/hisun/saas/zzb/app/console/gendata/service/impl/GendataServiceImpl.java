@@ -18,6 +18,7 @@ import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.util.CompressUtil;
 import com.hisun.util.SqliteDBUtil;
+import com.hisun.util.StringUtils;
 import com.hisun.util.UUIDUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,6 +142,17 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
             sqliteDBUtil.insert(sqlite,shpc.toInsertSql());
             if(shpc.getFilePath()!=null&& shpc.getFilePath().equals("")==false){
                 this.copyFile(shpc.getFilePath(),attsDir);
+            }
+            //上会批次附件
+            List<ShpcAtts> shpcAttses = shpc.getShpcAttses();
+            if(shpcAttses!=null){
+                for(ShpcAtts shpcAtts : shpcAttses){
+                    //初始化结构数据
+                    sqliteDBUtil.insert(sqlite, shpcAtts.toInsertSql());
+                    if(StringUtils.isEmpty(shpcAtts.getFilepath())==false){
+                        this.copyFile(shpcAtts.getFilepath(),attsDir);
+                    }
+                }
             }
             //干部
             List<Sha01> sha01s = shpc.getSha01s();

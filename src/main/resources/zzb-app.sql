@@ -296,3 +296,14 @@ create table if not exists `app_mc_a01_gzjl` (
   `app_mc_a01_id` varchar(32) not null,
   `gzjl_px` int null,
   primary key (`id`));
+
+  drop table if exists `app_sh_pc_atts` ;
+  CREATE TABLE `app_sh_pc_atts`
+(
+    `id` VARCHAR(32) PRIMARY KEY NOT NULL,
+    `file_name` VARCHAR(128) NOT NULL,
+    `file_path` VARCHAR(255) NOT NULL,
+    `sh_pc_id` VARCHAR(32) NOT NULL,
+    CONSTRAINT app_sh_pc_atts_app_sh_pc_id_fk FOREIGN KEY (sh_pc_id) REFERENCES app_sh_pc (id)
+);
+

@@ -32,7 +32,7 @@
 							<thead>
 								<tr>
 									<th >票决编号</th>
-									<th width="10%">票决人</th>
+									<%--<th width="10%">票决人</th>--%>
 									<th width="10%">票决时间</th>
 									<th width="15%">具体票决情况</th>
 								</tr>
@@ -41,7 +41,7 @@
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
 										<td><c:out value="${vo.tpq_bh}"></c:out></td>
-										<td><c:out value="${vo.tpr_xm}"></c:out></td>
+										<%--<td><c:out value="${vo.tpr_xm}"></c:out></td>--%>
 										<td><c:out value="${vo.tp_sj_str}"></c:out></td>
 										<td><a href="${path}/zzb/app/console/tpsj/?shtpId=${vo.id }" class="">查看</a></td>
 									</tr>

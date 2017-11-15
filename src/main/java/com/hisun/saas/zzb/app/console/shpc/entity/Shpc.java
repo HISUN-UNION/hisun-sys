@@ -55,6 +55,11 @@ public class Shpc extends TenantEntity implements Serializable{
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<Shtp> shtps;
 
+    @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<ShpcAtts> shpcAttses;
+
+
     public String getId() {
         return id;
     }
@@ -125,6 +130,14 @@ public class Shpc extends TenantEntity implements Serializable{
 
     public void setSjlx(String sjlx) {
         this.sjlx = sjlx;
+    }
+
+    public List<ShpcAtts> getShpcAttses() {
+        return shpcAttses;
+    }
+
+    public void setShpcAttses(List<ShpcAtts> shpcAttses) {
+        this.shpcAttses = shpcAttses;
     }
 
     public String toInsertSql(){
