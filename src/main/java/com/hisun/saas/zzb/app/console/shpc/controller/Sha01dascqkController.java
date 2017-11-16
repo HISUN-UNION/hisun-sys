@@ -86,13 +86,13 @@ public class Sha01dascqkController extends BaseController {
                         Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
                         sha01dascqk.setPath(savePath);
                         sha01dascqk.setSha01(sha01);
-                        sha01dascqk.setFile2imgPath(imgPath.replaceAll("\\\\", "\\\\\\\\"));
+                        sha01dascqk.setFile2imgPath(imgPath);
                         this.sha01dascqkService.update(sha01dascqk);
                     }else{//创建
                         Sha01dascqk sha01dascqk = new Sha01dascqk();
                         sha01dascqk.setPath(savePath);
                         sha01dascqk.setSha01(sha01);
-                        sha01dascqk.setFile2imgPath(imgPath.replaceAll("\\\\", "\\\\\\\\"));
+                        sha01dascqk.setFile2imgPath(imgPath);
                         this.sha01dascqkService.save(sha01dascqk);
                     }
 

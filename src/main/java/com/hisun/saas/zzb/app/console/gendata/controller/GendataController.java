@@ -2,6 +2,8 @@ package com.hisun.saas.zzb.app.console.gendata.controller;
 
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrder;
+import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.ErrorMsgShowException;
 import com.hisun.base.exception.GenericException;
@@ -66,8 +68,10 @@ public class GendataController extends BaseController{
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
             query.add(CommonRestrictions.and(" shZt = :shZt", "shZt", 0));
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.asc("px"));
             Long total = this.shpcService.count(query);
-            List<Shpc> shpcs = this.shpcService.list(query, null);
+            List<Shpc> shpcs = this.shpcService.list(query, orderBy);
             List<ShpcVo> shpcVos = new ArrayList<ShpcVo>();
             if (shpcs != null) {// entity ==> vo
                 for (Shpc shpc : shpcs) {

@@ -70,11 +70,12 @@ public class ShtpController extends BaseController {
         try {
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            query.add(CommonRestrictions.and(" sjlx = :sjlx", "sjlx", Shpc.SJLX_GB));
             if(pcmc!=null && !pcmc.equals("")){
                 query.add(CommonRestrictions.and(" pcmc like :pcmc", "pcmc",  "%"+pcmc+ "%"));
             }
             CommonOrderBy orderBy = new CommonOrderBy();
-            orderBy.add(CommonOrder.desc("pcsj"));
+            orderBy.add(CommonOrder.asc("px"));
 
             Long total = this.shpcService.count(query);
             List<Shpc> shpcs = this.shpcService.list(query, orderBy, pageNum,pageSize);

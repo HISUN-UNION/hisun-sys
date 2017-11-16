@@ -84,11 +84,11 @@ public class GbMcA01gbrmspbServiceImpl extends BaseServiceImpl<GbMcA01gbrmspb, S
         //临时方式处理照片(取得当前文档中所有照片)
         List<byte[]> imgs = WordUtil.newInstance().extractImages(wordsourcePath);
         if(imgs!=null&&imgs.size()>0){
-            File file = new File(uploadAbsolutePath+Sha01Service.ATTS_PATH);
+            File file = new File(uploadAbsolutePath+GbMcA01Service.ATTS_PATH);
             if(file.exists()==false){
                 file.mkdirs();
             }
-            String photo = uploadAbsolutePath+Sha01Service.ATTS_PATH+ UUIDUtil.getUUID()+".jpg";
+            String photo = uploadAbsolutePath+GbMcA01Service.ATTS_PATH+ UUIDUtil.getUUID()+".jpg";
             FileOutputStream photofos = new FileOutputStream(new File(photo));
             photofos.write(imgs.get(0));
             photofos.flush();
