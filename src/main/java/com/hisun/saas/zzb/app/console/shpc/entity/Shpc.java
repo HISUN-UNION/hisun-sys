@@ -46,6 +46,9 @@ public class Shpc extends TenantEntity implements Serializable{
     private int shZt;
     @Column(name = "SJLX",length = 1)
     private String sjlx=SJLX_GB;
+    @Column(name = "PC_PX")//排序
+    private int px;
+
 
     @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
@@ -140,6 +143,14 @@ public class Shpc extends TenantEntity implements Serializable{
         this.shpcAttses = shpcAttses;
     }
 
+    public int getPx() {
+        return px;
+    }
+
+    public void setPx(int px) {
+        this.px = px;
+    }
+
     public String toInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
@@ -152,6 +163,7 @@ public class Shpc extends TenantEntity implements Serializable{
         //sb.append(",sh_zt");
         sb.append(",SJLX");
         sb.append(",PATH");
+        sb.append(",PC_PX");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
@@ -173,6 +185,7 @@ public class Shpc extends TenantEntity implements Serializable{
             sb.append(",'"+attsPath+"'");
 
         }
+        sb.append(",'"+ px+"'");
         sb.append(")");
         return sb.toString();
     }

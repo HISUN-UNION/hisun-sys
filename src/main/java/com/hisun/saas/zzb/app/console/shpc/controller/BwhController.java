@@ -21,6 +21,7 @@ import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WebUtil;
+import com.hisun.util.WordConvertUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class BwhController extends BaseController {
            // query.add(CommonRestrictions.and(" shlx = :shlx", "shlx", Shpc.SHLX_BWH));
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
             CommonOrderBy orderBy = new CommonOrderBy();
-            orderBy.add(CommonOrder.desc("pcsj"));
+            orderBy.add(CommonOrder.asc("px"));
 
             Long total = this.shpcService.count(query);
             List<Shpc> shpcs = this.shpcService.list(query, orderBy, pageNum,
@@ -183,7 +184,8 @@ public class BwhController extends BaseController {
                     shpc.setPcsj(pcsjDate);
                 }
                 shpc.setTenant(userLoginDetails.getTenant());
-                if(clFile!=null && !clFile.isEmpty() && shpcVo.getSjlx().equals("2")) {
+                if(clFile!=null && !clFile.isEmpty() && shpcVo.getSjlx().equals(Shpc.SJLX_CL)) {
+
                     String fileName = clFile.getOriginalFilename();
                     if (fileName.endsWith(".doc") || fileName.endsWith(".DOC") || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
                         String fileDir = uploadAbsolutePath + ShpcService.ATTS_PATH;
@@ -191,7 +193,7 @@ public class BwhController extends BaseController {
                         if (_fileDir.exists() == false) {
                             _fileDir.mkdirs();
                         }
-                        //原附件存储路径
+                        //附件存储路径
                         String savePath = fileDir + UUIDUtil.getUUID() + "_" + fileName;
                         try {
                             FileOutputStream fos = new FileOutputStream(new File(savePath));
@@ -199,14 +201,19 @@ public class BwhController extends BaseController {
                             fos.flush();
                             fos.close();
 
-                            shpc.setFilePath(savePath);
+                            //PDF路径
+                            String pdfPath = uploadAbsolutePath+ShpcService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
+                            WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
+                            FileUtils.deleteQuietly(new File(savePath));
+                            shpc.setFilePath(pdfPath);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             throw new GenericException(e);
                         }
                     }
                 }
-                if(shpcVo.getSjlx().equals("1")){
+                if(shpcVo.getSjlx().equals(Shpc.SJLX_GB)){
                     shpc.setFilePath("");
                 }
                 if (id != null && id.length() > 0) {

@@ -6,6 +6,7 @@ create table if not exists app_sh_pc (
   `shlx` varchar(1) null ,
   `sjlx` varchar(1) null ,
   `path` varchar(128) null ,
+  `pc_px` varchar(1) null ,
   primary key (`id`));
 
 drop table if exists `app_sh_tp` ;

@@ -64,8 +64,8 @@
 										<label class="control-label">数据类型<span class="required">*</span></label>
 										<div class="controls">
 											<select class="span6 m-wrap" id="sjlx" name="sjlx" onchange="changeFile(this)" data-placeholder="Choose a Category" tabindex="1" required>
-												<option value="1" <c:if test="${shpc.sjlx eq '1'}">selected</c:if>>干部数据</option>
-												<option value="2" <c:if test="${shpc.sjlx eq '2'}">selected</c:if>>材料数据</option>
+												<option value="1" <c:if test="${shpc.sjlx eq '1'}">selected</c:if>>干部名单</option>
+												<option value="2" <c:if test="${shpc.sjlx eq '2'}">selected</c:if>>汇报材料</option>
 											</select>
 										</div>
 									</div>
@@ -81,7 +81,7 @@
 									</div>
 									<div  id="clFileGroup" class="control-group" <c:if test="${shpc.sjlx eq '1'}">
 										style="visibility:hidden"</c:if>>
-										<label class="control-label">材料</label>
+										<label class="control-label">汇报主题材料</label>
 										<div class="controls">
 											<input type="file" class="default" name="clFile" id="clFile" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
 											<div class="btn-group" id="gbrmspbDownDiv" <c:if test="${empty shpc.filePath}">
@@ -89,7 +89,7 @@
 												<a class="btn blue" herf="javascript:void(0)" onclick="fileDown()"><i
 														class="icon-circle-arrow-down"></i>下载文件</a>
 											</div>
-											<p class="textprompt">附件大小不得超过20M。附件支持的格式有：'doc','docx','DOC','DOCX'</p>
+											<p class="textprompt">附件支持的格式有：'doc','docx'</p>
 											<p class="Errorred" id="attachFileError"></p>
 										</div>
 

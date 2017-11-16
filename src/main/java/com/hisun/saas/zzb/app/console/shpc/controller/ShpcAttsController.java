@@ -133,10 +133,17 @@ public class ShpcAttsController extends BaseController {
                     fos.flush();
                     fos.close();
 
+
+                    //PDF路径
+                    String pdfPath = uploadAbsolutePath+ShpcAttsService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
+                    WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
+                    FileUtils.deleteQuietly(new File(savePath));
+
                     Shpc shpc = this.shpcService.getByPK(shpcId);
                     ShpcAtts shpcAtts = new ShpcAtts();
-                    shpcAtts.setFilename(fileName);
-                    shpcAtts.setFilepath(savePath);
+
+                    shpcAtts.setFilename(fileName.substring(0,fileName.indexOf(".")));
+                    shpcAtts.setFilepath(pdfPath);
                     shpcAtts.setShpc(shpc);
                     shpcAtts.setTenant(userLoginDetails.getTenant());
                     BeanTrans.setBaseProperties(shpc, userLoginDetails, "save");
@@ -201,7 +208,7 @@ public class ShpcAttsController extends BaseController {
         if(shpcAtts!=null){
             resp.setContentType("multipart/form-data");
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
-            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(shpcAtts.getFilename()));
+            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(shpcAtts.getFilename()+".pdf"));
             OutputStream output=resp.getOutputStream();
             byte[] b= FileUtils.readFileToByteArray(new File(shpcAtts.getFilepath()));
             output.write(b);

@@ -72,8 +72,8 @@ public class ShpcAtts  extends TenantEntity implements Serializable {
         sb.append("(");
         sb.append("ID");
         sb.append(",SH_PC_ID");
-        sb.append(",NAME");
-        sb.append(",PATH");
+        sb.append(",FILE_NAME");
+        sb.append(",FILE_PATH");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");

@@ -59,8 +59,8 @@
 								<label class="control-label">数据类型<span class="required">*</span></label>
 								<div class="controls">
 									<select class="span6 m-wrap" id="sjlx" name="sjlx" onchange="changeFile(this)"  data-placeholder="Choose a Category" tabindex="1" required>
-										<option value="1" selected>干部数据</option>
-										<option value="2" >材料数据</option>
+										<option value="1" selected>干部名单</option>
+										<option value="2" >汇报材料</option>
 									</select>
 								</div>
 							</div>
@@ -75,10 +75,10 @@
 
 							</div>
 							<div  id="clFileGroup" class="control-group"  style="visibility:hidden">
-								<label  class="control-label">材料</label>
+								<label  class="control-label">汇报主题材料</label>
 								<div class="controls">
 									<input type="file" class="default"  name="clFile" id="clFile" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
-									<p class="textprompt">附件支持的格式有：'doc','docx','DOC','DOCX'</p>
+									<p class="textprompt">附件支持的格式有：'doc','docx'</p>
 									<p class="Errorred" id="attachFileError"></p>
 								</div>
 
