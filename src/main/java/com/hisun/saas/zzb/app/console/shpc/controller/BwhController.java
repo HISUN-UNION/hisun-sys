@@ -106,8 +106,16 @@ public class BwhController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/add")
-    public ModelAndView add() {
-        return new ModelAndView("/saas/zzb/app/console/bwh/add");
+    public ModelAndView add() throws Exception{
+        ShpcVo vo = new ShpcVo();
+        Integer maxPx = shpcService.getMaxPx();
+        if(maxPx != null){
+            vo.setPx(maxPx+1);
+        }else{
+            vo.setPx(1);
+        }
+
+        return new ModelAndView("/saas/zzb/app/console/bwh/add","vo",vo);
     }
 
     /**
@@ -168,12 +176,14 @@ public class BwhController extends BaseController {
     public @ResponseBody Map<String, Object> save(@ModelAttribute ShpcVo shpcVo, HttpServletRequest req,@RequestParam(value="clFile",required = false) MultipartFile clFile) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         Shpc shpc = null;
-
+        int newPx = shpcVo.getPx();
+        int oldPx = this.shpcService.getMaxPx()+1;
         try {
             if (shpcVo != null) {
                 String id = shpcVo.getId();
                 if (id != null && id.length() > 0) {//修改
                     shpc = this.shpcService.getByPK(id);
+                    oldPx = shpc.getPx();
                 } else {//新增
                     shpc = new Shpc();
                 }
@@ -215,6 +225,9 @@ public class BwhController extends BaseController {
                 }
                 if(shpcVo.getSjlx().equals(Shpc.SJLX_GB)){
                     shpc.setFilePath("");
+                }
+                if(oldPx!=newPx) {
+                    this.shpcService.updatePx(oldPx,newPx);
                 }
                 if (id != null && id.length() > 0) {
                     BeanTrans.setBaseProperties(shpc, userLoginDetails, "update");

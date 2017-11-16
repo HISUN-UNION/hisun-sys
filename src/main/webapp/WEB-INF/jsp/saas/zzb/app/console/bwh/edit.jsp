@@ -79,6 +79,13 @@
 										</div>
 
 									</div>
+									<div id="pxGroup" class="control-group">
+										<label class="control-label">排序<span class="required">*</span></label>
+										<div class="controls">
+											<input type="text" class="span6 m-wrap" id="px" name="px" number="true" required maxlength="3"  value="${shpc.px}" />
+										</div>
+
+									</div>
 									<div  id="clFileGroup" class="control-group" <c:if test="${shpc.sjlx eq '1'}">
 										style="visibility:hidden"</c:if>>
 										<label class="control-label">汇报主题材料</label>

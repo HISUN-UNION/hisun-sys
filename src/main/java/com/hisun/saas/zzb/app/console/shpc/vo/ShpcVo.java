@@ -32,7 +32,17 @@ public class ShpcVo extends TenantEntityVo {
     private String shZtValue;
     private String sjlx;
     private String sjlxValue;
-//    private MultipartFile clFile;
+    private int px;
+
+    public int getPx() {
+        return px;
+    }
+
+    public void setPx(int px) {
+        this.px = px;
+    }
+
+    //    private MultipartFile clFile;
     @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<ShtpVo> shtps;

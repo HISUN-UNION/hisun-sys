@@ -53,6 +53,7 @@
 									<th width="10%">上会时间</th>
 									<th width="10%">上会状态</th>
 									<th width="10%">上会名单</th>
+									<th width="50">排序</th>
 									<th width="12%">操作</th>
 								</tr>
 							</thead>
@@ -70,6 +71,7 @@
 											</c:if>
 											<c:if test="${vo.sjlx eq '2'}">---</c:if>
 										</td>
+										<td><c:out value="${vo.px}"></c:out></td>
 										<td class="Left_alignment">
 
 											<a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }" class="">编辑</a>|

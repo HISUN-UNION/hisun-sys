@@ -7,6 +7,8 @@ import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.service.impl.BaseServiceImpl;
+import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
@@ -26,7 +28,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2017/9/15.
@@ -201,5 +205,43 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+   public Integer getMaxPx(){
+       UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+       Map<String, Object> arg=new HashMap<String, Object>();
+       String hql = "select max(t.PC_PX) as px from APP_SH_PC t where t.tombstone=(:tombstone) and t.tenant_id=(:tenant_id) order by  t.PC_PX asc";
+       arg.put("tombstone", "0");
+       arg.put("tenant_id", userLoginDetails.getTenantId());
+       List<Map> maxSorts = this.shpcDao.countReturnMapBySql(hql, arg);
+       Integer maxPx = (Integer) maxSorts.get(0).get("px");
+       return maxPx;
+    }
+
+    /**
+     * 排序处理（首先跟最大的排序号比较，如果大于最大排序号则不处理；
+     *        如果小于，就一个个比较，当比较到大于它的就把后面大于它的全部+1；）
+     * @param
+     */
+    public void updatePx(int oldPx,int newPx){
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        String sql = "UPDATE APP_SH_PC t SET ";
+        if(newPx > oldPx) {
+            sql = sql + "t.PC_PX=t.PC_PX-1";
+        } else {
+            sql = sql + "t.PC_PX=t.PC_PX+1";
+        }
+
+        sql = sql + " where t.tombstone=(:tombstone) and t.tenant_id=(:tenant_id)";
+        if(newPx > oldPx) {
+            sql = sql + " and t.PC_PX<=" + newPx + " and t.PC_PX >" + oldPx;
+        } else if(newPx == oldPx) {
+            sql = sql + " and 1<>1";
+        } else {
+            sql = sql + " and t.PC_PX<" + oldPx + " and t.PC_PX>=" + newPx;
+        }
+        Map<String, Object> paramMap=new HashMap<String, Object>();
+        paramMap.put("tombstone", "0");
+        paramMap.put("tenant_id", userLoginDetails.getTenantId());
+        this.shpcDao.update(sql, paramMap);
     }
 }

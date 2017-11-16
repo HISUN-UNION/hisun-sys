@@ -17,4 +17,6 @@ public interface ShpcService extends BaseService<Shpc,String> {
     public static String ATTS_PATH = File.separator+"shpc"+ File.separator;
     List<Sha01Vo> getShpcById(String shpcId) throws Exception;
     void exportExcel(String title, List<Sha01Vo> Sha01Vos, OutputStream out);
+    Integer getMaxPx() ;
+    void updatePx(int oldPx,int newPx);
 }
