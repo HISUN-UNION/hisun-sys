@@ -177,7 +177,14 @@ public class BwhController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         Shpc shpc = null;
         int newPx = shpcVo.getPx();
-        int oldPx = this.shpcService.getMaxPx()+1;
+        int oldPx = 0;
+        Integer oldPxInteger = this.shpcService.getMaxPx();
+        if(oldPxInteger != null){
+            oldPx = oldPxInteger.intValue();
+        }else{
+            oldPx = 1;
+        }
+
         try {
             if (shpcVo != null) {
                 String id = shpcVo.getId();

@@ -325,7 +325,7 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
     }
 
     public void setFile2imgPath(String file2imgPath) {
-        this.file2imgPath = file2imgPath;
+        this.file2imgPath = file2imgPath.replaceAll("\\\\", "\\\\\\\\");
     }
 
     public String toInsertSql(){
