@@ -135,8 +135,9 @@ public class ShpcAttsController extends BaseController {
 
 
                     //PDF路径
-                    String pdfPath = uploadAbsolutePath+ShpcAttsService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
-                    WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
+                    String pdfPath = ShpcAttsService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
+                    String pdfRealPath = uploadAbsolutePath+pdfPath;
+                    WordConvertUtil.newInstance().convert(savePath,pdfRealPath,WordConvertUtil.PDF);
                     FileUtils.deleteQuietly(new File(savePath));
 
                     Shpc shpc = this.shpcService.getByPK(shpcId);
@@ -188,7 +189,7 @@ public class ShpcAttsController extends BaseController {
             ShpcAtts shpcAtts = this.shpcAttsService.getByPK(id);
             if(shpcAtts != null){
                 this.shpcAttsService.delete(shpcAtts);
-                File attFile = new File(shpcAtts.getFilepath());
+                File attFile = new File(uploadAbsolutePath+shpcAtts.getFilepath());
                 if (attFile.exists() == true) {
                     attFile.delete();
                 }
@@ -210,7 +211,7 @@ public class ShpcAttsController extends BaseController {
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
             resp.setHeader("Content-Disposition", "attachment;fileName="+encode(shpcAtts.getFilename()+".pdf"));
             OutputStream output=resp.getOutputStream();
-            byte[] b= FileUtils.readFileToByteArray(new File(shpcAtts.getFilepath()));
+            byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+shpcAtts.getFilepath()));
             output.write(b);
             output.flush();
             output.close();
