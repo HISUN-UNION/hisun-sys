@@ -25,6 +25,7 @@ import com.hisun.util.StringUtils;
 import com.hisun.util.UUIDUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,6 +47,10 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
     @Resource
     private ApiRegisterDao apiRegisterDao;
 
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
+
+
     private GendataDao gendataDao;
 
     @Autowired
@@ -57,11 +62,12 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
 
 
     @Override
-    public String saveAppData(Gendata gendata,Map<String, String> map, String dataPath) throws Exception {
+    public String saveAppData(Gendata gendata,Map<String, String> map) throws Exception {
         //初始化数据目录
         String uuid = UUIDUtil.getUUID();
-        String dataDir = dataPath + uuid + File.separator;
-        String appDataZipPath = dataPath+UUIDUtil.getUUID()+".zip";
+        String dataDir = uploadAbsolutePath+ GendataService.DATA_PATH + uuid + File.separator;
+        String appDataZipPath = GendataService.DATA_PATH+UUIDUtil.getUUID()+".zip";
+        String appDataZipRealPath = uploadAbsolutePath +appDataZipPath;
 
         List<String> dirs = new ArrayList<>();
         String dbdir =  dataDir+ GendataService.DB_PATH;
@@ -100,7 +106,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
             this.genConfigData(dbdir + GendataService.SQLITE_DB_NAME);
         }
         //压缩数据文件
-        CompressUtil.zip(appDataZipPath,dataDir,GendataService.DATA_PACKET_NAME);
+        CompressUtil.zip(appDataZipRealPath,dataDir,GendataService.DATA_PACKET_NAME);
         gendata.setPath(appDataZipPath);
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
@@ -274,7 +280,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
 
 
     public void copyFile(String source,String targetPath) throws IOException{
-        File sourceFile = new File(source);
+        File sourceFile = new File(uploadAbsolutePath+source);
         File targetFile = new File(targetPath+sourceFile.getName());
         FileUtils.copyFile(sourceFile,targetFile);
 

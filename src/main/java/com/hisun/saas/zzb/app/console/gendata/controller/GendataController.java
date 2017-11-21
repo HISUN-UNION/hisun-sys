@@ -31,6 +31,7 @@ import com.hisun.util.WebUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +64,10 @@ public class GendataController extends BaseController{
     private GbMcService gbMcService;
     @Autowired
     private ShpcService shpcService;
+
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
+
     @RequestMapping(value = "/")
     public ModelAndView list(HttpServletRequest req, String pId,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -191,7 +196,7 @@ public class GendataController extends BaseController{
             }
             Gendata gendata = new Gendata();
             gendata.setTenant(userLoginDetails.getTenant());
-            String id = this.gendataService.saveAppData(gendata,map,appDataPath);
+            String id = this.gendataService.saveAppData(gendata,map);
             rsmap.put("gendataId", id);
         }catch(Exception e){
             logger.error(e, e);
@@ -210,7 +215,7 @@ public class GendataController extends BaseController{
         resp.setContentType("multipart/form-data");
         resp.setHeader("Content-Disposition", "attachment;fileName="+encode(GendataService.DATA_PACKET_NAME+".zip"));
         OutputStream output=resp.getOutputStream();
-        byte[] b= FileUtils.readFileToByteArray(new File(zipPath));
+        byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+zipPath));
         output.write(b);
         output.flush();
         output.close();
