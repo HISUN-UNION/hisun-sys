@@ -32,7 +32,8 @@
 		<div class="caption_title">生成APP数据包</div>
 		<div class="fr">
 			<a type="button" class="btn green" href="javascript:formSubmit()"  style="color: #ffffff;height: auto"><i class="icon-download"></i>生成</a>
-			<a type="button" class="btn" style="height: 20px;" href="${path }/zzb/app/console/gendata/" ><i class="icon-refresh"></i>刷新</a>
+			<a type="button" class="btn" style="height: 20px;" href="${path }/zzb/app/console/gendata/loadGenerator" ><i class="icon-refresh"></i>刷新</a>
+			<a class="btn" href="${path}/zzb/app/console/gendata/"><i class="icon-undo"></i>返回</a>
 		</div>
 	</div>
 <form action="${path }/zzb/app/console/gendata/generator" class="form-horizontal" id="form1" method="post">
