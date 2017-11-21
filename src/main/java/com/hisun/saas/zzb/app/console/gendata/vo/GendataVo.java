@@ -17,7 +17,30 @@ public class GendataVo {
     private String path;
     private List<ShpcVo> shpcVoList;
     private List<GbtjVo> gbtjVoList;
+    private int isCurrentPacket;
+    private String isCurrentPacketValue;
+    private String createTimeValue;
 
+    public int getIsCurrentPacket() {
+        return isCurrentPacket;
+    }
+
+    public void setIsCurrentPacket(int isCurrentPacket) {
+        this.isCurrentPacket = isCurrentPacket;
+    }
+
+    public String getIsCurrentPacketValue() {
+        if(this.isCurrentPacket==0){
+            return "非当前数据包";
+        }else if(this.isCurrentPacket==1){
+            return "当前数据包";
+        }
+        return "";
+    }
+
+    public void setIsCurrentPacketValue(String isCurrentPacketValue) {
+        this.isCurrentPacketValue = isCurrentPacketValue;
+    }
 
     public static String getShpcData() {
         return SHPC_DATA;
@@ -65,5 +88,13 @@ public class GendataVo {
 
     public void setGbtjVoList(List<GbtjVo> gbtjVoList) {
         this.gbtjVoList = gbtjVoList;
+    }
+
+    public String getCreateTimeValue() {
+        return createTimeValue;
+    }
+
+    public void setCreateTimeValue(String createTimeValue) {
+        this.createTimeValue = createTimeValue;
     }
 }

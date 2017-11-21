@@ -22,6 +22,9 @@ public class Gendata extends TenantEntity implements Serializable {
     @Column(name = "PATH",length = 255)
     private String path;
 
+    @Column(name = "is_current_packet")//是否当前数据包 0-不是数据包，1-当前数据包
+    private int isCurrentPacket;
+
     public String getId() {
         return id;
     }
@@ -36,5 +39,13 @@ public class Gendata extends TenantEntity implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public int getIsCurrentPacket() {
+        return isCurrentPacket;
+    }
+
+    public void setIsCurrentPacket(int isCurrentPacket) {
+        this.isCurrentPacket = isCurrentPacket;
     }
 }

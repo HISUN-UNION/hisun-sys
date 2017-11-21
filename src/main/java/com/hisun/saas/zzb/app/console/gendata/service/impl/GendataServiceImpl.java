@@ -3,6 +3,8 @@ package com.hisun.saas.zzb.app.console.gendata.service.impl;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.BaseService;
 import com.hisun.base.service.impl.BaseServiceImpl;
+import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.apiregister.dao.ApiRegisterDao;
 import com.hisun.saas.zzb.app.console.apiregister.entity.ApiRegister;
 import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcDao;
@@ -16,6 +18,7 @@ import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
 import com.hisun.saas.zzb.app.console.shpc.dao.Sha01dascqkDao;
 import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
+import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.CompressUtil;
 import com.hisun.util.SqliteDBUtil;
 import com.hisun.util.StringUtils;
@@ -99,6 +102,8 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
         //压缩数据文件
         CompressUtil.zip(appDataZipPath,dataDir,GendataService.DATA_PACKET_NAME);
         gendata.setPath(appDataZipPath);
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
         this.save(gendata);
         return gendata.getId();
     }

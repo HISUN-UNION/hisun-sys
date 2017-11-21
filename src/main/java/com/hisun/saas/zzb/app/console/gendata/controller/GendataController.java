@@ -25,13 +25,16 @@ import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
+import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
 import com.hisun.util.WebUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -61,7 +64,44 @@ public class GendataController extends BaseController{
     @Autowired
     private ShpcService shpcService;
     @RequestMapping(value = "/")
-    public ModelAndView list(){
+    public ModelAndView list(HttpServletRequest req, String pId,
+                             @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            CommonConditionQuery query = new CommonConditionQuery();
+            // query.add(CommonRestrictions.and(" shlx = :shlx", "shlx", Gendata.SHLX_BWH));
+            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.desc("isCurrentPacket"));
+            orderBy.add(CommonOrder.asc("createDate"));
+            Long total = this.gendataService.count(query);
+            List<Gendata> gendatas = this.gendataService.list(query, orderBy, pageNum,
+                    pageSize);
+            List<GendataVo> gendataVos = new ArrayList<GendataVo>();
+
+            if (gendatas != null) {// entity ==> vo
+                for (Gendata gendata : gendatas) {
+                    GendataVo vo = new GendataVo();
+                    BeanUtils.copyProperties(vo, gendata);
+                    if(gendata.getCreateDate()!=null && !gendata.getCreateDate().equals("")) {
+                        vo.setCreateTimeValue(DateUtil.formatDateByFormat(gendata.getCreateDate(), "yyyy.MM.dd HH:mm:ss "));
+                    }
+                    gendataVos.add(vo);
+                }
+            }
+            PagerVo<GendataVo> pager = new PagerVo<GendataVo>(gendataVos, total.intValue(),
+                    pageNum, pageSize);
+            map.put("pager", pager);
+        } catch (Exception e) {
+            throw new GenericException(e);
+        }
+        return new ModelAndView("saas/zzb/app/console/gendata/list", map);
+    }
+
+
+    @RequestMapping(value = "/loadGenerator")
+    public ModelAndView loadGenerator(){
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             //获取会议研究列表数据
@@ -117,9 +157,8 @@ public class GendataController extends BaseController{
             throw new GenericException(e);
         }
 
-        return new ModelAndView("saas/zzb/app/console/gendata/list",map);
+        return new ModelAndView("saas/zzb/app/console/gendata/generator",map);
     }
-
 
     @RequestMapping(value = "/generator")
     public @ResponseBody Map<String,Object> generator(HttpServletResponse response, HttpServletRequest request) throws Exception{
@@ -184,5 +223,57 @@ public class GendataController extends BaseController{
             filename = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
         }
         return filename;
+    }
+
+    /**
+     * 调转到修改页面
+     * @return
+     */
+    @RequestMapping(value ="/changePacketZt/{id}")
+    public @ResponseBody Map<String, Object> changePacketZt(@PathVariable("id")String id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            CommonConditionQuery query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            query.add(CommonRestrictions.and(" isCurrentPacket = :isCurrentPacket", "isCurrentPacket", 1));
+            List<Gendata> gendatas = this.gendataService.list(query, null);
+            for(Gendata oldCurrentPacketgendata : gendatas ){
+                oldCurrentPacketgendata.setIsCurrentPacket(0);
+                UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+                BeanTrans.setBaseProperties(oldCurrentPacketgendata, userLoginDetails, "update");
+                this.gendataService.update(oldCurrentPacketgendata);
+            }
+            Gendata gendata = this.gendataService.getByPK(id);
+            gendata.setIsCurrentPacket(1);
+            UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+            BeanTrans.setBaseProperties(gendata, userLoginDetails, "update");
+            this.gendataService.update(gendata);
+
+
+            map.put("success", true);
+        } catch (Exception e) {
+            map.put("success", false);
+            throw new GenericException(e);
+        }
+        return map;
+    }
+
+    @RequestMapping(value = "/delete/{id}")
+    public @ResponseBody Map<String, Object> delete(@PathVariable("id")String id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try{
+            Gendata gendata = this.gendataService.getByPK(id);
+            if(gendata != null){
+                this.gendataService.delete(gendata);
+            }
+            map.put("success", true);
+        }catch(Exception e){
+            map.put("success", false);
+            map.put("msg", "删除失败！");
+            throw new GenericException(e);
+        }
+        return map;
+
     }
 }
