@@ -130,14 +130,9 @@ public class Sha01Controller extends BaseController {
                     //处理上传文件
                     //先将word转成Map
                     String tmplateWordPath = fileDir+File.separator+"sha01.docx";
-                            //this.getClass().getClassLoader().getResource("sha01.docx").getPath();
                     WordUtil wordUtil = WordUtil.newInstance();
-
-                    Map<String,String> dataMap = wordUtil.convertMapByTemplate( savePath, tmplateWordPath,"");
-
+                    Map<String,String> dataMap = wordUtil.convertMapByTemplate(savePath,tmplateWordPath,"");
                     sha01Service.saveFromWordDataMap(userLoginDetails.getTenant(),dataMap,shpcId);
-
-
 
 //                    Shpc shpc = this.shpcService.getByPK(shpcId);
 //                    if (shpc != null) {
@@ -214,7 +209,8 @@ public class Sha01Controller extends BaseController {
                                              HttpServletRequest request, HttpServletResponse response) throws IOException {
         Sha01 sha01 = this.sha01Service.getByPK(id);
         if(sha01.getZppath()!=null){
-            File file = new File(sha01.getZppath());
+            String zpRealPath = uploadAbsolutePath+sha01.getZppath();
+            File file = new File(zpRealPath);
             if(file.exists()){
                 FileInputStream fis = new FileInputStream(file);
                 StreamUtils.copy(fis,response.getOutputStream());

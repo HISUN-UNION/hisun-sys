@@ -88,27 +88,24 @@ public class GbMcA01gbrmspbServiceImpl extends BaseServiceImpl<GbMcA01gbrmspb, S
             if(file.exists()==false){
                 file.mkdirs();
             }
-            String photo = uploadAbsolutePath+GbMcA01Service.ATTS_PATH+ UUIDUtil.getUUID()+".jpg";
-            FileOutputStream photofos = new FileOutputStream(new File(photo));
+            String photoPath = GbMcA01Service.ATTS_PATH+ UUIDUtil.getUUID()+".jpg";
+            String photoRealPath = uploadAbsolutePath+photoPath;
+            FileOutputStream photofos = new FileOutputStream(new File(photoRealPath));
             photofos.write(imgs.get(0));
             photofos.flush();
             photofos.close();
             GbMcA01 gbMcA01 = gbrmspb.getGbMcA01();
-            gbMcA01.setZppath(photo);
+            gbMcA01.setZppath(photoPath);
             this.gbMcA01Service.update(gbMcA01);
         }
     }
 
     private void dealAtts(GbMcA01gbrmspb gbrmspb, String wordsourcePath)throws Exception{
         //处理附件
-        String pdfPath = uploadAbsolutePath+GbMcA01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
-        String imgPath = uploadAbsolutePath+GbMcA01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+".jpg";
-        //先将其转PDF
-        WordConvertUtil.newInstance().convert(wordsourcePath,pdfPath,WordConvertUtil.PDF);
-        //再将其转成图片
-        Pdf2ImgUtil.toImg(pdfPath,imgPath);
-        gbrmspb.setFile2imgPath(imgPath);
-        FileUtils.deleteQuietly(new File(pdfPath));
+        String pdfPath = GbMcA01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
+        String pdfRealPath = uploadAbsolutePath+pdfPath;
+        WordConvertUtil.newInstance().convert(wordsourcePath,pdfRealPath,WordConvertUtil.PDF);
+        gbrmspb.setFile2imgPath(pdfPath);
     }
 
 }

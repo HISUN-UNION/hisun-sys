@@ -49,7 +49,7 @@ public class Sha01kcclController extends BaseController {
 
     @RequestMapping(value="/ajax/uploadFile")
     public @ResponseBody
-    Map<String,Object> importExcel(String sha01Id, @RequestParam(value="kcclFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    Map<String,Object> upload(String sha01Id, @RequestParam(value="kcclFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String,Object> map = new HashMap<String,Object>();
         if(file==null || file.isEmpty()){
@@ -66,34 +66,30 @@ public class Sha01kcclController extends BaseController {
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir  + UUIDUtil.getUUID()+"_"+fileName;
-
+                String savePath = Sha01kcclService.ATTS_PATH  + UUIDUtil.getUUID()+"_"+fileName;
+                String saveRealPath =  uploadAbsolutePath+savePath;
                 try {
-                    FileOutputStream fos = new FileOutputStream(new File(savePath));
+                    FileOutputStream fos = new FileOutputStream(new File(saveRealPath));
                     fos.write(file.getBytes());
                     fos.flush();
                     fos.close();
 
-                    //处理
-                    String pdfPath = fileDir+ UUIDUtil.getUUID()+".pdf";
-                    String imgPath = fileDir+UUIDUtil.getUUID()+".jpg";
-                    //先将其转PDF
-                    WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
-                    //再将其转成图片
-                    Pdf2ImgUtil.toImg(pdfPath,imgPath);
-
+                    //处理PDF
+                    String pdfPath = Sha01kcclService.ATTS_PATH+ UUIDUtil.getUUID()+".pdf";
+                    String pdfRealPath = uploadAbsolutePath+pdfPath;
+                    WordConvertUtil.newInstance().convert(saveRealPath,pdfRealPath,WordConvertUtil.PDF);
                     Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
                     if(sha01.getKccls()!=null &&sha01.getKccls().size()>0){//修改
                         Sha01kccl sha01kccl = sha01.getKccls().get(0);
                         sha01kccl.setPath(savePath);
                         sha01kccl.setSha01(sha01);
-                        sha01kccl.setFile2imgPath(imgPath);
+                        sha01kccl.setFile2imgPath(pdfPath);
                         this.sha01kcclService.update(sha01kccl);
                     }else{//创建
                         Sha01kccl sha01kccl = new Sha01kccl();
                         sha01kccl.setPath(savePath);
                         sha01kccl.setSha01(sha01);
-                        sha01kccl.setFile2imgPath(imgPath);
+                        sha01kccl.setFile2imgPath(pdfPath);
                         this.sha01kcclService.save(sha01kccl);
                     }
 
@@ -151,15 +147,16 @@ public class Sha01kcclController extends BaseController {
                     _fileDir.mkdirs();
                 }
                 //原zip存储路径
-                String zipFile = kcclAttsPath+ UUIDUtil.getUUID()+".zip";
-                FileOutputStream fos = new FileOutputStream(new File(zipFile));
+                String zipFilePath = kcclAttsPath+ UUIDUtil.getUUID()+".zip";
+                File zipFile = new File(zipFilePath);
+                FileOutputStream fos = new FileOutputStream(zipFile);
                 fos.write(file.getBytes());
                 fos.flush();
                 fos.close();
 
                 String tmpFilePath =  kcclAttsPath+UUIDUtil.getUUID()+File.separator;
                 //解压到临时目录
-                CompressUtil.unzip(zipFile,tmpFilePath);
+                CompressUtil.unzip(zipFilePath,tmpFilePath);
                 //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
                 File tempFiles = new File(tmpFilePath);
                 if(tempFiles!=null){
@@ -174,33 +171,35 @@ public class Sha01kcclController extends BaseController {
                         List<Sha01> sha01s = this.sha01Service.list(query,null);
                         if(sha01s!=null && sha01s.size()>0){
                             String ext = f.getName().substring(f.getName().lastIndexOf("."));
-                            String savePath = kcclAttsPath+UUIDUtil.getUUID()+ext;
-                            File desFile = new File(savePath);
+                            String savePath = Sha01kcclService.ATTS_PATH+UUIDUtil.getUUID()+ext;
+                            String saveRealPath = uploadAbsolutePath+savePath;
+                            File desFile = new File(saveRealPath);
                             FileUtils.copyFile(f,desFile);
                             //处理
-                            String pdfPath = kcclAttsPath+ UUIDUtil.getUUID()+".pdf";
-                            String imgPath = kcclAttsPath+UUIDUtil.getUUID()+".jpg";
-                            //先将其转PDF
-                            WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
-                            //再将其转成图片
-                            Pdf2ImgUtil.toImg(pdfPath,imgPath);
+                            String pdfPath = Sha01kcclService.ATTS_PATH + UUIDUtil.getUUID()+".pdf";
+                            String pdfRealPath = uploadAbsolutePath+pdfPath;
+                            WordConvertUtil.newInstance().convert(saveRealPath,pdfRealPath,WordConvertUtil.PDF);
                             Sha01 sha01 = sha01s.get(0);
                             if(sha01.getKccls()!=null &&sha01.getKccls().size()>0){//修改
                                 Sha01kccl sha01kccl = sha01.getKccls().get(0);
                                 sha01kccl.setPath(savePath);
                                 sha01kccl.setSha01(sha01);
-                                sha01kccl.setFile2imgPath(imgPath);
+                                sha01kccl.setFile2imgPath(pdfPath);
                                 this.sha01kcclService.update(sha01kccl);
                             }else{//创建
                                 Sha01kccl sha01kccl = new Sha01kccl();
                                 sha01kccl.setPath(savePath);
                                 sha01kccl.setSha01(sha01);
-                                sha01kccl.setFile2imgPath(imgPath);
+                                sha01kccl.setFile2imgPath(pdfPath);
                                 this.sha01kcclService.save(sha01kccl);
                             }
                         }
                     }
                 }
+                //删除临时文件目录
+                FileUtils.deleteQuietly(tempFiles);
+                //删除zip文件
+                FileUtils.forceDelete(zipFile);
             }else{
                 map.put("code", -1);
                 map.put("message", "请上传ZIP!");
@@ -240,7 +239,7 @@ public class Sha01kcclController extends BaseController {
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
             resp.setHeader("Content-Disposition", "attachment;fileName="+encode(sha01kccl.getPath().substring(sha01kccl.getPath().lastIndexOf(File.separator)+1)));
             OutputStream output=resp.getOutputStream();
-            byte[] b= FileUtils.readFileToByteArray(new File(sha01kccl.getPath()));
+            byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+ sha01kccl.getPath()));
             output.write(b);
             output.flush();
             output.close();

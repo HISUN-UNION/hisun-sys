@@ -49,7 +49,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/zzb/app/console/bwh")
-public class BwhController extends BaseController {
+public class ShpcController extends BaseController {
     @Resource
     private ShpcService shpcService;
     @Resource
@@ -204,7 +204,8 @@ public class BwhController extends BaseController {
                 if(clFile!=null && !clFile.isEmpty() && shpcVo.getSjlx().equals(Shpc.SJLX_CL)) {
 
                     String fileName = clFile.getOriginalFilename();
-                    if (fileName.endsWith(".doc") || fileName.endsWith(".DOC") || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
+                    if (fileName.endsWith(".doc") || fileName.endsWith(".DOC")
+                            || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
                         String fileDir = uploadAbsolutePath + ShpcService.ATTS_PATH;
                         File _fileDir = new File(fileDir);
                         if (_fileDir.exists() == false) {
@@ -219,11 +220,11 @@ public class BwhController extends BaseController {
                             fos.close();
 
                             //PDF路径
-                            String pdfPath = uploadAbsolutePath+ShpcService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
-                            WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
+                            String pdfPath  = ShpcService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
+                            String pdfRealPath = uploadAbsolutePath+pdfPath;
+                            WordConvertUtil.newInstance().convert(savePath,pdfRealPath,WordConvertUtil.PDF);
                             FileUtils.deleteQuietly(new File(savePath));
                             shpc.setFilePath(pdfPath);
-
                         } catch (Exception e) {
                             e.printStackTrace();
                             throw new GenericException(e);
@@ -284,12 +285,13 @@ public class BwhController extends BaseController {
     public void templateDown(String id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
         Shpc shpc = this.shpcService.getByPK(id);
         if(shpc.getFilePath()!=null &&!shpc.getFilePath().equals("")){
-           String filePath = shpc.getFilePath();
+           String fileRealPath =uploadAbsolutePath+shpc.getFilePath();
             resp.setContentType("multipart/form-data");
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
-            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(filePath.substring(filePath.lastIndexOf(File.separator)+1)));
+            resp.setHeader("Content-Disposition", "attachment;fileName="
+                    +encode(fileRealPath.substring(fileRealPath.lastIndexOf(File.separator)+1)));
             OutputStream output=resp.getOutputStream();
-            byte[] b= FileUtils.readFileToByteArray(new File(filePath));
+            byte[] b= FileUtils.readFileToByteArray(new File(fileRealPath));
             output.write(b);
             output.flush();
             output.close();

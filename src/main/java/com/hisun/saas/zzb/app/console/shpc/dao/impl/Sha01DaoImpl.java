@@ -104,21 +104,4 @@ public class Sha01DaoImpl extends TenantBaseDaoImpl<Sha01, String> implements Sh
     }
 
 
-
-    public static void main (String[] args) throws Exception{
-
-        String wordPath = "/Users/zhouying/Desktop/zzb-app-android/湘西州干部调整配备建议方案.docx";
-        String wordPathTemplate = "/Users/zhouying/Desktop/zzb-app-android/template1.docx";
-
-        Map<String,String> dataMap =WordUtil.newInstance().convertMapByTemplate(wordPath,wordPathTemplate,
-                "/Users/zhouying/Desktop/zzb-app-android/");
-
-
-
-        Sha01DaoImpl impl = new Sha01DaoImpl();
-        impl.saveFromWordDataMap(null,dataMap,"1");
-
-    }
-
-
 }

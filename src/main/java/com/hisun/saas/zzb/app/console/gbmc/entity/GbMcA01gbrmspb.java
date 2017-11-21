@@ -317,7 +317,7 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
     }
 
     public void setFilepath(String filepath) {
-        this.filepath = filepath;
+        this.filepath = filepath.replaceAll("\\\\", "\\\\\\\\");
     }
 
 

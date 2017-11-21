@@ -316,7 +316,8 @@ public class Sha01gbrmspb extends TenantEntity implements Serializable{
     }
 
     public void setFilepath(String filepath) {
-        this.filepath = filepath;
+        //在Windows环境下,采用原生SQL操作数据库,注意文件路径
+        this.filepath = filepath.replaceAll("\\\\", "\\\\\\\\");
     }
 
 

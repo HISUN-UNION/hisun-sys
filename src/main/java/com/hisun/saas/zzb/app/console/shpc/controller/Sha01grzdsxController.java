@@ -11,6 +11,7 @@ import com.hisun.saas.zzb.app.console.shpc.entity.Sha01grzdsx;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01kccl;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01dascqkService;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01grzdsxService;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01kcclService;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
@@ -50,55 +51,57 @@ public class Sha01grzdsxController extends BaseController {
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
 
-    @RequestMapping(value="/ajax/uploadFile")
-    public @ResponseBody
-    Map<String,Object> importExcel(String sha01Id,@RequestParam(value="grzdsxFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @RequestMapping(value = "/ajax/uploadFile")
+    public
+    @ResponseBody
+    Map<String, Object> upload(String sha01Id, @RequestParam(value = "grzdsxFile", required = false) MultipartFile file,
+                                    HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-        Map<String,Object> map = new HashMap<String,Object>();
-        if(file==null || file.isEmpty()){
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (file == null || file.isEmpty()) {
             map.put("code", -1);
             map.put("message", "文件没有内容");
             return map;
         }
 
-        try{
+        try {
             String fileName = file.getOriginalFilename();
-            if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
+            if (fileName.endsWith(".doc") || fileName.endsWith(".DOC") || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
 
                 String fileDir = uploadAbsolutePath + Sha01grzdsxService.ATTS_PATH;
                 File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
-
+                String savePath = Sha01grzdsxService.ATTS_PATH + UUIDUtil.getUUID() + "_" + fileName;
+                String saveRealPath = uploadAbsolutePath+savePath;
                 try {
-                    FileOutputStream fos = new FileOutputStream(new File(savePath));
+                    FileOutputStream fos = new FileOutputStream(new File(saveRealPath));
                     fos.write(file.getBytes());
                     fos.flush();
                     fos.close();
 
-
                     //处理
-                    String pdfPath = fileDir+ UUIDUtil.getUUID()+".pdf";
-                    String imgPath = fileDir+UUIDUtil.getUUID()+".jpg";
+                    String pdfPath = Sha01grzdsxService.ATTS_PATH + UUIDUtil.getUUID() + ".pdf";
+                    String pdfRealPath = uploadAbsolutePath + pdfPath;
+                   // String imgPath = fileDir + UUIDUtil.getUUID() + ".jpg";
                     //先将其转PDF
-                    WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
+                    WordConvertUtil.newInstance().convert(saveRealPath, pdfRealPath, WordConvertUtil.PDF);
                     //再将其转成图片
-                    Pdf2ImgUtil.toImg(pdfPath,imgPath);
+                   // Pdf2ImgUtil.toImg(pdfPath, imgPath);
 
                     Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
-                    if(sha01.getGrzdsxes()!=null &&sha01.getGrzdsxes().size()>0){//修改
+                    if (sha01.getGrzdsxes() != null && sha01.getGrzdsxes().size() > 0) {//修改
                         Sha01grzdsx sha01grzdsx = sha01.getGrzdsxes().get(0);
                         sha01grzdsx.setPath(savePath);
                         sha01grzdsx.setSha01(sha01);
-                        sha01grzdsx.setFile2imgPath(imgPath);
+                        sha01grzdsx.setFile2imgPath(pdfPath);
                         this.sha01grzdsxService.update(sha01grzdsx);
-                    }else{//创建
+                    } else {
                         Sha01grzdsx sha01grzdsx = new Sha01grzdsx();
                         sha01grzdsx.setPath(savePath);
                         sha01grzdsx.setSha01(sha01);
-                        sha01grzdsx.setFile2imgPath(imgPath);
+                        sha01grzdsx.setFile2imgPath(pdfPath);
                         this.sha01grzdsxService.save(sha01grzdsx);
                     }
 
@@ -106,24 +109,24 @@ public class Sha01grzdsxController extends BaseController {
                     e.printStackTrace();
                     throw new GenericException(e);
                 }
-            }else{
+            } else {
                 map.put("code", -1);
                 map.put("message", "请上传word");
                 return map;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             map.put("code", -1);
             map.put("message", "读取文件错误，请检查word是否能正确打开");
             return map;
         }
-        try{
+        try {
 
-        }catch(GenericException e){
+        } catch (GenericException e) {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", e.getMessage());
             return map;
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", "系统错误，请联系管理员");
@@ -134,99 +137,99 @@ public class Sha01grzdsxController extends BaseController {
     }
 
 
-
-
-    @RequestMapping(value="/ajax/batch/upload")
-    public @ResponseBody
-    Map<String,Object> batchUpload(String shpcId, @RequestParam(value="grzdsxFile",required=false) MultipartFile file,
-                                   HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @RequestMapping(value = "/ajax/batch/upload")
+    public
+    @ResponseBody
+    Map<String, Object> batchUpload(String shpcId, @RequestParam(value = "grzdsxFile", required = false) MultipartFile file,
+                                    HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-        Map<String,Object> map = new HashMap<String,Object>();
-        if(file==null || file.isEmpty()){
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (file == null || file.isEmpty()) {
             map.put("code", -1);
             map.put("message", "文件没有内容");
             return map;
 
         }
-        try{
+        try {
             String fileName = file.getOriginalFilename();
-            String grzdsxAttsPath = uploadAbsolutePath+Sha01grzdsxService.ATTS_PATH;
-            if(fileName.toLowerCase().endsWith(".zip")){
+            String grzdsxAttsPath = uploadAbsolutePath + Sha01grzdsxService.ATTS_PATH;
+            if (fileName.toLowerCase().endsWith(".zip")) {
                 File _fileDir = new File(grzdsxAttsPath);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
                 //原zip存储路径
-                String zipFile = grzdsxAttsPath + UUIDUtil.getUUID()+".zip";
-                FileOutputStream fos = new FileOutputStream(new File(zipFile));
+                String zipFilePath = grzdsxAttsPath + UUIDUtil.getUUID()+".zip";
+                File zipFile = new File(zipFilePath);
+                FileOutputStream fos = new FileOutputStream(zipFile);
                 fos.write(file.getBytes());
                 fos.flush();
                 fos.close();
 
-                String tmpFilePath =  grzdsxAttsPath+UUIDUtil.getUUID()+File.separator;
+                String tmpFilePath = grzdsxAttsPath + UUIDUtil.getUUID() + File.separator;
                 //解压到临时目录
-                CompressUtil.unzip(zipFile,tmpFilePath);
+                CompressUtil.unzip(zipFilePath, tmpFilePath);
                 //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
                 File tempFiles = new File(tmpFilePath);
-                if(tempFiles!=null){
-                    for(File f : tempFiles.listFiles()){
-                        if(f.isDirectory()) continue;//如果是目录则跳过
+                if (tempFiles != null) {
+                    for (File f : tempFiles.listFiles()) {
+                        if (f.isDirectory()) continue;//如果是目录则跳过
                         String fname = f.getName();
-                        String xm = fname.substring(0,fname.lastIndexOf("."));
+                        String xm = fname.substring(0, fname.lastIndexOf("."));
                         CommonConditionQuery query = new CommonConditionQuery();
-                        query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%"+xm+"%"));
+                        query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%" + xm + "%"));
                         query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
                         query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-                        List<Sha01> sha01s = this.sha01Service.list(query,null);
-                        if(sha01s!=null && sha01s.size()>0){
+                        List<Sha01> sha01s = this.sha01Service.list(query, null);
+                        if (sha01s != null && sha01s.size() > 0) {
                             String ext = f.getName().substring(f.getName().lastIndexOf("."));
-                            String savePath = _fileDir+UUIDUtil.getUUID()+ext;
-                            File desFile = new File(savePath);
-                            FileUtils.copyFile(f,desFile);
+                            String savePath = Sha01grzdsxService.ATTS_PATH+UUIDUtil.getUUID()+ext;
+                            String saveRealPath = uploadAbsolutePath+savePath;
+                            File desFile = new File(saveRealPath);
+                            FileUtils.copyFile(f, desFile);
                             //处理
-                            String pdfPath = grzdsxAttsPath+ UUIDUtil.getUUID()+".pdf";
-                            String imgPath = grzdsxAttsPath+UUIDUtil.getUUID()+".jpg";
-                            //先将其转PDF
-                            WordConvertUtil.newInstance().convert(savePath,pdfPath,WordConvertUtil.PDF);
-                            //再将其转成图片
-                            Pdf2ImgUtil.toImg(pdfPath,imgPath);
+                            String pdfPath = Sha01grzdsxService.ATTS_PATH+ UUIDUtil.getUUID()+".pdf";
+                            String pdfRealPath = uploadAbsolutePath+pdfPath;
+                            WordConvertUtil.newInstance().convert(saveRealPath, pdfRealPath, WordConvertUtil.PDF);
                             Sha01 sha01 = sha01s.get(0);
-                            if(sha01.getGrzdsxes()!=null &&sha01.getGrzdsxes().size()>0){//修改
+                            if (sha01.getGrzdsxes() != null && sha01.getGrzdsxes().size() > 0) {//修改
                                 Sha01grzdsx sha01grzdsx = sha01.getGrzdsxes().get(0);
                                 sha01grzdsx.setPath(savePath);
                                 sha01grzdsx.setSha01(sha01);
-                                sha01grzdsx.setFile2imgPath(imgPath);
+                                sha01grzdsx.setFile2imgPath(pdfPath);
                                 this.sha01grzdsxService.update(sha01grzdsx);
-                            }else{//创建
+                            } else {//创建
                                 Sha01grzdsx sha01grzdsx = new Sha01grzdsx();
                                 sha01grzdsx.setPath(savePath);
                                 sha01grzdsx.setSha01(sha01);
-                                sha01grzdsx.setFile2imgPath(imgPath);
+                                sha01grzdsx.setFile2imgPath(pdfPath);
                                 this.sha01grzdsxService.save(sha01grzdsx);
                             }
                         }
                     }
                 }
-            }else{
+                FileUtils.deleteQuietly(tempFiles);
+                FileUtils.forceDelete(zipFile);
+            } else {
                 map.put("code", -1);
                 map.put("message", "请上传ZIP!");
                 return map;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
             map.put("code", -1);
             map.put("message", "读取文件错误!");
             return map;
         }
-        try{
+        try {
 
-        }catch(GenericException e){
+        } catch (GenericException e) {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", e.getMessage());
             return map;
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", "系统错误，请联系管理员");
@@ -237,23 +240,23 @@ public class Sha01grzdsxController extends BaseController {
     }
 
 
-
-    @RequestMapping(value="/ajax/down")
-    public void templateDown(String sha01Id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
+    @RequestMapping(value = "/ajax/down")
+    public void templateDown(String sha01Id, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
-        if(sha01.getGrzdsxes()!=null &&sha01.getGrzdsxes().size()>0) {//修改
+        if (sha01.getGrzdsxes() != null && sha01.getGrzdsxes().size() > 0) {//修改
             Sha01grzdsx sha01grzdsx = sha01.getGrzdsxes().get(0);
             resp.setContentType("multipart/form-data");
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
-            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(sha01grzdsx.getPath().substring(sha01grzdsx.getPath().lastIndexOf(File.separator)+1)));
-            OutputStream output=resp.getOutputStream();
-            byte[] b=FileUtils.readFileToByteArray(new File(sha01grzdsx.getPath()));
+            resp.setHeader("Content-Disposition", "attachment;fileName=" + encode(sha01grzdsx.getPath().substring(sha01grzdsx.getPath().lastIndexOf(File.separator) + 1)));
+            OutputStream output = resp.getOutputStream();
+            byte[] b = FileUtils.readFileToByteArray(new File(uploadAbsolutePath+sha01grzdsx.getPath()));
             output.write(b);
             output.flush();
             output.close();
         }
 
     }
+
     private String encode(String filename) throws UnsupportedEncodingException {
         if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
             filename = URLEncoder.encode(filename, "UTF-8");

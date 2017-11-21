@@ -49,7 +49,8 @@ public class GbMcA01gbrmspbController extends BaseController {
 
     @RequestMapping(value="/ajax/uploadFile")
     public @ResponseBody
-    Map<String,Object> importExcel(String gbMcA01Id, @RequestParam(value="gbrmspbFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    Map<String,Object> upload(String gbMcA01Id, @RequestParam(value="gbrmspbFile",required=false) MultipartFile file,
+                              HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String,Object> map = new HashMap<String,Object>();
         if(file==null || file.isEmpty()){
@@ -67,20 +68,21 @@ public class GbMcA01gbrmspbController extends BaseController {
                     _fileDir.mkdirs();
                 }
                 //原附件存储路径
-                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
+                String savePath =  GbMcA01gbrmspbService.ATTS_PATH+ UUIDUtil.getUUID()+"_"+fileName;
+                String saveRealPath = uploadAbsolutePath+savePath;
                 //模板路径
                 String wordTemplatePath = fileDir + "gbrmspb.docx";
                 try {
-                    FileOutputStream fos = new FileOutputStream(new File(savePath));
+                    FileOutputStream fos = new FileOutputStream(new File(saveRealPath));
                     fos.write(file.getBytes());
                     fos.flush();
                     fos.close();
 
                     GbMcA01 gbMcA01 = this.gbMcA01Service.getByPK(gbMcA01Id);
                     GbMcA01gbrmspb gbMcA01gbrmspb = new GbMcA01gbrmspb();
-                    gbMcA01gbrmspb.setFilepath(savePath.replaceAll("\\\\", "\\\\\\\\"));
+                    gbMcA01gbrmspb.setFilepath(savePath);
                     gbMcA01gbrmspb.setGbMcA01(gbMcA01);
-                    this.gbMcA01gbrmspbService.saveFromWord(gbMcA01gbrmspb ,savePath,wordTemplatePath);
+                    this.gbMcA01gbrmspbService.saveFromWord(gbMcA01gbrmspb ,saveRealPath,wordTemplatePath);
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);
@@ -162,13 +164,14 @@ public class GbMcA01gbrmspbController extends BaseController {
                         List<GbMcA01> gbMcA01s = this.gbMcA01Service.list(query,null);
                         if(gbMcA01s!=null && gbMcA01s.size()>0){
                             String ext = f.getName().substring(f.getName().lastIndexOf("."));
-                            String savePath = gbrmsbpAttsPath+UUIDUtil.getUUID()+ext;
-                            File desFile = new File(savePath);
+                            String savePath = GbMcA01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+ext;
+                            String saveRealPath = uploadAbsolutePath+savePath;
+                            File desFile = new File(saveRealPath);
                             FileUtils.copyFile(f,desFile);
                             GbMcA01gbrmspb gbMcA01gbrmspb = new GbMcA01gbrmspb();
-                            gbMcA01gbrmspb.setFilepath(savePath.replaceAll("\\\\", "\\\\\\\\"));
+                            gbMcA01gbrmspb.setFilepath(savePath);
                             gbMcA01gbrmspb.setGbMcA01(gbMcA01s.get(0));
-                            this.gbMcA01gbrmspbService.saveFromWord(gbMcA01gbrmspb,savePath,wordTemplatePath);
+                            this.gbMcA01gbrmspbService.saveFromWord(gbMcA01gbrmspb,saveRealPath,wordTemplatePath);
                         }
                     }
                 }
@@ -215,7 +218,7 @@ public class GbMcA01gbrmspbController extends BaseController {
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
             resp.setHeader("Content-Disposition", "attachment;fileName="+encode(gbMcA01gbrmspb.getFilepath().substring(gbMcA01gbrmspb.getFilepath().lastIndexOf(File.separator)+1)));
             OutputStream output=resp.getOutputStream();
-            byte[] b= FileUtils.readFileToByteArray(new File(gbMcA01gbrmspb.getFilepath()));
+            byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+gbMcA01gbrmspb.getFilepath()));
             output.write(b);
             output.flush();
             output.close();

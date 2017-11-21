@@ -50,7 +50,7 @@ public class Sha01gbrmspbController extends BaseController {
 
     @RequestMapping(value="/ajax/uploadFile")
     public @ResponseBody
-    Map<String,Object> importExcel(String sha01Id, @RequestParam(value="gbrmspbFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    Map<String,Object> upload(String sha01Id, @RequestParam(value="gbrmspbFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String,Object> map = new HashMap<String,Object>();
         if(file==null || file.isEmpty()){
@@ -68,21 +68,22 @@ public class Sha01gbrmspbController extends BaseController {
                     _fileDir.mkdirs();
                 }
                 //原附件存储路径
-                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
+                String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID()+"_"+fileName;
+                String saveRealPath = uploadAbsolutePath + savePath;
+
                 //模板路径
                 String wordTemplatePath = fileDir + "gbrmspb.docx";
                 try {
-                    FileOutputStream fos = new FileOutputStream(new File(savePath));
+                    FileOutputStream fos = new FileOutputStream(new File(saveRealPath));
                     fos.write(file.getBytes());
                     fos.flush();
                     fos.close();
 
                     Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
                     Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-//                    savePath=savePath.replaceAll("\\\\", "\\\\\\\\");
-                    sha01gbrmspb.setFilepath(savePath.replaceAll("\\\\", "\\\\\\\\"));
+                    sha01gbrmspb.setFilepath(savePath);
                     sha01gbrmspb.setSha01(sha01);
-                    this.sha01gbrmspbService.saveFromWord(sha01gbrmspb ,savePath,wordTemplatePath);
+                    this.sha01gbrmspbService.saveFromWord(sha01gbrmspb ,saveRealPath,wordTemplatePath);
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);
@@ -163,13 +164,14 @@ public class Sha01gbrmspbController extends BaseController {
                         List<Sha01> sha01s = this.sha01Service.list(query,null);
                         if(sha01s!=null && sha01s.size()>0){
                             String ext = f.getName().substring(f.getName().lastIndexOf("."));
-                            String savePath = gbrmsbpAttsPath+UUIDUtil.getUUID()+ext;
-                            File desFile = new File(savePath);
+                            String savePath = Sha01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+ext;
+                            String saveRealPath = uploadAbsolutePath+savePath;
+                            File desFile = new File(saveRealPath);
                             FileUtils.copyFile(f,desFile);
                             Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                            sha01gbrmspb.setFilepath(savePath.replaceAll("\\\\", "\\\\\\\\"));
+                            sha01gbrmspb.setFilepath(savePath);
                             sha01gbrmspb.setSha01(sha01s.get(0));
-                            this.sha01gbrmspbService.saveFromWord(sha01gbrmspb,savePath,wordTemplatePath);
+                            this.sha01gbrmspbService.saveFromWord(sha01gbrmspb,saveRealPath,wordTemplatePath);
                         }
                     }
                 }
@@ -230,7 +232,7 @@ public class Sha01gbrmspbController extends BaseController {
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
             resp.setHeader("Content-Disposition", "attachment;fileName="+encode(sha01gbrmspb.getFilepath().substring(sha01gbrmspb.getFilepath().lastIndexOf(File.separator)+1)));
             OutputStream output=resp.getOutputStream();
-            byte[] b= FileUtils.readFileToByteArray(new File(sha01gbrmspb.getFilepath()));
+            byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+sha01gbrmspb.getFilepath()));
             output.write(b);
             output.flush();
             output.close();

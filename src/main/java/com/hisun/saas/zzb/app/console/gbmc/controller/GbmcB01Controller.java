@@ -159,7 +159,7 @@ public class GbmcB01Controller extends BaseController{
 
     @RequestMapping(value="/ajax/execute")
     public @ResponseBody
-    Map<String,Object> importExcel(String mcid, String token, @RequestParam(value="attachFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    Map<String,Object> upload(String mcid, String token, @RequestParam(value="attachFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String,Object> map = new HashMap<String,Object>();
         if(file==null || file.isEmpty()){

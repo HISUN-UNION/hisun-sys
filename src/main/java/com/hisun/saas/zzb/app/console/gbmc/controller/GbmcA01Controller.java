@@ -97,7 +97,8 @@ public class GbmcA01Controller extends BaseController{
 
     @RequestMapping(value="/ajax/execute")
     public @ResponseBody
-    Map<String,Object> importExcel(String mcb01id, String token, @RequestParam(value="attachFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    Map<String,Object> upload(String mcb01id, String token, @RequestParam(value="attachFile",required=false) MultipartFile file,
+                              HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String,Object> map = new HashMap<String,Object>();
         if(file==null || file.isEmpty()){
@@ -186,7 +187,7 @@ public class GbmcA01Controller extends BaseController{
                                         HttpServletRequest request, HttpServletResponse response) throws IOException {
         GbMcA01 gbMcA01 = this.gbMcA01Service.getByPK(id);
         if(gbMcA01.getZppath()!=null){
-            File file = new File(gbMcA01.getZppath());
+            File file = new File(uploadAbsolutePath+gbMcA01.getZppath());
             if(file.exists()){
                 FileInputStream fis = new FileInputStream(file);
                 StreamUtils.copy(fis,response.getOutputStream());
