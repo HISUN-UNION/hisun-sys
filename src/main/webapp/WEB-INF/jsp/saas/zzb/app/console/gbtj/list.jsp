@@ -72,7 +72,7 @@
 									<tr style="text-overflow:ellipsis;">
 										<td><a href="${path}/zzb/app/console/gbtj/edit?id=${vo.id }"><c:out value="${vo.tjmc}"></c:out></a></td>
 										<td class="Left_alignment">
-											<a href="javascript:viewJosnDate('${vo.id }','${vo.tblx}')" class="">预览</a>|
+											<a href="javascript:viewJosnDate('${vo.id }','${vo.tblx}','${vo.tjmc }')" class="">预览</a>|
 											<a href="javascript:editJosnDate('${vo.id }','${vo.tjmc}')" class="">编辑数据</a>
 										</td>
 										<td><c:out value="${vo.px}"></c:out></td>
@@ -141,7 +141,7 @@
 				}
 			});
 		}
-		var viewJosnDate = function(id,tblx){
+		var viewJosnDate = function(id,tblx,tjmc){
 			if(tblx == "1"){
 				$.ajax({
 					url : "${path}/zzb/app/console/gbtj/ajax/btView",
@@ -153,6 +153,7 @@
 					dataType : "html",
 					success : function(html){
 						$('#jsonDataViewAddDiv').html(html);
+						$('#titleView').text(tjmc);
 						$('#jsonDataViewModal').modal({
 							keyboard: true
 						});
