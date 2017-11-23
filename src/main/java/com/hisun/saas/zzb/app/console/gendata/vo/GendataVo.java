@@ -20,7 +20,8 @@ public class GendataVo {
     private int isCurrentPacket;
     private String isCurrentPacketValue;
     private String createTimeValue;
-
+    private String packetMd5;
+    private String packetSize;
     public int getIsCurrentPacket() {
         return isCurrentPacket;
     }
@@ -96,5 +97,21 @@ public class GendataVo {
 
     public void setCreateTimeValue(String createTimeValue) {
         this.createTimeValue = createTimeValue;
+    }
+
+    public String getPacketMd5() {
+        return packetMd5;
+    }
+
+    public void setPacketMd5(String packetMd5) {
+        this.packetMd5 = packetMd5;
+    }
+
+    public String getPacketSize() {
+        return packetSize;
+    }
+
+    public void setPacketSize(String packetSize) {
+        this.packetSize = packetSize;
     }
 }

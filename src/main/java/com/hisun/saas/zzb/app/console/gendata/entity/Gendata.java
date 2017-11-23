@@ -25,6 +25,12 @@ public class Gendata extends TenantEntity implements Serializable {
     @Column(name = "is_current_packet")//是否当前数据包 0-不是数据包，1-当前数据包
     private int isCurrentPacket;
 
+    @Column(name = "packet_md5",length = 64)
+    private String packetMd5;
+
+    @Column(name = "packet_size",length = 32)
+    private String packetSize;
+
     public String getId() {
         return id;
     }
@@ -47,5 +53,21 @@ public class Gendata extends TenantEntity implements Serializable {
 
     public void setIsCurrentPacket(int isCurrentPacket) {
         this.isCurrentPacket = isCurrentPacket;
+    }
+
+    public String getPacketMd5() {
+        return packetMd5;
+    }
+
+    public void setPacketMd5(String packetMd5) {
+        this.packetMd5 = packetMd5;
+    }
+
+    public String getPacketSize() {
+        return packetSize;
+    }
+
+    public void setPacketSize(String packetSize) {
+        this.packetSize = packetSize;
     }
 }

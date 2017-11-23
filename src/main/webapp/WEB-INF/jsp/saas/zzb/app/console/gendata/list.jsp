@@ -35,6 +35,8 @@
 							<thead>
 							<tr>
 								<th>数据包生成时间</th>
+								<th width="10%">数据包大小</th>
+								<th width="250">数据包Md5</th>
 								<th width="10%">数据包状态</th>
 								<th width="190">操作</th>
 							</tr>
@@ -44,6 +46,8 @@
 								<tr style="text-overflow:ellipsis;">
 									<td><c:out value="${vo.createTimeValue}"></c:out></td>
 									<td><c:out value="${vo.isCurrentPacketValue}"></c:out></td>
+									<td><c:out value="${vo.packetMd5}"></c:out></td>
+									<td><c:out value="${vo.packetSize}"></c:out>字节</td>
 									<td class="Left_alignment">
 										<c:if test="${vo.isCurrentPacket eq '0'}">
 											<a href="javascript:changeStatue('${vo.id}')">设为当前数据包</a>|

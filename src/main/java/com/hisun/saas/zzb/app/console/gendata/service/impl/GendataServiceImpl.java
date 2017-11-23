@@ -23,7 +23,9 @@ import com.hisun.util.CompressUtil;
 import com.hisun.util.SqliteDBUtil;
 import com.hisun.util.StringUtils;
 import com.hisun.util.UUIDUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -108,6 +110,12 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
         //压缩数据文件
         CompressUtil.zip(appDataZipRealPath,dataDir,GendataService.DATA_PACKET_NAME);
         gendata.setPath(appDataZipPath);
+
+        File f = new File(appDataZipRealPath);
+        FileInputStream inputStream = new FileInputStream(f);
+        gendata.setPacketMd5(DigestUtils.md5Hex(IOUtils.toByteArray(inputStream)));
+        gendata.setPacketSize(Long.toString(f.length()));
+
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
         this.save(gendata);
