@@ -15,14 +15,20 @@ public class AppClient extends TenantEntity implements Serializable {
 
     public static int ON=1;
     public static int OFF=2;
-    private String id;
-    private String identification;//终端标识
-    private int status=ON;//1-正常,2-停用
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
     @Column(name="ID",nullable=false,unique=true,length=32)
+    private String id;
+
+    @Column(name = "identification")
+    private String identification;//终端标识
+
+    @Column(name = "status")
+    private int status=ON;//1-正常,2-停用
+
+
     public String getId() {
         return id;
     }
@@ -31,8 +37,8 @@ public class AppClient extends TenantEntity implements Serializable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "identification")
+
+
     public String getIdentification() {
         return identification;
     }
@@ -41,8 +47,8 @@ public class AppClient extends TenantEntity implements Serializable {
         this.identification = identification;
     }
 
-    @Basic
-    @Column(name = "status")
+
+
     public int getStatus() {
         return status;
     }

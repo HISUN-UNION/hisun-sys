@@ -15,21 +15,30 @@ public class AppVersion extends TenantEntity implements Serializable {
 
     public static int ANDROID=1;
     public static int IOS=2;
-
-    private String id;
-    private int appType=ANDROID;//App类型,1-安卓,2-iOS
-    private String appVersionName;//版本名称
-    private String appVersionCode;//版本号build
-    private String appName;//应用名称
-    private String appCode;//应用代码
-    private String appStorePath;//安装包存储路径
-    private String appMd5;
-    private String appSize;//大小(字节)
-
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
     @Column(name="ID",nullable=false,unique=true,length=32)
+    private String id;
+    @Column(name = "app_type")
+    private int appType=ANDROID;//App类型,1-安卓,2-iOS
+    @Column(name = "app_version_name")
+    private String appVersionName;//版本名称
+    @Column(name = "app_version_code")
+    private String appVersionCode;//版本号build
+    @Column(name = "app_name")
+    private String appName;//应用名称
+    @Column(name = "app_code")
+    private String appCode;//应用代码
+    @Column(name = "app_store_path")
+    private String appStorePath;//安装包存储路径
+    @Column(name = "app_md5")
+    private String appMd5;
+
+    @Column(name = "app_size")
+    private String appSize;//大小(字节)
+
+
     public String getId() {
         return id;
     }
@@ -38,8 +47,7 @@ public class AppVersion extends TenantEntity implements Serializable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "app_type")
+
     public int getAppType() {
         return appType;
     }
@@ -48,8 +56,7 @@ public class AppVersion extends TenantEntity implements Serializable {
         this.appType = appType;
     }
 
-    @Basic
-    @Column(name = "app_version_name")
+
     public String getAppVersionName() {
         return appVersionName;
     }
@@ -58,8 +65,7 @@ public class AppVersion extends TenantEntity implements Serializable {
         this.appVersionName = appVersionName;
     }
 
-    @Basic
-    @Column(name = "app_version_code")
+
     public String getAppVersionCode() {
         return appVersionCode;
     }
@@ -68,8 +74,7 @@ public class AppVersion extends TenantEntity implements Serializable {
         this.appVersionCode = appVersionCode;
     }
 
-    @Basic
-    @Column(name = "app_name")
+
     public String getAppName() {
         return appName;
     }
@@ -78,8 +83,7 @@ public class AppVersion extends TenantEntity implements Serializable {
         this.appName = appName;
     }
 
-    @Basic
-    @Column(name = "app_code")
+
     public String getAppCode() {
         return appCode;
     }
@@ -88,8 +92,7 @@ public class AppVersion extends TenantEntity implements Serializable {
         this.appCode = appCode;
     }
 
-    @Basic
-    @Column(name = "app_store_path")
+
     public String getAppStorePath() {
         return appStorePath;
     }
@@ -98,8 +101,7 @@ public class AppVersion extends TenantEntity implements Serializable {
         this.appStorePath = appStorePath;
     }
 
-    @Basic
-    @Column(name = "app_md5")
+
     public String getAppMd5() {
         return appMd5;
     }
@@ -108,8 +110,7 @@ public class AppVersion extends TenantEntity implements Serializable {
         this.appMd5 = appMd5;
     }
 
-    @Basic
-    @Column(name = "app_size")
+
     public String getAppSize() {
         return appSize;
     }
