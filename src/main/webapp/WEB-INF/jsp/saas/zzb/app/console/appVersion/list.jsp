@@ -41,15 +41,13 @@
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
 								<tr>
-									<th >应用名称</th>
+									<th >App应用名称</th>
 									<th width="10%">应用代码</th>
 									<th width="70">应用类型</th>
 									<th width="10%">版本名称</th>
 									<th width="50">版本号</th>
-
-
-									<th width="10%">app大小</th>
-									<th width="250">appMd5</th>
+									<th width="10%">App大小</th>
+									<th width="250">MD5</th>
 									<th width="130">操作</th>
 								</tr>
 							</thead>

@@ -12,31 +12,21 @@
 </head>
 <body>
 			<div class="container-fluid">
-
 				<div class="row-fluid">
 					<div class="span12">
 						<%-- BEGIN SAMPLE FORM PORTLET 表单主体--%>   
-
 						<div class="portlet box grey">
-
 							<div class="portlet-title">
-
 								<div class="caption">
-
 									<i class="icon-reorder"></i>
-
 									<span class="hidden-480">修改APP程序</span>
-
 								</div>
 								<div class="tools">
 									<a href="javascript:location.reload();" class="reload"></a>
-
 								</div>
 							</div>
-
 							<div class="portlet-body form">
 								<!-- BEGIN FORM-->
-
 								<form action="${path }/zzb/app/console/appVersion/save" class="form-horizontal" id="form1" method="post" enctype="multipart/form-data">
 									<input type="hidden" name="id" value="${appVersionVo.id }" id="id">
 									<input type="hidden" name="appStorePath" value="${appVersionVo.appStorePath }" id="appStorePath">
@@ -79,10 +69,6 @@
 										</div>
 
 									</div>
-
-
-
-
 									<div  id="appFileGroup" class="control-group" >
 										<label  class="control-label">APP程序上传</label>
 										<div class="controls">
@@ -99,7 +85,6 @@
 									<div class="control-group">
 										<div class="controls mt10">
 											<button class="btn green" type="button" style="padding:7px 20px;" onclick="formSubmit()">确定</button>
-
 											<a class="btn" href="${path }/zzb/app/console/appVersion/"><i class="icon-remove-sign"></i> 取消</a>
 										</div>
 									</div>

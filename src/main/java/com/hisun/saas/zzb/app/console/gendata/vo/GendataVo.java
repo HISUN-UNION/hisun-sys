@@ -32,9 +32,9 @@ public class GendataVo {
 
     public String getIsCurrentPacketValue() {
         if(this.isCurrentPacket==0){
-            return "非当前数据包";
+            return "否";
         }else if(this.isCurrentPacket==1){
-            return "当前数据包";
+            return "是";
         }
         return "";
     }

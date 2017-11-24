@@ -47,19 +47,23 @@ public class ShtpRestApi {
             BeanUtils.copyProperties(shtp,shtpVo);
             String shpcId = shtpVo.getShpcId();
             Shpc shpc = this.shpcService.getByPK(shpcId);
-            shtp.setTenant(shpc.getTenant());
-            shtp.setShpc(shpc);
-            if(shtpVo.getTpsjs()!=null){
-                for(ShtpsjVo tpsjVo : shtpVo.getTpsjs()){
-                    Shtpsj shtpsj = new Shtpsj();
-                    BeanUtils.copyProperties(shtpsj,tpsjVo);
-                    Sha01 sha01 = this.sha01Service.getByPK(tpsjVo.getSha01Id());
-                    shtpsj.setSha01(sha01);
-                    shtpsj.setTenant(shpc.getTenant());
-                    shtp.add(shtpsj);
+            if(shpc.getShZt()==Shpc.WSH) {
+                shtp.setTenant(shpc.getTenant());
+                shtp.setShpc(shpc);
+                if (shtpVo.getTpsjs() != null) {
+                    for (ShtpsjVo tpsjVo : shtpVo.getTpsjs()) {
+                        Shtpsj shtpsj = new Shtpsj();
+                        BeanUtils.copyProperties(shtpsj, tpsjVo);
+                        Sha01 sha01 = this.sha01Service.getByPK(tpsjVo.getSha01Id());
+                        shtpsj.setSha01(sha01);
+                        shtpsj.setTenant(shpc.getTenant());
+                        shtp.add(shtpsj);
+                    }
                 }
+                shtpService.saveByRestApi(shtp);
+            }else{
+                throw new Exception("当前批次已上会.");
             }
-            shtpService.saveByRestApi(shtp);
         }catch (Exception e){
             e.printStackTrace();
             resultMap.put("success","false");

@@ -27,6 +27,8 @@ public class Shpc extends TenantEntity implements Serializable{
     public static String SHLX_CWH="2";
     public static String SJLX_GB="1";//干部数据
     public static String SJLX_CL="2";//材料数据
+    public static int YSH=1;
+    public static int WSH=0;
 
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
@@ -43,7 +45,7 @@ public class Shpc extends TenantEntity implements Serializable{
     @Column(name = "file_path")
     private String filePath;
     @Column(name = "sh_zt")//0-未上会，1-已上会
-    private int shZt;
+    private int shZt=WSH;
     @Column(name = "SJLX",length = 1)
     private String sjlx=SJLX_GB;
     @Column(name = "PC_PX")//排序

@@ -13,6 +13,9 @@ import java.io.Serializable;
 @Table(name = "APP_GENDATA")
 public class Gendata extends TenantEntity implements Serializable {
 
+    public static int IS_CURRENT=1;
+    public static int IS_NOT_CURRENT=0;
+
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
@@ -23,7 +26,7 @@ public class Gendata extends TenantEntity implements Serializable {
     private String path;
 
     @Column(name = "is_current_packet")//是否当前数据包 0-不是数据包，1-当前数据包
-    private int isCurrentPacket;
+    private int isCurrentPacket=IS_NOT_CURRENT;
 
     @Column(name = "packet_md5",length = 64)
     private String packetMd5;

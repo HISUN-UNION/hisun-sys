@@ -17,50 +17,42 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<%-- BEGIN SAMPLE FORM PORTLET 表单主体--%>   
-
 				<div class="portlet box grey">
-
 					<div class="portlet-title">
-
 						<div class="caption">
-
 							<i class="icon-reorder"></i>
-
 							<span class="hidden-480">添加APP程序</span>
-
 						</div>
 						<div class="tools">
 							<a href="javascript:location.reload();" class="reload"></a>
-
 						</div>
 					</div>
-
 					<div class="portlet-body form">
 						<!-- BEGIN FORM-->
-						<div id="appNameGroup" class="control-group">
-							<label class="control-label">应用名称<span class="required">*</span></label>
-							<div class="controls">
-								<input type="text" class="span6 m-wrap" id="appName" name="appName"   required maxlength="200"  />
-							</div>
-
-						</div>
-						<div id="appCodeGroup" class="control-group">
-							<label class="control-label">应用代码<span class="required">*</span></label>
-							<div class="controls">
-								<input type="text" class="span6 m-wrap" id="appCode" name="appCode"   required maxlength="200"  />
-							</div>
-
-						</div>
-						<div class="control-group" id="appTypeGroup">
-							<label class="control-label">应用类型<span class="required">*</span></label>
-							<div class="controls">
-								<select class="span6 m-wrap" id="appType" name="appType"  data-placeholder="Choose a Category" tabindex="1" required>
-									<option value="1" selected>安卓</option>
-									<option value="2" >IOS</option>
-								</select>
-							</div>
-						</div>
 						<form action="" class="form-horizontal" id="form1" method="post" enctype="multipart/form-data">
+							<div id="appNameGroup" class="control-group">
+								<label class="control-label">应用名称<span class="required">*</span></label>
+								<div class="controls">
+									<input type="text" class="span6 m-wrap" id="appName" name="appName"   required maxlength="200"  />
+								</div>
+
+							</div>
+							<div id="appCodeGroup" class="control-group">
+								<label class="control-label">应用代码<span class="required">*</span></label>
+								<div class="controls">
+									<input type="text" class="span6 m-wrap" id="appCode" name="appCode"   required maxlength="200"  />
+								</div>
+
+							</div>
+							<div class="control-group" id="appTypeGroup">
+								<label class="control-label">应用类型<span class="required">*</span></label>
+								<div class="controls">
+									<select class="span6 m-wrap" id="appType" name="appType"  data-placeholder="Choose a Category" tabindex="1" required>
+										<option value="1" selected>安卓</option>
+										<option value="2" >IOS</option>
+									</select>
+								</div>
+							</div>
 							<div id="appVersionNameGroup" class="control-group">
 								<label class="control-label">版本名称<span class="required">*</span></label>
 								<div class="controls">
@@ -91,12 +83,9 @@
 									<a class="btn" href="${path }/zzb/app/console/appVersion/"><i class="icon-remove-sign"></i> 取消</a>
 								</div>
 							</div>
-
 						</form>
 					</div>
-
 				</div>
-
 				<%-- END SAMPLE FORM PORTLET--%>
 			</div>
 		</div>
