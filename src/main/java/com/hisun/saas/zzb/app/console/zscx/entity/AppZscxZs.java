@@ -21,12 +21,8 @@ public class AppZscxZs extends TenantEntity implements Serializable {
     private int sp;//实配
     private int cqb;//超缺编
 
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "b01_id")
-    private AppZscxB01 appZscxB01;
 
-    @OneToMany(mappedBy = "appZscxZs",fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private AppZscxB01 appZscxB01;
     private List<AppZscxZsA01> appZscxZsA01s;
 
     @Id
@@ -81,12 +77,24 @@ public class AppZscxZs extends TenantEntity implements Serializable {
         this.cqb = cqb;
     }
 
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "b01_id")
     public AppZscxB01 getAppZscxB01() {
         return appZscxB01;
     }
 
     public void setAppZscxB01(AppZscxB01 appZscxB01) {
         this.appZscxB01 = appZscxB01;
+    }
+
+    @OneToMany(mappedBy = "appZscxZs",fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    public List<AppZscxZsA01> getAppZscxZsA01s() {
+        return appZscxZsA01s;
+    }
+
+    public void setAppZscxZsA01s(List<AppZscxZsA01> appZscxZsA01s) {
+        this.appZscxZsA01s = appZscxZsA01s;
     }
 
     @Override

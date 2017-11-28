@@ -17,17 +17,11 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
 
     private String id;
     private String b0101;
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id",nullable = true)
-    private AppGbcxB01 parentB01;
     private int px;
 
-    @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private List<AppGbcxB01> childrenB01s;
 
-    @OneToMany(mappedBy = "appGbcxB01", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private AppGbcxB01 parentB01;
+    private List<AppGbcxB01> childrenB01s;
     private List<AppGbcxA01> appGbcxA01s;
 
 
@@ -64,6 +58,8 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
         this.px = px;
     }
 
+    @OneToMany(mappedBy = "appGbcxB01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     public List<AppGbcxA01> getAppGbcxA01s() {
         return appGbcxA01s;
     }
@@ -72,6 +68,8 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
         this.appGbcxA01s = appGbcxA01s;
     }
 
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
     public AppGbcxB01 getParentB01() {
         return parentB01;
     }
@@ -80,6 +78,8 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
         this.parentB01 = parentB01;
     }
 
+    @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     public List<AppGbcxB01> getChildrenB01s() {
         return childrenB01s;
     }

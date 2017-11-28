@@ -14,22 +14,15 @@ import java.util.List;
 @Entity
 @Table(name = "app_zscx_b01")
 public class AppZscxB01 extends TenantEntity implements Serializable {
+
     private String id;
     private String b0101;//名称
     private int px;//排序
     private String comment;//备注
 
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id",nullable = true)
+
     private AppZscxB01 parentB01;
-
-    @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<AppZscxB01> childrenB01s;
-
-
-    @OneToMany(mappedBy = "appZscxB01", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<AppZscxZs> appZscxZses;
 
 
@@ -75,6 +68,8 @@ public class AppZscxB01 extends TenantEntity implements Serializable {
         this.comment = comment;
     }
 
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
     public AppZscxB01 getParentB01() {
         return parentB01;
     }
@@ -83,6 +78,8 @@ public class AppZscxB01 extends TenantEntity implements Serializable {
         this.parentB01 = parentB01;
     }
 
+    @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     public List<AppZscxB01> getChildrenB01s() {
         return childrenB01s;
     }
@@ -91,6 +88,8 @@ public class AppZscxB01 extends TenantEntity implements Serializable {
         this.childrenB01s = childrenB01s;
     }
 
+    @OneToMany(mappedBy = "appZscxB01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
     public List<AppZscxZs> getAppZscxZses() {
         return appZscxZses;
     }

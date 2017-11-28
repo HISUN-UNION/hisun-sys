@@ -31,9 +31,6 @@ public class AppZscxZsA01 extends TenantEntity implements Serializable {
     private int a01Px;
     private String zpPath;
 
-
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "zs_id")
     private AppZscxZs appZscxZs;
 
 
@@ -209,6 +206,8 @@ public class AppZscxZsA01 extends TenantEntity implements Serializable {
         this.zpPath = zpPath;
     }
 
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "zs_id")
     public AppZscxZs getAppZscxZs() {
         return appZscxZs;
     }
