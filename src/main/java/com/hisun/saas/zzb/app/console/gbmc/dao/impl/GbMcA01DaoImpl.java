@@ -3,8 +3,6 @@ package com.hisun.saas.zzb.app.console.gbmc.dao.impl;
 import com.hisun.base.dao.impl.BaseDaoImpl;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcA01Dao;
-import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcDao;
-import com.hisun.saas.zzb.app.console.gbmc.entity.GbMc;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
@@ -63,7 +61,6 @@ public class GbMcA01DaoImpl extends BaseDaoImpl<GbMcA01,String> implements GbMcA
             for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
                 String value = dataMap.get(key);
-
                 fieldSql.append(",");
                 fieldSql.append(WordUtil.getSqlField(key));
                 valueSql.append(",");
