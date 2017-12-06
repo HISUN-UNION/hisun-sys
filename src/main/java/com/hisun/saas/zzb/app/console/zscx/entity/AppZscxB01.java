@@ -14,22 +14,32 @@ import java.util.List;
 @Entity
 @Table(name = "app_zscx_b01")
 public class AppZscxB01 extends TenantEntity implements Serializable {
-
-    private String id;
-    private String b0101;//名称
-    private int px;//排序
-    private String comment;//备注
-
-
-    private AppZscxB01 parentB01;
-    private List<AppZscxB01> childrenB01s;
-    private List<AppZscxZs> appZscxZses;
-
-
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
     @Column(name="id",nullable=false,unique=true,length=32)
+    private String id;
+    @Column(name = "b0101")
+    private String b0101;//名称
+
+    @Column(name = "px")
+    private int px;//排序
+    @Column(name = "zs_comment")
+    private String comment;//备注
+    @Column(name = "data_type")
+    private int dataType;//类型 0--机构 1--分类
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private AppZscxB01 parentB01;
+    @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<AppZscxB01> childrenB01s;
+    @OneToMany(mappedBy = "appZscxB01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<AppZscxZs> appZscxZses;
+
+
+  
     public String getId() {
         return id;
     }
@@ -38,8 +48,6 @@ public class AppZscxB01 extends TenantEntity implements Serializable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "b0101")
     public String getB0101() {
         return b0101;
     }
@@ -48,8 +56,8 @@ public class AppZscxB01 extends TenantEntity implements Serializable {
         this.b0101 = b0101;
     }
 
-    @Basic
-    @Column(name = "px")
+   
+
     public int getPx() {
         return px;
     }
@@ -58,8 +66,18 @@ public class AppZscxB01 extends TenantEntity implements Serializable {
         this.px = px;
     }
 
-    @Basic
-    @Column(name = "zs_comment")
+   
+
+    public int getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(int dataType) {
+        this.dataType = dataType;
+    }
+
+   
+
     public String getComment() {
         return comment;
     }
@@ -68,8 +86,7 @@ public class AppZscxB01 extends TenantEntity implements Serializable {
         this.comment = comment;
     }
 
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
+
     public AppZscxB01 getParentB01() {
         return parentB01;
     }
@@ -78,8 +95,7 @@ public class AppZscxB01 extends TenantEntity implements Serializable {
         this.parentB01 = parentB01;
     }
 
-    @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+
     public List<AppZscxB01> getChildrenB01s() {
         return childrenB01s;
     }
@@ -88,8 +104,7 @@ public class AppZscxB01 extends TenantEntity implements Serializable {
         this.childrenB01s = childrenB01s;
     }
 
-    @OneToMany(mappedBy = "appZscxB01", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+
     public List<AppZscxZs> getAppZscxZses() {
         return appZscxZses;
     }

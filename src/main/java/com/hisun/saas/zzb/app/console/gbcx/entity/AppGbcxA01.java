@@ -12,31 +12,48 @@ import java.io.Serializable;
 @Entity
 @Table(name = "app_gbcx_a01")
 public class AppGbcxA01  extends TenantEntity implements Serializable {
-
-    private String id;
-    private String xm;
-    private String xb;
-    private String mz;
-    private String zw;
-    private String csd;
-    private String jg;
-    private String csny;
-    private String cjgzsj;
-    private String rdsj;
-    private String qrzxlxwjzy;
-    private String zzxlxwjzy;
-    private String zyjszw;
-    private String xrzwsj;
-    private String xrzjsj;
-    private int a01Px;
-    private String zpPath;
-
-    private AppGbcxB01 appGbcxB01;
-
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
     @Column(name="id",nullable=false,unique=true,length=32)
+    private String id;
+    @Column(name = "xm")
+    private String xm;
+    @Column(name = "xb")
+    private String xb;
+    @Column(name = "mz")
+    private String mz;
+    @Column(name = "zw")
+    private String zw;
+    @Column(name = "csd")
+    private String csd;
+    @Column(name = "jg")
+    private String jg;
+    @Column(name = "csny")
+    private String csny;
+    @Column(name = "cjgzsj")
+    private String cjgzsj;
+    @Column(name = "rdsj")
+    private String rdsj;
+    @Column(name = "qrzxlxwjzy")
+    private String qrzxlxwjzy;
+    @Column(name = "zzxlxwjzy")
+    private String zzxlxwjzy;
+    @Column(name = "zyjszw")
+    private String zyjszw;
+    @Column(name = "xrzjsj")
+    private String xrzwsj;
+    @Column(name = "xrzwsj")
+    private String xrzjsj;
+    @Column(name = "a01_px")
+    private int a01Px;
+    @Column(name = "zp_path")
+    private String zpPath;
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "b01_id")
+    private AppGbcxB01 appGbcxB01;
+
+   
     public String getId() {
         return id;
     }
@@ -45,8 +62,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "xm")
+   
+
     public String getXm() {
         return xm;
     }
@@ -55,8 +72,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.xm = xm;
     }
 
-    @Basic
-    @Column(name = "xb")
+   
+
     public String getXb() {
         return xb;
     }
@@ -65,8 +82,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.xb = xb;
     }
 
-    @Basic
-    @Column(name = "mz")
+   
+
     public String getMz() {
         return mz;
     }
@@ -75,8 +92,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.mz = mz;
     }
 
-    @Basic
-    @Column(name = "zw")
+   
+
     public String getZw() {
         return zw;
     }
@@ -85,8 +102,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.zw = zw;
     }
 
-    @Basic
-    @Column(name = "csd")
+   
+
     public String getCsd() {
         return csd;
     }
@@ -95,8 +112,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.csd = csd;
     }
 
-    @Basic
-    @Column(name = "jg")
+   
+
     public String getJg() {
         return jg;
     }
@@ -105,8 +122,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.jg = jg;
     }
 
-    @Basic
-    @Column(name = "csny")
+   
+
     public String getCsny() {
         return csny;
     }
@@ -115,8 +132,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.csny = csny;
     }
 
-    @Basic
-    @Column(name = "cjgzsj")
+   
+
     public String getCjgzsj() {
         return cjgzsj;
     }
@@ -125,8 +142,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.cjgzsj = cjgzsj;
     }
 
-    @Basic
-    @Column(name = "rdsj")
+   
+
     public String getRdsj() {
         return rdsj;
     }
@@ -135,8 +152,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.rdsj = rdsj;
     }
 
-    @Basic
-    @Column(name = "qrzxlxwjzy")
+   
+
     public String getQrzxlxwjzy() {
         return qrzxlxwjzy;
     }
@@ -145,8 +162,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.qrzxlxwjzy = qrzxlxwjzy;
     }
 
-    @Basic
-    @Column(name = "zzxlxwjzy")
+   
+
     public String getZzxlxwjzy() {
         return zzxlxwjzy;
     }
@@ -155,8 +172,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.zzxlxwjzy = zzxlxwjzy;
     }
 
-    @Basic
-    @Column(name = "zyjszw")
+   
+
     public String getZyjszw() {
         return zyjszw;
     }
@@ -165,8 +182,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.zyjszw = zyjszw;
     }
 
-    @Basic
-    @Column(name = "xrzwsj")
+   
+
     public String getXrzwsj() {
         return xrzwsj;
     }
@@ -175,8 +192,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.xrzwsj = xrzwsj;
     }
 
-    @Basic
-    @Column(name = "xrzjsj")
+   
+
     public String getXrzjsj() {
         return xrzjsj;
     }
@@ -185,8 +202,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.xrzjsj = xrzjsj;
     }
 
-    @Basic
-    @Column(name = "a01_px")
+   
+
     public int getA01Px() {
         return a01Px;
     }
@@ -195,8 +212,8 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.a01Px = a01Px;
     }
 
-    @Basic
-    @Column(name = "zp_path")
+   
+
     public String getZpPath() {
         return zpPath;
     }
@@ -205,8 +222,7 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.zpPath = zpPath;
     }
 
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "b01_id")
+
     public AppGbcxB01 getAppGbcxB01() {
         return appGbcxB01;
     }

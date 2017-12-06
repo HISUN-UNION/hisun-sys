@@ -14,21 +14,29 @@ import java.util.List;
 @Entity
 @Table(name = "app_gbcx_b01")
 public class AppGbcxB01 extends TenantEntity implements Serializable {
-
-    private String id;
-    private String b0101;
-    private int px;
-
-
-    private AppGbcxB01 parentB01;
-    private List<AppGbcxB01> childrenB01s;
-    private List<AppGbcxA01> appGbcxA01s;
-
-
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
     @Column(name="id",nullable=false,unique=true,length=32)
+    private String id;
+    @Column(name = "b0101")
+    private String b0101;
+    @Column(name = "px")
+    private int px;
+    @Column(name = "data_type")
+    private int dataType;//类型 0--机构 1--分类
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private AppGbcxB01 parentB01;
+    @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<AppGbcxB01> childrenB01s;
+    @OneToMany(mappedBy = "appGbcxB01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<AppGbcxA01> appGbcxA01s;
+
+
+   
     public String getId() {
         return id;
     }
@@ -37,8 +45,8 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "b0101")
+    
+   
     public String getB0101() {
         return b0101;
     }
@@ -47,9 +55,18 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
         this.b0101 = b0101;
     }
 
+    
 
-    @Basic
-    @Column(name = "px")
+    public int getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(int dataType) {
+        this.dataType = dataType;
+    }
+
+
+
     public int getPx() {
         return px;
     }
@@ -58,8 +75,7 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
         this.px = px;
     }
 
-    @OneToMany(mappedBy = "appGbcxB01", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+
     public List<AppGbcxA01> getAppGbcxA01s() {
         return appGbcxA01s;
     }
@@ -68,8 +84,7 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
         this.appGbcxA01s = appGbcxA01s;
     }
 
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
+
     public AppGbcxB01 getParentB01() {
         return parentB01;
     }
@@ -78,8 +93,7 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
         this.parentB01 = parentB01;
     }
 
-    @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+
     public List<AppGbcxB01> getChildrenB01s() {
         return childrenB01s;
     }

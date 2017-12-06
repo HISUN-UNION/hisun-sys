@@ -14,21 +14,28 @@ import java.util.List;
 @Entity
 @Table(name = "app_zscx_zs")
 public class AppZscxZs extends TenantEntity implements Serializable {
-
-    private String id;
-    private String zwmc;//职务名称
-    private int xp;//现配
-    private int sp;//实配
-    private int cqb;//超缺编
-
-
-    private AppZscxB01 appZscxB01;
-    private List<AppZscxZsA01> appZscxZsA01s;
-
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
     @Column(name="id",nullable=false,unique=true,length=32)
+    private String id;
+    @Column(name = "zwmc")
+    private String zwmc;//职务名称
+    @Column(name = "xp")
+    private int xp;//现配
+    @Column(name = "sp")
+    private int sp;//实配
+    @Column(name = "cqb")
+    private int cqb;//超缺编
+
+    @ManyToOne(optional = true,fetch = FetchType.LAZY)
+    @JoinColumn(name = "b01_id")
+    private AppZscxB01 appZscxB01;
+    @OneToMany(mappedBy = "appZscxZs",fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<AppZscxZsA01> appZscxZsA01s;
+
+
     public String getId() {
         return id;
     }
@@ -37,8 +44,8 @@ public class AppZscxZs extends TenantEntity implements Serializable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "zwmc")
+
+
     public String getZwmc() {
         return zwmc;
     }
@@ -47,8 +54,8 @@ public class AppZscxZs extends TenantEntity implements Serializable {
         this.zwmc = zwmc;
     }
 
-    @Basic
-    @Column(name = "xp")
+
+
     public int getXp() {
         return xp;
     }
@@ -57,8 +64,8 @@ public class AppZscxZs extends TenantEntity implements Serializable {
         this.xp = xp;
     }
 
-    @Basic
-    @Column(name = "sp")
+
+
     public int getSp() {
         return sp;
     }
@@ -67,8 +74,8 @@ public class AppZscxZs extends TenantEntity implements Serializable {
         this.sp = sp;
     }
 
-    @Basic
-    @Column(name = "cqb")
+
+
     public int getCqb() {
         return cqb;
     }
@@ -77,8 +84,7 @@ public class AppZscxZs extends TenantEntity implements Serializable {
         this.cqb = cqb;
     }
 
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "b01_id")
+
     public AppZscxB01 getAppZscxB01() {
         return appZscxB01;
     }
@@ -87,8 +93,7 @@ public class AppZscxZs extends TenantEntity implements Serializable {
         this.appZscxB01 = appZscxB01;
     }
 
-    @OneToMany(mappedBy = "appZscxZs",fetch = FetchType.LAZY)
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+
     public List<AppZscxZsA01> getAppZscxZsA01s() {
         return appZscxZsA01s;
     }

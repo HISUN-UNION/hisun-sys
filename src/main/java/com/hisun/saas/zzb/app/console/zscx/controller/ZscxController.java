@@ -15,7 +15,7 @@ public class ZscxController extends BaseController {
 
     @RequestMapping(value = "/")
     public ModelAndView list(){
-        return new ModelAndView("saas/zzb/app/console/unuse");
+        return new ModelAndView("saas/zzb/app/console/zscx/zscxManage");
     }
 
 }
