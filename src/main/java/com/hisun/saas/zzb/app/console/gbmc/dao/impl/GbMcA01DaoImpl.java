@@ -4,6 +4,7 @@ import com.hisun.base.dao.impl.BaseDaoImpl;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcA01Dao;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
+import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcB01;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.springframework.stereotype.Repository;
@@ -17,9 +18,11 @@ import java.util.*;
 public class GbMcA01DaoImpl extends BaseDaoImpl<GbMcA01,String> implements GbMcA01Dao {
 
 
-    public void saveFromWordDataMap(Tenant tenant, Map<String, String> dataMap, String b01Id){
-
+    public void saveFromWordDataMap(Map<String, String> dataMap, GbMcB01 gbMcB01){
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+
+        //删除掉非A01字段
+        this.clearDataMap(dataMap);
         int maxRow = this.getMaxRowFromWordDataMap(dataMap);
 
         for (int i = 0; i < maxRow; i++) {
@@ -48,15 +51,16 @@ public class GbMcA01DaoImpl extends BaseDaoImpl<GbMcA01,String> implements GbMcA
             insertSql.append(" (");
             //生成字段sql,值sql
             StringBuffer fieldSql = new StringBuffer();
-            fieldSql.append(" id,b01_id,a01_px,tenant_id ");
+            fieldSql.append(" id,b01_id,a01_px,tenant_id,mc_id ");
             StringBuffer valueSql = new StringBuffer();
 
 
             valueSql.append("(");
             valueSql.append("'").append(idValue).append("'");
-            valueSql.append(",'").append(b01Id).append("'");
+            valueSql.append(",'").append(gbMcB01.getId()).append("'");
             valueSql.append(",").append(px).append("");
-            valueSql.append(",'").append(tenant.getId()).append("'");
+            valueSql.append(",'").append(gbMcB01.getTenant().getId()).append("'");
+            valueSql.append(",'").append(gbMcB01.getGbMc().getId()).append("'");
 
             for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
@@ -80,6 +84,19 @@ public class GbMcA01DaoImpl extends BaseDaoImpl<GbMcA01,String> implements GbMcA
         }
     }
 
+
+    private void clearDataMap(Map<String,String> dataMap){
+        List<String> needDelteKeys = new ArrayList<String>();
+        for(Iterator<String> it= dataMap.keySet().iterator();it.hasNext();){
+            String key = it.next();
+            if(key.toLowerCase().indexOf("app_mc_a01")==-1){
+                needDelteKeys.add(key);
+            }
+        }
+        for(String key : needDelteKeys){
+            dataMap.remove(key);
+        }
+    }
 
 
     private int getMaxRowFromWordDataMap(Map<String, String> dataMap) {

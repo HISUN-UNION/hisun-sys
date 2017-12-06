@@ -4,6 +4,7 @@ import com.hisun.base.dao.BaseDao;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMc;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
+import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcB01;
 
 import java.util.Map;
 
@@ -13,6 +14,6 @@ import java.util.Map;
 public interface GbMcA01Dao extends BaseDao<GbMcA01,String> {
 
 
-    public void saveFromWordDataMap(Tenant tenant, Map<String, String> dataMap, String b01Id);
+    public void saveFromWordDataMap( Map<String, String> dataMap, GbMcB01 gbMcB01);
 
 }

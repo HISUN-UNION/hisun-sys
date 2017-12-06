@@ -1,6 +1,5 @@
 package com.hisun.saas.zzb.app.console.gbcx.entity;
 
-import com.hisun.base.entity.TombstoneEntity;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import org.hibernate.annotations.GenericGenerator;
 

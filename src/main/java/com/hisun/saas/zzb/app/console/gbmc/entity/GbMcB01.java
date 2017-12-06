@@ -15,6 +15,11 @@ import java.util.List;
 @Entity
 @Table(name = "APP_MC_B01")
 public class GbMcB01 extends TenantEntity implements Serializable {
+
+    public static int DISPLAY=0;
+    public static int HIDDEN=1;
+
+
     @Id
     @GenericGenerator(name = "generator", strategy = "uuid.hex")
     @GeneratedValue(generator = "generator")
@@ -25,8 +30,11 @@ public class GbMcB01 extends TenantEntity implements Serializable {
     private GbMc gbMc;
     @Column(name = "b0101", length = 255)
     private String b0101;
-    @Column(name = "PX")
+    @Column(name = "px")
     private int px;
+    @Column(name = "is_display")
+    private int isDisplay=DISPLAY;
+
     @OneToMany(mappedBy = "gbMcB01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<GbMcA01> gbMcA01s;
@@ -72,6 +80,13 @@ public class GbMcB01 extends TenantEntity implements Serializable {
         this.gbMcA01s = gbMcA01s;
     }
 
+    public int getIsDisplay() {
+        return isDisplay;
+    }
+
+    public void setIsDisplay(int isDisplay) {
+        this.isDisplay = isDisplay;
+    }
 
     public String toInsertSql(){
         StringBuffer sb = new StringBuffer("");

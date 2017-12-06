@@ -32,6 +32,15 @@ public class GbMcA01gzjl extends TenantEntity implements Serializable {
     @Column(name = "GZJL_PX")
     private int px;
 
+    public GbMcA01gzjl(){
+
+    }
+
+    public GbMcA01gzjl(String gzjl,int px){
+        this.jlsm= gzjl;
+        this.px=px;
+    }
+
 
     public String getId() {
         return id;

@@ -1,13 +1,17 @@
 package com.hisun.saas.zzb.app.console.gbmc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
-import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
+import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -24,69 +28,117 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
     @ManyToOne(optional=true,fetch = FetchType.LAZY)
     @JoinColumn(name="app_mc_a01_id")
     private GbMcA01 gbMcA01;
-    @Column(name = "XM",length = 20)
+    @Column(name = "xm",length = 20)
     private String xm;
-    @Column(name = "XB",length = 10)
+    @Column(name = "xb",length = 10)
     private String xb;
-    @Column(name = "CSNY",length = 24)
+    @Column(name = "csny",length = 24)
     private String csny;
-    @Column(name = "NL",length = 10)
+    @Column(name = "nl",length = 10)
     private String nl;
-    @Column(name = "ZP_PATH",length = 128)
+    @Column(name = "zp_path",length = 128)
     private String zppath;
-    @Column(name = "MZ",length = 24)
+    @Column(name = "mz",length = 24)
     private String mz;
-    @Column(name = "JG",length = 24)
+    @Column(name = "jg",length = 24)
     private String jg;
-    @Column(name = "CSD",length = 24)
+    @Column(name = "csd",length = 24)
     private String csd;
 
 
-    @Column(name = "RDSJ",length = 10)
+    @Column(name = "rdsj",length = 10)
     private String rdsj;
-    @Column(name = "CJGZSJ",length = 10)
+    @Column(name = "cjgzsj",length = 10)
     private String cjgzsj;
-    @Column(name = "JKZK",length = 24)
+    @Column(name = "jkzk",length = 24)
     private String jkzk;
-    @Column(name = "ZYJSZW",length = 60)
+    @Column(name = "zyjszw",length = 60)
     private String zyjszw;
-    @Column(name = "ZYTC",length = 60)
+    @Column(name = "zytc",length = 60)
     private String zytc;
-    @Column(name = "XL_QRZ",length = 24)
+    @Column(name = "xl_qrz",length = 24)
     private String xlqrz;
-    @Column(name = "XW_QRZ",length = 24)
+    @Column(name = "xw_qrz",length = 24)
     private String xwqrz;
-    @Column(name = "XL_ZZ",length = 24)
+    @Column(name = "xl_zz",length = 24)
     private String xlzz;
 
 
-    @Column(name = "XW_ZZ",length = 24)
+    @Column(name = "xw_zz",length = 24)
     private String xwzz;
-    @Column(name = "QRZ_BYYX",length = 128)
+    @Column(name = "qrz_byyx",length = 128)
     private String  qrz_byyx;
-    @Column(name = "ZZ_BYYX",length = 128)
+    @Column(name = "zz_byyx",length = 128)
     private String zz_byyx;
-    @Column(name = "XRZW",length = 128)
+    @Column(name = "xrzw",length = 128)
     private String xrzw;
-    @Column(name = "NRZW",length = 128)
+    @Column(name = "nrzw",length = 128)
     private String nrzw;
 
-    @Column(name = "NMZW",length = 128)
+    @Column(name = "nmzw",length = 128)
     private String nmzw;
 
-    @Column(name = "RMLY",length = 255)
+    @Column(name = "rmly",length = 255)
     private String rmly;
-    @Column(name = "CBDWYJ",length = 255)
+    @Column(name = "cbdwyj",length = 255)
     private String cbdwyj;
-    @Column(name = "SPJGYJ",length = 24)
+    @Column(name = "spjgyj",length = 24)
     private String spjgyj;
-    @Column(name = "XZJGRMYJ",length = 24)
+    @Column(name = "xzjgrmyj",length = 24)
     private String xzjgrmyj;
     @Column(name = "file_path",length = 128)
     private String filepath;
-    @Column(name = "FILE2IMG_PATH",length = 128)
+    @Column(name = "file2img_path",length = 128)
     private String file2imgPath;
 
+    @Type(type="text")
+    @Column(name = "gzjl_str")
+    private String gzjlStr;
+    @Type(type="text")
+    @Column(name = "jcqk_str")
+    private String jcqkStr;
+    @Type(type="text")
+    @Column(name = "khjg_str")
+    private String khjgStr;
+
+    public GbMcA01gbrmspb() {
+
+    }
+
+    public GbMcA01gbrmspb(Map<String,String> ywJson) {
+
+        this.xm = ywJson.get("name");
+        this.xb = ywJson.get("sex");
+        this.csny = ywJson.get("birthday");
+        this.mz = ywJson.get("nation");
+        this.jg = ywJson.get("nativeplace");
+        this.csd = ywJson.get("birthplace");
+        this.rdsj = ywJson.get("jointong");
+        this.cjgzsj = ywJson.get("workdate");
+        this.jkzk = ywJson.get("healthstate");
+        this.zyjszw = ywJson.get("technology");
+        this.zytc = ywJson.get("speciality");
+        this.xlqrz = ywJson.get("degree");
+        this.xlzz = ywJson.get("degreein");
+        this.qrz_byyx = ywJson.get("school");
+        this.zz_byyx = ywJson.get("schoolin");
+        this.xrzw = ywJson.get("jobnow");
+        this.nrzw = ywJson.get("jobnowin");
+        this.nmzw = ywJson.get("jobremove");
+        this.rmly = ywJson.get("reason");
+        this.cbdwyj = ywJson.get("unit");
+        this.spjgyj = ywJson.get("jgyj");
+        this.xzjgrmyj = ywJson.get("xzjgyj");
+        Object obj = ywJson.get("intro");
+        if (obj instanceof String) {
+            this.gzjlStr = ywJson.get("intro");
+        }else{
+            this.gzjlStr="";
+        }
+        this.jcqkStr = ywJson.get("awardpunish");
+        this.khjgStr = ywJson.get("yearcheck");
+
+    }
 
     public String getId() {
         return id;
@@ -329,6 +381,35 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
         this.file2imgPath = file2imgPath.replaceAll("\\\\", "\\\\\\\\");
     }
 
+    public String getGzjlStr() {
+        return gzjlStr;
+    }
+
+    public void setGzjlStr(String gzjlStr) {
+        this.gzjlStr = gzjlStr;
+    }
+
+    public String getJcqkStr() {
+        return jcqkStr;
+    }
+
+    public void setJcqkStr(String jcqkStr) {
+        this.jcqkStr = jcqkStr;
+    }
+
+    public String getKhjgStr() {
+        return khjgStr;
+    }
+
+    public void setKhjgStr(String khjgStr) {
+        this.khjgStr = khjgStr;
+    }
+
+    public void addGzjl(GbMcA01gzjl gbMcA01gzjl){
+
+    }
+
+
     public String toInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
@@ -406,6 +487,40 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
         }
         sb.append(")");
         return sb.toString();
+    }
+
+
+    public Map<String,String> toSqlFieldMap(){
+        Map<String,String> fieldMap = new HashMap<String,String>();
+        fieldMap.put("xm",this.xm);
+        fieldMap.put("xb",this.xb);
+        fieldMap.put("csny",this.csny);
+        fieldMap.put("zp_path",this.zppath);
+        fieldMap.put("mz",this.mz);
+        fieldMap.put("jg",this.jg);
+        fieldMap.put("csd",this.csd);
+        fieldMap.put("rdsj",this.rdsj);
+        fieldMap.put("cjgzsj",this.cjgzsj);
+        fieldMap.put("jkzk",this.jkzk);
+        fieldMap.put("zyjszw",this.zyjszw);
+        fieldMap.put("zytc",this.zytc);
+        fieldMap.put("xl_qrz",this.xlqrz);
+        fieldMap.put("xw_qrz",this.xwqrz);
+        fieldMap.put("xl_zz",this.xlzz);
+        fieldMap.put("xw_zz",this.xwzz);
+        fieldMap.put("qrz_byyx",this.qrz_byyx);
+        fieldMap.put("zz_byyx",this.zz_byyx);
+        fieldMap.put("xrzw",this.xrzw);
+        fieldMap.put("nrzw",this.nrzw);
+        fieldMap.put("nmzw",this.nmzw);
+        fieldMap.put("rmly",this.rmly);
+        fieldMap.put("cbdwyj",this.cbdwyj);
+        fieldMap.put("spjgyj",this.spjgyj);
+        fieldMap.put("xzjgrmyj",this.xzjgrmyj);
+        fieldMap.put("gzjl_str",this.gzjlStr);
+        fieldMap.put("jcqk_str",this.jcqkStr);
+        fieldMap.put("khjg_str",this.khjgStr);
+        return fieldMap;
     }
 
 

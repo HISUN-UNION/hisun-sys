@@ -1,5 +1,6 @@
 package com.hisun.saas.zzb.app.console.gbmc.controller;
 
+import com.aspose.words.*;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;
@@ -7,21 +8,31 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.saas.zzb.app.console.gbmc.entity.GbMc;
+import com.hisun.saas.zzb.app.console.gbmc.entity.*;
+import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
+import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
+import com.hisun.saas.zzb.app.console.util.GzjlUtil;
+import com.hisun.util.CompressUtil;
+import com.hisun.util.JacksonUtil;
+import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by zhouying on 2017/9/16.
@@ -33,6 +44,13 @@ public class GbmcController extends BaseController{
 
     @Autowired
     private GbMcService gbMcService;
+    @Autowired
+    private GbMcA01Service gbMcA01Service;
+    @Autowired
+    private GbMcA01gbrmspbService gbMcA01gbrmspbService;
+
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
 
     @RequestMapping("/")
     public ModelAndView list(HttpServletRequest req, String mcQuery,
@@ -149,7 +167,35 @@ public class GbmcController extends BaseController{
                     this.gbMcService.update(gbMc);
                 } else {
                     BeanTrans.setBaseProperties(gbMc, userLoginDetails, "save");
-                    this.gbMcService.save(gbMc);
+
+                    //处理word列表数据
+                    WordUtil wordUtil = WordUtil.newInstance();
+                    String wordPath = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/2州直单位领导干部名册.docx";
+                    String wordPathTemplate = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/gbmca01.docx";
+
+                    List<Map<String,String>> dataList = new ArrayList<Map<String,String>>();
+                    Document templateDoc = wordUtil.read(wordPathTemplate);
+                    Map<String, Integer> templateMap = wordUtil.generateTemplateMap(templateDoc);
+
+                    Document document = wordUtil.read(wordPath);
+                    NodeCollection collection = document.getChildNodes(NodeType.TABLE, true);
+                    for(Iterator<Table> tables = collection.iterator(); tables.hasNext();){
+                        Table table = tables.next();
+                        NodeCollection cells = table.getChildNodes(NodeType.CELL,true);
+                        dataList.add(wordUtil.convertMapByTemplate(cells,templateMap));
+                    }
+                    this.gbMcService.saveFromWordDataMap(gbMc,GbMc.YML,dataList);
+
+                    //处理JSON数据
+                    String zipFilePath = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/personsinfodata.zip";
+                    String tmpFilePath ="/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/test/";
+                    CompressUtil.unzip(zipFilePath,tmpFilePath);
+                    //处理照片
+                    String photoZipFilePath="/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/personsimgs.zip";
+                    String tmpPhotoFilePath="/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/photo/";
+                    CompressUtil.unzip(photoZipFilePath,tmpPhotoFilePath);
+                    this.gbMcA01Service.updateA01FromYwJson(gbMc.getId(),tmpFilePath,tmpPhotoFilePath);
+
                 }
                 map.put("success", true);
             }
@@ -158,4 +204,32 @@ public class GbmcController extends BaseController{
         }
         return map;
     }
+
+
+    private void parseYwmcWord(String sourceeWordPath) throws Exception{
+
+        //String tmplateWordPath = uploadAbsolutePath + GbMcA01Service.IMPORT_DOC_TEMPLATE;
+        WordUtil wordUtil = WordUtil.newInstance();
+
+        String wordPath = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/2州直单位领导干部名册.docx";
+        String wordPathTemplate = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/gbmca01.docx";
+
+        Document templateDoc = wordUtil.read(wordPathTemplate);
+        Map<String, Integer> templateMap = wordUtil.generateTemplateMap(templateDoc);
+
+        Document document = wordUtil.read(wordPath);
+        NodeCollection collection = document.getChildNodes(NodeType.TABLE, true);
+        for(Iterator<Table> tables = collection.iterator(); tables.hasNext();){
+            Table table = tables.next();
+
+            NodeCollection cells = table.getChildNodes(NodeType.CELL,true);
+            for(Iterator<Cell> it = cells.iterator(); it.hasNext();){
+                Cell cell = it.next();
+
+            }
+        }
+    }
+
+
+
 }

@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,50 +16,54 @@ import java.util.List;
  */
 @Entity
 @Table(name = "APP_MC_A01")
-public class GbMcA01 extends TenantEntity implements Serializable{
+public class GbMcA01 extends TenantEntity implements Serializable {
     @Id
-    @GenericGenerator(name="generator",strategy="uuid.hex")
-    @GeneratedValue(generator="generator")
-    @Column(name="ID",nullable=false,unique=true,length=32)
+    @GenericGenerator(name = "generator", strategy = "uuid.hex")
+    @GeneratedValue(generator = "generator")
+    @Column(name = "ID", nullable = false, unique = true, length = 32)
     private String id;
 
-    @ManyToOne(optional=true,fetch = FetchType.LAZY)
-    @JoinColumn(name="b01_id")
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "b01_id")
     private GbMcB01 gbMcB01;
 
-    @Column(name = "xm",length = 10)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "mc_id")
+    private GbMc gbMc;
+
+    @Column(name = "xm", length = 10)
     private String xm;
 
-    @Column(name = "mz",length = 10)
+    @Column(name = "mz", length = 10)
     private String mz;
 
-    @Column(name = "zw",length = 255)
+    @Column(name = "zw", length = 255)
     private String zw;
 
-    @Column(name = "csd",length = 40)
+    @Column(name = "csd", length = 40)
     private String csd;
 
-    @Column(name = "jg",length = 20)
+    @Column(name = "jg", length = 20)
     private String jg;
-    @Column(name = "csny",length = 20)
+    @Column(name = "csny", length = 20)
     private String csny;
-    @Column(name = "cjgzsj",length = 20)
+    @Column(name = "cjgzsj", length = 20)
     private String cjgzsj;
-    @Column(name = "rdsj",length = 20)
+    @Column(name = "rdsj", length = 20)
     private String rdsj;
-    @Column(name = "qrzxlxwjzy",length = 100)
+    @Column(name = "qrzxlxwjzy", length = 100)
     private String qrzxlxwjzy;
-    @Column(name = "zzxlxwjzy",length = 100)
+    @Column(name = "zzxlxwjzy", length = 100)
     private String zzxlxwjzy;
-    @Column(name = "zyjszw",length = 100)
+    @Column(name = "zyjszw", length = 100)
     private String zyjszw;
-    @Column(name = "xrzwsj",length = 20)
+    @Column(name = "xrzwsj", length = 20)
     private String xrzwsj;
-    @Column(name = "xrzjsj",length = 40)
+    @Column(name = "xrzjsj", length = 40)
     private String xrzjsj;
     @Column(name = "a01_PX")
     private int px = 0;
-    @Column(name = "ZP_PATH",length = 128)
+    @Column(name = "ZP_PATH", length = 128)
     private String zppath;
 
     @OneToMany(mappedBy = "gbMcA01", fetch = FetchType.LAZY)
@@ -68,6 +73,10 @@ public class GbMcA01 extends TenantEntity implements Serializable{
     @OneToMany(mappedBy = "gbMcA01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<GbMcA01gbrmspb> gbMca01gbrmspbs;
+
+    @OneToMany(mappedBy = "gbMcA01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<GbMcA01shgx> gbMcA01shgxes;
 
     public String getId() {
         return id;
@@ -221,10 +230,47 @@ public class GbMcA01 extends TenantEntity implements Serializable{
         this.gbMca01gbrmspbs = gbMca01gbrmspbs;
     }
 
+    public GbMc getGbMc() {
+        return gbMc;
+    }
 
+    public void setGbMc(GbMc gbMc) {
+        this.gbMc = gbMc;
+    }
 
+    public List<GbMcA01shgx> getGbMcA01shgxes() {
+        return gbMcA01shgxes;
+    }
 
-    public String toInsertSql(){
+    public void setGbMcA01shgxes(List<GbMcA01shgx> gbMcA01shgxes) {
+        this.gbMcA01shgxes = gbMcA01shgxes;
+    }
+
+    public void addGbrmspb(GbMcA01gbrmspb gbMcA01gbrmspb) {
+        if (this.gbMca01gbrmspbs == null) {
+            this.gbMca01gbrmspbs = new ArrayList<GbMcA01gbrmspb>();
+        }
+        gbMcA01gbrmspb.setGbMcA01(this);
+        this.gbMca01gbrmspbs.add(gbMcA01gbrmspb);
+    }
+
+    public void addGzjl(GbMcA01gzjl gbMcA01gzjl) {
+        if (this.gbMca01gzjls == null) {
+            this.gbMca01gzjls = new ArrayList<GbMcA01gzjl>();
+        }
+        gbMcA01gzjl.setGbMcA01(this);
+        this.gbMca01gzjls.add(gbMcA01gzjl);
+    }
+
+    public void addShgx(GbMcA01shgx gbMcA01shgx){
+        if(this.gbMcA01shgxes==null){
+            this.gbMcA01shgxes = new ArrayList<GbMcA01shgx>();
+        }
+        gbMcA01shgx.setGbMcA01(this);
+        this.gbMcA01shgxes.add(gbMcA01shgx);
+    }
+
+    public String toInsertSql() {
         StringBuffer sb = new StringBuffer("");
         sb.append(" insert into ");
         sb.append(" app_mc_a01 ");
@@ -249,29 +295,29 @@ public class GbMcA01 extends TenantEntity implements Serializable{
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(gbMcB01.getId())+"'");
-        sb.append(",'"+ StringUtils.transNull(xm)+"'");
-        sb.append(",'"+ StringUtils.transNull(mz)+"'");
-        sb.append(",'"+ StringUtils.transNull(zw)+"'");
-        sb.append(",'"+ StringUtils.transNull(csd)+"'");
-        sb.append(",'"+ StringUtils.transNull(jg)+"'");
-        sb.append(",'"+ StringUtils.transNull(csny)+"'");
-        sb.append(",'"+ StringUtils.transNull(cjgzsj)+"'");
-        sb.append(",'"+ StringUtils.transNull(rdsj)+"'");
-        sb.append(",'"+ StringUtils.transNull(qrzxlxwjzy)+"'");
-        sb.append(",'"+ StringUtils.transNull(zzxlxwjzy)+"'");
-        sb.append(",'"+ StringUtils.transNull(zyjszw)+"'");
-        sb.append(",'"+ StringUtils.transNull(xrzwsj)+"'");
-        sb.append(",'"+ StringUtils.transNull(xrzjsj)+"'");
-        if (StringUtils.isEmpty(zppath)){
+        sb.append("'" + StringUtils.transNull(id) + "'");
+        sb.append(",'" + StringUtils.transNull(gbMcB01.getId()) + "'");
+        sb.append(",'" + StringUtils.transNull(xm) + "'");
+        sb.append(",'" + StringUtils.transNull(mz) + "'");
+        sb.append(",'" + StringUtils.transNull(zw) + "'");
+        sb.append(",'" + StringUtils.transNull(csd) + "'");
+        sb.append(",'" + StringUtils.transNull(jg) + "'");
+        sb.append(",'" + StringUtils.transNull(csny) + "'");
+        sb.append(",'" + StringUtils.transNull(cjgzsj) + "'");
+        sb.append(",'" + StringUtils.transNull(rdsj) + "'");
+        sb.append(",'" + StringUtils.transNull(qrzxlxwjzy) + "'");
+        sb.append(",'" + StringUtils.transNull(zzxlxwjzy) + "'");
+        sb.append(",'" + StringUtils.transNull(zyjszw) + "'");
+        sb.append(",'" + StringUtils.transNull(xrzwsj) + "'");
+        sb.append(",'" + StringUtils.transNull(xrzjsj) + "'");
+        if (StringUtils.isEmpty(zppath)) {
             sb.append(",''");
-        }else{
-            String filepath ="img/"+zppath.substring(zppath.lastIndexOf(File.separator)+1);
-            sb.append(",'"+filepath+"'");
+        } else {
+            String filepath = "img/" + zppath.substring(zppath.lastIndexOf(File.separator) + 1);
+            sb.append(",'" + filepath + "'");
 
         }
-        sb.append(","+ px+"");
+        sb.append("," + px + "");
         sb.append(")");
         return sb.toString();
     }

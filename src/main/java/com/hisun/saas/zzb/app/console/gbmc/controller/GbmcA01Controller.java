@@ -13,6 +13,7 @@ import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
+import com.hisun.saas.zzb.app.console.gbmc.service.GbMcB01Service;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01Vo;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01Vo;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01gzjlVo;
@@ -51,6 +52,9 @@ public class GbmcA01Controller extends BaseController{
 
     @Autowired
     private GbMcA01Service gbMcA01Service;
+
+    @Autowired
+    private GbMcB01Service gbMcB01Service;
 
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
@@ -127,7 +131,8 @@ public class GbmcA01Controller extends BaseController{
                     String tmplateWordPath = uploadAbsolutePath + GbMcA01Service.IMPORT_DOC_TEMPLATE;
                     WordUtil wordUtil = WordUtil.newInstance();
                     Map<String,String> dataMap = wordUtil.convertMapByTemplate(savePath,tmplateWordPath);
-                    this.gbMcA01Service.saveFromWordDataMap(userLoginDetails.getTenant(),dataMap,mcb01id);
+                    GbMcB01 gbMcB01 = this.gbMcB01Service.getByPK(mcb01id);
+                    this.gbMcA01Service.saveFromWordDataMap(dataMap,gbMcB01);
                     tempFile.delete();
                 } catch (Exception e) {
                     e.printStackTrace();
