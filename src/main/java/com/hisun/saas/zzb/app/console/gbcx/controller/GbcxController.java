@@ -16,7 +16,7 @@ public class GbcxController extends BaseController{
     @RequestMapping(value = "/")
     public ModelAndView list(){
 
-        return new ModelAndView("saas/zzb/app/console/unuse");
+        return new ModelAndView("saas/zzb/app/console/gbcx/gbcxManage");
 
 
 
