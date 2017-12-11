@@ -77,6 +77,7 @@ public class GbmcController extends BaseController{
                     GbMcVo vo = new GbMcVo();
                     BeanUtils.copyProperties(vo, gbMc);
                     vo.setA01Count(this.gbMcService.getA01Count(gbMc.getId()));
+                    //vo.setA01Count(gbMc.getGbMcA01s().size());
                     gbMcVos.add(vo);
                 }
             }

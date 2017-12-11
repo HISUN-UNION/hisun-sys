@@ -1,7 +1,7 @@
 package com.hisun.saas.zzb.app.console.gbmc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
-import com.hisun.saas.zzb.app.console.util.GzjlUtil;
+import com.hisun.util.ReflectionVoUtil;
 import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -9,8 +9,8 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -410,10 +410,10 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
     }
 
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" APP_MC_A01_GBRMSPB ");
+        sb.append("INSERT INTO ");
+        sb.append("APP_MC_A01_GBRMSPB ");
         sb.append("(");
         sb.append("ID");
         sb.append(",APP_MC_A01_ID");
@@ -446,38 +446,33 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(gbMcA01.getId())+"'");
-        sb.append(",'"+ StringUtils.transNull(xm)+"'");
-        sb.append(",'"+ StringUtils.transNull(xb)+"'");
-        sb.append(",'"+ StringUtils.transNull(csny)+"'");
-        sb.append(",'"+ StringUtils.transNull(nl)+"'");
-
-        sb.append(",'"+ StringUtils.transNull(mz)+"'");
-        sb.append(",'"+ StringUtils.transNull(jg)+"'");
-        sb.append(",'"+ StringUtils.transNull(csd)+"'");
-        sb.append(",'"+ StringUtils.transNull(rdsj)+"'");
-        sb.append(",'"+ StringUtils.transNull(cjgzsj)+"'");
-
-        sb.append(",'"+ StringUtils.transNull(jkzk)+"'");
-        sb.append(",'"+ StringUtils.transNull(zyjszw)+"'");
-        sb.append(",'"+ StringUtils.transNull(zytc)+"'");
-        sb.append(",'"+ StringUtils.transNull(xlqrz)+"'");
-        sb.append(",'"+ StringUtils.transNull(xwqrz)+"'");
-        sb.append(",'"+ StringUtils.transNull(xlzz)+"'");
-        sb.append(",'"+ StringUtils.transNull(xwzz)+"'");
-        sb.append(",'"+ StringUtils.transNull(qrz_byyx)+"'");
-
-
-        sb.append(",'"+ StringUtils.transNull(zz_byyx)+"'");
-        sb.append(",'"+ StringUtils.transNull(xrzw)+"'");
-        sb.append(",'"+ StringUtils.transNull(nrzw)+"'");
-        sb.append(",'"+ StringUtils.transNull(nmzw)+"'");
-
-        sb.append(",'"+ StringUtils.transNull(rmly)+"'");
-        sb.append(",'"+ StringUtils.transNull(cbdwyj)+"'");
-        sb.append(",'"+ StringUtils.transNull(spjgyj)+"'");
-        sb.append(",'"+ StringUtils.transNull(xzjgrmyj)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(gbMcA01.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xm)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xb)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(csny)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(nl)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(mz)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(jg)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(csd)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(rdsj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(cjgzsj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(jkzk)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(zyjszw)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(zytc)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xlqrz)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xwqrz)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xlzz)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xwzz)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(qrz_byyx)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(zz_byyx)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xrzw)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(nrzw)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(nmzw)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(rmly)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(cbdwyj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(spjgyj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xzjgrmyj)+"'");
         if (StringUtils.isEmpty(file2imgPath)){
             sb.append(",''");
         }else{
@@ -490,9 +485,9 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
     }
 
 
-    public Map<String,String> toSqlFieldMap(){
+    public Map<String,String> toFieldMap(){
         Map<String,String> fieldMap = new HashMap<String,String>();
-        fieldMap.put("xm",this.xm);
+        fieldMap.put("xm",StringUtils.trimNull2Empty(this.xm));
         fieldMap.put("xb",this.xb);
         fieldMap.put("csny",this.csny);
         fieldMap.put("zp_path",this.zppath);
@@ -523,5 +518,12 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
         return fieldMap;
     }
 
-
+    public static void main(String[] args)throws Exception{
+        GbMcA01gbrmspb vo = new GbMcA01gbrmspb();
+        vo.setXm("zhou");
+        Map<String,Object> map = ReflectionVoUtil.map(vo);
+        System.out.println(map);
+        GbMcA01gbrmspb newVo = (GbMcA01gbrmspb)ReflectionVoUtil.vo(GbMcA01gbrmspb.class,map);
+        System.out.println(newVo);
+    }
 }

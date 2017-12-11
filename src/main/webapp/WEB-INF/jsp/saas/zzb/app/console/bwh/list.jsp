@@ -60,7 +60,7 @@
 							<tbody>
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
-										<td><a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }"><c:out value="${vo.pcmc}"></c:out></a></td>
+										<td><a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }"><c:out value="${vo.pcmc}"></c:out></a></td>
 										<td><c:out value="${vo.shlxValue}"></c:out></td>
 										<td><c:out value="${vo.sjlxValue}"></c:out></td>
 										<td><c:out value="${vo.pcsjValue}"></c:out></td>

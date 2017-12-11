@@ -1,6 +1,5 @@
 package com.hisun.saas.zzb.app.console.shpc.entity;
 
-import com.google.common.collect.Lists;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import com.hisun.saas.zzb.app.console.shtp.entity.Shtp;
 import com.hisun.util.StringUtils;
@@ -12,9 +11,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -153,7 +150,7 @@ public class Shpc extends TenantEntity implements Serializable{
         this.px = px;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_SH_PC ");
@@ -169,9 +166,9 @@ public class Shpc extends TenantEntity implements Serializable{
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(pcmc)+"'");
-        sb.append(",'"+ StringUtils.transNull(shlx)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(pcmc)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(shlx)+"'");
         if(pcsj!=null){
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             sb.append(",'"+ df.format(pcsj)+"'");
@@ -179,7 +176,7 @@ public class Shpc extends TenantEntity implements Serializable{
             sb.append(",''");
         }
         //sb.append(",'"+ shZt+"'");
-        sb.append(",'"+ StringUtils.transNull(sjlx)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(sjlx)+"'");
         if (StringUtils.isEmpty(filePath)){
             sb.append(",''");
         }else{

@@ -2,13 +2,11 @@ package com.hisun.saas.zzb.app.console.shpc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import com.hisun.util.StringUtils;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -65,7 +63,7 @@ public class ShpcAtts  extends TenantEntity implements Serializable {
         this.filepath = filepath;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_SH_PC_ATTS ");
@@ -77,9 +75,9 @@ public class ShpcAtts  extends TenantEntity implements Serializable {
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(shpc.getId())+"'");
-        sb.append(",'"+ StringUtils.transNull(filename)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(shpc.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(filename)+"'");
         if (StringUtils.isEmpty(filepath)){
             sb.append(",''");
         }else{

@@ -1,7 +1,6 @@
 package com.hisun.saas.zzb.app.console.gendata.service.impl;
 
 import com.hisun.base.dao.BaseDao;
-import com.hisun.base.service.BaseService;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
@@ -15,7 +14,6 @@ import com.hisun.saas.zzb.app.console.gendata.dao.GendataDao;
 import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
-import com.hisun.saas.zzb.app.console.shpc.dao.Sha01dascqkDao;
 import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
@@ -142,7 +140,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
         List<ApiRegister> apiRegisters = this.apiRegisterDao.list();
         if(apiRegisters!=null && apiRegisters.size()>0){
             for(ApiRegister apiRegister : apiRegisters){
-                sqliteDBUtil.insert(sqlite,apiRegister.toInsertSql());
+                sqliteDBUtil.insert(sqlite,apiRegister.toSqliteInsertSql());
             }
         }
     }
@@ -151,14 +149,14 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
     private void genGbtjData(String gbtjId,String sqlite)throws Exception{
         SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
         Gbtj gbtj = this.gbtjDao.getByPK(gbtjId);
-        sqliteDBUtil.insert(sqlite,gbtj.toInsertSql());
+        sqliteDBUtil.insert(sqlite,gbtj.toSqliteInsertSql());
     }
 
     private void genShpcData(String shpcId,String sqlite,String imgDir,String attsDir) throws Exception{
         Shpc shpc = this.shpcDao.getPK(shpcId);
         if(shpc!=null){
             SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
-            sqliteDBUtil.insert(sqlite,shpc.toInsertSql());
+            sqliteDBUtil.insert(sqlite,shpc.toSqliteInsertSql());
             if(shpc.getFilePath()!=null&& shpc.getFilePath().equals("")==false){
                 this.copyFile(shpc.getFilePath(),attsDir);
             }
@@ -167,7 +165,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
             if(shpcAttses!=null){
                 for(ShpcAtts shpcAtts : shpcAttses){
                     //初始化结构数据
-                    sqliteDBUtil.insert(sqlite, shpcAtts.toInsertSql());
+                    sqliteDBUtil.insert(sqlite, shpcAtts.toSqliteInsertSql());
                     if(StringUtils.isEmpty(shpcAtts.getFilepath())==false){
                         this.copyFile(shpcAtts.getFilepath(),attsDir);
                     }
@@ -178,7 +176,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
             if(sha01s!=null) {
                 for (Sha01 sha01 : sha01s) {
                     //初始化结构数据
-                    sqliteDBUtil.insert(sqlite, sha01.toInsertSql());
+                    sqliteDBUtil.insert(sqlite, sha01.toSqliteInsertSql());
                     //初始化非机构化数据
                     if(sha01.getZppath()!=null) {
                         this.copyFile(sha01.getZppath(), imgDir);
@@ -187,14 +185,14 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
                     List<Sha01gzjl> gzjls = sha01.getGzjls();
                     if(gzjls!=null){
                         for(Sha01gzjl sha01gzjl : gzjls){
-                            sqliteDBUtil.insert(sqlite, sha01gzjl.toInsertSql());
+                            sqliteDBUtil.insert(sqlite, sha01gzjl.toSqliteInsertSql());
                         }
                     }
                     //干部任免审批表
                     List<Sha01gbrmspb> sha01gbrmspbs = sha01.getGbrmspbs();
                     if(sha01gbrmspbs!=null){
                         for(Sha01gbrmspb gbrmspb : sha01gbrmspbs){
-                            sqliteDBUtil.insert(sqlite, gbrmspb.toInsertSql());
+                            sqliteDBUtil.insert(sqlite, gbrmspb.toSqliteInsertSql());
                             if(gbrmspb.getFile2imgPath()!=null){
                                 this.copyFile(gbrmspb.getFile2imgPath(),attsDir);
                             }
@@ -204,7 +202,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
                     List<Sha01kccl> sha01kccls = sha01.getKccls();
                     if(sha01kccls!=null){
                         for (Sha01kccl kccl : sha01kccls){
-                            sqliteDBUtil.insert(sqlite, kccl.toInsertSql());
+                            sqliteDBUtil.insert(sqlite, kccl.toSqliteInsertSql());
                             if(kccl.getFile2imgPath()!=null){
                                 this.copyFile(kccl.getFile2imgPath(),attsDir);
                             }
@@ -214,7 +212,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
                     List<Sha01dascqk> sha01dascqks = sha01.getDascqks();
                     if(sha01dascqks!=null){
                         for(Sha01dascqk sha01dascqk : sha01dascqks){
-                            sqliteDBUtil.insert(sqlite,sha01dascqk.toInsertSql());
+                            sqliteDBUtil.insert(sqlite,sha01dascqk.toSqliteInsertSql());
                             if(sha01dascqk.getFile2imgPath()!=null){
                                 this.copyFile(sha01dascqk.getFile2imgPath(),attsDir);
                             }
@@ -222,7 +220,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
                             List<Sha01dascqktips> sha01dascqktipses = sha01dascqk.getSha01dascqktips();
                             if(sha01dascqktipses!=null){
                                 for(Sha01dascqktips tip : sha01dascqktipses){
-                                    sqliteDBUtil.insert(sqlite,tip.toInsertSql());
+                                    sqliteDBUtil.insert(sqlite,tip.toSqliteInsertSql());
                                 }
                             }
                         }
@@ -231,7 +229,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
                     List<Sha01grzdsx> sha01grzdsxes = sha01.getGrzdsxes();
                     if(sha01grzdsxes!=null){
                         for(Sha01grzdsx sha01grzdsx : sha01grzdsxes){
-                            sqliteDBUtil.insert(sqlite,sha01grzdsx.toInsertSql());
+                            sqliteDBUtil.insert(sqlite,sha01grzdsx.toSqliteInsertSql());
                             if(sha01grzdsx.getFile2imgPath()!=null){
                                 this.copyFile(sha01grzdsx.getFile2imgPath(),attsDir);
                             }
@@ -248,16 +246,16 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
         GbMc gbMc = this.gbMcDao.getPK(mcId);
         if(gbMc!=null){
             SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
-            sqliteDBUtil.insert(sqlite,gbMc.toInsertSql());
+            sqliteDBUtil.insert(sqlite,gbMc.toSqliteInsertSql());
             //单位目录
             List<GbMcB01> gbMcB01s = gbMc.getGbMcB01s();
             if(gbMcB01s!=null) {
                 for (GbMcB01 gbMcB01 : gbMcB01s) {
-                    sqliteDBUtil.insert(sqlite, gbMcB01.toInsertSql());
+                    sqliteDBUtil.insert(sqlite, gbMcB01.toSqliteInsertSql());
                     List<GbMcA01> gbMcA01s = gbMcB01.getGbMcA01s();
                     for(GbMcA01 gbMcA01 : gbMcA01s){
                         //初始化结构数据
-                        sqliteDBUtil.insert(sqlite, gbMcA01.toInsertSql());
+                        sqliteDBUtil.insert(sqlite, gbMcA01.toSqliteInsertSql());
                         //初始化非机构化数据
                         if(gbMcA01.getZppath()!=null) {
                             this.copyFile(gbMcA01.getZppath(), imgDir);
@@ -266,14 +264,14 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
                         List<GbMcA01gzjl> gbMcA01gzjls = gbMcA01.getGbMca01gzjls();
                         if(gbMcA01gzjls!=null){
                             for(GbMcA01gzjl gbMcA01gzjl : gbMcA01gzjls){
-                                sqliteDBUtil.insert(sqlite, gbMcA01gzjl.toInsertSql());
+                                sqliteDBUtil.insert(sqlite, gbMcA01gzjl.toSqliteInsertSql());
                             }
                         }
                         //干部任免审批表
                         List<GbMcA01gbrmspb> gbMcA01gbrmspbs = gbMcA01.getGbMca01gbrmspbs();
                         if(gbMcA01gbrmspbs!=null){
                             for(GbMcA01gbrmspb gbrmspb : gbMcA01gbrmspbs){
-                                sqliteDBUtil.insert(sqlite, gbrmspb.toInsertSql());
+                                sqliteDBUtil.insert(sqlite, gbrmspb.toSqliteInsertSql());
                                 if(gbrmspb.getFile2imgPath()!=null){
                                     this.copyFile(gbrmspb.getFile2imgPath(),attsDir);
                                 }

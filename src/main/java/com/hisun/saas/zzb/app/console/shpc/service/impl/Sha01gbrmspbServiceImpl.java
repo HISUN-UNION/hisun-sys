@@ -75,6 +75,7 @@ public class Sha01gbrmspbServiceImpl extends BaseServiceImpl<Sha01gbrmspb, Strin
             }
         }
         String id = this.sha01gbrmspbDao.saveFromWord(gbrmspb,dataMap);
+
         this.sha01gzjlService.saveFromWord(gbrmspb.getSha01(),dataMap);
         return id;
     }
@@ -93,6 +94,7 @@ public class Sha01gbrmspbServiceImpl extends BaseServiceImpl<Sha01gbrmspb, Strin
             photofos.write(imgs.get(0));
             photofos.flush();
             photofos.close();
+            gbrmspb.setZppath(photoPath);
             Sha01 sha01 = gbrmspb.getSha01();
             sha01.setZppath(photoPath);
             this.sha01Service.update(sha01);

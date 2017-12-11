@@ -3,11 +3,9 @@ package com.hisun.saas.zzb.app.console.gbtj.entity;
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Clob;
 
 /**
  * Created by zhouying on 2017/9/15.
@@ -75,7 +73,7 @@ public class Gbtj extends TenantEntity implements Serializable{
         this.tblx = tblx;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_DWJG_TJ ");
@@ -88,10 +86,10 @@ public class Gbtj extends TenantEntity implements Serializable{
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(tjmc)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(tjmc)+"'");
         sb.append(",'"+tjjsondata+"'");
-        sb.append(",'"+ StringUtils.transNull(tblx)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(tblx)+"'");
         sb.append(","+ px+"");
         sb.append(")");
         return sb.toString();

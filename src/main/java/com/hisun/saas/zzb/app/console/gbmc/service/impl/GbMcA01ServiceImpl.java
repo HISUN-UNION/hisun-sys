@@ -5,7 +5,6 @@ import com.hisun.base.dao.BaseDao;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.service.impl.BaseServiceImpl;
-import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
 import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcA01Dao;
 import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
@@ -16,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
 import java.io.File;
 import java.util.Iterator;
@@ -48,6 +48,7 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01,String> implemen
 
     public void updateA01FromYwJson(String gbmcId,String ywJsonPath, String photoPath) throws Exception{
         //JSON及照片临时目录
+        int testCount =0;
         File jsonFiles = new File(ywJsonPath);
         File photos = new File(photoPath);
         if(jsonFiles!=null) {
@@ -56,11 +57,12 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01,String> implemen
                         || jsonFile.getName().toLowerCase().endsWith("json")==false){
                     continue;
                 }
+                if(testCount>4){break;}
                 String json = FileUtils.readFileToString(jsonFile);
                 JacksonUtil util = new JacksonUtil();
                 List<Map<String,String>> gbrmsbpDataList = util.fromJson(json,List.class);
                 for(Map<String,String> dataMap : gbrmsbpDataList){
-                    String xm = com.hisun.util.StringUtils.trimBlank(dataMap.get("name"));
+                    String xm = com.hisun.util.StringUtils.trimBlankCharacter2Empty(dataMap.get("name"));
                     if(xm!=null){
                         //在A01表中找到对应的记录
                         CommonConditionQuery query = new CommonConditionQuery();
@@ -119,6 +121,7 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01,String> implemen
                         }
                     }
                 }
+                testCount++;
             }
         }
         FileUtils.deleteDirectory(jsonFiles);
@@ -130,22 +133,54 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01,String> implemen
         if(gbMcA01.getGbMca01gbrmspbs().size()>0){
             WordUtil wordUtil = WordUtil.newInstance();
             Document gbrmspbTemplateDoc = wordUtil.read(uploadAbsolutePath+GbMcA01gbrmspbService.GBRMSPB_DOC_TEMPLATE);
+            DocumentBuilder builder = new DocumentBuilder(gbrmspbTemplateDoc);
             GbMcA01gbrmspb gbMcA01gbrmspb = gbMcA01.getGbMca01gbrmspbs().get(0);
-            Map<String,String> gbrmspbFieldMap = gbMcA01gbrmspb.toSqlFieldMap();
-            NodeCollection templateCells = gbrmspbTemplateDoc.getChildNodes(NodeType.CELL, true);
-            for(Iterator<Cell> cellIterator = templateCells.iterator(); cellIterator.hasNext();){
-                String trimText = wordUtil.trim(cellIterator.next().getText());
-                if (trimText.startsWith(WordUtil.dataPrefix)) {
-                    String field = wordUtil.getSqlField(trimText).toLowerCase();
-                    String value = gbrmspbFieldMap.get(field);
-                    if(value!=null){
-                        gbrmspbTemplateDoc.getRange().replace(trimText,value,
-                                new FindReplaceOptions(FindReplaceDirection.FORWARD));
-                    }else{
-                        gbrmspbTemplateDoc.getRange().replace(trimText,"",
-                                new FindReplaceOptions(FindReplaceDirection.FORWARD));
+            Map<String,String> gbrmspbFieldMap = gbMcA01gbrmspb.toFieldMap();
+           // Map<String,Object> stringObjectMapnew = ReflectionVoUtil.map(gbMcA01gbrmspb);
+           // System.out.println(stringObjectMapnew);
+            NodeCollection tables = gbrmspbTemplateDoc.getChildNodes(NodeType.TABLE,true);
+            int tableIndex =0;
+            for(Iterator<Table> iterator= tables.iterator();iterator.hasNext();){
+                Table table = iterator.next();
+                NodeCollection rows =  table.getChildNodes(NodeType.ROW,true);
+                int rowIndex=0;
+                for(Iterator<Row> rowIterator= rows.iterator();rowIterator.hasNext();){
+                    Row row = rowIterator.next();
+                    NodeCollection cells =  row.getChildNodes(NodeType.CELL,true);
+                    int colIndex =0;
+                    for(Iterator<Cell> cellIterator= cells.iterator();cellIterator.hasNext();){
+                        Cell cell = cellIterator.next();
+                        String trimText = wordUtil.trim(cell.getText());
+                        builder.moveToCell(tableIndex, rowIndex, colIndex, 0);
+                        if (trimText.startsWith(WordUtil.dataPrefix)) {
+                            String field = wordUtil.getSqlField(trimText).toLowerCase();
+                            String value = gbrmspbFieldMap.get(field);
+                            builder.write(value);
+                            gbrmspbTemplateDoc.getRange().replace(trimText,"",
+                                    new FindReplaceOptions(FindReplaceDirection.FORWARD));
+                        }else if(trimText.startsWith(WordUtil.imageSign)){
+                            builder.insertImage(uploadAbsolutePath+gbMcA01gbrmspb.getZppath(),94,122);
+                            gbrmspbTemplateDoc.getRange().replace(trimText,"",
+                                    new FindReplaceOptions(FindReplaceDirection.FORWARD));
+                        }else if (trimText.startsWith(WordUtil.rangeSign)){
+                            if(gbMcA01.getGbMcA01shgxes()!=null && gbMcA01.getGbMcA01shgxes().size()>0){
+                                String field = wordUtil.getSqlField(trimText).toLowerCase();
+                                for(int i= 0;i< gbMcA01.getGbMcA01shgxes().size();i++){
+                                    if(i>9){break;}//最多取10条数据
+                                    builder.moveToCell(tableIndex, rowIndex+i, colIndex, 0);
+                                    Map<String,String> shgxFieldMap = gbMcA01.getGbMcA01shgxes().get(i).toSqlFieldMap();
+                                    String value = shgxFieldMap.get(field);
+                                    builder.write(value);
+                                }
+                            }
+                            gbrmspbTemplateDoc.getRange().replace(trimText,"",
+                                    new FindReplaceOptions(FindReplaceDirection.FORWARD));
+                        }
+                        colIndex++;
                     }
+                    rowIndex++;
                 }
+                tableIndex++;
             }
             String saveWordPath = GbMcA01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+".docx";
             gbrmspbTemplateDoc.save(uploadAbsolutePath+saveWordPath);

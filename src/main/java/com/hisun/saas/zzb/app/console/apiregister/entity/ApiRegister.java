@@ -6,7 +6,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by zhouying on 2017/10/12.
@@ -90,7 +89,7 @@ public class ApiRegister extends TombstoneEntity implements Serializable{
     }
 
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" app_api_register ");
@@ -105,13 +104,13 @@ public class ApiRegister extends TombstoneEntity implements Serializable{
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(ip)+"'");
-        sb.append(",'"+ StringUtils.transNull(port)+"'");
-        sb.append(",'"+ StringUtils.transNull(context)+"'");
-        sb.append(",'"+ StringUtils.transNull(uri)+"'");
-        sb.append(",'"+ StringUtils.transNull(apiCode)+"'");
-        sb.append(",'"+ StringUtils.transNull(requestMethod)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(ip)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(port)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(context)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(uri)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(apiCode)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(requestMethod)+"'");
         sb.append(")");
         return sb.toString();
     }

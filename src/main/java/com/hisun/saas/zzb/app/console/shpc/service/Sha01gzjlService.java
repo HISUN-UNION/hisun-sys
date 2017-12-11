@@ -12,7 +12,9 @@ import java.util.Map;
 public interface Sha01gzjlService extends BaseService<Sha01gzjl,String> {
 
 
-    public void saveFromWord(Sha01 sha01, Map<String, String> dataMap);
+     void saveFromWord(Sha01 sha01, Map<String, String> dataMap);
+
+     void saveGzjls(Sha01 sha01,String gzjlStr);
 
 
 }

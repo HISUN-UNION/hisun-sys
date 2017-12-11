@@ -5,7 +5,6 @@ import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -81,7 +80,7 @@ public class Sha01gzjl extends TenantEntity implements Serializable {
         this.px = px;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_SH_A01_GZJL ");
@@ -95,11 +94,11 @@ public class Sha01gzjl extends TenantEntity implements Serializable {
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(sha01.getId())+"'");
-        sb.append(",'"+ StringUtils.transNull(csj)+"'");
-        sb.append(",'"+ StringUtils.transNull(zsj)+"'");
-        sb.append(",'"+ StringUtils.transNull(jlsm)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(sha01.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(csj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(zsj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(jlsm)+"'");
         sb.append(","+ px+"");
         sb.append(")");
         return sb.toString();

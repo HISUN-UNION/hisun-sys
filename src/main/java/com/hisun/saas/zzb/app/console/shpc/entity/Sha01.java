@@ -306,7 +306,7 @@ public class Sha01 extends TenantEntity implements Serializable {
         this.xgzdwjzw = xgzdwjzw;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_SH_A01 ");
@@ -332,22 +332,22 @@ public class Sha01 extends TenantEntity implements Serializable {
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(shpc.getId())+"'");
-        sb.append(",'"+ StringUtils.transNull(xm)+"'");
-        sb.append(",'"+ StringUtils.transNull(xb)+"'");
-        sb.append(",'"+ StringUtils.transNull(mz)+"'");
-        sb.append(",'"+ StringUtils.transNull(jg)+"'");
-        sb.append(",'"+ StringUtils.transNull(csny)+"'");
-        sb.append(",'"+ StringUtils.transNull(cjgzsj)+"'");
-        sb.append(",'"+ StringUtils.transNull(rdsj)+"'");
-        sb.append(",'"+ StringUtils.transNull(whcd)+"'");
-        sb.append(",'"+ StringUtils.transNull(rxjbsj)+"'");
-        sb.append(",'"+ StringUtils.transNull(mztjqk)+"'");
-        sb.append(",'"+ StringUtils.transNull(ywfpjl)+"'");
-        sb.append(",'"+ StringUtils.transNull(xgzdwjzw)+"'");
-        sb.append(",'"+ StringUtils.transNull(ntzpbyj)+"'");
-        sb.append(",'"+ StringUtils.transNull(shyj)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(shpc.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xm)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xb)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(mz)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(jg)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(csny)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(cjgzsj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(rdsj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(whcd)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(rxjbsj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(mztjqk)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(ywfpjl)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(xgzdwjzw)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(ntzpbyj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(shyj)+"'");
         if (StringUtils.isEmpty(zppath)){
             sb.append(",''");
         }else{

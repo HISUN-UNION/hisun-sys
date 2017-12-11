@@ -88,7 +88,7 @@ public class GbMcB01 extends TenantEntity implements Serializable {
         this.isDisplay = isDisplay;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" app_mc_b01 ");
@@ -100,9 +100,9 @@ public class GbMcB01 extends TenantEntity implements Serializable {
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(b0101)+"'");
-        sb.append(",'"+ StringUtils.transNull(gbMc.getId())+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(b0101)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(gbMc.getId())+"'");
         sb.append(","+px);
         sb.append(")");
         return sb.toString();

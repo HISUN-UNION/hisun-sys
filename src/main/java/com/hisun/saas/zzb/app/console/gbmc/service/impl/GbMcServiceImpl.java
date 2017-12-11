@@ -49,13 +49,16 @@ public class GbMcServiceImpl extends BaseServiceImpl<GbMc,String> implements GbM
     public int getA01Count(String id) throws Exception {
         int a01Count = 0;
         GbMc gbmc = this.getByPK(id);
-        List<GbMcB01> mcBo1s = gbmc.getGbMcB01s();
-        if(mcBo1s!=null && mcBo1s.size()>0){
-            for(GbMcB01 gbMcB01 : mcBo1s){
-                a01Count = a01Count+gbMcB01.getGbMcA01s().size();
-            }
-        }
-        return a01Count;
+//        List<GbMcB01> mcBo1s = gbmc.getGbMcB01s();
+//        if(mcBo1s!=null && mcBo1s.size()>0){
+//            for(GbMcB01 gbMcB01 : mcBo1s){
+//                a01Count = a01Count+gbMcB01.getGbMcA01s().size();
+//            }
+//        }
+        CommonConditionQuery query = new CommonConditionQuery();
+        query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+        query.add(CommonRestrictions.and(" gbMc.id = :mcid", "mcid", id));
+        return ((Long)gbMcA01Dao.count(query)).intValue();
     }
 
 

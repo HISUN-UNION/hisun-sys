@@ -32,7 +32,7 @@ public class Sha01gzjlServiceImpl extends BaseServiceImpl<Sha01gzjl,String> impl
 
 
     public void saveFromWord(Sha01 sha01, Map<String, String> dataMap){
-        Sha01gzjl gzjl = null;
+
         String gzjlStr = null;
         Map<String,String> listDataMap = new HashMap<String,String>();
         for (Iterator<String> it = dataMap.keySet().iterator(); it.hasNext(); ) {
@@ -42,10 +42,15 @@ public class Sha01gzjlServiceImpl extends BaseServiceImpl<Sha01gzjl,String> impl
                 gzjlStr= dataMap.get(key);
             }
         }
+        this.saveGzjls(sha01,gzjlStr);
+    }
+
+    public void saveGzjls(Sha01 sha01,String gzjlStr){
+        Sha01gzjl gzjl = null;
         //解析gzjlStr
         if(gzjlStr!=null){
             int px =1;
-           List<String> list = GzjlUtil.matchGzjlStr(gzjlStr);
+            List<String> list = GzjlUtil.matchGzjlStr(gzjlStr);
             for(String str : list){
                 gzjl = new Sha01gzjl();
                 gzjl.setSha01(sha01);
@@ -56,7 +61,6 @@ public class Sha01gzjlServiceImpl extends BaseServiceImpl<Sha01gzjl,String> impl
                 this.sha01gzjlDao.save(gzjl);
             }
         }
-
     }
 
 }

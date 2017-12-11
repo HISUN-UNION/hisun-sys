@@ -40,7 +40,7 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li >
-										<a onclick="uploadFile('gbrmspb')">干部详细信息</a>
+										<a onclick="uploadFile('gbrmspb')">干部任免审批表</a>
 										<input type="file" style="display: none" name="gbrmspbFile" id="btn-gbrmspb"/>
 									</li>
 									<li>
@@ -84,6 +84,7 @@
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
 								<tr>
+									<th width="3%">序<br>&nbsp;<br>号</th>
 									<th width="6%">&nbsp;<br>姓名<br>&nbsp;</th>
 									<th width="5%">&nbsp;<br>性别<br>&nbsp;</th>
 									<th width="5%">&nbsp;<br>民族<br>&nbsp;</th>
@@ -93,15 +94,17 @@
 									<th width="5%">入党<br><br>时间</th>
 									<th width="8%">文化<br><br>程度</th>
 									<th width="5%">任现<br>级别<br>时间</th>
-									<th width="10%">民主<br>推荐<br>情况</th>
+									<%--<th width="10%">民主<br>推荐<br>情况</th>--%>
 									<th width="20%">&nbsp;<br>现工作单位及职务<br>&nbsp;</th>
 									<th>&nbsp;<br>拟调整配备意见<br>&nbsp;</th>
-									<th width="5%">干部<br>一科<br>意见</th>
+									<%--<th width="5%">干部<br>一科<br>意见</th>--%>
+									<th width="15%">&nbsp;<br>材料<br>&nbsp;</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
+										<td title="${vo.shyj}"><c:out value="${vo.px}"></c:out></td>
 										<td><a href="${path}/zzb/app/console/Sha01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>
 										<td><c:out value="${vo.xb}"></c:out></td>
 										<td><c:out value="${vo.mz}"></c:out></td>
@@ -111,10 +114,15 @@
 										<td title="${vo.rdsj}"><c:out value="${vo.rdsj}"></c:out></td>
 										<td title="${vo.whcd}"><c:out value="${vo.whcd}"></c:out></td>
 										<td title="${vo.rxjbsj}"><c:out value="${vo.rxjbsj}"></c:out></td>
-										<td title="${vo.mztjqk}"><c:out value="${vo.mztjqk}"></c:out></td>
+										<%--<td title="${vo.mztjqk}"><c:out value="${vo.mztjqk}"></c:out></td>--%>
 										<td title="${vo.xgzdwjzw}"><c:out value="${vo.xgzdwjzw}"></c:out></td>
 										<td title="${vo.ntzpbyj}"><c:out value="${vo.ntzpbyj}"></c:out></td>
-										<td title="${vo.shyj}"><c:out value="${vo.shyj}"></c:out></td>
+										<%--<td title="${vo.shyj}"><c:out value="${vo.shyj}"></c:out></td>--%>
+										<td class="Left_alignment">
+											<a href="#" class="">任免审批表</a>|<a href="#" class="">档案审查情况</a>
+											<br>
+											<a href="#" class="">考 察 材 料</a>|<a href="#" class="">个人重大事项</a>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>

@@ -68,6 +68,7 @@ public class GbMcA01 extends TenantEntity implements Serializable {
 
     @OneToMany(mappedBy = "gbMcA01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @OrderBy("gzjl_px asc")
     private List<GbMcA01gzjl> gbMca01gzjls;
 
     @OneToMany(mappedBy = "gbMcA01", fetch = FetchType.LAZY)
@@ -76,6 +77,7 @@ public class GbMcA01 extends TenantEntity implements Serializable {
 
     @OneToMany(mappedBy = "gbMcA01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @OrderBy("shgx_px asc")
     private List<GbMcA01shgx> gbMcA01shgxes;
 
     public String getId() {
@@ -270,7 +272,7 @@ public class GbMcA01 extends TenantEntity implements Serializable {
         this.gbMcA01shgxes.add(gbMcA01shgx);
     }
 
-    public String toInsertSql() {
+    public String toSqliteInsertSql() {
         StringBuffer sb = new StringBuffer("");
         sb.append(" insert into ");
         sb.append(" app_mc_a01 ");
@@ -295,21 +297,21 @@ public class GbMcA01 extends TenantEntity implements Serializable {
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'" + StringUtils.transNull(id) + "'");
-        sb.append(",'" + StringUtils.transNull(gbMcB01.getId()) + "'");
-        sb.append(",'" + StringUtils.transNull(xm) + "'");
-        sb.append(",'" + StringUtils.transNull(mz) + "'");
-        sb.append(",'" + StringUtils.transNull(zw) + "'");
-        sb.append(",'" + StringUtils.transNull(csd) + "'");
-        sb.append(",'" + StringUtils.transNull(jg) + "'");
-        sb.append(",'" + StringUtils.transNull(csny) + "'");
-        sb.append(",'" + StringUtils.transNull(cjgzsj) + "'");
-        sb.append(",'" + StringUtils.transNull(rdsj) + "'");
-        sb.append(",'" + StringUtils.transNull(qrzxlxwjzy) + "'");
-        sb.append(",'" + StringUtils.transNull(zzxlxwjzy) + "'");
-        sb.append(",'" + StringUtils.transNull(zyjszw) + "'");
-        sb.append(",'" + StringUtils.transNull(xrzwsj) + "'");
-        sb.append(",'" + StringUtils.transNull(xrzjsj) + "'");
+        sb.append("'" + StringUtils.trimNull2Empty(id) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(gbMcB01.getId()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(xm) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(mz) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(zw) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(csd) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(jg) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(csny) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(cjgzsj) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(rdsj) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(qrzxlxwjzy) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(zzxlxwjzy) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(zyjszw) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(xrzwsj) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(xrzjsj) + "'");
         if (StringUtils.isEmpty(zppath)) {
             sb.append(",''");
         } else {

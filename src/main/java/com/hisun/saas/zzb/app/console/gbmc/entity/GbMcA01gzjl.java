@@ -1,7 +1,6 @@
 package com.hisun.saas.zzb.app.console.gbmc.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
-import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -92,7 +91,7 @@ public class GbMcA01gzjl extends TenantEntity implements Serializable {
         this.gbMcA01 = gbMcA01;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_MC_A01_GZJL ");
@@ -106,11 +105,11 @@ public class GbMcA01gzjl extends TenantEntity implements Serializable {
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(gbMcA01.getId())+"'");
-        sb.append(",'"+ StringUtils.transNull(csj)+"'");
-        sb.append(",'"+ StringUtils.transNull(zsj)+"'");
-        sb.append(",'"+ StringUtils.transNull(jlsm)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(gbMcA01.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(csj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(zsj)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(jlsm)+"'");
         sb.append(","+ px+"");
         sb.append(")");
         return sb.toString();

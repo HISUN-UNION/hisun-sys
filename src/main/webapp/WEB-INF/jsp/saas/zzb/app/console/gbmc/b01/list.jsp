@@ -34,7 +34,7 @@
 								<i class="icon-plus"></i> 添加
 							</a>
 							<span class="controllerClass btn green file_but">
-								<i class="icon-circle-arrow-up"></i>上传名册目录
+								<i class="icon-circle-arrow-up"></i>上传目录
 								<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
 							</span>
 							<a class="btn" href="${path }/zzb/app/console/gbmc/"><i class="icon-undo"></i>返回</a>

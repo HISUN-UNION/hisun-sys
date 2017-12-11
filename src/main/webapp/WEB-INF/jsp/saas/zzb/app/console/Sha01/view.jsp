@@ -66,7 +66,7 @@
 
         <form class="form-horizontal" id="importForm" enctype="multipart/form-data">
             <div class="control-group">
-                <label class="control-label">干部详细信息</label>
+                <label class="control-label">干部任免审批表</label>
 
                 <div class="controls">
                     <div class="fileupload fileupload-new" data-provides="fileupload">

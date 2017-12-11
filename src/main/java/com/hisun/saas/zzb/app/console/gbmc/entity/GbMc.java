@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -89,7 +88,7 @@ public class GbMc extends TenantEntity implements Serializable{
         this.gbMcA01s = gbMcA01s;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" app_mc ");
@@ -100,8 +99,8 @@ public class GbMc extends TenantEntity implements Serializable{
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(mc)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(mc)+"'");
         sb.append(","+px);
         sb.append(")");
         return sb.toString();

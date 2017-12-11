@@ -22,7 +22,7 @@ public class Sha01gbrmspbDaoImpl extends TenantBaseDaoImpl<Sha01gbrmspb, String>
         insertSql.append(" (");
         //生成字段sql,值sql
         StringBuffer fieldSql = new StringBuffer();
-        fieldSql.append("ID,APP_SH_A01_ID,FILE2IMG_PATH,FILE_PATH");
+        fieldSql.append("ID,APP_SH_A01_ID,FILE2IMG_PATH,FILE_PATH,ZP_PATH");
         StringBuffer valueSql = new StringBuffer();
 
         valueSql.append("(");
@@ -30,6 +30,7 @@ public class Sha01gbrmspbDaoImpl extends TenantBaseDaoImpl<Sha01gbrmspb, String>
         valueSql.append(",'").append(gbrmspb.getSha01().getId()).append("'");
         valueSql.append(",'").append(gbrmspb.getFile2imgPath()).append("'");
         valueSql.append(",'").append(gbrmspb.getFilepath()).append("'");
+        valueSql.append(",'").append(gbrmspb.getZppath()).append("'");
 
         Map<String,String> listDataMap = new HashMap<String,String>();
         for (Iterator<String> it = wordDataMap.keySet().iterator(); it.hasNext(); ) {

@@ -31,18 +31,32 @@
 				<div class="portlet-title">
 					<div class="caption">${b0101} 干部列表</div>
 					<div class="clearfix fr">
-							<span class="controllerClass btn green file_but" >
-								<i class="icon-circle-arrow-up"></i>上传干部
-								<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
-							</span>
-							<%--<span class="controllerClass btn green file_but" >--%>
-								<%--<i class="icon-circle-arrow-up"></i>批量上传人员审批表--%>
-								<%--<input class="file_progress" type="file" name="moreAttFile" id="btn-moreAttTemplate">--%>
-							<%--</span>--%>
-								<%--<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/appGbcxA01/add">--%>
-									<%--<i class="icon-plus"></i> 添加--%>
-								<%--</a>--%>
+
+						<div class="btn-group">
+							<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+								导入数据 <i class="icon-angle-down"></i>
+							</a>
+							<ul class="dropdown-menu">
+								<li >
+									<a onclick="uploadFile('gbrmspb')">从公务员管理系统(浙大网新)</a>
+									<input type="file" style="display: none" name="gbrmspbFile" id="btn-gbrmspb"/>
+								</li>
+								<li>
+									<a onclick="uploadFile('dascqk')">从组织综合业务平台(广州三零)</a>
+									<input type="file" style="display: none" name="dascqkFile" id="btn-dascqk"/>
+								</li>
+								<li>
+									<a onclick="uploadFile('kccl')">从干部管理系统(长沙远望)</a>
+									<input type="file"  style="display: none" name="kcclFile" id="btn-kccl"/>
+								</li>
+							</ul>
+						</div>
+						<span class="controllerClass btn green file_but" >
+							<i class="icon-circle-arrow-up"></i>清空数据
+							<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
+						</span>
 					</div>
+
 				</div>
 			</form>
 			<div class="clearfix">

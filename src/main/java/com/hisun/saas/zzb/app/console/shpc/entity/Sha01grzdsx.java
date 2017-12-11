@@ -7,7 +7,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -61,7 +60,7 @@ public class Sha01grzdsx extends TenantEntity implements Serializable {
         this.file2imgPath = file2imgPath;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_SH_A01_GRZDSX ");
@@ -72,8 +71,8 @@ public class Sha01grzdsx extends TenantEntity implements Serializable {
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(sha01.getId())+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(sha01.getId())+"'");
         if (StringUtils.isEmpty(file2imgPath)){
             sb.append(",''");
         }else{

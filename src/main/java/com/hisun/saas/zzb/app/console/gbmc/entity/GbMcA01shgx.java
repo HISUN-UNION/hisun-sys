@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -113,5 +114,17 @@ public class GbMcA01shgx extends TenantEntity implements Serializable{
 
     public void setPx(int px) {
         this.px = px;
+    }
+
+
+    public Map<String,String> toSqlFieldMap(){
+        Map<String,String> fieldMap = new HashMap<String,String>();
+        fieldMap.put("cw",cw);
+        fieldMap.put("xm",xm);
+        fieldMap.put("nl",nl);
+        fieldMap.put("zzmm",zzmm);
+        fieldMap.put("gzdwjzw",gzdwjzw);
+        fieldMap.put("shgx_px",String.valueOf(px));
+        return fieldMap;
     }
 }

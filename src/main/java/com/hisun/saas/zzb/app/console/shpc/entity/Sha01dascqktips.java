@@ -5,7 +5,6 @@ import com.hisun.util.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -50,7 +49,7 @@ public class Sha01dascqktips extends TenantEntity implements Serializable {
         this.tip = tip;
     }
 
-    public String toInsertSql(){
+    public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
         sb.append(" APP_SH_A01_DASCQK_TIPS ");
@@ -61,9 +60,9 @@ public class Sha01dascqktips extends TenantEntity implements Serializable {
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.transNull(id)+"'");
-        sb.append(",'"+ StringUtils.transNull(sha01dascqk.getId())+"'");
-        sb.append(",'"+ StringUtils.transNull(tip)+"'");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(sha01dascqk.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(tip)+"'");
         sb.append(")");
         return sb.toString();
     }
