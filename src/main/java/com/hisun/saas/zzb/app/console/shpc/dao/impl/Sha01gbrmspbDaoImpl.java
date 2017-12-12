@@ -3,6 +3,7 @@ package com.hisun.saas.zzb.app.console.shpc.dao.impl;
 import com.hisun.saas.sys.tenant.dao.imp.TenantBaseDaoImpl;
 import com.hisun.saas.zzb.app.console.shpc.dao.Sha01gbrmspbDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01gbrmspb;
+import com.hisun.util.StringUtils;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.springframework.stereotype.Repository;
@@ -28,9 +29,9 @@ public class Sha01gbrmspbDaoImpl extends TenantBaseDaoImpl<Sha01gbrmspb, String>
         valueSql.append("(");
         valueSql.append("'").append(idValue).append("'");
         valueSql.append(",'").append(gbrmspb.getSha01().getId()).append("'");
-        valueSql.append(",'").append(gbrmspb.getFile2imgPath()).append("'");
-        valueSql.append(",'").append(gbrmspb.getFilepath()).append("'");
-        valueSql.append(",'").append(gbrmspb.getZppath()).append("'");
+        valueSql.append(",'").append(StringUtils.trimNull2Empty(gbrmspb.getFile2imgPath())).append("'");
+        valueSql.append(",'").append(StringUtils.trimNull2Empty(gbrmspb.getFilepath())).append("'");
+        valueSql.append(",'").append(StringUtils.trimNull2Empty(gbrmspb.getZppath())).append("'");
 
         Map<String,String> listDataMap = new HashMap<String,String>();
         for (Iterator<String> it = wordDataMap.keySet().iterator(); it.hasNext(); ) {

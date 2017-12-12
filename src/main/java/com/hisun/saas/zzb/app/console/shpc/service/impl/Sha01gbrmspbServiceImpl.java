@@ -75,8 +75,9 @@ public class Sha01gbrmspbServiceImpl extends BaseServiceImpl<Sha01gbrmspb, Strin
             }
         }
         String id = this.sha01gbrmspbDao.saveFromWord(gbrmspb,dataMap);
-
-        this.sha01gzjlService.saveFromWord(gbrmspb.getSha01(),dataMap);
+        gbrmspb = this.sha01gbrmspbDao.getByPK(id);
+        this.sha01gzjlService.saveGzjls(gbrmspb.getSha01(),gbrmspb.getGzjlStr());
+        //this.sha01gzjlService.saveFromWord(gbrmspb.getSha01(),dataMap);
         return id;
     }
 

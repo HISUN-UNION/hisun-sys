@@ -48,7 +48,6 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01,String> implemen
 
     public void updateA01FromYwJson(String gbmcId,String ywJsonPath, String photoPath) throws Exception{
         //JSON及照片临时目录
-        int testCount =0;
         File jsonFiles = new File(ywJsonPath);
         File photos = new File(photoPath);
         if(jsonFiles!=null) {
@@ -57,7 +56,6 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01,String> implemen
                         || jsonFile.getName().toLowerCase().endsWith("json")==false){
                     continue;
                 }
-                if(testCount>4){break;}
                 String json = FileUtils.readFileToString(jsonFile);
                 JacksonUtil util = new JacksonUtil();
                 List<Map<String,String>> gbrmsbpDataList = util.fromJson(json,List.class);
@@ -121,7 +119,6 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01,String> implemen
                         }
                     }
                 }
-                testCount++;
             }
         }
         FileUtils.deleteDirectory(jsonFiles);

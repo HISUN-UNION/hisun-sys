@@ -216,6 +216,7 @@ create table `app_api_register` (
   `id` varchar(32) NOT NULL,
   `mc` varchar(255) NOT NULL,
   `px` int(11) NOT NULL DEFAULT '99',
+  `is_ml` varchar(255) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 );
 
@@ -248,6 +249,7 @@ CREATE TABLE `app_mc_a01` (
   `b01_id` varchar(32) NOT NULL,
   `a01_px` int(11) NOT NULL,
   `zp_path` varchar(128) DEFAULT NULL,
+  `mc_id` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `app_mc_a01_app_mc_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES `app_mc_b01` (`id`)
 );
@@ -306,5 +308,98 @@ create table if not exists `app_mc_a01_gzjl` (
     `file_path` VARCHAR(255) NOT NULL,
     `sh_pc_id` VARCHAR(32) NOT NULL,
     CONSTRAINT app_sh_pc_atts_app_sh_pc_id_fk FOREIGN KEY (sh_pc_id) REFERENCES app_sh_pc (id)
+);
+
+ drop table if exists `app_gbcx_b01` ;
+CREATE TABLE `app_gbcx_b01` (
+  `id` varchar(32) NOT NULL,
+  `b0101` varchar(255) NOT NULL,
+  `parent_id` varchar(32) DEFAULT NULL,
+  `px` int(11) NOT NULL DEFAULT '99',
+  PRIMARY KEY (`id`)
+) ;
+
+ drop table if exists `app_gbcx_a01` ;
+CREATE TABLE `app_gbcx_a01` (
+  `id` varchar(32) NOT NULL,
+  `xm` varchar(10) DEFAULT NULL,
+  `xb` varchar(10) DEFAULT NULL,
+  `mz` varchar(10) DEFAULT NULL,
+  `zw` varchar(255) DEFAULT NULL,
+  `csd` varchar(40) DEFAULT NULL,
+  `jg` varchar(20) DEFAULT NULL,
+  `csny` varchar(20) DEFAULT NULL,
+  `cjgzsj` varchar(20) DEFAULT NULL,
+  `rdsj` varchar(20) DEFAULT NULL,
+  `qrzxlxwjzy` varchar(200) DEFAULT NULL,
+  `zzxlxwjzy` varchar(200) DEFAULT NULL,
+  `zyjszw` varchar(200) DEFAULT NULL,
+  `xrzwsj` varchar(200) DEFAULT NULL,
+  `xrzjsj` varchar(200) DEFAULT NULL,
+  `a01_px` int(11) NOT NULL,
+  `zp_path` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+drop table if exists `app_gbcx_a02` ;
+CREATE TABLE `app_gbcx_a02` (
+  `id` varchar(32) NOT NULL,
+  `a01_id` varchar(32) NOT NULL,
+  `b01_id` varchar(32) NOT NULL,
+  `zwmc` varchar(120) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `app_gbcx_a02_app_gbcx_a01_id_fk` (`a01_id`),
+  KEY `app_gbcx_a02_app_gbcx_b01_id_fk` (`b01_id`),
+  CONSTRAINT `app_gbcx_a02_app_gbcx_a01_id_fk` FOREIGN KEY (`a01_id`) REFERENCES `app_gbcx_a01` (`id`),
+  CONSTRAINT `app_gbcx_a02_app_gbcx_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES `app_gbcx_b01` (`id`)
+);
+
+drop table if exists `app_zscx_b01` ;
+CREATE TABLE `app_zscx_b01` (
+  `id` varchar(32) NOT NULL,
+  `b0101` varchar(255) NOT NULL,
+  `parent_id` varchar(32) DEFAULT NULL,
+  `px` int(11) NOT NULL DEFAULT '99',
+  `zs_comment` varchar(255) DEFAULT NULL,
+  `data_type` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+);
+
+drop table if exists `app_zscx_zs` ;
+CREATE TABLE `app_zscx_zs` (
+  `id` varchar(32) NOT NULL,
+  `zwmc` varchar(120) NOT NULL,
+  `xp` int(11) NOT NULL,
+  `sp` int(11) NOT NULL,
+  `cqb` int(11) NOT NULL,
+  `b01_id` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `app_zscx_zs_app_zscx_b01_id_fk` (`b01_id`),
+  CONSTRAINT `app_zscx_zs_app_zscx_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES `app_zscx_b01` (`id`)
+);
+
+drop table if exists `app_zscx_zs_a01` ;
+CREATE TABLE `app_zscx_zs_a01` (
+  `id` varchar(32) NOT NULL,
+  `xm` varchar(10) DEFAULT NULL,
+  `xb` varchar(10) DEFAULT NULL,
+  `mz` varchar(10) DEFAULT NULL,
+  `zw` varchar(255) DEFAULT NULL,
+  `csd` varchar(40) DEFAULT NULL,
+  `jg` varchar(20) DEFAULT NULL,
+  `csny` varchar(20) DEFAULT NULL,
+  `cjgzsj` varchar(20) DEFAULT NULL,
+  `rdsj` varchar(20) DEFAULT NULL,
+  `qrzxlxwjzy` varchar(200) DEFAULT NULL,
+  `zzxlxwjzy` varchar(200) DEFAULT NULL,
+  `zyjszw` varchar(200) DEFAULT NULL,
+  `xrzwsj` varchar(200) DEFAULT NULL,
+  `xrzjsj` varchar(200) DEFAULT NULL,
+  `a01_px` int(11) NOT NULL,
+  `zp_path` varchar(128) DEFAULT NULL,
+  `zs_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `app_zscx_a01_app_zscx_zs_id_fk` (`zs_id`),
+  CONSTRAINT `app_zscx_a01_app_zscx_zs_id_fk` FOREIGN KEY (`zs_id`) REFERENCES `app_zscx_zs` (`id`)
 );
 

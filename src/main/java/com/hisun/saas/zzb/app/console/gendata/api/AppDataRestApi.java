@@ -34,9 +34,9 @@ public class AppDataRestApi {
 
 
 
-    @RequestMapping(value = "/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/update/{appCode}", method = RequestMethod.GET)
     @ResponseBody
-    public AppDataVo update(HttpServletRequest req) {
+    public AppDataVo update(@PathVariable String appCode,HttpServletRequest req) {
         AppDataVo appDataVo = new AppDataVo();
         try {
             CommonConditionQuery query = new CommonConditionQuery();
