@@ -255,7 +255,7 @@ public class AppGbcxA01Controller extends BaseController{
             }
             BeanUtils.copyProperties(a01Vo, a01);
             map.put("a01Vo", a01Vo);
-            map.put("b01Id", a01.getAppGbcxB01().getId());
+            map.put("b01Id", "");
         }catch(Exception e){
             map.put("success", false);
             map.put("msg", "查看失败！");

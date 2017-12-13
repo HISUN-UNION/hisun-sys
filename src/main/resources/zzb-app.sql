@@ -348,8 +348,6 @@ CREATE TABLE `app_gbcx_a02` (
   `b01_id` varchar(32) NOT NULL,
   `zwmc` varchar(120) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `app_gbcx_a02_app_gbcx_a01_id_fk` (`a01_id`),
-  KEY `app_gbcx_a02_app_gbcx_b01_id_fk` (`b01_id`),
   CONSTRAINT `app_gbcx_a02_app_gbcx_a01_id_fk` FOREIGN KEY (`a01_id`) REFERENCES `app_gbcx_a01` (`id`),
   CONSTRAINT `app_gbcx_a02_app_gbcx_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES `app_gbcx_b01` (`id`)
 );
@@ -374,7 +372,6 @@ CREATE TABLE `app_zscx_zs` (
   `cqb` int(11) NOT NULL,
   `b01_id` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `app_zscx_zs_app_zscx_b01_id_fk` (`b01_id`),
   CONSTRAINT `app_zscx_zs_app_zscx_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES `app_zscx_b01` (`id`)
 );
 
@@ -399,7 +396,6 @@ CREATE TABLE `app_zscx_zs_a01` (
   `zp_path` varchar(128) DEFAULT NULL,
   `zs_id` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `app_zscx_a01_app_zscx_zs_id_fk` (`zs_id`),
   CONSTRAINT `app_zscx_a01_app_zscx_zs_id_fk` FOREIGN KEY (`zs_id`) REFERENCES `app_zscx_zs` (`id`)
 );
 

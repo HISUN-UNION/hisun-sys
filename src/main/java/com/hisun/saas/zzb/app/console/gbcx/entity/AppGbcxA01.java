@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by zhouying on 2017/11/28.
@@ -49,9 +50,9 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
     private int a01Px;
     @Column(name = "zp_path")
     private String zpPath;
-    @ManyToOne(optional = true,fetch = FetchType.LAZY)
-    @JoinColumn(name = "b01_id")
-    private AppGbcxB01 appGbcxB01;
+
+    @OneToMany(mappedBy = "appGbcxA01")
+    private List<AppGbcxA02> appGbcxA02s;
 
    
     public String getId() {
@@ -222,13 +223,12 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.zpPath = zpPath;
     }
 
-
-    public AppGbcxB01 getAppGbcxB01() {
-        return appGbcxB01;
+    public List<AppGbcxA02> getAppGbcxA02s() {
+        return appGbcxA02s;
     }
 
-    public void setAppGbcxB01(AppGbcxB01 appGbcxB01) {
-        this.appGbcxB01 = appGbcxB01;
+    public void setAppGbcxA02s(List<AppGbcxA02> appGbcxA02s) {
+        this.appGbcxA02s = appGbcxA02s;
     }
 
     @Override

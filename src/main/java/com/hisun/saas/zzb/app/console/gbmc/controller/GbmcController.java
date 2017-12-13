@@ -167,7 +167,7 @@ public class GbmcController extends BaseController{
         try {
             if (gbMcVo != null) {
                 String id = gbMcVo.getId();
-                if (id != null && id.length() > 0) {//修改
+                if (com.hisun.util.StringUtils.isEmpty(id)==false) {//修改
                     gbMc = this.gbMcService.getByPK(id);
                 } else {//新增
                     gbMc = new GbMc();
@@ -175,122 +175,91 @@ public class GbmcController extends BaseController{
                 UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
                 BeanUtils.copyProperties(gbMc, gbMcVo);
                 gbMc.setTenant(userLoginDetails.getTenant());
-                if (id != null && id.length() > 0) {
+                if (com.hisun.util.StringUtils.isEmpty(id)==false) {
                     BeanTrans.setBaseProperties(gbMc, userLoginDetails, "update");
                     this.gbMcService.update(gbMc);
                 } else {
                     BeanTrans.setBaseProperties(gbMc, userLoginDetails, "save");
-                    this.gbMcService.save(gbMc);
-                    String b01FileDir = uploadAbsolutePath +GbMcB01Service.ATTS_PATH;//目录的存储
-                    String a01FileDir = uploadAbsolutePath + GbMcA01Service.ATTS_PATH;//干部存储
-                    String a01zpFileDir = uploadAbsolutePath + GbMcA01Service.ATTS_ZP_PATH;//照片的存储
-
-                    int isMl = gbMc.getIsMl();
-                    if(b01File!=null && !b01File.isEmpty()) {
-                        //处理word列表数据
+                    String gbmcDir = uploadAbsolutePath + GbMcService.ATTS_PATH;//名册
+                    String gbrmspbDir = uploadAbsolutePath + GbMcA01gbrmspbService.ATTS_PATH;//干部任免审批表
+                    String zpDir = uploadAbsolutePath + GbMcA01Service.ATTS_ZP_PATH;//照片
+                    if (b01File != null && !b01File.isEmpty()) {
+                        //处理名册数据
                         String fileName = b01File.getOriginalFilename();
-                        if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ) {
-                            File _fileDir = new File(b01FileDir);
-                            if (_fileDir.exists() == false) {
-                                _fileDir.mkdirs();
+                        if (fileName.endsWith(".doc") || fileName.endsWith(".DOC")
+                                || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
+                            File gbmcDirFile = new File(gbmcDir);
+                            if (gbmcDirFile.exists() == false) {
+                                gbmcDirFile.mkdirs();
                             }
-                            String b01WordPath = b01FileDir + UUIDUtil.getUUID() + "_" + fileName;
-                            File tmpFile = new File(b01WordPath);
-                            FileOutputStream fos = new FileOutputStream(tmpFile);
+                            String gbmcWordPath = gbmcDir + UUIDUtil.getUUID() + "_" + fileName;
+                            File gbmcWordFile = new File(gbmcWordPath);
+                            FileOutputStream fos = new FileOutputStream(gbmcWordFile);
                             fos.write(b01File.getBytes());
                             fos.flush();
                             fos.close();
 
+                            //读取模板
                             WordUtil wordUtil = WordUtil.newInstance();
-//                                String b01WordPath = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/2州直单位领导干部名册.docx";
                             String wordPathTemplate = uploadAbsolutePath + GbMcA01Service.IMPORT_DOC_TEMPLATE;
                             List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
                             Document templateDoc = wordUtil.read(wordPathTemplate);
                             Map<String, Integer> templateMap = wordUtil.generateTemplateMap(templateDoc);
 
-                            Document document = wordUtil.read(b01WordPath);
+                            //解析word
+                            Document document = wordUtil.read(gbmcWordPath);
                             NodeCollection collection = document.getChildNodes(NodeType.TABLE, true);
                             for (Iterator<Table> tables = collection.iterator(); tables.hasNext(); ) {
                                 Table table = tables.next();
                                 NodeCollection cells = table.getChildNodes(NodeType.CELL, true);
                                 dataList.add(wordUtil.convertMapByTemplate(cells, templateMap));
                             }
-                            this.gbMcService.saveFromWordDataMap(gbMc, isMl, dataList);
-                        }else{
-                            this.gbMcService.saveWMLB01(gbMc);
-                        }
-                    }else{
-                        this.gbMcService.saveWMLB01(gbMc);
-                    }
-
-                    //处理JSON数据
-                    if(a01File!=null && !a01File.isEmpty()) {
-                        //处理word列表数据
-                        String fileName = a01File.getOriginalFilename();
-                        if (fileName.endsWith(".zip") || fileName.endsWith(".ZIP")) {
-                            File _fileDir = new File(a01FileDir);
-                            if (_fileDir.exists() == false) {
-                                _fileDir.mkdirs();
-                            }
-                            String zipFilePath = a01FileDir + UUIDUtil.getUUID() + "_" + fileName;
-                            File tmpFile = new File(zipFilePath);
-                            FileOutputStream fos = new FileOutputStream(tmpFile);
-                            fos.write(a01File.getBytes());
-                            fos.flush();
-                            fos.close();
-                            CompressUtil.unzip(zipFilePath, a01FileDir);
-
-                            if(zpFile!=null && !zpFile.isEmpty()) {
-                                //处理照片
-                                if (fileName.endsWith(".zip") || fileName.endsWith(".ZIP")) {
-                                    File _zpfileDir = new File(a01FileDir);
-                                    if (_zpfileDir.exists() == false) {
-                                        _zpfileDir.mkdirs();
+                            this.gbMcService.saveFromWordDataMap(gbMc,dataList);
+                            FileUtils.deleteQuietly(gbmcWordFile);
+                            //处理干部信息及照片
+                            if (a01File != null && !a01File.isEmpty()) {
+                                if (a01File.getOriginalFilename().toLowerCase().endsWith(".zip")) {
+                                    File gbrmspbDirFile = new File(gbrmspbDir);
+                                    if (gbrmspbDirFile.exists() == false) {
+                                        gbrmspbDirFile.mkdirs();
                                     }
-                                    String zipzpFilePath = _zpfileDir + UUIDUtil.getUUID() + "_" + fileName;
-                                    File tmpzpFile = new File(zipzpFilePath);
-                                    FileOutputStream foszp = new FileOutputStream(tmpzpFile);
-                                    foszp.write(zpFile.getBytes());
-                                    foszp.flush();
-                                    foszp.close();
-                                    CompressUtil.unzip(zipzpFilePath, a01zpFileDir);
+                                    String gbrmspbZipFilePath = gbrmspbDir + UUIDUtil.getUUID() + ".zip";
+                                    File gbrmspbZipFile = new File(gbrmspbZipFilePath);
+                                    FileOutputStream fosGbrmspbZip = new FileOutputStream(gbrmspbZipFilePath);
+                                    fosGbrmspbZip.write(a01File.getBytes());
+                                    fosGbrmspbZip.flush();
+                                    fosGbrmspbZip.close();
+                                    String gbrmspbUnzipFileTempPath =  gbrmspbDir + UUIDUtil.getUUID()+File.separator;
+                                    CompressUtil.unzip(gbrmspbZipFilePath, gbrmspbUnzipFileTempPath);
+                                    //处理照片
+                                    File zpDirFile = new File(zpDir);
+                                    if (zpDirFile.exists() == false) {
+                                        zpDirFile.mkdirs();
+                                    }
+                                    String zpZipFilePath = zpDir + UUIDUtil.getUUID() + ".zip";
+                                    File zpZipFile = new File(zpZipFilePath);
+                                    FileOutputStream foszpZip = new FileOutputStream(zpZipFile);
+                                    foszpZip.write(zpFile.getBytes());
+                                    foszpZip.flush();
+                                    foszpZip.close();
+                                    String zpUnzipFileTempPath = zpDir+UUIDUtil.getUUID()+File.separator;
+                                    CompressUtil.unzip(zpZipFilePath, zpUnzipFileTempPath);
+                                    this.gbMcA01Service.updateA01FromYwJson(gbMc.getId(), gbrmspbUnzipFileTempPath, zpUnzipFileTempPath);
+                                    FileUtils.deleteQuietly(gbrmspbZipFile);
+                                    FileUtils.deleteQuietly(zpZipFile);
+                                    FileUtils.deleteDirectory(new File(gbrmspbUnzipFileTempPath));
+                                    FileUtils.deleteDirectory(new File(zpUnzipFileTempPath));
                                 }
                             }
-                            this.gbMcA01Service.updateA01FromYwJson(gbMc.getId(), a01FileDir, a01zpFileDir);
                         }
+                        map.put("success", true);
                     }
                 }
-                map.put("success", true);
             }
         } catch (Exception e) {
             throw new GenericException(e);
         }
         return map;
-    }
-
-
-    private void parseYwmcWord(String sourceeWordPath) throws Exception{
-
-        //String tmplateWordPath = uploadAbsolutePath + GbMcA01Service.IMPORT_DOC_TEMPLATE;
-        WordUtil wordUtil = WordUtil.newInstance();
-
-        String wordPath = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/2州直单位领导干部名册.docx";
-        String wordPathTemplate = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/gbmca01.docx";
-
-        Document templateDoc = wordUtil.read(wordPathTemplate);
-        Map<String, Integer> templateMap = wordUtil.generateTemplateMap(templateDoc);
-
-        Document document = wordUtil.read(wordPath);
-        NodeCollection collection = document.getChildNodes(NodeType.TABLE, true);
-        for(Iterator<Table> tables = collection.iterator(); tables.hasNext();){
-            Table table = tables.next();
-
-            NodeCollection cells = table.getChildNodes(NodeType.CELL,true);
-            for(Iterator<Cell> it = cells.iterator(); it.hasNext();){
-                Cell cell = it.next();
-
-            }
-        }
     }
 
 

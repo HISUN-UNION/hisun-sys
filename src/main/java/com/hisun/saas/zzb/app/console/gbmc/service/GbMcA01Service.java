@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 public interface GbMcA01Service extends BaseService<GbMcA01,String> {
 
     String ATTS_PATH = File.separator+"mca01"+ File.separator;
-    String ATTS_ZP_PATH = File.separator+"mca01_zp"+ File.separator;
+    String ATTS_ZP_PATH = File.separator+"mca01"+ File.separator+"zp"+File.separator;
     String IMPORT_DOC_TEMPLATE = ATTS_PATH +"gbmca01.docx";
 
 

@@ -6,6 +6,7 @@ import com.hisun.saas.zzb.app.console.gbmc.entity.GbMc;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcB01;
 import com.hisun.saas.zzb.app.console.gbtj.entity.Gbtj;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +15,8 @@ import java.util.Map;
  */
 public interface GbMcService extends BaseService<GbMc,String> {
 
+    String ATTS_PATH = File.separator+"gbmc"+ File.separator;
+
     int getA01Count(String id) throws Exception;
-    void saveFromWordDataMap(GbMc gbMc, int isMl,List<Map<String, String>> dataList);
-    GbMcB01 saveWMLB01(GbMc gbMc);
+    void saveFromWordDataMap(GbMc gbMc,List<Map<String, String>> dataList);
 }
