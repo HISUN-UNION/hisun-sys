@@ -88,13 +88,12 @@ public class Sha01DaoImpl extends TenantBaseDaoImpl<Sha01, String> implements Sh
 
     private int getMaxRowFromWordDataMap(Map<String, String> dataMap) {
         int i = 0;
-        String key = "";
         if (dataMap != null) {
             for (Iterator<String> it = dataMap.keySet().iterator(); it.hasNext(); ) {
-                key = it.next();
+                String key = it.next();
+                i = WordUtil.getRowCount(key);
                 break;
             }
-            i = WordUtil.getRowCount(key);
         }
         return i;
     }
