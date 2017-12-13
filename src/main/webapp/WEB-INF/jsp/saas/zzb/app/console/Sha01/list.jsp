@@ -59,7 +59,7 @@
 								</ul>
 							</div>
 
-							<a class="btn" href="${path }/zzb/app/console/bwh/"><i class="icon-undo"></i>返回</a>
+							<a class="btn" href="${path }/zzb/app/console/bwh/?pageNum=${shpcPageNum}"><i class="icon-undo"></i>返回</a>
 						</div>
 					</div>
 				</form>
@@ -67,7 +67,7 @@
 				<div class="clearfix">
 					<div class="control-group">
 						<div id="query" style="float: left;">
-							<form action="${path }/zzb/app/console/Sha01/list/" method="POST" id="searchForm" name="searchForm">
+							<form action="${path }/zzb/app/console/Sha01/list/?shpcPageNum=${shpcPageNum}" method="POST" id="searchForm" name="searchForm">
 								<input type="hidden" id="shpcId" name="shpcId" value="${shpcId}"/>
 								<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
 								<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
@@ -105,7 +105,7 @@
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
 										<td title="${vo.shyj}"><c:out value="${vo.px}"></c:out></td>
-										<td><a href="${path}/zzb/app/console/Sha01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>
+										<td><a href="${path}/zzb/app/console/Sha01/view?id=${vo.id }&shpcPageNum=${shpcPageNum}&a01PageNum=${pager.pageNum}"><c:out value="${vo.xm}"></c:out></a></td>
 										<td><c:out value="${vo.xb}"></c:out></td>
 										<td><c:out value="${vo.mz}"></c:out></td>
 										<td><c:out value="${vo.jg}"></c:out></td>
@@ -118,10 +118,32 @@
 										<td title="${vo.xgzdwjzw}"><c:out value="${vo.xgzdwjzw}"></c:out></td>
 										<td title="${vo.ntzpbyj}"><c:out value="${vo.ntzpbyj}"></c:out></td>
 										<%--<td title="${vo.shyj}"><c:out value="${vo.shyj}"></c:out></td>--%>
-										<td class="Left_alignment">
-											<a href="#" class="">任免审批表</a>|<a href="#" class="">档案审查情况</a>
+										<td >
+											<c:if test="${vo.havagbrmspbFile }">
+												<a href="javascript:gbrmspbDown('${vo.id }')" class="">任免审批表&nbsp;&nbsp;&nbsp;</a>
+											</c:if>
+											<c:if test="${!vo.havagbrmspbFile }">
+												任免审批表&nbsp;&nbsp;&nbsp;
+											</c:if>
+											<c:if test="${vo.havaDascqkFile }">
+												|<a class="" href="javascript:dascqkDown('${vo.id }')">档案审查 </a>
+											</c:if>
+											<c:if test="${!vo.havaDascqkFile }">
+												|档案审查
+											</c:if>
 											<br>
-											<a href="#" class="">考 察 材 料</a>|<a href="#" class="">个人重大事项</a>
+											<c:if test="${vo.havaDascqkFile }">
+												<a class="" href="javascript:grzdsxDown('${vo.id }')">个人重大事项</a>
+											</c:if>
+											<c:if test="${!vo.havaDascqkFile }">
+												个人重大事项
+											</c:if>
+											<c:if test="${vo.havakcclFile }">
+												|<a class="" href="javascript:kcclDown('${vo.id }')">考察材料</a>
+											</c:if>
+											<c:if test="${!vo.havakcclFile }">
+												|考察材料
+											</c:if>
 										</td>
 									</tr>
 								</c:forEach>
@@ -183,7 +205,7 @@
 						if(json.code == 1){
 							showTip("提示","操作成功",500);
 							//loadCiList(ciObjectId);
-							window.location.href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}";
+							window.location.href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}&shpcPageNum=${shpcPageNum}&pageNum=${pager.pageNum}";
 						}else if(json.code == -1){
 							showTip("提示", json.message, 500);
 						}else if(json.code == -2){
@@ -430,6 +452,18 @@
 		function clearData(){
 			$("#xmQuery").val('');
 			document.searchForm.submit();
+		}
+		function gbrmspbDown(a01Id) {
+			window.open("${path }/zzb/app/Sha01/gbrmspb/ajax/down?sha01Id="+a01Id);
+		}
+		function kcclDown(a01Id) {
+			window.open("${path }/zzb/app/Sha01/kccl/ajax/down?sha01Id="+a01Id);
+		}
+		function dascqkDown(a01Id) {
+			window.open("${path }/zzb/app/Sha01/dascqk/ajax/down?sha01Id="+a01Id);
+		}
+		function grzdsxDown(a01Id) {
+			window.open("${path }/zzb/app/Sha01/grzdsx/ajax/down?sha01Id="+a01Id);
 		}
 	</script>
 </body>

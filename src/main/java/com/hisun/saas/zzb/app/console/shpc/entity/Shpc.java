@@ -48,6 +48,8 @@ public class Shpc extends TenantEntity implements Serializable{
     @Column(name = "PC_PX")//排序
     private int px;
 
+    @Column(name = "mb")
+    private String mb;
 
     @OneToMany(mappedBy="shpc",fetch= FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
@@ -148,6 +150,14 @@ public class Shpc extends TenantEntity implements Serializable{
 
     public void setPx(int px) {
         this.px = px;
+    }
+
+    public String getMb() {
+        return mb;
+    }
+
+    public void setMb(String mb) {
+        this.mb = mb;
     }
 
     public String toSqliteInsertSql(){

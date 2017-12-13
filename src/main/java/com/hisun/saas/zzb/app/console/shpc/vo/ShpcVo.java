@@ -33,7 +33,7 @@ public class ShpcVo extends TenantEntityVo {
     private String sjlx;
     private String sjlxValue;
     private int px;
-
+    private String mb;
     public int getPx() {
         return px;
     }
@@ -172,6 +172,13 @@ public class ShpcVo extends TenantEntityVo {
         this.sjlx = sjlx;
     }
 
+    public String getMb() {
+        return mb;
+    }
+
+    public void setMb(String mb) {
+        this.mb = mb;
+    }
 //    public MultipartFile getClFile() {
 //        return clFile;
 //    }

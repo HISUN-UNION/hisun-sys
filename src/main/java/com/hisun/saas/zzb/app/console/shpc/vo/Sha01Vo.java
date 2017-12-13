@@ -33,6 +33,11 @@ public class Sha01Vo {
     private String zppath;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 
+    private boolean isHavagbrmspbFile = false;//是否存在干部详细信息
+    private boolean isHavakcclFile = false;//是否存在考察材料
+    private boolean isHavaDascqkFile = false;//是否存在档案审查情况
+    private boolean isHavaGrzdsxFile = false;//是否存在个人重大事项
+
     private List<Sha01dascqkVo> dascqks;
     private List<Sha01gbrmspbVo> gbrmspbs;
     private List<Sha01grzdsxVo> grzdsxes;
@@ -330,5 +335,37 @@ public class Sha01Vo {
 
     public void setDplCount(String dplCount) {
         this.dplCount = dplCount;
+    }
+
+    public boolean isHavaGrzdsxFile() {
+        return isHavaGrzdsxFile;
+    }
+
+    public void setHavaGrzdsxFile(boolean havaGrzdsxFile) {
+        isHavaGrzdsxFile = havaGrzdsxFile;
+    }
+
+    public boolean isHavagbrmspbFile() {
+        return isHavagbrmspbFile;
+    }
+
+    public void setHavagbrmspbFile(boolean havagbrmspbFile) {
+        isHavagbrmspbFile = havagbrmspbFile;
+    }
+
+    public boolean isHavakcclFile() {
+        return isHavakcclFile;
+    }
+
+    public void setHavakcclFile(boolean havakcclFile) {
+        isHavakcclFile = havakcclFile;
+    }
+
+    public boolean isHavaDascqkFile() {
+        return isHavaDascqkFile;
+    }
+
+    public void setHavaDascqkFile(boolean havaDascqkFile) {
+        isHavaDascqkFile = havaDascqkFile;
     }
 }

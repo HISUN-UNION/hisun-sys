@@ -31,6 +31,8 @@ public class GbMc extends TenantEntity implements Serializable{
     private int px;
     @Column(name = "is_ml")
     private int isMl = YML;//是否存在目录
+    @Column(name = "mb")
+    private String mb;//选择的模板
 
     @OneToMany(mappedBy="gbMc",fetch= FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
@@ -106,5 +108,11 @@ public class GbMc extends TenantEntity implements Serializable{
         return sb.toString();
     }
 
+    public String getMb() {
+        return mb;
+    }
 
+    public void setMb(String mb) {
+        this.mb = mb;
+    }
 }
