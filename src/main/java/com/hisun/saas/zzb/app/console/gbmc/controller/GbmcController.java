@@ -11,12 +11,14 @@ import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
+import com.hisun.saas.zzb.app.console.gbmc.service.GbMcB01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.util.CompressUtil;
 import com.hisun.util.JacksonUtil;
+import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
@@ -25,11 +27,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.*;
 import java.util.List;
@@ -46,6 +51,10 @@ public class GbmcController extends BaseController{
     private GbMcService gbMcService;
     @Autowired
     private GbMcA01Service gbMcA01Service;
+
+    @Resource
+    private GbMcB01Service gbMcB01Service;
+
     @Autowired
     private GbMcA01gbrmspbService gbMcA01gbrmspbService;
 
@@ -149,7 +158,10 @@ public class GbmcController extends BaseController{
      * @return
      */
     @RequestMapping(value = "/save")
-    public @ResponseBody Map<String, Object> save(@ModelAttribute GbMcVo gbMcVo, HttpServletRequest req) throws GenericException {
+    public @ResponseBody Map<String, Object> save(@ModelAttribute GbMcVo gbMcVo, HttpServletRequest req
+            ,@RequestParam(value="b01File",required = false) MultipartFile b01File
+            ,@RequestParam(value="a01File",required = false) MultipartFile a01File
+            ,@RequestParam(value="zpFile",required = false) MultipartFile zpFile) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         GbMc gbMc = null;
         try {
@@ -168,35 +180,85 @@ public class GbmcController extends BaseController{
                     this.gbMcService.update(gbMc);
                 } else {
                     BeanTrans.setBaseProperties(gbMc, userLoginDetails, "save");
+                    this.gbMcService.save(gbMc);
+                    String b01FileDir = uploadAbsolutePath +GbMcB01Service.ATTS_PATH;//目录的存储
+                    String a01FileDir = uploadAbsolutePath + GbMcA01Service.ATTS_PATH;//干部存储
+                    String a01zpFileDir = uploadAbsolutePath + GbMcA01Service.ATTS_ZP_PATH;//照片的存储
 
-                    //处理word列表数据
-                    WordUtil wordUtil = WordUtil.newInstance();
-                    String wordPath = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/2州直单位领导干部名册.docx";
-                    String wordPathTemplate = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/gbmca01.docx";
+                    int isMl = gbMc.getIsMl();
+                    if(b01File!=null && !b01File.isEmpty()) {
+                        //处理word列表数据
+                        String fileName = b01File.getOriginalFilename();
+                        if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ) {
+                            File _fileDir = new File(b01FileDir);
+                            if (_fileDir.exists() == false) {
+                                _fileDir.mkdirs();
+                            }
+                            String b01WordPath = b01FileDir + UUIDUtil.getUUID() + "_" + fileName;
+                            File tmpFile = new File(b01WordPath);
+                            FileOutputStream fos = new FileOutputStream(tmpFile);
+                            fos.write(b01File.getBytes());
+                            fos.flush();
+                            fos.close();
 
-                    List<Map<String,String>> dataList = new ArrayList<Map<String,String>>();
-                    Document templateDoc = wordUtil.read(wordPathTemplate);
-                    Map<String, Integer> templateMap = wordUtil.generateTemplateMap(templateDoc);
+                            WordUtil wordUtil = WordUtil.newInstance();
+//                                String b01WordPath = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/2州直单位领导干部名册.docx";
+                            String wordPathTemplate = uploadAbsolutePath + GbMcA01Service.IMPORT_DOC_TEMPLATE;
+                            List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
+                            Document templateDoc = wordUtil.read(wordPathTemplate);
+                            Map<String, Integer> templateMap = wordUtil.generateTemplateMap(templateDoc);
 
-                    Document document = wordUtil.read(wordPath);
-                    NodeCollection collection = document.getChildNodes(NodeType.TABLE, true);
-                    for(Iterator<Table> tables = collection.iterator(); tables.hasNext();){
-                        Table table = tables.next();
-                        NodeCollection cells = table.getChildNodes(NodeType.CELL,true);
-                        dataList.add(wordUtil.convertMapByTemplate(cells,templateMap));
+                            Document document = wordUtil.read(b01WordPath);
+                            NodeCollection collection = document.getChildNodes(NodeType.TABLE, true);
+                            for (Iterator<Table> tables = collection.iterator(); tables.hasNext(); ) {
+                                Table table = tables.next();
+                                NodeCollection cells = table.getChildNodes(NodeType.CELL, true);
+                                dataList.add(wordUtil.convertMapByTemplate(cells, templateMap));
+                            }
+                            this.gbMcService.saveFromWordDataMap(gbMc, isMl, dataList);
+                        }else{
+                            this.gbMcService.saveWMLB01(gbMc);
+                        }
+                    }else{
+                        this.gbMcService.saveWMLB01(gbMc);
                     }
-                    this.gbMcService.saveFromWordDataMap(gbMc,GbMc.YML,dataList);
 
                     //处理JSON数据
-                    String zipFilePath = "/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/personsinfodata.zip";
-                    String tmpFilePath ="/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/test/";
-                    CompressUtil.unzip(zipFilePath,tmpFilePath);
-                    //处理照片
-                    String photoZipFilePath="/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/personsimgs.zip";
-                    String tmpPhotoFilePath="/Users/zhouying/Desktop/湘西州/测试数据/5名册列表/2/photo/";
-                    CompressUtil.unzip(photoZipFilePath,tmpPhotoFilePath);
-                    this.gbMcA01Service.updateA01FromYwJson(gbMc.getId(),tmpFilePath,tmpPhotoFilePath);
+                    if(a01File!=null && !a01File.isEmpty()) {
+                        //处理word列表数据
+                        String fileName = a01File.getOriginalFilename();
+                        if (fileName.endsWith(".zip") || fileName.endsWith(".ZIP")) {
+                            File _fileDir = new File(a01FileDir);
+                            if (_fileDir.exists() == false) {
+                                _fileDir.mkdirs();
+                            }
+                            String zipFilePath = a01FileDir + UUIDUtil.getUUID() + "_" + fileName;
+                            File tmpFile = new File(zipFilePath);
+                            FileOutputStream fos = new FileOutputStream(tmpFile);
+                            fos.write(a01File.getBytes());
+                            fos.flush();
+                            fos.close();
+                            CompressUtil.unzip(zipFilePath, a01FileDir);
 
+                            if(zpFile!=null && !zpFile.isEmpty()) {
+                                //处理照片
+                                if (fileName.endsWith(".zip") || fileName.endsWith(".ZIP")) {
+                                    File _zpfileDir = new File(a01FileDir);
+                                    if (_zpfileDir.exists() == false) {
+                                        _zpfileDir.mkdirs();
+                                    }
+                                    String zipzpFilePath = _zpfileDir + UUIDUtil.getUUID() + "_" + fileName;
+                                    File tmpzpFile = new File(zipzpFilePath);
+                                    FileOutputStream foszp = new FileOutputStream(tmpzpFile);
+                                    foszp.write(zpFile.getBytes());
+                                    foszp.flush();
+                                    foszp.close();
+                                    CompressUtil.unzip(zipzpFilePath, a01zpFileDir);
+                                }
+                            }
+                            this.gbMcA01Service.updateA01FromYwJson(gbMc.getId(), a01FileDir, a01zpFileDir);
+                        }
+                    }
                 }
                 map.put("success", true);
             }

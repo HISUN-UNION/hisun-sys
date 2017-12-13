@@ -14,16 +14,16 @@ import com.hisun.saas.zzb.app.console.apiregister.service.ApiRegisterService;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01gbrmspb;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01gbrmspbService;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.saas.zzb.app.console.shpc.vo.ShpcVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
-import com.hisun.util.DateUtil;
-import com.hisun.util.UUIDUtil;
-import com.hisun.util.WebUtil;
-import com.hisun.util.WordConvertUtil;
+import com.hisun.util.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -55,15 +56,26 @@ public class ShpcController extends BaseController {
     @Resource
     private ApiRegisterService apiRegisterService;
 
+    @Autowired
+    private Sha01Service sha01Service;
+
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
     @RequestMapping("/")
     public ModelAndView list(HttpServletRequest req, String pId,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
+                             @RequestParam(value = "pageSize" ,required=false) String pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-
+            Session session = SecurityUtils.getSubject().getSession();
+            if(pageSize==null){
+                if(session.getAttribute("bwhpageSize")!=null){
+                    pageSize = session.getAttribute("bwhpageSize").toString();
+                }else{
+                    pageSize = "20";
+                }
+            }
+            session.setAttribute("bwhpageSize",pageSize);
             //临时处理,将当前服务IP,端口,context写入ApiRegister
             List<ApiRegister> apiRegisters = this.apiRegisterService.list();
             if(apiRegisters!=null && apiRegisters.size()>0){
@@ -82,7 +94,7 @@ public class ShpcController extends BaseController {
 
             Long total = this.shpcService.count(query);
             List<Shpc> shpcs = this.shpcService.list(query, orderBy, pageNum,
-                    pageSize);
+                    Integer.parseInt(pageSize));
             List<ShpcVo> shpcVos = new ArrayList<ShpcVo>();
             if (shpcs != null) {// entity ==> vo
                 for (Shpc shpc : shpcs) {
@@ -94,7 +106,7 @@ public class ShpcController extends BaseController {
                 }
             }
             PagerVo<ShpcVo> pager = new PagerVo<ShpcVo>(shpcVos, total.intValue(),
-                    pageNum, pageSize);
+                    pageNum, Integer.parseInt(pageSize));
             map.put("pager", pager);
         } catch (Exception e) {
             throw new GenericException(e);
@@ -106,7 +118,7 @@ public class ShpcController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/add")
-    public ModelAndView add() throws Exception{
+    public ModelAndView add(@RequestParam(value = "shpcPageNum", defaultValue = "1") int shpcPageNum) throws Exception{
         ShpcVo vo = new ShpcVo();
         Integer maxPx = shpcService.getMaxPx();
         if(maxPx != null){
@@ -114,8 +126,10 @@ public class ShpcController extends BaseController {
         }else{
             vo.setPx(1);
         }
-
-        return new ModelAndView("/saas/zzb/app/console/bwh/add","vo",vo);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("vo", vo);
+        map.put("shpcPageNum", shpcPageNum);
+        return new ModelAndView("/saas/zzb/app/console/bwh/add",map);
     }
 
     /**
@@ -124,7 +138,7 @@ public class ShpcController extends BaseController {
      */
 //    @RequiresPermissions("admin-assetStatus:edit")
     @RequestMapping(value = "/edit")
-    public ModelAndView edit(@RequestParam(value="id")String id) {
+    public ModelAndView edit(@RequestParam(value="id")String id,@RequestParam(value = "shpcPageNum", defaultValue = "1") int shpcPageNum) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             Shpc shpc = this.shpcService.getByPK(id);
@@ -136,8 +150,10 @@ public class ShpcController extends BaseController {
             BeanUtils.copyProperties(shpcVo, shpc);
             shpcVo.setPcsjValue(DateUtil.formatDateByFormat(shpc.getPcsj(), "yyyyMMdd"));
             map.put("shpc", shpcVo);
+            map.put("shpcPageNum", shpcPageNum);
         }catch(Exception e){
             map.put("success", false);
+            map.put("shpcPageNum", shpcPageNum);
             map.put("msg", "修改失败！");
             throw new GenericException(e);
         }
@@ -150,16 +166,18 @@ public class ShpcController extends BaseController {
      * @return
      */
 //    @RequiresPermissions("admin-assetStatus:delete")
-    @RequestMapping(value = "/delete/{id}")
-    public @ResponseBody Map<String, Object> delete(@PathVariable("id")String AssetStatusId) {
+    @RequestMapping(value = "/delete/")
+    public @ResponseBody Map<String, Object> delete(@RequestParam("id")String id,@RequestParam(value = "shpcPageNum", defaultValue = "1") int shpcPageNum) {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
-            Shpc shpc = this.shpcService.getByPK(AssetStatusId);
+            Shpc shpc = this.shpcService.getByPK(id);
             if(shpc != null){
                 this.shpcService.delete(shpc);
             }
+            map.put("shpcPageNum", shpcPageNum);
             map.put("success", true);
         }catch(Exception e){
+            map.put("shpcPageNum", shpcPageNum);
             map.put("success", false);
             map.put("msg", "删除失败！");
             throw new GenericException(e);
@@ -196,53 +214,87 @@ public class ShpcController extends BaseController {
                 }
                 UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
                 BeanUtils.copyProperties(shpc, shpcVo);
-                if(shpcVo.getPcsjValue()!=null && !shpcVo.getPcsjValue().equals("")) {
+                if (shpcVo.getPcsjValue() != null && !shpcVo.getPcsjValue().equals("")) {
                     Date pcsjDate = DateUtil.parseDate(shpcVo.getPcsjValue().toString(), "yyyyMMdd");
                     shpc.setPcsj(pcsjDate);
                 }
                 shpc.setTenant(userLoginDetails.getTenant());
-                if(clFile!=null && !clFile.isEmpty() && shpcVo.getSjlx().equals(Shpc.SJLX_CL)) {
+                if (clFile != null && !clFile.isEmpty()) {
+                    if (shpcVo.getSjlx().equals(Shpc.SJLX_CL)) {//材料文件上传
+                        String fileName = clFile.getOriginalFilename();
+                        if (fileName.endsWith(".doc") || fileName.endsWith(".DOC")
+                                || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
+                            String fileDir = uploadAbsolutePath + ShpcService.ATTS_PATH;
+                            File _fileDir = new File(fileDir);
+                            if (_fileDir.exists() == false) {
+                                _fileDir.mkdirs();
+                            }
+                            //附件存储路径
+                            String savePath = fileDir + UUIDUtil.getUUID() + "_" + fileName;
+                            try {
+                                FileOutputStream fos = new FileOutputStream(new File(savePath));
+                                fos.write(clFile.getBytes());
+                                fos.flush();
+                                fos.close();
 
-                    String fileName = clFile.getOriginalFilename();
-                    if (fileName.endsWith(".doc") || fileName.endsWith(".DOC")
-                            || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
-                        String fileDir = uploadAbsolutePath + ShpcService.ATTS_PATH;
-                        File _fileDir = new File(fileDir);
-                        if (_fileDir.exists() == false) {
-                            _fileDir.mkdirs();
-                        }
-                        //附件存储路径
-                        String savePath = fileDir + UUIDUtil.getUUID() + "_" + fileName;
-                        try {
-                            FileOutputStream fos = new FileOutputStream(new File(savePath));
-                            fos.write(clFile.getBytes());
-                            fos.flush();
-                            fos.close();
-
-                            //PDF路径
-                            String pdfPath  = ShpcService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
-                            String pdfRealPath = uploadAbsolutePath+pdfPath;
-                            WordConvertUtil.newInstance().convert(savePath,pdfRealPath,WordConvertUtil.PDF);
-                            FileUtils.deleteQuietly(new File(savePath));
-                            shpc.setFilePath(pdfPath);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            throw new GenericException(e);
+                                //PDF路径
+                                String pdfPath = ShpcService.ATTS_PATH + UUIDUtil.getUUID() + ".pdf";
+                                String pdfRealPath = uploadAbsolutePath + pdfPath;
+                                WordConvertUtil.newInstance().convert(savePath, pdfRealPath, WordConvertUtil.PDF);
+                                FileUtils.deleteQuietly(new File(savePath));
+                                shpc.setFilePath(pdfPath);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                throw new GenericException(e);
+                            }
                         }
                     }
                 }
-                if(shpcVo.getSjlx().equals(Shpc.SJLX_GB)){
+                if (shpcVo.getSjlx().equals(Shpc.SJLX_GB)) {
                     shpc.setFilePath("");
                 }
-                if(oldPx!=newPx) {
-                    this.shpcService.updatePx(oldPx,newPx);
+                String shpcId = id;
+                if (oldPx != newPx) {
+                    this.shpcService.updatePx(oldPx, newPx);
                 }
                 if (id != null && id.length() > 0) {
                     BeanTrans.setBaseProperties(shpc, userLoginDetails, "update");
                     this.shpcService.update(shpc);
                 } else {
                     BeanTrans.setBaseProperties(shpc, userLoginDetails, "save");
-                    this.shpcService.save(shpc);
+                    shpcId = this.shpcService.save(shpc);
+                }
+
+                if (clFile != null && !clFile.isEmpty()) {
+                    if (shpcVo.getSjlx().equals(Shpc.SJLX_GB)) {//材料文件上传
+                        String fileName = clFile.getOriginalFilename();
+                        if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ) {
+                            String fileDir = uploadAbsolutePath + Sha01Service.ATTS_PATH;
+                            File _fileDir = new File(fileDir);
+                            if (_fileDir.exists() == false) {
+                                _fileDir.mkdirs();
+                            }
+                            String savePath = fileDir + UUIDUtil.getUUID() + "_" + fileName;
+
+                            try {
+                                FileOutputStream fos = new FileOutputStream(new File(savePath));
+                                fos.write(clFile.getBytes());
+                                fos.flush();
+                                fos.close();
+
+                                //处理上传文件
+                                //先将word转成Map
+                                String tmplateWordPath = fileDir + File.separator + "sha01.docx";
+                                WordUtil wordUtil = WordUtil.newInstance();
+                                Map<String, String> dataMap = wordUtil.convertMapByTemplate(savePath, tmplateWordPath, "");
+                                sha01Service.saveFromWordDataMap(userLoginDetails.getTenant(), dataMap, shpcId);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                throw new GenericException(e);
+                            }
+                        }
+                    }
                 }
                 map.put("success", true);
             }

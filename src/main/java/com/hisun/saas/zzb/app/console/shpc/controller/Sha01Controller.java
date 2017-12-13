@@ -18,6 +18,8 @@ import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -65,10 +67,20 @@ public class Sha01Controller extends BaseController {
 
     @RequestMapping("/list")
     public ModelAndView list(HttpServletRequest req,@RequestParam(value="shpcId")String shpcId,String xmQuery,
+                            @RequestParam(value = "shpcPageNum", defaultValue = "1") int shpcPageNum,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                             @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
+                             @RequestParam(value = "pageSize" ,required=false) String pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
+            Session session = SecurityUtils.getSubject().getSession();
+            if(pageSize==null){
+                if(session.getAttribute("Sha01pageSize")!=null){
+                    pageSize = session.getAttribute("Sha01pageSize").toString();
+                }else{
+                    pageSize = "20";
+                }
+            }
+            session.setAttribute("Sha01pageSize",pageSize);
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" shpc.id = :shpcId", "shpcId", shpcId));
             if(xmQuery!=null && !xmQuery.equals("")){
@@ -80,18 +92,49 @@ public class Sha01Controller extends BaseController {
 
             Long total = this.sha01Service.count(query);
             List<Sha01> sha01s = this.sha01Service.list(query,orderBy, pageNum,
-                    pageSize);
+                    Integer.parseInt(pageSize));
             List<Sha01Vo> shpcVos = new ArrayList<Sha01Vo>();
             if (sha01s != null) {// entity ==> vo
                 for (Sha01 sha01 : sha01s) {
                     Sha01Vo vo = new Sha01Vo();
                     BeanUtils.copyProperties(vo, sha01);
+                    //判断干部详细信息是否有附件
+                    if(sha01.getGbrmspbs()!=null &&sha01.getGbrmspbs().size()>0) {
+                        Sha01gbrmspb sha01gbrmspb = sha01.getGbrmspbs().get(0);
+                        if(sha01gbrmspb.getFilepath()!=null && !sha01gbrmspb.getFilepath().equals("")){
+                            vo.setHavagbrmspbFile(true);
+                        }
+                    }
+                    //判断干部详细信息是否有附件
+                    if(sha01.getKccls()!=null &&sha01.getKccls().size()>0) {
+                        Sha01kccl sha01Kccl = sha01.getKccls().get(0);
+                        if(sha01Kccl.getPath()!=null && !sha01Kccl.getPath().equals("")){
+                            vo.setHavakcclFile(true);
+                        }
+                    }
+                    //判断档案审查情况是否有附件
+                    if(sha01.getDascqks()!=null &&sha01.getDascqks().size()>0) {
+                        Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
+                        if(sha01dascqk.getPath()!=null && !sha01dascqk.getPath().equals("")){
+                            vo.setHavaDascqkFile(true);
+                        }
+
+
+                    }
+                    //判断个人重大事项是否有附件
+                    if(sha01.getGrzdsxes()!=null &&sha01.getGrzdsxes().size()>0) {
+                        Sha01grzdsx sha01grzdsx = sha01.getGrzdsxes().get(0);
+                        if(sha01grzdsx.getPath()!=null && !sha01grzdsx.getPath().equals("")){
+                            vo.setHavaGrzdsxFile(true);
+                        }
+                    }
                     shpcVos.add(vo);
                 }
             }
             PagerVo<Sha01Vo> pager = new PagerVo<Sha01Vo>(shpcVos, total.intValue(),
-                    pageNum, pageSize);
+                    pageNum, Integer.parseInt(pageSize));
             map.put("pager", pager);
+            map.put("shpcPageNum", shpcPageNum);
             map.put("shpcId", shpcId);
             map.put("xmQuery", xmQuery);
         } catch (Exception e) {
@@ -243,7 +286,9 @@ public class Sha01Controller extends BaseController {
      */
 //    @RequiresPermissions("admin-assetStatus:edit")
     @RequestMapping(value = "/view")
-    public ModelAndView view(@RequestParam(value="id")String id) {
+    public ModelAndView view(@RequestParam(value="id")String id,
+                             @RequestParam(value = "shpcPageNum", defaultValue = "1") int shpcPageNum,
+                             @RequestParam(value = "a01PageNum", defaultValue = "1") int a01PageNum) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             Sha01 sha01 = this.sha01Service.getByPK(id);
@@ -292,7 +337,8 @@ public class Sha01Controller extends BaseController {
             BeanUtils.copyProperties(shpa01Vo, sha01);
             map.put("shpa01Vo", shpa01Vo);
             map.put("shpcId", sha01.getShpc().getId());
-
+            map.put("shpcPageNum", shpcPageNum);
+            map.put("a01PageNum", a01PageNum);
             map.put("isHavagbrmspbFile", isHavagbrmspbFile);
             map.put("isHavakcclFile", isHavakcclFile);
             map.put("isHavaDascqkFile", isHavaDascqkFile);
@@ -307,7 +353,9 @@ public class Sha01Controller extends BaseController {
         return new ModelAndView("/saas/zzb/app/console/Sha01/view", map);
     }
     @RequestMapping(value = "/delete/{id}")
-    public @ResponseBody Map<String, Object> delete(@PathVariable("id")String id) {
+    public @ResponseBody Map<String, Object> delete(@PathVariable("id")String id,
+                                                    @RequestParam(value = "shpcPageNum", defaultValue = "1") int shpcPageNum,
+                                                    @RequestParam(value = "a01PageNum", defaultValue = "1") int a01PageNum) {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
             Sha01 sha01 = this.sha01Service.getByPK(id);
@@ -315,6 +363,8 @@ public class Sha01Controller extends BaseController {
                 this.sha01Service.delete(sha01);
             }
             map.put("success", true);
+            map.put("shpcPageNum", shpcPageNum);
+            map.put("a01PageNum", a01PageNum);
         }catch(Exception e){
             map.put("success", false);
             map.put("msg", "删除失败！");

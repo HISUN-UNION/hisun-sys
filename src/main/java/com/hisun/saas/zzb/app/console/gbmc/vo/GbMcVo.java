@@ -18,7 +18,8 @@ public class GbMcVo{
     private int px;
     private int a01Count;
     private List<GbMcB01Vo> gbMcB01Vos;
-
+    private int isMl;
+    private String mb;//选择的模板
     public String getId() {
         return id;
     }
@@ -57,5 +58,21 @@ public class GbMcVo{
 
     public void setA01Count(int a01Count) {
         this.a01Count = a01Count;
+    }
+
+    public String getMb() {
+        return mb;
+    }
+
+    public void setMb(String mb) {
+        this.mb = mb;
+    }
+
+    public int getIsMl() {
+        return isMl;
+    }
+
+    public void setIsMl(int isMl) {
+        this.isMl = isMl;
     }
 }

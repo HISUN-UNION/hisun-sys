@@ -37,7 +37,7 @@
 					<div class="portlet-title">
 						<div class="caption">会议研究批次</div>
 						<div class="clearfix fr">
-							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/bwh/add">
+							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/bwh/add?shpcPageNum=${pager.pageNum }">
 								<i class="icon-plus"></i> 添加 
 							</a>
 						</div>
@@ -60,21 +60,33 @@
 							<tbody>
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
-										<td><a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }"><c:out value="${vo.pcmc}"></c:out></a></td>
+										<td>
+											<c:if test="${vo.sjlx eq '1'}">
+												<a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }&shpcPageNum=${pager.pageNum}"><c:out value="${vo.pcmc}"></c:out></a>
+											</c:if>
+											<c:if test="${vo.sjlx eq '2'}">
+												<c:if test="${!empty vo.filePath}">
+													<a href="javascript:fileDown('${vo.id }')" class=""><c:out value="${vo.pcmc}"></c:out></a>
+												</c:if>
+												<c:if test="${empty vo.filePath}">
+													<c:out value="${vo.pcmc}"></c:out>
+												</c:if>
+											</c:if>
+										</td>
 										<td><c:out value="${vo.shlxValue}"></c:out></td>
 										<td><c:out value="${vo.sjlxValue}"></c:out></td>
 										<td><c:out value="${vo.pcsjValue}"></c:out></td>
 										<td><a href="javascript:changeShZt('${vo.id}')" id="${vo.id }_shZt"><c:out value="${vo.shZtValue}"></c:out></a></td>
 										<td>
 											<c:if test="${vo.sjlx eq '1'}">
-												<a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }" class="">共${vo.a01Count }人</a>
+												<a href="${path}/zzb/app/console/Sha01/list?shpcId=${vo.id }&shpcPageNum=${pager.pageNum}" class="">共${vo.a01Count }人</a>
 											</c:if>
 											<c:if test="${vo.sjlx eq '2'}">---</c:if>
 										</td>
 										<td><c:out value="${vo.px}"></c:out></td>
 										<td class="Left_alignment">
 
-											<a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }" class="">编辑</a>|
+											<a href="${path}/zzb/app/console/bwh/edit?id=${vo.id }&shpcPageNum=${pager.pageNum}" class="">编辑</a>|
 											<a href="javascript:del('${vo.id }','${vo.pcmc}')" class="">删除</a>
 											<c:if test="${vo.sjlx eq '2'}">
 												|<a href="javascript:addAtts('${vo.id }')" class="">附件</a>
@@ -111,7 +123,7 @@
 			$.ajax({
 				url : "${path}/zzb/app/console/shpcAtts/ajax/editAtts",
 				type : "post",
-				data: {"shpcId":shpcId},
+				data: {"shpcId":shpcId,"shpcPageNum":"${pager.pageNum }"},
 				headers:{
 					OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
 				},
@@ -135,12 +147,14 @@
 		function searchSubmit(){
 			document.searchForm.submit();
 		}
-		
+		function fileDown(id) {
+			window.open("${path }/zzb/app/console/bwh/ajax/down?id="+id);
+		}
 		var del = function(id,itemName){
-			actionByConfirm1(itemName, "${path}/zzb/app/console/bwh/delete/" + id,{} ,function(data,status){
+			actionByConfirm1(itemName, "${path}/zzb/app/console/bwh/delete/?id=" + id+"&shpcPageNum=${pager.pageNum }",{} ,function(data,status){
 				if (data.success == true) {
 					showTip("提示","删除成功", 2000);
-					setTimeout(function(){window.location.href = "${path}/zzb/app/console/bwh/"},2000);
+					setTimeout(function(){window.location.href = "${path}/zzb/app/console/bwh/?pageNum=${shpcPageNum}"},2000);
 				}else{
 					showTip("提示", data.message, 2000);	
 				}

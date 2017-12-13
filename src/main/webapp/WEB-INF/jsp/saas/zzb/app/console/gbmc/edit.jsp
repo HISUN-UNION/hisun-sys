@@ -47,8 +47,24 @@
 										</div>
 
 									</div>
-
-
+									<div class="control-group" id="mbGroup">
+										<label class="control-label">选择模板<span class="required">*</span></label>
+										<div class="controls">
+											<select class="span6 m-wrap" id="mb" name="mb"   data-placeholder="Choose a Category" tabindex="1" required>
+												<option value="广州模板" <c:if test="${gbMc.mb eq '广州模板'}">selected</c:if>>广州模板</option>
+												<option value="湖南模板" <c:if test="${gbMc.mb eq '湖南模板'}">selected</c:if>>湖南模板</option>
+											</select>
+										</div>
+									</div>
+									<div class="control-group" id="isMlGroup">
+										<label class="control-label">有无目录<span class="required">*</span></label>
+										<div class="controls">
+											<select class="span6 m-wrap" id="isMl" name="isMl"   data-placeholder="Choose a Category" disabled tabindex="1" required>
+												<option value="0" <c:if test="${gbMc.isMl ==0}">selected</c:if>>有目录</option>
+												<option value="1" <c:if test="${gbMc.isMl ==1}">selected</c:if>>无目录</option>
+											</select>
+										</div>
+									</div>
 
 									<div id="pxGroup" class="control-group">
 										<label class="control-label">排序<span class="required">*</span></label>

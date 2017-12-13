@@ -37,7 +37,7 @@
 
 					<div class="portlet-body form">
 						<!-- BEGIN FORM-->
-						<form action="" class="form-horizontal" id="form1"  method="post">
+						<form action="" class="form-horizontal" id="form1" method="post" enctype="multipart/form-data">
 							<div id="mcGroup" class="control-group">
 								<label class="control-label">名册名称<span class="required">*</span></label>
 								<div class="controls">
@@ -45,7 +45,24 @@
 								</div>
 
 							</div>
-
+							<div class="control-group" id="mbGroup" style="display: block">
+								<label class="control-label">选择模板<span class="required">*</span></label>
+								<div class="controls">
+									<select class="span6 m-wrap" id="mb" name="mb"   data-placeholder="Choose a Category" tabindex="1" required>
+										<option value="广州模板" selected>广州模板</option>
+										<option value="湖南模板" >湖南模板</option>
+									</select>
+								</div>
+							</div>
+							<div class="control-group" id="isMlGroup">
+								<label class="control-label">有无目录<span class="required">*</span></label>
+								<div class="controls">
+									<select class="span6 m-wrap" id="isMl" name="isMl"   data-placeholder="Choose a Category" tabindex="1" required>
+										<option value="0" selected>有目录</option>
+										<option value="1" >无目录</option>
+									</select>
+								</div>
+							</div>
 
 							<div id="pxGroup" class="control-group">
 								<label class="control-label">排序<span class="required">*</span></label>
@@ -54,7 +71,27 @@
 								</div>
 
 							</div>
-
+							<div  id="b01FileGroup" class="control-group">
+								<label class="control-label">名册文件</label>
+								<div class="controls">
+									<input type="file" class="default"  name="b01File" id="b01File" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
+									<p class="textprompt">附件支持的格式有：'doc','docx'</p>
+								</div>
+							</div>
+							<div  id="a01FileGroup" class="control-group">
+								<label class="control-label">干部信息</label>
+								<div class="controls">
+									<input type="file" class="default"  name="a01File" id="a01File" fileSizeLimit="20" fileType="zip,ZIP"/>
+									<p class="textprompt">附件支持的格式有：'zip','ZIP'</p>
+								</div>
+							</div>
+							<div  id="zpFileGroup" class="control-group">
+								<label class="control-label">干部照片</label>
+								<div class="controls">
+									<input type="file" class="default"  name="zpFile" id="zpFile" fileSizeLimit="20" fileType="zip,ZIP"/>
+									<p class="textprompt">附件支持的格式有：'zip','ZIP'</p>
+								</div>
+							</div>
 							<div class="form-actions">
 								<button type="button" class="btn green" onclick="formSubmit()"><i class="icon-ok"></i> 确定</button>
 								<a class="btn" href="${path }/zzb/app/console/gbmc/"><i class="icon-remove-sign"></i> 取消</a>
@@ -78,37 +115,140 @@
 	<script type="text/javascript" src="${path }/js/common/DataValidate.js"></script>
 	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>
 	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
+	<script type="text/javascript" src="${path }/js/common/loading.js"></script>
 <script type="text/javascript">
-	
+	var myLoading = new MyLoading("${path}",20000);
 //	(function(){
 //		App.init();
 //
 //	})();
-
-	var myVld = new EstValidate("form1");
-	function formSubmit(){
-		var bool = myVld.form();
-		if(bool){
-			$.cloudAjax({
-				path : '${path}',
-				url : "${path }/zzb/app/console/gbmc/save",
-				type : "post",
-				data : $("#form1").serialize(),
-				dataType : "json",
-				success : function(data){
-					if(data.success){
-						showTip("提示","操作成功",2000);
-						setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/"},2000);
-					}else{
-						showTip("提示", json.message, 2000);
-					}
-				},
-				error : function(){
-					showTip("提示","出错了请联系管理员",2000);
-				}
-			});
+var myVld = new EstValidate("form1");
+function formSubmit() {
+	var bool = myVld.form();
+	if (!bool) {
+		return;
+	}
+	var isMl = $('#isMl').val();//0;有目录  1:无目录
+	var isHavaB01File = false;//
+	var b01fileInput = document.getElementById("b01File");
+	if (b01fileInput.files.length > 0) {
+		var name = b01fileInput.files[0].name
+		var arr = name.split(".");
+		if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {
+			showTip("提示", "请上传word文件", 2000);
+			return;
+		} else {
+			isHavaB01File = true;
 		}
 	}
+	var isHavaA01File = false;//
+	var a01fileInput = document.getElementById("a01File");
+	if (a01fileInput.files.length > 0) {
+		var name = a01fileInput.files[0].name
+		var arr = name.split(".");
+		if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
+			showTip("提示", "请上传zip文件", 2000);
+			return;
+		} else {
+			isHavaA01File = true;
+		}
+	}
+	var isHavaZpFile = false;//
+	var zpfileInput = document.getElementById("zpFile");
+	if (zpfileInput.files.length > 0) {
+		var name = zpfileInput.files[0].name
+		var arr = name.split(".");
+		if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
+			showTip("提示", "请上传zip文件", 2000);
+			return;
+		} else {
+			isHavaZpFile = true;
+		}
+	}
+	if (isMl == "0") {//0;有目录  1:无目录 如果为无目录则  如果为无目录：如上传了干部照片则必须传干部信息  有目录：上传了干部照片则必须上传名册文件、干部信息；如上传了干部信息则必须上传名册信息
+		if(isHavaZpFile == true){
+			if(isHavaB01File == false || isHavaA01File==false){
+				showTip("提示", "有目录已上传了照片文件，请上传名册文件和干部信息", 2000);
+				return;
+			}
+		}else{
+			if(isHavaA01File==true&&isHavaB01File == false ){
+				showTip("提示", "有目录已上传了干部信息，请上传名册文件", 2000);
+				return;
+			}
+		}
+	}else{
+		if(isHavaZpFile == true){
+			if(isHavaB01File == false || isHavaA01File==false){
+				showTip("提示", "无目录已上传了照片文件，请上传干部信息", 2000);
+				return;
+			}
+		}
+	}
+	myLoading.show();
+	$("#form1").ajaxSubmit({
+		url : "${path }/zzb/app/console/gbmc/save",
+		type : "post",
+		dataType : "json",
+		enctype : "multipart/form-data",
+		headers: {
+			"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
+		},
+		success : function(data){
+			myLoading.hide();
+			if(data.success){
+				showTip("提示","操作成功",2000);
+				setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/"},2000);
+			}else{
+				showTip("提示", json.message, 2000);
+			}
+		},
+		error : function(arg1, arg2, arg3){
+			myLoading.hide();
+			showTip("提示","出错了请联系管理员");
+		}
+	});
+}
+
+	<%--var myVld = new EstValidate("form1");--%>
+	<%--function formSubmit(){--%>
+		<%--var bool = myVld.form();--%>
+		<%--if(!bool){--%>
+			<%--return;--%>
+		<%--}--%>
+		<%--var fileInput = document.getElementById("clFile");--%>
+		<%--if (fileInput.files.length > 0) {--%>
+			<%--var name = fileInput.files[0].name--%>
+			<%--var arr = name.split(".");--%>
+			<%--if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {--%>
+				<%--showTip("提示", "请上传word文件", 2000);--%>
+				<%--return;--%>
+			<%--}--%>
+		<%--}--%>
+		<%--$.cloudAjax({--%>
+			<%--path : '${path}',--%>
+			<%--url : "${path }/zzb/app/console/gbmc/save",--%>
+			<%--type : "post",--%>
+			<%--data : $("#form1").serialize(),--%>
+			<%--dataType : "json",--%>
+			<%--enctype : "multipart/form-data",--%>
+			<%--headers: {--%>
+				<%--"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"--%>
+			<%--},--%>
+			<%--success : function(data){--%>
+				<%--if(data.success){--%>
+					<%--showTip("提示","操作成功",2000);--%>
+					<%--setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/"},2000);--%>
+				<%--}else{--%>
+					<%--showTip("提示", json.message, 2000);--%>
+				<%--}--%>
+			<%--},--%>
+			<%--error : function(){--%>
+				<%--showTip("提示","出错了请联系管理员",2000);--%>
+			<%--}--%>
+		<%--});--%>
+
+	<%--}--%>
 	
 </script>
 </body>

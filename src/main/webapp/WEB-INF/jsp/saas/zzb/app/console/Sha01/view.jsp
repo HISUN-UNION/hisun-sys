@@ -44,7 +44,7 @@
         </div>
         <div class="clearfix fr">
             <a class="btn red" href="javascript:del('${shpa01Vo.xm }')"><i class=" icon-remove-sign"></i>删除</a>
-            <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}"><i class="icon-undo"></i>返回</a>
+            <a class="btn" href="${path }/zzb/app/console/Sha01/list?shpcId=${shpcId}&shpcPageNum=${shpcPageNum}&pageNum=${a01PageNum}"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright">
             <div class="Fullname">${shpa01Vo.xm}</div>
@@ -423,7 +423,7 @@
                     //showTip("提示","操作成功",2000);
 
                     window.document.getElementById("gbrmspbDownDiv").style.visibility = "visible";
-                    window.location.href="${path }/zzb/app/console/Sha01/view?id=${shpa01Vo.id}";
+                    window.location.href="${path }/zzb/app/console/Sha01/view?id=${shpa01Vo.id}&shpcPageNum=${shpcPageNum}&a01PageNum=${a01PageNum}";
                 } else if (json.code == -1) {
                     showTip("提示", json.message, 2000);
                 } else {
@@ -456,7 +456,7 @@
         actionByConfirm1(itemName, "${path}/zzb/app/console/Sha01/delete/${shpa01Vo.id}",{} ,function(data,status){
             if (data.success == true) {
                 showTip("提示","删除成功", 1000);
-                setTimeout(function(){window.location.href = "${path}/zzb/app/console/Sha01/list?shpcId=${shpcId}"},1000);
+                setTimeout(function(){window.location.href = "${path}/zzb/app/console/Sha01/list?shpcId=${shpcId}&shpcPageNum=${shpcPageNum}&pageNum=${a01PageNum}"},1000);
             }else{
                 showTip("提示", data.message, 2000);
             }

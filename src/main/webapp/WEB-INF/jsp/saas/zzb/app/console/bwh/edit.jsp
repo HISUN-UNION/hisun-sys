@@ -69,6 +69,16 @@
 											</select>
 										</div>
 									</div>
+									<div class="control-group" id="mbGroup" <c:if test="${shpc.sjlx eq '2'}">
+										style="display: none"</c:if>>
+										<label class="control-label">选择模板<span class="required">*</span></label>
+										<div class="controls">
+											<select class="span6 m-wrap" id="mb" name="mb"   data-placeholder="Choose a Category" tabindex="1" required>
+												<option value="广州模板" <c:if test="${shpc.mb eq '广州模板'}">selected</c:if>>广州模板</option>
+												<option value="湖南模板" <c:if test="${shpc.mb eq '湖南模板'}">selected</c:if>>湖南模板</option>
+											</select>
+										</div>
+									</div>
 									<div id="pcsjValueGroup" class="control-group">
 										<label class="control-label">批次时间<span class="required">*</span></label>
 										<div class="controls">
@@ -105,7 +115,7 @@
 										<div class="controls mt10">
 											<button class="btn green" type="button" style="padding:7px 20px;" onclick="formSubmit()">确定</button>
 
-											<a class="btn" href="${path }/zzb/app/console/bwh/"><i class="icon-remove-sign"></i> 取消</a>
+											<a class="btn" href="${path }/zzb/app/console/bwh/?pageNum=${shpcPageNum}"><i class="icon-remove-sign"></i> 取消</a>
 										</div>
 									</div>
 								</form>
@@ -194,7 +204,7 @@
 				myLoading.hide();
 				if(data.success){
 					showTip("提示","操作成功",2000);
-					setTimeout(function(){window.location.href = "${path}/zzb/app/console/bwh/"},2000);
+					setTimeout(function(){window.location.href = "${path}/zzb/app/console/bwh/?pageNum=${shpcPageNum}"},2000);
 				}else{
 					showTip("提示", json.message, 2000);
 				}
@@ -212,7 +222,9 @@
 	function changeFile(obj){
 		if(obj.value =="1"){
 			window.document.getElementById("clFileGroup").style.visibility = "hidden";
+			window.document.getElementById("mbGroup").style.display = "block";
 		}else{
+			window.document.getElementById("mbGroup").style.display = "none";
 			window.document.getElementById("clFileGroup").style.visibility = "visible";
 		}
 	}

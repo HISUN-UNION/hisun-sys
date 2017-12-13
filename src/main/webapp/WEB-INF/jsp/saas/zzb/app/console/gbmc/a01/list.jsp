@@ -36,10 +36,10 @@
 								<i class="icon-circle-arrow-up"></i>上传名册
 								<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">
 							</span>
-							<span class="controllerClass btn green file_but" >
-								<i class="icon-circle-arrow-up"></i>批量上传
-								<input class="file_progress" type="file" name="moreAttFile" id="btn-moreAttTemplate">
-							</span>
+							<%--<span class="controllerClass btn green file_but" >--%>
+								<%--<i class="icon-circle-arrow-up"></i>批量上传--%>
+								<%--<input class="file_progress" type="file" name="moreAttFile" id="btn-moreAttTemplate">--%>
+							<%--</span>--%>
 						<a class="btn" href="${path }/zzb/app/console/gbmc/b01/list?mcid=${mcid}"><i class="icon-undo"></i>返回</a>
 					</div>
 				</div>

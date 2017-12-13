@@ -64,6 +64,15 @@
 									</select>
 								</div>
 							</div>
+							<div class="control-group" id="mbGroup" style="display: block">
+								<label class="control-label">选择模板<span class="required">*</span></label>
+								<div class="controls">
+									<select class="span6 m-wrap" id="mb" name="mb"   data-placeholder="Choose a Category" tabindex="1" required>
+										<option value="广州模板" selected>广州模板</option>
+										<option value="湖南模板" >湖南模板</option>
+									</select>
+								</div>
+							</div>
 							<div id="pxGroup" class="control-group">
 								<label class="control-label">排序<span class="required">*</span></label>
 								<div class="controls">
@@ -81,19 +90,18 @@
 								</div>
 
 							</div>
-							<div  id="clFileGroup" class="control-group"  style="visibility:hidden">
-								<label  class="control-label">汇报主题材料</label>
+							<div  id="clFileGroup" class="control-group">
+								<label id="clFilelb" class="control-label">干部名单</label>
 								<div class="controls">
 									<input type="file" class="default"  name="clFile" id="clFile" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
 									<p class="textprompt">附件支持的格式有：'doc','docx'</p>
 									<p class="Errorred" id="attachFileError"></p>
 								</div>
-
 							</div>
 							<div class="control-group">
 								<div class="controls mt10">
 									<button class="btn green" type="button" style="padding:7px 20px;" onclick="formSubmit()">确定</button>
-									<a class="btn" href="${path }/zzb/app/console/bwh/"><i class="icon-remove-sign"></i> 取消</a>
+									<a class="btn" href="${path }/zzb/app/console/bwh/?pageNum=${shpcPageNum}"><i class="icon-remove-sign"></i> 取消</a>
 								</div>
 							</div>
 
@@ -187,7 +195,7 @@ function formSubmit(){
 			myLoading.hide();
 			if(data.success){
 				showTip("提示","操作成功",2000);
-				setTimeout(function(){window.location.href = "${path}/zzb/app/console/bwh/"},2000);
+				setTimeout(function(){window.location.href = "${path}/zzb/app/console/bwh/?pageNum=${shpcPageNum}"},2000);
 			}else{
 				showTip("提示", json.message, 2000);
 			}
@@ -200,10 +208,13 @@ function formSubmit(){
 }
 
 	function changeFile(obj){
-		if(obj.value =="1"){
-			window.document.getElementById("clFileGroup").style.visibility = "hidden";
+		if(obj.value =="2"){
+
+			window.document.getElementById("clFilelb").innerHTML = "汇报主题材料";
+			window.document.getElementById("mbGroup").style.display = "none";
 		}else{
-			window.document.getElementById("clFileGroup").style.visibility = "visible";
+			window.document.getElementById("mbGroup").style.display = "block";
+			window.document.getElementById("clFilelb").innerHTML = "干部名单";
 		}
 	}
 </script>

@@ -81,20 +81,25 @@ public class GbMcServiceImpl extends BaseServiceImpl<GbMc,String> implements GbM
                 px++;
             }
         }else{
-            GbMcB01 b01= new GbMcB01();
-            b01.setB0101("隐藏目录");
-            b01.setGbMc(gbMc);
-            b01.setIsDisplay(GbMcB01.HIDDEN);
-            b01.setPx(px);
-            b01.setTenant(gbMc.getTenant());
-            this.gbMcB01Dao.save(b01);
-            this.gbMcB01Dao.flush();
+            GbMcB01 b01 = saveWMLB01(gbMc);
             for(Map<String,String> dataMap : dataList){
                 this.gbMcA01Dao.saveFromWordDataMap(dataMap,b01);
                 px++;
             }
 
         }
+    }
+
+    public GbMcB01 saveWMLB01(GbMc gbMc){
+        GbMcB01 b01= new GbMcB01();
+        b01.setB0101("隐藏目录");
+        b01.setGbMc(gbMc);
+        b01.setIsDisplay(GbMcB01.HIDDEN);
+        b01.setPx(1);
+        b01.setTenant(gbMc.getTenant());
+        this.gbMcB01Dao.save(b01);
+        this.gbMcB01Dao.flush();
+        return b01;
     }
 
     private String getB0101(Map<String,String> dataMap){
