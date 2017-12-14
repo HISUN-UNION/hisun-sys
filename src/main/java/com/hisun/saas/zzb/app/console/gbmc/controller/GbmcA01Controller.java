@@ -14,6 +14,7 @@ import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcB01Service;
+import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01Vo;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01Vo;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01gzjlVo;
@@ -55,7 +56,8 @@ public class GbmcA01Controller extends BaseController{
 
     @Autowired
     private GbMcB01Service gbMcB01Service;
-
+    @Autowired
+    private GbMcService gbMcService;
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
 
@@ -67,6 +69,7 @@ public class GbmcA01Controller extends BaseController{
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
+            GbMc gbMc = this.gbMcService.getByPK(mcid);
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" gbMcB01.id = :mcb01id", "mcb01id", mcb01id));
             if(xmQuery!=null && !xmQuery.equals("")){
@@ -92,6 +95,7 @@ public class GbmcA01Controller extends BaseController{
             map.put("pager", pager);
             map.put("mcb01id", mcb01id);
             map.put("mcid", mcid);
+            map.put("isMl", gbMc.getIsMl());
             map.put("xmQuery", xmQuery);
         } catch (Exception e) {
             throw new GenericException(e);
@@ -256,7 +260,6 @@ public class GbmcA01Controller extends BaseController{
             map.put("mcb01id", gbMcA01.getGbMcB01().getId());
             map.put("mcid", gbMcA01.getGbMcB01().getGbMc().getId());
             map.put("mcb01id", gbMcA01.getGbMcB01().getId());
-
             map.put("isHavagbrmspbFile", isHavagbrmspbFile);
 
         }catch(Exception e){

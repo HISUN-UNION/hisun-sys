@@ -86,6 +86,11 @@ public class GbmcController extends BaseController{
                     GbMcVo vo = new GbMcVo();
                     BeanUtils.copyProperties(vo, gbMc);
                     vo.setA01Count(this.gbMcService.getA01Count(gbMc.getId()));
+                    if(gbMc.getIsMl()==GbMc.WML ){
+                        if(gbMc.getGbMcB01s()!=null && gbMc.getGbMcB01s().size()>0) {
+                            vo.setMcb01id(gbMc.getGbMcB01s().get(0).getId());
+                        }
+                    }
                     //vo.setA01Count(gbMc.getGbMcA01s().size());
                     gbMcVos.add(vo);
                 }
@@ -159,7 +164,7 @@ public class GbmcController extends BaseController{
      */
     @RequestMapping(value = "/save")
     public @ResponseBody Map<String, Object> save(@ModelAttribute GbMcVo gbMcVo, HttpServletRequest req
-            ,@RequestParam(value="b01File",required = false) MultipartFile b01File
+            ,@RequestParam(value="gbmcFile",required = false) MultipartFile gbmcFile
             ,@RequestParam(value="a01File",required = false) MultipartFile a01File
             ,@RequestParam(value="zpFile",required = false) MultipartFile zpFile) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -183,9 +188,9 @@ public class GbmcController extends BaseController{
                     String gbmcDir = uploadAbsolutePath + GbMcService.ATTS_PATH;//名册
                     String gbrmspbDir = uploadAbsolutePath + GbMcA01gbrmspbService.ATTS_PATH;//干部任免审批表
                     String zpDir = uploadAbsolutePath + GbMcA01Service.ATTS_ZP_PATH;//照片
-                    if (b01File != null && !b01File.isEmpty()) {
+                    if (gbmcFile != null && !gbmcFile.isEmpty()) {
                         //处理名册数据
-                        String fileName = b01File.getOriginalFilename();
+                        String fileName = gbmcFile.getOriginalFilename();
                         if (fileName.endsWith(".doc") || fileName.endsWith(".DOC")
                                 || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
                             File gbmcDirFile = new File(gbmcDir);
@@ -195,7 +200,7 @@ public class GbmcController extends BaseController{
                             String gbmcWordPath = gbmcDir + UUIDUtil.getUUID() + "_" + fileName;
                             File gbmcWordFile = new File(gbmcWordPath);
                             FileOutputStream fos = new FileOutputStream(gbmcWordFile);
-                            fos.write(b01File.getBytes());
+                            fos.write(gbmcFile.getBytes());
                             fos.flush();
                             fos.close();
 
@@ -252,11 +257,14 @@ public class GbmcController extends BaseController{
                                 }
                             }
                         }
-                        map.put("success", true);
+
                     }
                 }
             }
+            map.put("success", true);
         } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", "修改失败");
             throw new GenericException(e);
         }
         return map;

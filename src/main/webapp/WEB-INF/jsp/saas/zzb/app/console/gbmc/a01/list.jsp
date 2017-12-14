@@ -40,7 +40,12 @@
 								<%--<i class="icon-circle-arrow-up"></i>批量上传--%>
 								<%--<input class="file_progress" type="file" name="moreAttFile" id="btn-moreAttTemplate">--%>
 							<%--</span>--%>
-						<a class="btn" href="${path }/zzb/app/console/gbmc/b01/list?mcid=${mcid}"><i class="icon-undo"></i>返回</a>
+						<c:if test="${isMl ==0}">
+							<a class="btn" href="${path }/zzb/app/console/gbmc/b01/list?mcid=${mcid}"><i class="icon-undo"></i>返回</a>
+						</c:if>
+						<c:if test="${isMl ==1}">
+							<a class="btn" href="${path }/zzb/app/console/gbmc/"><i class="icon-undo"></i>返回</a>
+						</c:if>
 					</div>
 				</div>
 			</form>
@@ -50,6 +55,7 @@
 						<form action="${path }/zzb/app/console/gbmc/a01/list" method="POST" id="searchForm" name="searchForm">
 							<input type="hidden" id="mcb01id" name="mcb01id" value="${mcb01id}"/>
 							<input type="hidden" id="mcid" name="mcid" value="${mcid}"/>
+							<input type="hidden" id="isMl" name="isMl" value="${isMl}"/>
 							<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
 							<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
 							<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">

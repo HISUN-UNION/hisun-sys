@@ -37,8 +37,10 @@
 							<div class="portlet-body form">
 								<!-- BEGIN FORM-->
 
-								<form action="" class="form-horizontal" id="form1" method="post">
+								<form action="" class="form-horizontal" id="form1" method="post"enctype="multipart/form-data">
 									<input type="hidden" name="id" value="${gbMc.id }" id="id">
+									<input type="hidden" name="isMl" value="${gbMc.isMl }" id="isMl">
+
 									<%--<input type="hidden" name="tjjsondata" value="${gbtj.tjjsondata}" id="tjjsondata">--%>
 									<div id="mcGroup" class="control-group">
 										<label class="control-label">名册名称<span class="required">*</span></label>
@@ -56,10 +58,10 @@
 											</select>
 										</div>
 									</div>
-									<div class="control-group" id="isMlGroup">
+									<div class="control-group" >
 										<label class="control-label">有无目录<span class="required">*</span></label>
 										<div class="controls">
-											<select class="span6 m-wrap" id="isMl" name="isMl"   data-placeholder="Choose a Category" disabled tabindex="1" required>
+											<select class="span6 m-wrap"   data-placeholder="Choose a Category" disabled tabindex="1" required>
 												<option value="0" <c:if test="${gbMc.isMl ==0}">selected</c:if>>有目录</option>
 												<option value="1" <c:if test="${gbMc.isMl ==1}">selected</c:if>>无目录</option>
 											</select>
@@ -100,46 +102,69 @@
 			<script type="text/javascript" src="${path }/js/common/DataValidate.js"></script>
 			<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.js"></script>
 			<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
-
-			<!— 引入确认框模块 —>
-<%@ include file="/WEB-INF/jsp/inc/confirmModal.jsp"%>
-<script type="text/javascript">
-
-	jQuery(document).ready(function() {
-		App.init();
-		var startDate = $("#pcsjValue").datepicker({
-			language:  'zh-CN',
-			format: "yyyymmdd",
-			pickerPosition: "bottom-left",
-			weekStart : 1,
-			autoclose : true
-		});
-	});
-
-	var myVld = new EstValidate("form1");
-	function formUpdate(){
-		var bool = myVld.form();
-		if(bool){
-			$.cloudAjax({
-				path : '${path}',
-				url : "${path }/zzb/app/console/gbmc/save",
-				type : "post",
-				data : $("#form1").serialize(),
-				dataType : "json",
-				success : function(data){
-					if(data.success){
-						showTip("提示","操作成功",2000);
-						setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/"},2000);
-					}else{
-						showTip("提示", json.message, 2000);
+			<script type="text/javascript" src="${path }/js/common/loading.js"></script>
+			<script type="text/javascript">
+				var myLoading = new MyLoading("${path}",20000);
+				//	(function(){
+				//		App.init();
+				//
+				//	})();
+				var myVld = new EstValidate("form1");
+				function formUpdate() {
+					var bool = myVld.form();
+					if (!bool) {
+						return;
 					}
-				},
-				error : function(){
-					showTip("提示","出错了请联系管理员",2000);
+
+					myLoading.show();
+					$("#form1").ajaxSubmit({
+						url : "${path }/zzb/app/console/gbmc/save",
+						type : "post",
+						dataType : "json",
+						enctype : "multipart/form-data",
+						headers: {
+							"OWASP_CSRFTOKEN":"${sessionScope.OWASP_CSRFTOKEN}"
+						},
+						success : function(data){
+							myLoading.hide();
+							if(data.success){
+								showTip("提示","操作成功",2000);
+								setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/"},2000);
+							}else{
+								showTip("提示", data.message, 2000);
+							}
+						},
+						error : function(arg1, arg2, arg3){
+							myLoading.hide();
+							showTip("提示","出错了请联系管理员");
+						}
+					});
 				}
-			});
-		}
-	}
+
+	<%--var myVld = new EstValidate("form1");--%>
+	<%--function formUpdate(){--%>
+		<%--var bool = myVld.form();--%>
+		<%--if(bool){--%>
+			<%--$.cloudAjax({--%>
+				<%--path : '${path}',--%>
+				<%--url : "${path }/zzb/app/console/gbmc/save",--%>
+				<%--type : "post",--%>
+				<%--data : $("#form1").serialize(),--%>
+				<%--dataType : "json",--%>
+				<%--success : function(data){--%>
+					<%--if(data.success){--%>
+						<%--showTip("提示","操作成功",2000);--%>
+						<%--setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/"},2000);--%>
+					<%--}else{--%>
+						<%--showTip("提示", json.message, 2000);--%>
+					<%--}--%>
+				<%--},--%>
+				<%--error : function(){--%>
+					<%--showTip("提示","出错了请联系管理员",2000);--%>
+				<%--}--%>
+			<%--});--%>
+		<%--}--%>
+	<%--}--%>
 	
 </script>
 </body>

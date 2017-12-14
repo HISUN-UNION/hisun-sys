@@ -1,6 +1,7 @@
 package com.hisun.saas.zzb.app.console.gbmc.vo;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.zzb.app.console.gbmc.entity.GbMc;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -19,7 +20,9 @@ public class GbMcVo{
     private int a01Count;
     private List<GbMcB01Vo> gbMcB01Vos;
     private int isMl;
+    private String isMlValue;
     private String mb;//选择的模板
+    private String mcb01id;//如果为无目录 则用来存储隐藏目录ID
     public String getId() {
         return id;
     }
@@ -74,5 +77,25 @@ public class GbMcVo{
 
     public void setIsMl(int isMl) {
         this.isMl = isMl;
+    }
+
+    public String getMcb01id() {
+        return mcb01id;
+    }
+
+    public void setMcb01id(String mcb01id) {
+        this.mcb01id = mcb01id;
+    }
+
+    public String getIsMlValue() {
+        if(this.isMl == GbMc.WML) {
+            return "无目录";
+        }else{
+            return "有目录";
+        }
+    }
+
+    public void setIsMlValue(String isMlValue) {
+        this.isMlValue = isMlValue;
     }
 }

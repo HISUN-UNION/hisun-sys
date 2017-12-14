@@ -56,17 +56,27 @@
 							<thead>
 								<tr>
 									<th >名册名称</th>
+
 									<th width="10%">人员</th>
 									<th width="10%">排序</th>
+									<th width="10%">有无目录</th>
 									<th width="15%">操作</th>
 								</tr>
 							</thead>
 							<tbody>
 								<c:forEach items="${pager.datas}" var="vo">
 									<tr style="text-overflow:ellipsis;">
-										<td><a href="${path}/zzb/app/console/gbmc/b01/list?mcid=${vo.id }"><c:out value="${vo.mc}"></c:out></a></td>
-										<td><a href="${path}/zzb/app/console/gbmc/b01/list?mcid=${vo.id }">共<c:out value="${vo.a01Count}"></c:out>人</a></td>
+										<c:if test="${vo.isMl ==0}">
+											<td><a href="${path}/zzb/app/console/gbmc/b01/list?mcid=${vo.id }"><c:out value="${vo.mc}"></c:out></a></td>
+											<td><a href="${path}/zzb/app/console/gbmc/b01/list?mcid=${vo.id }">共<c:out value="${vo.a01Count}"></c:out>人</a></td>
+										</c:if>
+
+										<c:if test="${vo.isMl ==1}">
+											<td><a href="${path}/zzb/app/console/gbmc/a01/list?mcid=${vo.id}&mcb01id=${vo.mcb01id }"><c:out value="${vo.mc}"></c:out></a></td>
+											<td><a href="${path}/zzb/app/console/gbmc/a01/list?mcid=${vo.id}&mcb01id=${vo.mcb01id }">共<c:out value="${vo.a01Count}"></c:out>人</a></td>
+										</c:if>
 										<td><c:out value="${vo.px}"></c:out></td>
+										<td><c:out value="${vo.isMlValue}"></c:out></td>
 										<td class="Left_alignment">
 											<a href="${path}/zzb/app/console/gbmc/edit?id=${vo.id }" class="">编辑</a>|
 											<a href="javascript:del('${vo.id }','${vo.mc}')" class="">删除</a>

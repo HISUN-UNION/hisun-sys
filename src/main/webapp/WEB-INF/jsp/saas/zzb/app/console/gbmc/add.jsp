@@ -71,10 +71,10 @@
 								</div>
 
 							</div>
-							<div  id="b01FileGroup" class="control-group">
+							<div  id="gbmcFileGroup" class="control-group">
 								<label class="control-label">名册文件</label>
 								<div class="controls">
-									<input type="file" class="default"  name="b01File" id="b01File" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
+									<input type="file" class="default"  name="gbmcFile" id="gbmcFile" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
 									<p class="textprompt">附件支持的格式有：'doc','docx'</p>
 								</div>
 							</div>
@@ -130,9 +130,9 @@ function formSubmit() {
 	}
 	var isMl = $('#isMl').val();//0;有目录  1:无目录
 	var isHavaB01File = false;//
-	var b01fileInput = document.getElementById("b01File");
-	if (b01fileInput.files.length > 0) {
-		var name = b01fileInput.files[0].name
+	var gbmcFileInput = document.getElementById("gbmcFile");
+	if (gbmcFileInput.files.length > 0) {
+		var name = gbmcFileInput.files[0].name
 		var arr = name.split(".");
 		if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {
 			showTip("提示", "请上传word文件", 2000);
@@ -165,26 +165,30 @@ function formSubmit() {
 			isHavaZpFile = true;
 		}
 	}
-	if (isMl == "0") {//0;有目录  1:无目录 如果为无目录则  如果为无目录：如上传了干部照片则必须传干部信息  有目录：上传了干部照片则必须上传名册文件、干部信息；如上传了干部信息则必须上传名册信息
-		if(isHavaZpFile == true){
-			if(isHavaB01File == false || isHavaA01File==false){
-				showTip("提示", "有目录已上传了照片文件，请上传名册文件和干部信息", 2000);
-				return;
-			}
-		}else{
-			if(isHavaA01File==true&&isHavaB01File == false ){
-				showTip("提示", "有目录已上传了干部信息，请上传名册文件", 2000);
-				return;
-			}
-		}
-	}else{
-		if(isHavaZpFile == true){
-			if(isHavaB01File == false || isHavaA01File==false){
-				showTip("提示", "无目录已上传了照片文件，请上传干部信息", 2000);
-				return;
-			}
-		}
+	if(isHavaB01File == false){
+		showTip("提示", "请上传名册文件", 2000);
+		return;
 	}
+//	if (isMl == "0") {//0;有目录  1:无目录 如果为无目录则  如果为无目录：如上传了干部照片则必须传干部信息  有目录：上传了干部照片则必须上传名册文件、干部信息；如上传了干部信息则必须上传名册信息
+//		if(isHavaZpFile == true){
+//			if(isHavaB01File == false || isHavaA01File==false){
+//				showTip("提示", "有目录已上传了照片文件，请上传名册文件和干部信息", 2000);
+//				return;
+//			}
+//		}else{
+//			if(isHavaA01File==true&&isHavaB01File == false ){
+//				showTip("提示", "有目录已上传了干部信息，请上传名册文件", 2000);
+//				return;
+//			}
+//		}
+//	}else{
+//		if(isHavaZpFile == true){
+//			if(isHavaB01File == false || isHavaA01File==false){
+//				showTip("提示", "无目录已上传了照片文件，请上传干部信息", 2000);
+//				return;
+//			}
+//		}
+//	}
 	myLoading.show();
 	$("#form1").ajaxSubmit({
 		url : "${path }/zzb/app/console/gbmc/save",
@@ -200,7 +204,7 @@ function formSubmit() {
 				showTip("提示","操作成功",2000);
 				setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbmc/"},2000);
 			}else{
-				showTip("提示", json.message, 2000);
+				showTip("提示", data.message, 2000);
 			}
 		},
 		error : function(arg1, arg2, arg3){
