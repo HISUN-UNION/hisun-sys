@@ -75,7 +75,7 @@ public class AppGbcxA01Controller extends BaseController{
         try {
             CommonConditionQuery query = new CommonConditionQuery();
             String b0101 = "";
-            if(b01Id!=null && !b01Id.equals("1")){
+            if(b01Id!=null && !b01Id.equals("")&& !b01Id.equals("1")){
                 query.add(CommonRestrictions.and(" appGbcxB01.id = :b01Id",
                         "b01Id", b01Id));
                 AppGbcxB01 appGbcxB01 = this.appGbcxB01Service.getByPK(b01Id);

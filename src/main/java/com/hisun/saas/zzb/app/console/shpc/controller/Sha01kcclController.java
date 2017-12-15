@@ -125,10 +125,19 @@ public class Sha01kcclController extends BaseController {
     }
 
 
-
+    /**
+     *
+     * @param shpcId
+     * @param uploadMatchingMode  //批量上传匹配方式 0按序号匹配 1按姓名匹配
+     * @param file
+     * @param req
+     * @param resp
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value="/ajax/batch/upload")
     public @ResponseBody
-    Map<String,Object> batchUpload(String shpcId, @RequestParam(value="kcclFile",required=false) MultipartFile file,
+    Map<String,Object> batchUpload(String shpcId, String uploadMatchingMode,@RequestParam(value="kcclFile",required=false) MultipartFile file,
                                    HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String,Object> map = new HashMap<String,Object>();

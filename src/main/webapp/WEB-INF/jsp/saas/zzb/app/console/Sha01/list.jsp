@@ -19,9 +19,40 @@
 		form {
 			margin: 0 0 0px;
 		}
+		.radio input[type="radio"], .checkbox input[type="checkbox"]{
+			margin-left:0px;
+		}
+		.table td a{
+			margin:0px;
+		}
+		.table td.Left_alignment em{
+			color:#333;
+		}
 	</style>
 </head>
 <body>
+<div id="selectTypeModal" class="modal container hide fade" tabindex="-1" data-width="400">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="title" >
+					选择批量上传匹配方式
+				</h3>
+			</div>
+			<div class="modal-body" id="dabzAddDiv">
+				<div >
+					<input type="radio" value="0" name="selectType" id="selectTypeByNum">按序号匹配
+					<input type="radio" value="1" checked  name="selectType" id="selectTypeByName">按姓名匹配
+				</div>
+				<div class="control-group mybutton-group" style="text-align: right;">
+					<button type="button" class="btn green" onclick="uploadBatchFile()"><i class="icon-ok"></i> 确定</button>
+					<button type="button" class="btn btn-default"  data-dismiss="modal"><i class="icon-remove-sign"></i> 取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span12 responsive">
@@ -40,19 +71,19 @@
 								</a>
 								<ul class="dropdown-menu">
 									<li >
-										<a onclick="uploadFile('gbrmspb')">干部任免审批表</a>
+										<a onclick="selectTyle('gbrmspb')">干部任免审批表</a>
 										<input type="file" style="display: none" name="gbrmspbFile" id="btn-gbrmspb"/>
 									</li>
 									<li>
-										<a onclick="uploadFile('kccl')">考察材料</a>
+										<a onclick="selectTyle('kccl')">考察材料</a>
 										<input type="file"  style="display: none" name="kcclFile" id="btn-kccl"/>
 									</li>
 									<li>
-										<a onclick="uploadFile('dascqk')">档案审查情况</a>
+										<a onclick="selectTyle('dascqk')">档案审查情况</a>
 										 <input type="file" style="display: none" name="dascqkFile" id="btn-dascqk"/>
 									</li>
 									<li>
-										<a onclick="uploadFile('grzdsx')">个人重大事项</a>
+										<a onclick="selectTyle('grzdsx')">个人重大事项</a>
 										<input type="file"  style="display: none" name="grzdsxFile" id="btn-grzdsx"/>
 									</li>
 
@@ -73,6 +104,13 @@
 								<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
 								<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
 								姓名：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
+								未上传材料：<select class="select_form" tabindex="-1" name="noFileQuert" id="noFileQuert" style="width: 150px; margin-bottom: 0px;" >
+										<option value="noselect" <c:if test="${noFileQuert eq 'noselect'}">selected</c:if>></option>
+										<option value="gbrmspb" <c:if test="${noFileQuert eq 'gbrmspb'}">selected</c:if>>干部任免审批表</option>
+										<option value="kccl" <c:if test="${noFileQuert eq 'kccl'}">selected</c:if>>考察材料</option>
+										<option value="dascqk" <c:if test="${noFileQuert eq 'dascqk'}">selected</c:if>>档案审查情况</option>
+										<option value="grzdsx" <c:if test="${noFileQuert eq 'grzdsx'}">selected</c:if>>个人重大事项</option>
+									</select>
 								<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
 								<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
 							</form>
@@ -118,31 +156,32 @@
 										<td title="${vo.xgzdwjzw}"><c:out value="${vo.xgzdwjzw}"></c:out></td>
 										<td title="${vo.ntzpbyj}"><c:out value="${vo.ntzpbyj}"></c:out></td>
 										<%--<td title="${vo.shyj}"><c:out value="${vo.shyj}"></c:out></td>--%>
-										<td >
+										<td class="Left_alignment">
 											<c:if test="${vo.havagbrmspbFile }">
-												<a href="javascript:gbrmspbDown('${vo.id }')" class="">任免审批表&nbsp;&nbsp;&nbsp;</a>
+												<em style="width: 78px;display: inline-block"><a href="javascript:gbrmspbDown('${vo.id }')" class="">任免审批表</a></em>
 											</c:if>
 											<c:if test="${!vo.havagbrmspbFile }">
-												任免审批表&nbsp;&nbsp;&nbsp;
-											</c:if>
-											<c:if test="${vo.havaDascqkFile }">
-												|<a class="" href="javascript:dascqkDown('${vo.id }')">档案审查 </a>
-											</c:if>
-											<c:if test="${!vo.havaDascqkFile }">
-												|档案审查
-											</c:if>
-											<br>
-											<c:if test="${vo.havaDascqkFile }">
-												<a class="" href="javascript:grzdsxDown('${vo.id }')">个人重大事项</a>
-											</c:if>
-											<c:if test="${!vo.havaDascqkFile }">
-												个人重大事项
+											<a class="" href="javascript:unloadFile('gbrmspb','${vo.id }')"><em style="width: 78px;display: inline-block">任免审批表</em></a>
 											</c:if>
 											<c:if test="${vo.havakcclFile }">
 												|<a class="" href="javascript:kcclDown('${vo.id }')">考察材料</a>
 											</c:if>
 											<c:if test="${!vo.havakcclFile }">
-												|考察材料
+												|<a class="" href="javascript:unloadFile('kccl','${vo.id }')"><em>考察材料</em></a>
+											</c:if>
+
+											<br>
+											<c:if test="${vo.havaGrzdsxFile }">
+												<a class="" href="javascript:grzdsxDown('${vo.id }')">个人重大事项</a>
+											</c:if>
+											<c:if test="${!vo.havaGrzdsxFile }">
+											<a class="" href="javascript:unloadFile('grzdsx','${vo.id }')" ><em>个人重大事项</em></a>
+											</c:if>
+											<c:if test="${vo.havaDascqkFile }">
+												|<a class="" href="javascript:dascqkDown('${vo.id }')">档案审查 </a>
+											</c:if>
+											<c:if test="${!vo.havaDascqkFile }">
+												|<a class="" href="javascript:unloadFile('dascqk','${vo.id }')"><em>档案审查</em></a>
 											</c:if>
 										</td>
 									</tr>
@@ -168,6 +207,9 @@
 	<!— 引入确认框模块 —>
 	<%@ include file="/WEB-INF/jsp/inc/confirmModal.jsp" %>
 	<script type="text/javascript">
+		var uploadMatchingMode = "";//批量上传匹配方式 0按序号匹配 1按姓名匹配
+		var unloadOnlyFileOrBatch = "batch";//批量上传还是单个上传 only为单个文件上传 batch为批量上传
+		var a01Id = "";//上传附件的a01Id
 		(function(){
 			App.init();
 
@@ -240,16 +282,29 @@
 				if (fileInput.files.length > 0) {
 					var name = fileInput.files[0].name
 					var arr = name.split(".");
-					if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
-						showTip("提示", "请上传zip文件", 2000);
-						return;
+					if(unloadOnlyFileOrBatch =="batch") {
+						if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
+							showTip("提示", "请上传zip文件", 2000);
+							return;
+						}
+					}else{
+						if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {
+							showTip("提示", "请上传word文件", 2000);
+							return;
+						}
 					}
 				} else {
 					showTip("提示", "请选择文件上传", 2000);
 					return;
 				}
+				var url = "";
+				if(unloadOnlyFileOrBatch =="batch") {
+					url = "${path }/zzb/app/Sha01/gbrmspb/ajax/batch/upload?shpcId=${shpcId}&uploadMatchingMode="+uploadMatchingMode;
+				}else{
+					url = "${path }/zzb/app/Sha01/gbrmspb/ajax/uploadFile?sha01Id="+a01Id;
+				}
 				$("#importForm").ajaxSubmit({
-					url: "${path }/zzb/app/Sha01/gbrmspb/ajax/batch/upload?shpcId=${shpcId}",
+					url:url ,
 					type: "post",
 					headers: {
 						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
@@ -260,7 +315,7 @@
 					success: function (json) {
 						if (json.code == 1) {
 							showTip("提示","上传成功",2000);
-
+							searchSubmit();
 						} else if (json.code == -1) {
 							showTip("提示", json.message, 2000);
 						} else {
@@ -290,16 +345,29 @@
 				if (fileInput.files.length > 0) {
 					var name = fileInput.files[0].name
 					var arr = name.split(".");
-					if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
-						showTip("提示", "请上传word文件", 2000);
-						return;
+					if(unloadOnlyFileOrBatch =="batch") {
+						if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
+							showTip("提示", "请上传zip文件", 2000);
+							return;
+						}
+					}else{
+						if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {
+							showTip("提示", "请上传word文件", 2000);
+							return;
+						}
 					}
 				} else {
 					showTip("提示", "请选择文件上传", 2000);
 					return;
 				}
+				var url = "";
+				if(unloadOnlyFileOrBatch =="batch") {
+					url = "${path }/zzb/app/Sha01/kccl/ajax/batch/upload?shpcId=${shpcId}&uploadMatchingMode="+uploadMatchingMode;
+				}else{
+					url = "${path }/zzb/app/Sha01/kccl/ajax/uploadFile?sha01Id="+a01Id;
+				}
 				$("#importForm").ajaxSubmit({
-					url: "${path }/zzb/app/Sha01/kccl/ajax/batch/upload?shpcId=${shpcId}",
+					url: url,
 					type: "post",
 					headers: {
 						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
@@ -310,6 +378,8 @@
 					success: function (json) {
 						if (json.code == 1) {
 							showTip("提示","上传成功",2000);
+							searchSubmit();
+
 						} else if (json.code == -1) {
 							showTip("提示", json.message, 2000);
 						} else {
@@ -339,16 +409,29 @@
 				if (fileInput.files.length > 0) {
 					var name = fileInput.files[0].name
 					var arr = name.split(".");
-					if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
-						showTip("提示", "请上传word文件", 2000);
-						return;
+					if(unloadOnlyFileOrBatch =="batch") {
+						if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
+							showTip("提示", "请上传zip文件", 2000);
+							return;
+						}
+					}else{
+						if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {
+							showTip("提示", "请上传word文件", 2000);
+							return;
+						}
 					}
 				} else {
 					showTip("提示", "请选择文件上传", 2000);
 					return;
 				}
+				var url = "";
+				if(unloadOnlyFileOrBatch =="batch") {
+					url = "${path }/zzb/app/Sha01/dascqk/ajax/batch/upload?shpcId=${shpcId}&uploadMatchingMode="+uploadMatchingMode;
+				}else{
+					url = "${path }/zzb/app/Sha01/dascqk/ajax/uploadFile?sha01Id="+a01Id;
+				}
 				$("#importForm").ajaxSubmit({
-					url: "${path }/zzb/app/Sha01/dascqk/ajax/batch/upload?shpcId=${shpcId}",
+					url:url,
 					type: "post",
 					headers: {
 						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
@@ -359,6 +442,8 @@
 					success: function (json) {
 						if (json.code == 1) {
 							showTip("提示","上传成功",2000);
+							searchSubmit();
+
 						} else if (json.code == -1) {
 							showTip("提示", json.message, 2000);
 						} else {
@@ -388,16 +473,29 @@
 				if (fileInput.files.length > 0) {
 					var name = fileInput.files[0].name
 					var arr = name.split(".");
-					if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
-						showTip("提示", "请上传word文件", 2000);
-						return;
+					if(unloadOnlyFileOrBatch =="batch") {
+						if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
+							showTip("提示", "请上传zip文件", 2000);
+							return;
+						}
+					}else{
+						if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {
+							showTip("提示", "请上传word文件", 2000);
+							return;
+						}
 					}
 				} else {
 					showTip("提示", "请选择文件上传", 2000);
 					return;
 				}
+				var url = "";
+				if(unloadOnlyFileOrBatch =="batch") {
+					url = "${path }/zzb/app/Sha01/grzdsx/ajax/batch/upload?shpcId=${shpcId}&uploadMatchingMode="+uploadMatchingMode;
+				}else{
+					url = "${path }/zzb/app/Sha01/grzdsx/ajax/uploadFile?sha01Id="+a01Id;
+				}
 				$("#importForm").ajaxSubmit({
-					url: "${path }/zzb/app/Sha01/grzdsx/ajax/batch/upload?shpcId=${shpcId}",
+					url: url,
 					type: "post",
 					headers: {
 						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
@@ -408,6 +506,8 @@
 					success: function (json) {
 						if (json.code == 1) {
 							showTip("提示","上传成功",2000);
+							searchSubmit();
+
 						} else if (json.code == -1) {
 							showTip("提示", json.message, 2000);
 						} else {
@@ -445,12 +545,29 @@
 				}
 			});
 		};
+		var selectfileName = "";
+		function selectTyle(fileName){
+			$('#selectTypeModal').modal({
+				keyboard: true
+			});
+			selectfileName = fileName;
+//			document.getElementById("btn-"+fileName).click();
+		}
+		function uploadBatchFile(){
+			$('#selectTypeModal').modal('hide');
+			uploadMatchingMode = $("input[name='selectType']:checked").val();
+			unloadOnlyFileOrBatch = "batch";
+			document.getElementById("btn-"+selectfileName).click();
+		}
 
-		function uploadFile(fileName){
+		function unloadFile(fileName,uploadA01Id){
+			a01Id = uploadA01Id;
+			unloadOnlyFileOrBatch = "only";
 			document.getElementById("btn-"+fileName).click();
 		}
 		function clearData(){
 			$("#xmQuery").val('');
+			$("#noFileQuert").val('');
 			document.searchForm.submit();
 		}
 		function gbrmspbDown(a01Id) {

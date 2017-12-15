@@ -66,7 +66,7 @@ public class Sha01Controller extends BaseController {
     private ShtpsjService shtpsjService;
 
     @RequestMapping("/list")
-    public ModelAndView list(HttpServletRequest req,@RequestParam(value="shpcId")String shpcId,String xmQuery,
+    public ModelAndView list(HttpServletRequest req,@RequestParam(value="shpcId")String shpcId,String xmQuery,String noFileQuert,
                             @RequestParam(value = "shpcPageNum", defaultValue = "1") int shpcPageNum,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize" ,required=false) String pageSize) throws GenericException {
@@ -81,62 +81,69 @@ public class Sha01Controller extends BaseController {
                 }
             }
             session.setAttribute("Sha01pageSize",pageSize);
-            CommonConditionQuery query = new CommonConditionQuery();
-            query.add(CommonRestrictions.and(" shpc.id = :shpcId", "shpcId", shpcId));
-            if(xmQuery!=null && !xmQuery.equals("")){
-                query.add(CommonRestrictions.and(" xm like:xmQuery", "xmQuery", "%"+ xmQuery+ "%"));
-            }
-            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-            CommonOrderBy orderBy = new CommonOrderBy();
-           orderBy.add(CommonOrder.asc("px"));
-
-            Long total = this.sha01Service.count(query);
-            List<Sha01> sha01s = this.sha01Service.list(query,orderBy, pageNum,
-                    Integer.parseInt(pageSize));
-            List<Sha01Vo> shpcVos = new ArrayList<Sha01Vo>();
-            if (sha01s != null) {// entity ==> vo
-                for (Sha01 sha01 : sha01s) {
-                    Sha01Vo vo = new Sha01Vo();
-                    BeanUtils.copyProperties(vo, sha01);
-                    //判断干部详细信息是否有附件
-                    if(sha01.getGbrmspbs()!=null &&sha01.getGbrmspbs().size()>0) {
-                        Sha01gbrmspb sha01gbrmspb = sha01.getGbrmspbs().get(0);
-                        if(sha01gbrmspb.getFilepath()!=null && !sha01gbrmspb.getFilepath().equals("")){
-                            vo.setHavagbrmspbFile(true);
-                        }
-                    }
-                    //判断干部详细信息是否有附件
-                    if(sha01.getKccls()!=null &&sha01.getKccls().size()>0) {
-                        Sha01kccl sha01Kccl = sha01.getKccls().get(0);
-                        if(sha01Kccl.getPath()!=null && !sha01Kccl.getPath().equals("")){
-                            vo.setHavakcclFile(true);
-                        }
-                    }
-                    //判断档案审查情况是否有附件
-                    if(sha01.getDascqks()!=null &&sha01.getDascqks().size()>0) {
-                        Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
-                        if(sha01dascqk.getPath()!=null && !sha01dascqk.getPath().equals("")){
-                            vo.setHavaDascqkFile(true);
-                        }
-
-
-                    }
-                    //判断个人重大事项是否有附件
-                    if(sha01.getGrzdsxes()!=null &&sha01.getGrzdsxes().size()>0) {
-                        Sha01grzdsx sha01grzdsx = sha01.getGrzdsxes().get(0);
-                        if(sha01grzdsx.getPath()!=null && !sha01grzdsx.getPath().equals("")){
-                            vo.setHavaGrzdsxFile(true);
-                        }
-                    }
-                    shpcVos.add(vo);
-                }
-            }
-            PagerVo<Sha01Vo> pager = new PagerVo<Sha01Vo>(shpcVos, total.intValue(),
-                    pageNum, Integer.parseInt(pageSize));
+//            CommonConditionQuery query = new CommonConditionQuery();
+//            query.add(CommonRestrictions.and(" shpc.id = :shpcId", "shpcId", shpcId));
+//            if(xmQuery!=null && !xmQuery.equals("")){
+//                query.add(CommonRestrictions.and(" xm like:xmQuery", "xmQuery", "%"+ xmQuery+ "%"));
+//            }
+//            if(noFileQuert!=null && !noFileQuert.equals("") && !noFileQuert.equals("noselect")){
+//                if(noFileQuert.equals("gbrmspb")){
+////                    query.add(CommonRestrictions.and(" Sha01.gbrmspbs.filepath <>'' and tombstone = :tombstone", "tombstone", 0));
+//                }
+//            }
+//            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+//            CommonOrderBy orderBy = new CommonOrderBy();
+//           orderBy.add(CommonOrder.asc("px"));
+//
+//            Long total = this.sha01Service.count(query);
+//            List<Sha01> sha01s = this.sha01Service.list(query,orderBy, pageNum,
+//                    Integer.parseInt(pageSize));
+//            List<Sha01Vo> shpcVos = new ArrayList<Sha01Vo>();
+//            if (sha01s != null) {// entity ==> vo
+//                for (Sha01 sha01 : sha01s) {
+//                    Sha01Vo vo = new Sha01Vo();
+//                    BeanUtils.copyProperties(vo, sha01);
+//                    //判断干部详细信息是否有附件
+//                    if(sha01.getGbrmspbs()!=null &&sha01.getGbrmspbs().size()>0) {
+//                        Sha01gbrmspb sha01gbrmspb = sha01.getGbrmspbs().get(0);
+//                        if(sha01gbrmspb.getFilepath()!=null && !sha01gbrmspb.getFilepath().equals("")){
+//                            vo.setHavagbrmspbFile(true);
+//                        }
+//                    }
+//                    //判断干部详细信息是否有附件
+//                    if(sha01.getKccls()!=null &&sha01.getKccls().size()>0) {
+//                        Sha01kccl sha01Kccl = sha01.getKccls().get(0);
+//                        if(sha01Kccl.getPath()!=null && !sha01Kccl.getPath().equals("")){
+//                            vo.setHavakcclFile(true);
+//                        }
+//                    }
+//                    //判断档案审查情况是否有附件
+//                    if(sha01.getDascqks()!=null &&sha01.getDascqks().size()>0) {
+//                        Sha01dascqk sha01dascqk = sha01.getDascqks().get(0);
+//                        if(sha01dascqk.getPath()!=null && !sha01dascqk.getPath().equals("")){
+//                            vo.setHavaDascqkFile(true);
+//                        }
+//
+//
+//                    }
+//                    //判断个人重大事项是否有附件
+//                    if(sha01.getGrzdsxes()!=null &&sha01.getGrzdsxes().size()>0) {
+//                        Sha01grzdsx sha01grzdsx = sha01.getGrzdsxes().get(0);
+//                        if(sha01grzdsx.getPath()!=null && !sha01grzdsx.getPath().equals("")){
+//                            vo.setHavaGrzdsxFile(true);
+//                        }
+//                    }
+//                    shpcVos.add(vo);
+//                }
+//            }
+//            PagerVo<Sha01Vo> pager = new PagerVo<Sha01Vo>(shpcVos, total.intValue(),
+//                    pageNum, Integer.parseInt(pageSize));
+            PagerVo<Sha01Vo> pager = this.sha01Service.getSha01VoS( Integer.parseInt(pageSize),pageNum,shpcId, xmQuery, noFileQuert);
             map.put("pager", pager);
             map.put("shpcPageNum", shpcPageNum);
             map.put("shpcId", shpcId);
             map.put("xmQuery", xmQuery);
+            map.put("noFileQuert", noFileQuert);
         } catch (Exception e) {
             throw new GenericException(e);
         }

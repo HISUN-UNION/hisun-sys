@@ -88,16 +88,16 @@ public class B01TreeVo implements Serializable{
 	 * 根节点
 	 * @return
 	 */
-	public B01TreeVo oneRoot(){
-		B01TreeVo vo = new B01TreeVo();
-		vo.setId("1");
-		vo.setName("机构");
-		vo.setpId("0");
-		vo.setIsParent(true);
-		vo.setDropInner(true);
-		vo.setOpen(true);
-		return vo;
-	}
+//	public B01TreeVo oneRoot(){
+//		B01TreeVo vo = new B01TreeVo();
+//		vo.setId("1");
+//		vo.setName("机构");
+//		vo.setpId("0");
+//		vo.setIsParent(true);
+//		vo.setDropInner(true);
+//		vo.setOpen(true);
+//		return vo;
+//	}
 
 	public String getId() {
 		return id;

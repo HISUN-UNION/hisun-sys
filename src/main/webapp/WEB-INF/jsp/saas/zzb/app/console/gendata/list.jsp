@@ -24,6 +24,9 @@
 				<div class="portlet-title">
 					<div class="caption">数据包管理</div>
 					<div class="clearfix fr">
+						<a class="btn green" href="javascript:downInitZip()">
+							<i class="icon-plus"></i> 生成初始化数据包
+						</a>
 						<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/gendata/loadGenerator">
 							<i class="icon-plus"></i> 生成数据包
 						</a>
@@ -124,8 +127,8 @@
 			}
 		});
 	}
-	function downZip(id) {
-		window.open("${path }/zzb/app/console/gendata/zip/down?id="+id);
+	function downInitZip() {
+		window.open("${path }/zzb/app/console/gendata/initZip/down");
 	}
 </script>
 </body>

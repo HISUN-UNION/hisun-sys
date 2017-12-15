@@ -84,7 +84,7 @@ public class AppZscxB01Controller extends BaseController{
                 }
             }
             // 添加根节点
-            b01TreeVoList.add(new B01TreeVo().oneRoot());
+//            b01TreeVoList.add(new B01TreeVo().oneRoot());
             // 添加未分组节点
             map.put("customTree", b01TreeVoList);
             map.put("success", true);

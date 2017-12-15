@@ -200,7 +200,11 @@
 						firstNode = parentNode;
 					}
 				}
-				loadRightPage(firstNode.id);
+				if(firstNode==null ||firstNode==undefined){
+					loadRightPage("");
+				}else {
+					loadRightPage(firstNode.id);
+				}
 			},
 			error : function(){
 				myLoading.hide();

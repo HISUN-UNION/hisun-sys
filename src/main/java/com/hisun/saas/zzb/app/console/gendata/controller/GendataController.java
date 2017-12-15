@@ -221,6 +221,19 @@ public class GendataController extends BaseController{
         output.close();
 
     }
+
+    @RequestMapping(value="/initZip/down")
+    public void initZipDown(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        String zipPath = uploadAbsolutePath+GendataService.DATA_PATH+"initSql.zip";
+        resp.setContentType("multipart/form-data");
+        resp.setHeader("Content-Disposition", "attachment;fileName="+encode(GendataService.DATA_PACKET_NAME+".zip"));
+        OutputStream output=resp.getOutputStream();
+        byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+zipPath));
+        output.write(b);
+        output.flush();
+        output.close();
+
+    }
     private String encode(String filename) throws UnsupportedEncodingException {
         if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
             filename = URLEncoder.encode(filename, "UTF-8");

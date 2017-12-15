@@ -76,7 +76,7 @@ public class AppGbcxB01Controller extends BaseController{
                         if(b01.getParentB01() != null) {
                             b01TreeVo.setpId(b01.getParentB01().getId());
                         }else{
-                            b01TreeVo.setpId("1");
+                            b01TreeVo.setpId("");
                         }
                         b01TreeVo.setName(b01.getB0101());
                         b01TreeVo.setHref(b01.getId());
@@ -93,7 +93,7 @@ public class AppGbcxB01Controller extends BaseController{
                 }
             }
             // 添加根节点
-            b01TreeVoList.add(new B01TreeVo().oneRoot());
+//            b01TreeVoList.add(new B01TreeVo().oneRoot());
             // 添加未分组节点
             map.put("customTree", b01TreeVoList);
             map.put("success", true);
