@@ -130,6 +130,9 @@
 	function downInitZip() {
 		window.open("${path }/zzb/app/console/gendata/initZip/down");
 	}
+	function downZip(id) {
+		window.open("${path }/zzb/app/console/gendata/zip/down?id="+id);
+	}
 </script>
 </body>
 </html>
