@@ -1,6 +1,7 @@
-package com.hisun.saas.zzb.app.console.gbcx.entity;
+package com.hisun.saas.zzb.app.console.aset.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -10,8 +11,8 @@ import java.io.Serializable;
  * Created by zhouying on 2017/12/12.
  */
 @Entity
-@Table(name = "app_gbcx_a02")
-public class AppGbcxA02  extends TenantEntity implements Serializable {
+@Table(name = "app_aset_a02")
+public class AppAsetA02 extends TenantEntity implements Serializable {
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
@@ -22,11 +23,11 @@ public class AppGbcxA02  extends TenantEntity implements Serializable {
 
     @ManyToOne(optional = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "a01_id")
-    private AppGbcxA01 appGbcxA01;
+    private AppAsetA01 appGbcxA01;
 
     @ManyToOne(optional = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "b01_id")
-    private AppGbcxB01 appGbcxB01;
+    private AppBsetB01 appGbcxB01;
 
 
     public String getId() {
@@ -45,19 +46,19 @@ public class AppGbcxA02  extends TenantEntity implements Serializable {
         this.zwmc = zwmc;
     }
 
-    public AppGbcxA01 getAppGbcxA01() {
+    public AppAsetA01 getAppGbcxA01() {
         return appGbcxA01;
     }
 
-    public void setAppGbcxA01(AppGbcxA01 appGbcxA01) {
+    public void setAppGbcxA01(AppAsetA01 appGbcxA01) {
         this.appGbcxA01 = appGbcxA01;
     }
 
-    public AppGbcxB01 getAppGbcxB01() {
+    public AppBsetB01 getAppGbcxB01() {
         return appGbcxB01;
     }
 
-    public void setAppGbcxB01(AppGbcxB01 appGbcxB01) {
+    public void setAppGbcxB01(AppBsetB01 appGbcxB01) {
         this.appGbcxB01 = appGbcxB01;
     }
 }

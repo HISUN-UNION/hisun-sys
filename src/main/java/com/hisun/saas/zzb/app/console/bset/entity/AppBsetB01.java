@@ -1,6 +1,7 @@
-package com.hisun.saas.zzb.app.console.gbcx.entity;
+package com.hisun.saas.zzb.app.console.bset.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA02;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -12,8 +13,8 @@ import java.util.List;
  * Created by zhouying on 2017/11/28.
  */
 @Entity
-@Table(name = "app_gbcx_b01")
-public class AppGbcxB01 extends TenantEntity implements Serializable {
+@Table(name = "app_bset_b01")
+public class AppBsetB01 extends TenantEntity implements Serializable {
     @Id
     @GenericGenerator(name = "generator", strategy = "uuid.hex")
     @GeneratedValue(generator = "generator")
@@ -27,13 +28,15 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
     private int dataType;//类型 0--机构 1--分类
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private AppGbcxB01 parentB01;
+    private AppBsetB01 parentB01;
     @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private List<AppGbcxB01> childrenB01s;
+    private List<AppBsetB01> childrenB01s;
     @OneToMany(mappedBy = "appGbcxB01",fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private List<AppGbcxA02> appGbcxA02s;
+    private List<AppAsetA02> appGbcxA02s;
+    @OneToMany(mappedBy = "appGbcxB01", fetch = FetchType.LAZY)
+    private List<AppBsetFl2B01> appGbcxFl2B01s;
 
 
     public String getId() {
@@ -72,29 +75,37 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
     }
 
 
-    public AppGbcxB01 getParentB01() {
+    public AppBsetB01 getParentB01() {
         return parentB01;
     }
 
-    public void setParentB01(AppGbcxB01 parentB01) {
+    public void setParentB01(AppBsetB01 parentB01) {
         this.parentB01 = parentB01;
     }
 
 
-    public List<AppGbcxB01> getChildrenB01s() {
+    public List<AppBsetB01> getChildrenB01s() {
         return childrenB01s;
     }
 
-    public void setChildrenB01s(List<AppGbcxB01> childrenB01s) {
+    public void setChildrenB01s(List<AppBsetB01> childrenB01s) {
         this.childrenB01s = childrenB01s;
     }
 
-    public List<AppGbcxA02> getAppGbcxA02s() {
+    public List<AppAsetA02> getAppGbcxA02s() {
         return appGbcxA02s;
     }
 
-    public void setAppGbcxA02s(List<AppGbcxA02> appGbcxA02s) {
+    public void setAppGbcxA02s(List<AppAsetA02> appGbcxA02s) {
         this.appGbcxA02s = appGbcxA02s;
+    }
+
+    public List<AppBsetFl2B01> getAppGbcxFl2B01s() {
+        return appGbcxFl2B01s;
+    }
+
+    public void setAppGbcxFl2B01s(List<AppBsetFl2B01> appGbcxFl2B01s) {
+        this.appGbcxFl2B01s = appGbcxFl2B01s;
     }
 
     @Override
@@ -102,7 +113,7 @@ public class AppGbcxB01 extends TenantEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AppGbcxB01 that = (AppGbcxB01) o;
+        AppBsetB01 that = (AppBsetB01) o;
 
         if (px != that.px) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;

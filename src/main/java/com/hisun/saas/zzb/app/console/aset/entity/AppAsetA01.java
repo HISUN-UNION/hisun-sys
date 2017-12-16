@@ -1,4 +1,4 @@
-package com.hisun.saas.zzb.app.console.gbcx.entity;
+package com.hisun.saas.zzb.app.console.aset.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,8 +11,8 @@ import java.util.List;
  * Created by zhouying on 2017/11/28.
  */
 @Entity
-@Table(name = "app_gbcx_a01")
-public class AppGbcxA01  extends TenantEntity implements Serializable {
+@Table(name = "app_aset_a01")
+public class AppAsetA01 extends TenantEntity implements Serializable {
     @Id
     @GenericGenerator(name="generator",strategy="uuid.hex")
     @GeneratedValue(generator="generator")
@@ -52,7 +52,7 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
     private String zpPath;
 
     @OneToMany(mappedBy = "appGbcxA01")
-    private List<AppGbcxA02> appGbcxA02s;
+    private List<AppAsetA02> appGbcxA02s;
 
    
     public String getId() {
@@ -223,11 +223,11 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         this.zpPath = zpPath;
     }
 
-    public List<AppGbcxA02> getAppGbcxA02s() {
+    public List<AppAsetA02> getAppGbcxA02s() {
         return appGbcxA02s;
     }
 
-    public void setAppGbcxA02s(List<AppGbcxA02> appGbcxA02s) {
+    public void setAppGbcxA02s(List<AppAsetA02> appGbcxA02s) {
         this.appGbcxA02s = appGbcxA02s;
     }
 
@@ -236,7 +236,7 @@ public class AppGbcxA01  extends TenantEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AppGbcxA01 that = (AppGbcxA01) o;
+        AppAsetA01 that = (AppAsetA01) o;
 
         if (a01Px != that.a01Px) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;

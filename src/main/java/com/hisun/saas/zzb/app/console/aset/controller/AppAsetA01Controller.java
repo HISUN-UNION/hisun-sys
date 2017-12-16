@@ -1,4 +1,4 @@
-package com.hisun.saas.zzb.app.console.gbcx.controller;
+package com.hisun.saas.zzb.app.console.aset.controller;
 
 import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
@@ -9,16 +9,13 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.saas.zzb.app.console.gbcx.entity.AppGbcxA01;
-import com.hisun.saas.zzb.app.console.gbcx.entity.AppGbcxB01;
-import com.hisun.saas.zzb.app.console.gbcx.service.AppGbcxA01Service;
-import com.hisun.saas.zzb.app.console.gbcx.service.AppGbcxB01Service;
-import com.hisun.saas.zzb.app.console.gbcx.vo.AppGbcxA01Vo;
-import com.hisun.saas.zzb.app.console.shpc.entity.*;
-import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
+import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
+import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01Vo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.UUIDUtil;
-import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -37,7 +34,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,12 +43,12 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/zzb/app/console/appGbcxA01")
-public class AppGbcxA01Controller extends BaseController{
+public class AppAsetA01Controller extends BaseController{
     @Resource
-    private AppGbcxA01Service appGbcxA01Service;
+    private AppAsetA01Service appGbcxA01Service;
 
     @Resource
-    private AppGbcxB01Service appGbcxB01Service;
+    private AppBsetB01Service appGbcxB01Service;
 
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
@@ -78,7 +74,7 @@ public class AppGbcxA01Controller extends BaseController{
             if(b01Id!=null && !b01Id.equals("")&& !b01Id.equals("1")){
                 query.add(CommonRestrictions.and(" appGbcxB01.id = :b01Id",
                         "b01Id", b01Id));
-                AppGbcxB01 appGbcxB01 = this.appGbcxB01Service.getByPK(b01Id);
+                AppBsetB01 appGbcxB01 = this.appGbcxB01Service.getByPK(b01Id);
                 b0101 = appGbcxB01.getB0101();
             }
             if(xmQuery!=null && !xmQuery.equals("")){
@@ -89,8 +85,8 @@ public class AppGbcxA01Controller extends BaseController{
             CommonOrderBy orderBy = new CommonOrderBy();
 //            orderBy.add(CommonOrder.desc("lastUpdateTime"));
 //            orderBy.add(CommonOrder.desc("name"));
-            List<AppGbcxA01> a01List = appGbcxA01Service.list(query, orderBy, pageNum, pageSize);
-            PagerVo<AppGbcxA01> pagerVo = new PagerVo<AppGbcxA01>(a01List, total.intValue(), pageNum, pageSize);
+            List<AppAsetA01> a01List = appGbcxA01Service.list(query, orderBy, pageNum, pageSize);
+            PagerVo<AppAsetA01> pagerVo = new PagerVo<AppAsetA01>(a01List, total.intValue(), pageNum, pageSize);
             map.put("pager", pagerVo);
             map.put("b01Id", b01Id);
             map.put("xmQuery", xmQuery);
@@ -182,7 +178,7 @@ public class AppGbcxA01Controller extends BaseController{
      */
     @RequestMapping(value = "/add")
     public ModelAndView add(String b01Id) throws Exception{
-        AppGbcxA01Vo vo = new AppGbcxA01Vo();
+        AppAsetA01Vo vo = new AppAsetA01Vo();
         Integer maxPx = appGbcxA01Service.getMaxPx(b01Id);
         if(maxPx != null){
             vo.setA01Px(maxPx+1);
@@ -202,8 +198,8 @@ public class AppGbcxA01Controller extends BaseController{
     public ModelAndView edit(@RequestParam(value="id")String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            AppGbcxA01 a01 = this.appGbcxA01Service.getByPK(id);
-            AppGbcxA01Vo a01Vo = new AppGbcxA01Vo();
+            AppAsetA01 a01 = this.appGbcxA01Service.getByPK(id);
+            AppAsetA01Vo a01Vo = new AppAsetA01Vo();
             if (a01 == null) {
                 logger.error("数据不存在");
                 throw new GenericException("数据不存在");
@@ -229,7 +225,7 @@ public class AppGbcxA01Controller extends BaseController{
     Map<String, Object> delete(@PathVariable("id")String AssetStatusId) {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
-            AppGbcxA01 a01 = this.appGbcxA01Service.getByPK(AssetStatusId);
+            AppAsetA01 a01 = this.appGbcxA01Service.getByPK(AssetStatusId);
             if(a01 != null){
                 this.appGbcxA01Service.delete(a01);
             }
@@ -247,8 +243,8 @@ public class AppGbcxA01Controller extends BaseController{
     public ModelAndView view(@RequestParam(value="id")String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            AppGbcxA01 a01 = this.appGbcxA01Service.getByPK(id);
-            AppGbcxA01Vo a01Vo = new AppGbcxA01Vo();
+            AppAsetA01 a01 = this.appGbcxA01Service.getByPK(id);
+            AppAsetA01Vo a01Vo = new AppAsetA01Vo();
             if (a01 == null) {
                 logger.error("数据不存在");
                 throw new GenericException("数据不存在");
@@ -269,9 +265,9 @@ public class AppGbcxA01Controller extends BaseController{
      * @return
      */
     @RequestMapping(value = "/save")
-    public @ResponseBody Map<String, Object> save(@ModelAttribute AppGbcxA01Vo a01Vo, HttpServletRequest req, @RequestParam(value="clFile",required = false) MultipartFile clFile) throws GenericException {
+    public @ResponseBody Map<String, Object> save(@ModelAttribute AppAsetA01Vo a01Vo, HttpServletRequest req, @RequestParam(value="clFile",required = false) MultipartFile clFile) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
-        AppGbcxA01 a01 = null;
+        AppAsetA01 a01 = null;
         int newPx = a01Vo.getA01Px();
         int oldPx = 0;
         Integer oldPxInteger = this.appGbcxA01Service.getMaxPx(a01Vo.getAppGbcxB01Id());
@@ -288,7 +284,7 @@ public class AppGbcxA01Controller extends BaseController{
                     a01 = this.appGbcxA01Service.getByPK(id);
                     oldPx = a01.getA01Px();
                 } else {//新增
-                    a01 = new AppGbcxA01();
+                    a01 = new AppAsetA01();
                 }
                 UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
                 BeanUtils.copyProperties(a01, a01Vo);
@@ -342,7 +338,7 @@ public class AppGbcxA01Controller extends BaseController{
     @RequestMapping("/{id}/photo")
     public HttpEntity<byte[]> getPhoto (@PathVariable("id")String id,
                                         HttpServletRequest request, HttpServletResponse response) throws IOException {
-        AppGbcxA01 appGbcxA01 = this.appGbcxA01Service.getByPK(id);
+        AppAsetA01 appGbcxA01 = this.appGbcxA01Service.getByPK(id);
         if(appGbcxA01.getZpPath()!=null){
             String zpRealPath = uploadAbsolutePath+appGbcxA01.getZpPath();
             File file = new File(zpRealPath);

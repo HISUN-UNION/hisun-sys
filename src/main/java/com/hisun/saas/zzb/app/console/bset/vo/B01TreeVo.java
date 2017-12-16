@@ -1,4 +1,4 @@
-package com.hisun.saas.zzb.app.console.gbcx.vo;
+package com.hisun.saas.zzb.app.console.bset.vo;
 
 import java.io.Serializable;
 

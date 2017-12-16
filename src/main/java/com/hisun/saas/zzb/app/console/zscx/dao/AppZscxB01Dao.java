@@ -1,7 +1,6 @@
 package com.hisun.saas.zzb.app.console.zscx.dao;
 
 import com.hisun.base.dao.BaseDao;
-import com.hisun.saas.zzb.app.console.gbcx.entity.AppGbcxB01;
 import com.hisun.saas.zzb.app.console.zscx.entity.AppZscxB01;
 
 /**

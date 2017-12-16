@@ -1,13 +1,12 @@
-package com.hisun.saas.zzb.app.console.gbcx.service.impl;
+package com.hisun.saas.zzb.app.console.aset.service.impl;
 
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.saas.zzb.app.console.gbcx.dao.AppGbcxA01Dao;
-import com.hisun.saas.zzb.app.console.gbcx.entity.AppGbcxA01;
-import com.hisun.saas.zzb.app.console.gbcx.entity.AppGbcxA01;
-import com.hisun.saas.zzb.app.console.gbcx.service.AppGbcxA01Service;
+import com.hisun.saas.zzb.app.console.aset.dao.AppAsetA01Dao;
+import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +18,14 @@ import java.util.Map;
  * Created by zhouying on 2017/9/16.
  */
 @Service
-public class AppGbcxA01ServiceImpl extends BaseServiceImpl<AppGbcxA01,String> implements AppGbcxA01Service {
+public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> implements AppAsetA01Service {
 
-    private AppGbcxA01Dao appGbcxA01Dao;
+    private AppAsetA01Dao appGbcxA01Dao;
 
     @Autowired
-    public void setBaseDao(BaseDao<AppGbcxA01, String> appGbcxA01Dao) {
+    public void setBaseDao(BaseDao<AppAsetA01, String> appGbcxA01Dao) {
         this.baseDao = appGbcxA01Dao;
-        this.appGbcxA01Dao = (AppGbcxA01Dao) appGbcxA01Dao;
+        this.appGbcxA01Dao = (AppAsetA01Dao) appGbcxA01Dao;
     }
     public Integer getMaxPx(String b01Id){
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();

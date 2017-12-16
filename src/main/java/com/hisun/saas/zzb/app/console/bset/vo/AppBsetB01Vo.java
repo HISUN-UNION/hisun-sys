@@ -1,11 +1,11 @@
-package com.hisun.saas.zzb.app.console.gbcx.vo;
+package com.hisun.saas.zzb.app.console.bset.vo;
 
 import com.hisun.saas.zzb.app.console.appclient.entity.AppClient;
 
 /**
  * Created by zhouying on 2017/9/23.
  */
-public class AppGbcxB01Vo {
+public class AppBsetB01Vo {
 
 
     private String id;

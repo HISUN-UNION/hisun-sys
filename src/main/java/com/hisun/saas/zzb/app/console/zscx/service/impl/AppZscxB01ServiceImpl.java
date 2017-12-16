@@ -4,7 +4,6 @@ import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.saas.zzb.app.console.gbcx.entity.AppGbcxB01;
 import com.hisun.saas.zzb.app.console.zscx.dao.AppZscxB01Dao;
 import com.hisun.saas.zzb.app.console.zscx.entity.AppZscxB01;
 import com.hisun.saas.zzb.app.console.zscx.service.AppZscxB01Service;

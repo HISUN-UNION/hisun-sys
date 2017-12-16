@@ -1,4 +1,4 @@
-package com.hisun.saas.zzb.app.console.gbcx.controller;
+package com.hisun.saas.zzb.app.console.bset.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -9,29 +9,23 @@ import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.exception.GenericException;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.saas.zzb.app.console.gbcx.entity.AppGbcxB01;
-import com.hisun.saas.zzb.app.console.gbcx.service.AppGbcxB01Service;
-import com.hisun.saas.zzb.app.console.gbcx.vo.AppGbcxB01Vo;
-import com.hisun.saas.zzb.app.console.gbcx.vo.B01TreeVo;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
+import com.hisun.saas.zzb.app.console.bset.vo.AppBsetB01Vo;
+import com.hisun.saas.zzb.app.console.bset.vo.B01TreeVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
-import com.hisun.util.DateUtil;
-import com.hisun.util.UUIDUtil;
+import com.hisun.util.C3p0Util;
 import com.hisun.util.WebUtil;
-import com.hisun.util.WordConvertUtil;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Date;
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,11 +34,13 @@ import java.util.Map;
  * Created by zhouying on 2017/9/16.
  */
 @Controller
-@RequestMapping("/zzb/app/console/appGbcxB01")
-public class AppGbcxB01Controller extends BaseController{
+@RequestMapping("/zzb/app/console/bset")
+public class AppBsetB01Controller extends BaseController{
 
     @Resource
-    private AppGbcxB01Service appGbcxB01Service;
+    private AppBsetB01Service appBsetB01Service;
+    @Resource
+    private AppBsetFlService appBsetFlService;
 
     @RequestMapping(value = "/")
     public ModelAndView list(){
@@ -63,12 +59,12 @@ public class AppGbcxB01Controller extends BaseController{
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.desc("dataType"));
             orderBy.add(CommonOrder.asc("px"));
-            List<AppGbcxB01> appGbcxB01s = this.appGbcxB01Service.list(query, orderBy);
+            List<AppBsetB01> appGbcxB01s = this.appBsetB01Service.list(query, orderBy);
 
             List<B01TreeVo> b01TreeVoList = Lists.newArrayList();
             String contextPath = WebUtil.getRequest().getContextPath();
             if(appGbcxB01s != null){
-                for (AppGbcxB01 b01 : appGbcxB01s) {
+                for (AppBsetB01 b01 : appGbcxB01s) {
                     // 自定义分组信息
 
                         B01TreeVo b01TreeVo = new B01TreeVo();
@@ -114,10 +110,10 @@ public class AppGbcxB01Controller extends BaseController{
     @RequestMapping(value = "/ajax/addOrEdit")
     public ModelAndView addOrEdit(@RequestParam(value="dataType",required=false)String dataType,@RequestParam(value="parentId",required=false)String parentId,@RequestParam(value="id",required=false)String id) {
         Map<String, Object> map = new HashMap<String, Object>();
-        AppGbcxB01Vo vo = new AppGbcxB01Vo();
+        AppBsetB01Vo vo = new AppBsetB01Vo();
         try {
             if(id==null || id.equals("")) {
-                Integer maxPx = appGbcxB01Service.getMaxPx(parentId);
+                Integer maxPx = appBsetB01Service.getMaxPx(parentId);
                 if (maxPx != null) {
                     vo.setPx(maxPx + 1);
                 } else {
@@ -126,7 +122,7 @@ public class AppGbcxB01Controller extends BaseController{
                 vo.setDataType(Integer.parseInt(dataType));
                 vo.setParentId(parentId);
             }else{
-                AppGbcxB01 appGbcxB01 = this.appGbcxB01Service.getByPK(id);
+                AppBsetB01 appGbcxB01 = this.appBsetB01Service.getByPK(id);
                 if (appGbcxB01 == null) {
                     logger.error("数据不存在");
                     throw new GenericException("数据不存在");
@@ -151,12 +147,12 @@ public class AppGbcxB01Controller extends BaseController{
      * @return
      */
     @RequestMapping(value = "/save")
-    public @ResponseBody Map<String, Object> save(@ModelAttribute AppGbcxB01Vo appGbcxB01Vo, HttpServletRequest req) throws GenericException {
+    public @ResponseBody Map<String, Object> save(@ModelAttribute AppBsetB01Vo appGbcxB01Vo, HttpServletRequest req) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
-        AppGbcxB01 appGbcxB01 = null;
+        AppBsetB01 appGbcxB01 = null;
         int newPx = appGbcxB01Vo.getPx();
         int oldPx = 0;
-        Integer oldPxInteger = this.appGbcxB01Service.getMaxPx(appGbcxB01Vo.getParentId());
+        Integer oldPxInteger = this.appBsetB01Service.getMaxPx(appGbcxB01Vo.getParentId());
         if(oldPxInteger != null){
             oldPx = oldPxInteger.intValue();
         }else{
@@ -167,31 +163,31 @@ public class AppGbcxB01Controller extends BaseController{
             if (appGbcxB01Vo != null) {
                 String id = appGbcxB01Vo.getId();
                 if (id != null && id.length() > 0) {//修改
-                    appGbcxB01 = this.appGbcxB01Service.getByPK(id);
+                    appGbcxB01 = this.appBsetB01Service.getByPK(id);
                     oldPx = appGbcxB01.getPx();
                 } else {//新增
-                    appGbcxB01 = new AppGbcxB01();
+                    appGbcxB01 = new AppBsetB01();
                 }
                 UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
                 BeanUtils.copyProperties(appGbcxB01, appGbcxB01Vo);
                 String parentId = appGbcxB01Vo.getParentId();
-                AppGbcxB01 parentAppGbcxB01 = null;
+                AppBsetB01 parentAppGbcxB01 = null;
                 if(parentId!=null && !parentId.equals("")){
-                    parentAppGbcxB01 = this.appGbcxB01Service.getByPK(parentId);
+                    parentAppGbcxB01 = this.appBsetB01Service.getByPK(parentId);
                     appGbcxB01.setParentB01(parentAppGbcxB01);
                 }
                 appGbcxB01.setTenant(userLoginDetails.getTenant());
                
 
                 if(oldPx!=newPx) {
-                    this.appGbcxB01Service.updatePx(appGbcxB01Vo.getParentId(),oldPx,newPx);
+                    this.appBsetB01Service.updatePx(appGbcxB01Vo.getParentId(),oldPx,newPx);
                 }
                 if (id != null && id.length() > 0) {
                     BeanTrans.setBaseProperties(appGbcxB01, userLoginDetails, "update");
-                    this.appGbcxB01Service.update(appGbcxB01);
+                    this.appBsetB01Service.update(appGbcxB01);
                 } else {
                     BeanTrans.setBaseProperties(appGbcxB01, userLoginDetails, "save");
-                    this.appGbcxB01Service.save(appGbcxB01);
+                    this.appBsetB01Service.save(appGbcxB01);
                 }
                 map.put("success", true);
             }
@@ -208,7 +204,7 @@ public class AppGbcxB01Controller extends BaseController{
         Map<String,Object> map = Maps.newHashMap();
         try {
             if (StringUtils.isNoneBlank(id)) {
-                appGbcxB01Service .deleteByPK(id);
+                appBsetB01Service.deleteByPK(id);
                 map.put("success", true);
             } else {
                 map.put("success", false);
@@ -221,4 +217,22 @@ public class AppGbcxB01Controller extends BaseController{
     }
 
 
+
+    @RequestMapping(value="/tranfer/from/yw")
+    public @ResponseBody Map<String,Object> tranferFromYw () throws GenericException{
+        Map<String,Object> map = Maps.newHashMap();
+        try {
+           DataSource dataSource = C3p0Util.getSqlServerDataSource("192.168.0.108",
+                    "1433",
+                    "gcmis","sa","Admin@123");
+            //int count = this.appBsetFlService.saveBsetFlFromYw(dataSource);
+            int count = this.appBsetB01Service.saveBsetB01FromYw(dataSource);
+            map.put("success", true);
+            map.put("transferCount",count);
+        }catch(Exception e){
+            map.put("success", false);
+            logger.error(e, e);
+        }
+        return map;
+    }
 }

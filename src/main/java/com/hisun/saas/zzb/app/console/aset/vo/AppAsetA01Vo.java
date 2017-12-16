@@ -1,9 +1,9 @@
-package com.hisun.saas.zzb.app.console.gbcx.vo;
+package com.hisun.saas.zzb.app.console.aset.vo;
 
 /**
  * Created by zhouying on 2017/9/23.
  */
-public class AppGbcxA01Vo {
+public class AppAsetA01Vo {
 
 
     private String id;
