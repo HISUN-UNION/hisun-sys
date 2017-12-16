@@ -1,5 +1,6 @@
 package com.hisun.saas.zzb.app.console.gbmc.controller;
 
+import com.google.common.collect.Lists;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
@@ -22,6 +23,7 @@ import com.hisun.util.DateUtil;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -64,39 +66,90 @@ public class GbmcA01Controller extends BaseController{
     private final static String DEFAULT_IMG_HEAD_PATH = "/WEB-INF/images/defaultHeadImage.png";
 
     @RequestMapping("/list")
-    public ModelAndView list(HttpServletRequest req, @RequestParam(value="mcb01id")String mcb01id,@RequestParam(value="mcid")String mcid
-            ,String xmQuery,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+    public ModelAndView list(HttpServletRequest req, @RequestParam(value="mcb01id",required=false)String mcb01id,@RequestParam(value="mcid")String mcid
+            ,String xmQuery,String gbrmspbFileQuery,@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
+            String returnList = "gbmcList";//返回列表 gbmcList返回名册列表 b01Lis返回目录列表
             GbMc gbMc = this.gbMcService.getByPK(mcid);
             CommonConditionQuery query = new CommonConditionQuery();
-            query.add(CommonRestrictions.and(" gbMcB01.id = :mcb01id", "mcb01id", mcb01id));
-            if(xmQuery!=null && !xmQuery.equals("")){
-                query.add(CommonRestrictions.and(" xm like :xmQuery", "xmQuery", "%"+ xmQuery+ "%"));
-            }
-            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-            CommonOrderBy orderBy = new CommonOrderBy();
-            orderBy.add(CommonOrder.asc("px"));
 
-            Long total = this.gbMcA01Service.count(query);
-            List<GbMcA01> gbMcA01s = this.gbMcA01Service.list(query,orderBy, pageNum,
+//            if(mcb01id!=null && !mcb01id.equals("")) {
+//                query.add(CommonRestrictions.and(" gbMcB01.id = :mcb01id", "mcb01id", mcb01id));
+//            }else{
+//                query.add(CommonRestrictions.and(" gbMc.id = :mcid", "mcid", mcid));
+//            }
+//            if(xmQuery!=null && !xmQuery.equals("")){
+//                query.add(CommonRestrictions.and(" xm like :xmQuery", "xmQuery", "%"+ xmQuery+ "%"));
+//            }
+//            query.add(CommonRestrictions.and("  tombstone = :tombstone", "tombstone", 0));
+//            CommonOrderBy orderBy = new CommonOrderBy();
+//            orderBy.add(CommonOrder.asc("gbMcB01.px"));
+//            orderBy.add(CommonOrder.asc("px"));
+
+            String hql = " from GbMcA01 a01  ";
+            if(StringUtils.isNotBlank(gbrmspbFileQuery) && !gbrmspbFileQuery.equals("all")) {
+                if(gbrmspbFileQuery.equals("no")) {
+                    hql = hql + " left join a01.gbMca01gbrmspbs rmspb where rmspb.id is null and";
+                }else{
+                    hql = hql + " left join a01.gbMca01gbrmspbs rmspb where  rmspb.filepath <>'' and";
+                }
+            }else{
+                hql = hql+" where";
+            }
+            List<Object> paramList = Lists.newArrayList();
+
+            if(mcb01id!=null && !mcb01id.equals("")) {
+                paramList.add(mcb01id);
+                hql = hql+" a01.gbMcB01.id = ?";
+            }else{
+                paramList.add(mcid);
+                hql = hql+" a01.gbMc.id = ?";
+            }
+            if(xmQuery!=null && !xmQuery.equals("")){
+                paramList.add("%"+ xmQuery+ "%");
+                hql = hql+" and a01.xm like  ? ";
+//                query.add(CommonRestrictions.and(" xm like :xmQuery", "xmQuery", "%"+ xmQuery+ "%"));
+            }
+            hql = hql+" and a01.tombstone =? order by a01.gbMcB01.px,a01.px";
+            paramList.add(0);
+            int total = this.gbMcA01Service.count("select  count(a01.id) "+hql,paramList);
+            List<GbMcA01> gbMcA01s = this.gbMcA01Service.list("select  DISTINCT(a01) "+hql,paramList, pageNum,
                     pageSize);
             List<GbMcA01Vo> shpcVos = new ArrayList<GbMcA01Vo>();
             if (gbMcA01s != null) {// entity ==> vo
                 for (GbMcA01 gbMcA01 : gbMcA01s) {
                     GbMcA01Vo vo = new GbMcA01Vo();
                     BeanUtils.copyProperties(vo, gbMcA01);
+                    if(gbMcA01.getGbMca01gbrmspbs()!=null &&gbMcA01.getGbMca01gbrmspbs().size()>0) {
+                        GbMcA01gbrmspb gbMcA01gbrmspb = gbMcA01.getGbMca01gbrmspbs().get(0);
+                        if(gbMcA01gbrmspb.getFilepath()!=null && !gbMcA01gbrmspb.getFilepath().equals("")){
+                            vo.setHavagbrmspbFile(true);
+                        }
+                    }
                     shpcVos.add(vo);
                 }
             }
-            PagerVo<GbMcA01Vo> pager = new PagerVo<GbMcA01Vo>(shpcVos, total.intValue(),
+            PagerVo<GbMcA01Vo> pager = new PagerVo<GbMcA01Vo>(shpcVos, total,
                     pageNum, pageSize);
+
+            //返回列表 gbmcList返回名册列表 b01Lis返回目录列表
+            if(mcb01id==null || mcb01id.equals ("")){
+                returnList = "gbmcList";
+            }else{
+                if(gbMc.getIsMl() == GbMc.YML){
+                    returnList = "b01Lis";
+                }else{
+                    returnList = "gbmcList";
+                }
+            }
             map.put("pager", pager);
             map.put("mcb01id", mcb01id);
             map.put("mcid", mcid);
-            map.put("isMl", gbMc.getIsMl());
+            map.put("returnList", returnList);
             map.put("xmQuery", xmQuery);
+            map.put("gbrmspbFileQuery", gbrmspbFileQuery);
         } catch (Exception e) {
             throw new GenericException(e);
         }

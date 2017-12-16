@@ -19,6 +19,10 @@
 		form {
 			margin: 0 0 0px;
 		}
+		.table td a{
+			margin:0px;
+		}
+
 	</style>
 </head>
 <body>
@@ -40,10 +44,11 @@
 								<%--<i class="icon-circle-arrow-up"></i>批量上传--%>
 								<%--<input class="file_progress" type="file" name="moreAttFile" id="btn-moreAttTemplate">--%>
 							<%--</span>--%>
-						<c:if test="${isMl ==0}">
+						<input class="file_progress" type="file" name="gbrmspbFile" id="btn-gbrmspbFile">
+						<c:if test="${returnList eq 'b01Lis'}">
 							<a class="btn" href="${path }/zzb/app/console/gbmc/b01/list?mcid=${mcid}"><i class="icon-undo"></i>返回</a>
 						</c:if>
-						<c:if test="${isMl ==1}">
+						<c:if test="${returnList eq 'gbmcList'}">
 							<a class="btn" href="${path }/zzb/app/console/gbmc/"><i class="icon-undo"></i>返回</a>
 						</c:if>
 					</div>
@@ -55,11 +60,15 @@
 						<form action="${path }/zzb/app/console/gbmc/a01/list" method="POST" id="searchForm" name="searchForm">
 							<input type="hidden" id="mcb01id" name="mcb01id" value="${mcb01id}"/>
 							<input type="hidden" id="mcid" name="mcid" value="${mcid}"/>
-							<input type="hidden" id="isMl" name="isMl" value="${isMl}"/>
 							<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
 							<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
 							<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
 							姓名：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
+							是否上传材料：<select class="select_form" tabindex="-1" name="gbrmspbFileQuery" id="gbrmspbFileQuery" style="width: 150px; margin-bottom: 0px;" >
+							<option value="all" <c:if test="${gbrmspbFileQuery eq 'all'}">selected</c:if>>全部</option>
+							<option value="no" <c:if test="${gbrmspbFileQuery eq 'no'}">selected</c:if>>未上传</option>
+							<option value="yes" <c:if test="${gbrmspbFileQuery eq 'yes'}">selected</c:if>>已上传</option>
+						</select>
 							<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
 							<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
 						</form>
@@ -84,10 +93,11 @@
 							</th>
 							<th width="100">专业技<br>术职务
 							</th>
-							<th width="65">任现职<br>务时间
+							<th width="70">任现职<br>务时间
 							</th>
-							<th width="100">任现职<br>级时间
+							<th width="60">任现职<br>级时间
 							</th>
+							<th width="60">材料</th>
 							<%--<th width="40">操作</th>--%>
 						</tr>
 						</thead>
@@ -106,6 +116,14 @@
 								<td><c:out value="${vo.zyjszw}"></c:out></td>
 								<td><c:out value="${vo.xrzwsj}"></c:out></td>
 								<td title="${vo.xrzjsj}"><c:out value="${vo.xrzjsj}"></c:out></td>
+								<td style="margin: 0px;">
+									<c:if test="${vo.havagbrmspbFile }">
+									<em style="margin: 0px;display: inline-block"><a href="javascript:gbrmspbDown('${vo.id }')" class="margin: 0px;">任免审批表</a></em>
+									</c:if>
+									<c:if test="${!vo.havagbrmspbFile }">
+									<a class="margin: 0px;" href="javascript:unloadFile('${vo.id }')"><em style="color:#333;display: inline-block">任免审批表</em></a>
+									</c:if>
+								</td>
 								<%--<td class="Left_alignment">--%>
 									<%--<a href="javascript:del('${vo.id }','${vo.xm}')" class="">删除</a>--%>
 								<%--</td>--%>
@@ -133,6 +151,11 @@
 <!— 引入确认框模块 —>
 <%@ include file="/WEB-INF/jsp/inc/confirmModal.jsp" %>
 <script type="text/javascript">
+	var a01Id ="";
+	function unloadFile(uploadA01Id){
+		a01Id = uploadA01Id;
+		document.getElementById("btn-gbrmspbFile").click();
+	}
 	(function(){
 		App.init();
 
@@ -191,15 +214,66 @@
 			});
 		}
 
-		//批量上传干部人员审批表
-		$("#btn-moreAttTemplate").bind("change", function (evt) {
+
+		$("#btn-gbrmspbFile").bind("change", function (evt) {
 			if ($(this).val()) {
 				gbrmspbSubmit();
 			}
 			$(this).val('');
 		});
+		var myLoading = new MyLoading("${path}", {zindex: 20000});
 
 		function gbrmspbSubmit() {
+			var fileInput = document.getElementById("btn-gbrmspbFile");
+			if (fileInput.files.length > 0) {
+				var name = fileInput.files[0].name
+				var arr = name.split(".");
+				if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {
+					showTip("提示", "请上传word文件", 2000);
+					return;
+				}
+			} else {
+				showTip("提示", "请选择文件上传", 2000);
+				return;
+			}
+
+			$("#importForm").ajaxSubmit({
+				url:"${path }/zzb/app/console/GbMca01/gbrmspb/ajax/uploadFile?gbMcA01Id="+a01Id ,
+				type: "post",
+				headers: {
+					OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
+				},
+				beforeSend: function (XHR) {
+					myLoading.show();
+				},
+				success: function (json) {
+					if (json.code == 1) {
+						showTip("提示","上传成功",2000);
+						searchSubmit();
+					} else if (json.code == -1) {
+						showTip("提示", json.message, 2000);
+					} else {
+						showTip("提示", "出错了,请检查网络!", 2000);
+					}
+				},
+				error: function (arg1, arg2, arg3) {
+					showTip("提示", "出错了,请检查网络!", 2000);
+				},
+				complete: function (XHR, TS) {
+					myLoading.hide();
+				}
+			});
+		}
+
+		//批量上传干部人员审批表
+		$("#btn-moreAttTemplate").bind("change", function (evt) {
+			if ($(this).val()) {
+				moreGbrmspbSubmit();
+			}
+			$(this).val('');
+		});
+
+		function moreGbrmspbSubmit() {
 			var fileInput = document.getElementById("btn-moreAttTemplate");
 			if (fileInput.files.length > 0) {
 				var name = fileInput.files[0].name
@@ -262,11 +336,15 @@
 			}
 		});
 	};
+	function gbrmspbDown(id) {
+		window.open("${path }/zzb/app/console/GbMca01/gbrmspb/ajax/down?gbMcA01Id="+id);
+	}
 	function uploadFile(fileName){
 		document.getElementById("btn-"+fileName).click();
 	}
 	function clearData(){
 		$("#xmQuery").val('');
+		$("#gbrmspbFileQuery").val('');
 		document.searchForm.submit();
 	}
 </script>

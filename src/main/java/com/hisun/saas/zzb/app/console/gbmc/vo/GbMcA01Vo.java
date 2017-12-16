@@ -36,7 +36,7 @@ public class GbMcA01Vo {
     private List<GbMcA01gzjlVo> gzjlVos;
     private List<GbMcA01gbrmspbVo> gbrmspbVos;
     private int px = 0;
-
+    private boolean isHavagbrmspbFile = false;//是否存在干部任免审批表材料
     public String getId() {
         return id;
     }
@@ -179,5 +179,13 @@ public class GbMcA01Vo {
 
     public void setGbrmspbVos(List<GbMcA01gbrmspbVo> gbrmspbVos) {
         this.gbrmspbVos = gbrmspbVos;
+    }
+
+    public boolean isHavagbrmspbFile() {
+        return isHavagbrmspbFile;
+    }
+
+    public void setHavagbrmspbFile(boolean havagbrmspbFile) {
+        isHavagbrmspbFile = havagbrmspbFile;
     }
 }

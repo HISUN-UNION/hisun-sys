@@ -66,6 +66,7 @@ public class GbMcA01 extends TenantEntity implements Serializable {
     @Column(name = "ZP_PATH", length = 128)
     private String zppath;
 
+
     @OneToMany(mappedBy = "gbMcA01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     @OrderBy("gzjl_px asc")

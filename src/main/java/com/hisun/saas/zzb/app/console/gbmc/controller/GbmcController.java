@@ -86,11 +86,11 @@ public class GbmcController extends BaseController{
                     GbMcVo vo = new GbMcVo();
                     BeanUtils.copyProperties(vo, gbMc);
                     vo.setA01Count(this.gbMcService.getA01Count(gbMc.getId()));
-                    if(gbMc.getIsMl()==GbMc.WML ){
-                        if(gbMc.getGbMcB01s()!=null && gbMc.getGbMcB01s().size()>0) {
-                            vo.setMcb01id(gbMc.getGbMcB01s().get(0).getId());
-                        }
-                    }
+//                    if(gbMc.getIsMl()==GbMc.WML ){
+//                        if(gbMc.getGbMcB01s()!=null && gbMc.getGbMcB01s().size()>0) {
+//                            vo.setMcb01id(gbMc.getGbMcB01s().get(0).getId());
+//                        }
+//                    }
                     //vo.setA01Count(gbMc.getGbMcA01s().size());
                     gbMcVos.add(vo);
                 }
