@@ -42,8 +42,8 @@
 			</div>
 			<div class="modal-body" id="dabzAddDiv">
 				<div >
-					<input type="radio" value="0" name="selectType" id="selectTypeByNum">按序号匹配
 					<input type="radio" value="1" checked  name="selectType" id="selectTypeByName">按姓名匹配
+					<input type="radio" value="0" name="selectType" id="selectTypeByNum">按序号匹配
 				</div>
 				<div class="control-group mybutton-group" style="text-align: right;">
 					<button type="button" class="btn green" onclick="uploadBatchFile()"><i class="icon-ok"></i> 确定</button>
