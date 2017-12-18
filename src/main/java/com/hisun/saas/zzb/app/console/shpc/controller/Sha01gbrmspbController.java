@@ -165,22 +165,40 @@ public class Sha01gbrmspbController extends BaseController {
                     for(File f : tempFiles.listFiles()){
                         if(f.isDirectory()) continue;//如果是目录则跳过
                         String fname = f.getName();
-                        String xm = fname.substring(0,fname.lastIndexOf("."));
                         CommonConditionQuery query = new CommonConditionQuery();
-                        query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%"+xm+"%"));
+                        //按姓名匹配
+                        if(uploadMatchingMode!=null && uploadMatchingMode.equals("1")) {
+                            String xm = fname.substring(0, fname.lastIndexOf("."));
+                            //query.add(CommonRestrictions.and(" instr( :xm , Sha01.xm) >0", "xm", "%" + xm + "%"));
+                            query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%" + xm + "%"));
+                        }else{
+                            //按序号匹配
+                            int px =-1;
+                            if(fname.indexOf(".")>0){
+                                try {
+                                    px = Integer.parseInt(fname.substring(0, fname.indexOf(".")));
+                                }catch(Exception e){}
+                            }
+                            if(px==-1&& fname.indexOf("、")>0){
+                                try {
+                                    px = Integer.parseInt(fname.substring(0, fname.indexOf("、")));
+                                }catch(Exception e){}
+                            }
+                            query.add(CommonRestrictions.and(" px = :px", "px", px));
+                        }
                         query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
                         query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-                        List<Sha01> sha01s = this.sha01Service.list(query,null);
-                        if(sha01s!=null && sha01s.size()>0){
+                        List<Sha01> sha01s = this.sha01Service.list(query, null);
+                        if (sha01s != null && sha01s.size() > 0) {
                             String ext = f.getName().substring(f.getName().lastIndexOf("."));
-                            String savePath = Sha01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+ext;
-                            String saveRealPath = uploadAbsolutePath+savePath;
+                            String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID() + ext;
+                            String saveRealPath = uploadAbsolutePath + savePath;
                             File desFile = new File(saveRealPath);
-                            FileUtils.copyFile(f,desFile);
+                            FileUtils.copyFile(f, desFile);
                             Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
                             sha01gbrmspb.setFilepath(savePath);
                             sha01gbrmspb.setSha01(sha01s.get(0));
-                            this.sha01gbrmspbService.saveFromWord(sha01gbrmspb,saveRealPath,wordTemplatePath);
+                            this.sha01gbrmspbService.saveFromWord(sha01gbrmspb, saveRealPath, wordTemplatePath);
                         }
                     }
                 }
@@ -256,5 +274,6 @@ public class Sha01gbrmspbController extends BaseController {
         }
         return filename;
     }
+
     
 }

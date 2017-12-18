@@ -178,9 +178,27 @@ public class Sha01dascqkController extends BaseController {
                     for(File f : tempFiles.listFiles()){
                         if(f.isDirectory()) continue;//如果是目录则跳过
                         String fname = f.getName();
-                        String xm = fname.substring(0,fname.lastIndexOf("."));
                         CommonConditionQuery query = new CommonConditionQuery();
-                        query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%"+xm+"%"));
+                        //按姓名匹配
+                        if(uploadMatchingMode!=null && uploadMatchingMode.equals("1")) {
+                            String xm = fname.substring(0, fname.lastIndexOf("."));
+                            //query.add(CommonRestrictions.and(" instr( :xm , Sha01.xm) >0", "xm", "%" + xm + "%"));
+                            query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%" + xm + "%"));
+                        }else{
+                            //按序号匹配
+                            int px =-1;
+                            if(fname.indexOf(".")>0){
+                                try {
+                                    px = Integer.parseInt(fname.substring(0, fname.indexOf(".")));
+                                }catch(Exception e){}
+                            }
+                            if(px==-1&& fname.indexOf("、")>0){
+                                try {
+                                    px = Integer.parseInt(fname.substring(0, fname.indexOf("、")));
+                                }catch(Exception e){}
+                            }
+                            query.add(CommonRestrictions.and(" px = :px", "px", px));
+                        }
                         query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
                         query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
                         List<Sha01> sha01s = this.sha01Service.list(query,null);

@@ -24,7 +24,7 @@
 				<div class="portlet-title">
 					<div class="caption">数据包管理</div>
 					<div class="clearfix fr">
-						<a class="btn green" href="javascript:downInitZip()">
+						<a class="btn green" href="javascript:genInitDataPacket()">
 							<i class="icon-plus"></i> 生成初始化数据包
 						</a>
 						<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/gendata/loadGenerator">
@@ -127,8 +127,25 @@
 			}
 		});
 	}
-	function downInitZip() {
-		window.open("${path }/zzb/app/console/gendata/initZip/down");
+	function genInitDataPacket() {
+		$.cloudAjax({
+			path : '${path}',
+			url : "${path }/zzb/app/console/gendata/generator/init",
+			type : "post",
+			data : $("#form1").serialize(),
+			dataType : "json",
+			success : function(data){
+				if(data.success){
+					showTip("提示","生成初始化数据包",1000);
+					setTimeout(function(){window.location.href = "${path}/zzb/app/console/gendata/"},1000);
+				}else{
+					showTip("提示", json.message, 1000);
+				}
+			},
+			error : function(){
+				showTip("提示","出错了请联系管理员",1000);
+			}
+		});
 	}
 	function downZip(id) {
 		window.open("${path }/zzb/app/console/gendata/zip/down?id="+id);

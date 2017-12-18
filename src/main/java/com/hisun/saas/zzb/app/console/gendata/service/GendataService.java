@@ -19,7 +19,9 @@ public interface GendataService extends BaseService<Gendata,String>{
    public static String DATA_PACKET_NAME="zzb-app-android";
 
 
-   public String saveAppData(Gendata gendata,Map<String,String> map) throws Exception;
+   String saveAppData(Gendata gendata,Map<String,String> map) throws Exception;
+
+   String saveAppInitData(Gendata gendata) throws Exception;
 
 
 }

@@ -68,8 +68,8 @@
 								<label class="control-label">选择模板<span class="required">*</span></label>
 								<div class="controls">
 									<select class="span6 m-wrap" id="mb" name="mb"   data-placeholder="Choose a Category" tabindex="1" required>
-										<option value="广州模板" selected>广州模板</option>
-										<option value="湖南模板" >湖南模板</option>
+										<option value="湘西州模板" selected>湘西州模板</option>
+										<option value="广州模板" >广州模板</option>
 									</select>
 								</div>
 							</div>

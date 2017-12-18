@@ -209,6 +209,33 @@ public class GendataController extends BaseController{
         return rsmap;
     }
 
+    @RequestMapping(value = "/generator/init")
+    public @ResponseBody Map<String,Object> generatorInitData (HttpServletResponse response,
+                                                              HttpServletRequest request) throws Exception{
+        Map<String,Object> rsmap = new HashMap<String,Object>();
+        try{
+            UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+
+            String appDataPath=resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH;
+            File appDataDir = new File(appDataPath);
+            if(appDataDir.exists()==false){
+                appDataDir.mkdirs();
+            }
+            Gendata gendata = new Gendata();
+            gendata.setTenant(userLoginDetails.getTenant());
+            String id = this.gendataService.saveAppInitData(gendata);
+            rsmap.put("gendataId", id);
+        }catch(Exception e){
+            logger.error(e, e);
+            rsmap.put("success", false);
+            rsmap.put("message", "系统错误，请联系管理员!");
+            return rsmap;
+        }
+        rsmap.put("success", true);
+
+        return rsmap;
+    }
+
     @RequestMapping(value="/zip/down")
     public void zipDown(String id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
         String zipPath = this.gendataService.getByPK(id).getPath();
@@ -222,18 +249,7 @@ public class GendataController extends BaseController{
 
     }
 
-    @RequestMapping(value="/initZip/down")
-    public void initZipDown(HttpServletRequest req, HttpServletResponse resp) throws Exception{
-        String zipPath = uploadAbsolutePath+GendataService.DATA_PATH+"initSql.zip";
-        resp.setContentType("multipart/form-data");
-        resp.setHeader("Content-Disposition", "attachment;fileName="+encode(GendataService.DATA_PACKET_NAME+".zip"));
-        OutputStream output=resp.getOutputStream();
-        byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+zipPath));
-        output.write(b);
-        output.flush();
-        output.close();
 
-    }
     private String encode(String filename) throws UnsupportedEncodingException {
         if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
             filename = URLEncoder.encode(filename, "UTF-8");

@@ -75,7 +75,7 @@ public class Sha01ServiceImpl extends BaseServiceImpl<Sha01,String> implements S
             sha01Vo.setXm(map.get("xm")==null ?"":map.get("xm").toString());;
             sha01Vo.setXb(map.get("xb")==null ?"":map.get("xb").toString());;
             sha01Vo.setMz(map.get("mz")==null ?"":map.get("mz").toString());
-            sha01Vo.setJg(map.get("jp")==null ?"":map.get("jp").toString());
+            sha01Vo.setJg(map.get("jg")==null ?"":map.get("jg").toString());
             sha01Vo.setCsny(map.get("csny")==null ?"":map.get("csny").toString());
             sha01Vo.setRdsj(map.get("rdsj")==null ?"":map.get("rdsj").toString());
             sha01Vo.setWhcd(map.get("whcd")==null ?"":map.get("whcd").toString());

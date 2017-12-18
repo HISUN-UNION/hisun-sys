@@ -59,6 +59,43 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
         this.gendataDao = (GendataDao) gendataDao;
     }
 
+    public String saveAppInitData(Gendata gendata) throws Exception{
+        //初始化数据目录
+        String uuid = UUIDUtil.getUUID();
+        String dataDir = uploadAbsolutePath+ GendataService.DATA_PATH + uuid + File.separator;
+        String appDataZipPath = GendataService.DATA_PATH+UUIDUtil.getUUID()+".zip";
+        String appDataZipRealPath = uploadAbsolutePath +appDataZipPath;
+
+        List<String> dirs = new ArrayList<>();
+        String dbdir =  dataDir+ GendataService.DB_PATH;
+        dirs.add(dbdir);
+        String imgdir = dataDir+GendataService.IMG_PATH ;
+        dirs.add(imgdir);
+        String attsdir = dataDir+ GendataService.ATTS_PATH;
+        dirs.add(attsdir);
+        //初始化非机构化数据存储目录
+        this.initDataDir(dirs);
+        String sqliteDB = dbdir + GendataService.SQLITE_DB_NAME;
+        //初始化sqlite数据库
+        this.initSqlite(sqliteDB);
+        //生成配置数据包
+        this.genConfigData(dbdir + GendataService.SQLITE_DB_NAME);
+
+        //压缩数据文件
+        CompressUtil.zip(appDataZipRealPath,dataDir,GendataService.DATA_PACKET_NAME);
+        gendata.setPath(appDataZipPath);
+
+        File f = new File(appDataZipRealPath);
+        FileInputStream inputStream = new FileInputStream(f);
+        gendata.setPacketMd5(DigestUtils.md5Hex(IOUtils.toByteArray(inputStream)));
+        gendata.setPacketSize(Long.toString(f.length()));
+
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
+        this.save(gendata);
+        return gendata.getId();
+    }
+
 
 
     @Override
@@ -79,10 +116,10 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata,String> implemen
         //初始化非机构化数据存储目录
         this.initDataDir(dirs);
         String sqliteDB = dbdir + GendataService.SQLITE_DB_NAME;
+        //初始化sqlite数据库
+        this.initSqlite(sqliteDB);
 
         if (map != null && map.size() > 0) {
-            //初始化sqlite数据库
-            this.initSqlite(sqliteDB);
             //生成会议研究数据包
             for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();

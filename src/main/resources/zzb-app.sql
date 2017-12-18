@@ -310,7 +310,7 @@ create table if not exists `app_mc_a01_gzjl` (
     CONSTRAINT app_sh_pc_atts_app_sh_pc_id_fk FOREIGN KEY (sh_pc_id) REFERENCES app_sh_pc (id)
 );
 
- drop table if exists `app_gbcx_b01` ;
+ drop table if exists app_bset_b01;
 CREATE TABLE `app_gbcx_b01` (
   `id` varchar(32) NOT NULL,
   `b0101` varchar(255) NOT NULL,
@@ -319,7 +319,7 @@ CREATE TABLE `app_gbcx_b01` (
   PRIMARY KEY (`id`)
 ) ;
 
- drop table if exists `app_gbcx_a01` ;
+ drop table if exists app_aset_a01;
 CREATE TABLE `app_gbcx_a01` (
   `id` varchar(32) NOT NULL,
   `xm` varchar(10) DEFAULT NULL,
@@ -341,15 +341,15 @@ CREATE TABLE `app_gbcx_a01` (
   PRIMARY KEY (`id`)
 );
 
-drop table if exists `app_gbcx_a02` ;
+drop table if exists app_aset_a02;
 CREATE TABLE `app_gbcx_a02` (
   `id` varchar(32) NOT NULL,
   `a01_id` varchar(32) NOT NULL,
   `b01_id` varchar(32) NOT NULL,
   `zwmc` varchar(120) NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `app_gbcx_a02_app_gbcx_a01_id_fk` FOREIGN KEY (`a01_id`) REFERENCES `app_gbcx_a01` (`id`),
-  CONSTRAINT `app_gbcx_a02_app_gbcx_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES `app_gbcx_b01` (`id`)
+  CONSTRAINT `app_gbcx_a02_app_gbcx_a01_id_fk` FOREIGN KEY (`a01_id`) REFERENCES app_aset_a01 (`id`),
+  CONSTRAINT `app_gbcx_a02_app_gbcx_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES app_bset_b01 (`id`)
 );
 
 drop table if exists `app_zscx_b01` ;
