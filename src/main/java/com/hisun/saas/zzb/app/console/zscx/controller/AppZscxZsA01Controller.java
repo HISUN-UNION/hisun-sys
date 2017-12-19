@@ -3,6 +3,7 @@ package com.hisun.saas.zzb.app.console.zscx.controller;
 import com.google.common.collect.Maps;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
@@ -90,7 +91,7 @@ public class AppZscxZsA01Controller extends BaseController{
 
             Long total = appZscxZsA01Service.count(query);
             CommonOrderBy orderBy = new CommonOrderBy();
-//            orderBy.add(CommonOrder.desc("lastUpdateTime"));
+            orderBy.add(CommonOrder.desc("px"));
 //            orderBy.add(CommonOrder.desc("name"));
             List<AppZscxZsA01> a01List = appZscxZsA01Service.list(query, orderBy, pageNum, pageSize);
             PagerVo< AppZscxZsA01> pagerVo = new PagerVo< AppZscxZsA01>(a01List, total.intValue(), pageNum, pageSize);
