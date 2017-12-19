@@ -6,17 +6,23 @@ import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
 import com.hisun.base.dao.util.CommonOrderBy;
+import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
+import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFl2B01Service;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.bset.vo.AppBsetB01Vo;
 import com.hisun.saas.zzb.app.console.bset.vo.B01TreeVo;
+import com.hisun.saas.zzb.app.console.bset.vo.ImportParameterVo;
+import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.C3p0Util;
 import com.hisun.util.WebUtil;
@@ -29,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +59,7 @@ public class AppBsetB01Controller extends BaseController{
     @RequestMapping(value = "/")
     public ModelAndView list(){
 
-        return new ModelAndView("saas/zzb/app/console/unuse");
+        return new ModelAndView("saas/zzb/app/console/bsetB01/b01Manage");
 
 
 
@@ -64,35 +71,75 @@ public class AppBsetB01Controller extends BaseController{
         try {
             CommonConditionQuery query = new CommonConditionQuery();
             CommonOrderBy orderBy = new CommonOrderBy();
-            orderBy.add(CommonOrder.desc("dataType"));
+//            orderBy.add(CommonOrder.desc("dataType"));
+            orderBy.add(CommonOrder.asc("parentFl.id"));
             orderBy.add(CommonOrder.asc("px"));
-            List<AppBsetB01> appGbcxB01s = this.appBsetB01Service.list(query, orderBy);
-
+//            List<AppBsetB01> appGbcxB01s = this.appBsetB01Service.list(query, orderBy);
+            List<AppBsetFl> sppBsetFls = this.appBsetFlService.list(query, orderBy);
             List<B01TreeVo> b01TreeVoList = Lists.newArrayList();
             String contextPath = WebUtil.getRequest().getContextPath();
-            if(appGbcxB01s != null){
-                for (AppBsetB01 b01 : appGbcxB01s) {
+            if(sppBsetFls != null){
+                for (AppBsetFl fl : sppBsetFls) {
+                    B01TreeVo b01TreeVo = new B01TreeVo();
+                    b01TreeVo.setId(fl.getId());
+
                     // 自定义分组信息
 
-                        B01TreeVo b01TreeVo = new B01TreeVo();
-                        b01TreeVo.setId(b01.getId());
-                        if(b01.getParentB01() != null) {
-                            b01TreeVo.setpId(b01.getParentB01().getId());
-                        }else{
-                            b01TreeVo.setpId("");
+                        if(fl.getParentFl()!=null){//由于部分节点找不到parent 故做此处理
+                            try {
+                                fl.getParentFl().getId();
+                            }catch(Exception e) {
+                                b01TreeVo.setpId("0");
+                                b01TreeVo.setName(fl.getFl());
+                                b01TreeVo.setIsParent(true);
+                                b01TreeVo.setDropInner(true);
+                                b01TreeVo.setOpen(true);
+                                b01TreeVo.setDataType("fl");
+                                b01TreeVoList.add(b01TreeVo);
+                                continue;
+                            }
                         }
-                        b01TreeVo.setName(b01.getB0101());
-                        b01TreeVo.setHref(b01.getId());
-                        b01TreeVo.setDataType(b01.getDataType()+"");
-                        b01TreeVo.setNoR(false);
-                        b01TreeVo.setDropInner(true);
+                        if(fl.getParentFl() != null) {
+                            b01TreeVo.setpId(fl.getParentFl().getId());
+                            b01TreeVo.setName(fl.getFl());
+                            b01TreeVo.setHref(fl.getId());
+                            b01TreeVo.setNoR(false);
+                            b01TreeVo.setDropInner(true);
+                        }else{
+                            b01TreeVo.setpId("0");
+                            b01TreeVo.setName(fl.getFl());
+                            b01TreeVo.setIsParent(true);
+                            b01TreeVo.setDropInner(true);
+                            b01TreeVo.setOpen(true);
+                        }
+                        b01TreeVo.setDataType("fl");
 //                        if(StringUtils.isNotBlank(inst.getMonitor().getIcon())){
 //                            b01TreeVo.setIcon(contextPath + "/monitor/ajax/icon/" + inst.getMonitor().getId() + ".jpg?OWASP_CSRFTOKEN=" + request.getSession().getAttribute("OWASP_CSRFTOKEN"));
 //                        } else {
 //                            b01TreeVo.setIcon(contextPath + MonitorVo.DEFAULT_PATH);
 //                        }
                         b01TreeVoList.add(b01TreeVo);
-
+                        if(fl.getAppBsetFl2B01s()!=null){//将机构增加到树
+                            for(AppBsetFl2B01 fl2b01 : fl.getAppBsetFl2B01s()){
+                                try {
+                                    fl2b01.getAppBsetB01().getId();
+                                }catch(Exception e) {
+                                    continue;
+                                }
+                                AppBsetB01 appBsetB01 = fl2b01.getAppBsetB01();
+                                if(appBsetB01!=null) {
+                                    b01TreeVo = new B01TreeVo();
+                                    b01TreeVo.setpId(fl.getId());
+                                    b01TreeVo.setId(appBsetB01.getId());
+                                    b01TreeVo.setName(appBsetB01.getB0101());
+                                    b01TreeVo.setHref(appBsetB01.getId());
+                                    b01TreeVo.setDataType("b01");
+                                    b01TreeVo.setNoR(false);
+                                    b01TreeVo.setDropInner(true);
+                                    b01TreeVoList.add(b01TreeVo);
+                                }
+                            }
+                        }
                 }
             }
             // 添加根节点
@@ -107,7 +154,53 @@ public class AppBsetB01Controller extends BaseController{
         }
         return map;
     }
+    @RequestMapping(value="/ajax/list")
+    public ModelAndView getList(String queryId,String b0101Query,
+                                @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        Map<String, Object> map = Maps.newHashMap();
+        try {
+            CommonConditionQuery query = new CommonConditionQuery();
+            String flmc = "";
 
+            List<Object> paramList = Lists.newArrayList();
+            String hql = " from AppBsetB01 b01 left join b01.appBsetFl2B01s fl2b01 where ";
+            if(StringUtils.isNotBlank(queryId)) {
+                paramList.add(queryId);
+                hql = hql+" fl2b01.appBsetFl.id = ?";
+                AppBsetFl appBsetFl = this.appBsetFlService.getByPK(queryId);
+                flmc = appBsetFl.getFl();
+            }
+
+            if(b0101Query!=null && !b0101Query.equals("")){
+                paramList.add("%"+ b0101Query+ "%");
+                hql = hql+" and b01.b0101 like ?";
+            }
+            hql = hql+" and b01.tombstone =? order by b01.px";
+            paramList.add(0);
+            int total = this.appBsetB01Service.count("select  count(b01.id) "+hql,paramList);
+            List<AppBsetB01> appBsetB01s = this.appBsetB01Service.list("select  DISTINCT(b01) "+hql,paramList, pageNum,
+                    pageSize);
+//            Long total = appBsetB01Service.count(query);
+//            CommonOrderBy orderBy = new CommonOrderBy();
+////            orderBy.add(CommonOrder.desc("lastUpdateTime"));
+////            orderBy.add(CommonOrder.desc("name"));
+//            List<AppBsetB01> b01List = appBsetB01Service.list(query, orderBy, pageNum, pageSize);
+            PagerVo<AppBsetB01> pagerVo = new PagerVo<AppBsetB01>(appBsetB01s, total, pageNum, pageSize);
+            map.put("pager", pagerVo);
+            map.put("queryId", queryId);
+//            map.put("zsId", zsId);
+            map.put("b0101Query", b0101Query);
+            map.put("flmc", flmc);
+
+            map.put("success", true);
+        } catch (Exception e) {
+            logger.error(e,e);
+            map.put("success", false);
+        }
+        return new ModelAndView("saas/zzb/app/console/bsetB01/rightList", map);
+
+    }
 
 
     /**
@@ -145,10 +238,19 @@ public class AppBsetB01Controller extends BaseController{
             map.put("msg", "修改失败！");
             throw new GenericException(e);
         }
-        return new ModelAndView("/saas/zzb/app/console/gbcx/addAndEditB01","vo",vo);
+        return new ModelAndView("/saas/zzb/app/console/bsetB01/addAndEditB01","vo",vo);
     }
 
-
+    /**
+     * 调转到新增页面
+     * @return
+     */
+    @RequestMapping(value = "/ajax/importParamSet")
+    public ModelAndView importParamSet(@RequestParam(value="importType",required=false)String importType) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("importType",importType);
+        return new ModelAndView("/saas/zzb/app/console/bsetB01/importParameter",map);
+    }
     /**
      * 保存部务会信息
      * @return
@@ -223,7 +325,20 @@ public class AppBsetB01Controller extends BaseController{
         return map;
     }
 
+    @RequestMapping(value = "/import")
+    public @ResponseBody Map<String, Object> importData(@ModelAttribute ImportParameterVo importParameterVo, HttpServletRequest req) throws GenericException {
+        Map<String, Object> map = new HashMap<String, Object>();
+       // importType;//gwyglxt从公务员管理系统(浙大网新) zzzhywpt从组织综合业务平台 gbglxt从干部管理系统
 
+        try {
+             map.put("success", true);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", "保存出错");
+            throw new GenericException(e);
+        }
+        return map;
+    }
 
     @RequestMapping(value="/tranfer/from/yw")
     public @ResponseBody Map<String,Object> tranferFromYw () throws GenericException{
