@@ -9,8 +9,11 @@ import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.exception.GenericException;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetFl2B01Service;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.bset.vo.AppBsetB01Vo;
 import com.hisun.saas.zzb.app.console.bset.vo.B01TreeVo;
@@ -41,6 +44,10 @@ public class AppBsetB01Controller extends BaseController{
     private AppBsetB01Service appBsetB01Service;
     @Resource
     private AppBsetFlService appBsetFlService;
+    @Resource
+    private AppBsetFl2B01Service appBsetFl2B01Service;
+    @Resource
+    private AppAsetA01Service appAsetA01Service;
 
     @RequestMapping(value = "/")
     public ModelAndView list(){
@@ -222,11 +229,13 @@ public class AppBsetB01Controller extends BaseController{
     public @ResponseBody Map<String,Object> tranferFromYw () throws GenericException{
         Map<String,Object> map = Maps.newHashMap();
         try {
-           DataSource dataSource = C3p0Util.getSqlServerDataSource("192.168.0.108",
+           DataSource dataSource = C3p0Util.getSqlServerDataSource("192.168.0.117",
                     "1433",
                     "gcmis","sa","Admin@123");
             //int count = this.appBsetFlService.saveBsetFlFromYw(dataSource);
-            int count = this.appBsetB01Service.saveBsetB01FromYw(dataSource);
+            //int count = this.appBsetB01Service.saveBsetB01FromYw(dataSource);
+            //int count = this.appBsetFl2B01Service.saveBsetFl2B01FromYw(dataSource);
+            int count = this.appAsetA01Service.saveAsetA01FromYw(dataSource);
             map.put("success", true);
             map.put("transferCount",count);
         }catch(Exception e){

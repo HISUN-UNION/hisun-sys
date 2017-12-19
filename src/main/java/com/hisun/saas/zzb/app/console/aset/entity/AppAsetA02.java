@@ -23,11 +23,12 @@ public class AppAsetA02 extends TenantEntity implements Serializable {
 
     @ManyToOne(optional = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "a01_id")
-    private AppAsetA01 appGbcxA01;
+    private AppAsetA01 appAsetA01;
 
     @ManyToOne(optional = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "b01_id")
-    private AppBsetB01 appGbcxB01;
+    private AppBsetB01 appBsetB01;
+
 
 
     public String getId() {
@@ -46,19 +47,19 @@ public class AppAsetA02 extends TenantEntity implements Serializable {
         this.zwmc = zwmc;
     }
 
-    public AppAsetA01 getAppGbcxA01() {
-        return appGbcxA01;
+    public AppAsetA01 getAppAsetA01() {
+        return appAsetA01;
     }
 
-    public void setAppGbcxA01(AppAsetA01 appGbcxA01) {
-        this.appGbcxA01 = appGbcxA01;
+    public void setAppAsetA01(AppAsetA01 appAsetA01) {
+        this.appAsetA01 = appAsetA01;
     }
 
-    public AppBsetB01 getAppGbcxB01() {
-        return appGbcxB01;
+    public AppBsetB01 getAppBsetB01() {
+        return appBsetB01;
     }
 
-    public void setAppGbcxB01(AppBsetB01 appGbcxB01) {
-        this.appGbcxB01 = appGbcxB01;
+    public void setAppBsetB01(AppBsetB01 appBsetB01) {
+        this.appBsetB01 = appBsetB01;
     }
 }

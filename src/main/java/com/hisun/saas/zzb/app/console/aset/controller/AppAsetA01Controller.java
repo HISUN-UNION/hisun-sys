@@ -45,10 +45,10 @@ import java.util.Map;
 @RequestMapping("/zzb/app/console/appGbcxA01")
 public class AppAsetA01Controller extends BaseController{
     @Resource
-    private AppAsetA01Service appGbcxA01Service;
+    private AppAsetA01Service appAsetA01Service;
 
     @Resource
-    private AppBsetB01Service appGbcxB01Service;
+    private AppBsetB01Service appBsetB01Service;
 
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
@@ -70,27 +70,6 @@ public class AppAsetA01Controller extends BaseController{
         Map<String, Object> map = Maps.newHashMap();
         try {
             CommonConditionQuery query = new CommonConditionQuery();
-            String b0101 = "";
-            if(b01Id!=null && !b01Id.equals("")&& !b01Id.equals("1")){
-                query.add(CommonRestrictions.and(" appGbcxB01.id = :b01Id",
-                        "b01Id", b01Id));
-                AppBsetB01 appGbcxB01 = this.appGbcxB01Service.getByPK(b01Id);
-                b0101 = appGbcxB01.getB0101();
-            }
-            if(xmQuery!=null && !xmQuery.equals("")){
-                query.add(CommonRestrictions.and(" xm like:xmQuery", "xmQuery", "%"+ xmQuery+ "%"));
-            }
-
-            Long total = appGbcxA01Service.count(query);
-            CommonOrderBy orderBy = new CommonOrderBy();
-//            orderBy.add(CommonOrder.desc("lastUpdateTime"));
-//            orderBy.add(CommonOrder.desc("name"));
-            List<AppAsetA01> a01List = appGbcxA01Service.list(query, orderBy, pageNum, pageSize);
-            PagerVo<AppAsetA01> pagerVo = new PagerVo<AppAsetA01>(a01List, total.intValue(), pageNum, pageSize);
-            map.put("pager", pagerVo);
-            map.put("b01Id", b01Id);
-            map.put("xmQuery", xmQuery);
-            map.put("b0101", b0101);
 
             map.put("success", true);
         } catch (Exception e) {
@@ -111,64 +90,38 @@ public class AppAsetA01Controller extends BaseController{
             return map;
         }
 
-        try{
-            String fileName = file.getOriginalFilename();
-            if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-                String fileDir = uploadAbsolutePath +appGbcxA01Service.ATTS_PATH;
-                File _fileDir = new File(fileDir);
-                if (_fileDir.exists() == false) {
-                    _fileDir.mkdirs();
-                }
-                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
-
-                try {
-                    FileOutputStream fos = new FileOutputStream(new File(savePath));
-                    fos.write(file.getBytes());
-                    fos.flush();
-                    fos.close();
-
-//                    //处理上传文件
-//                    //先将word转成Map
-//                    String tmplateWordPath = fileDir+File.separator+"sha01.docx";
-//                    WordUtil wordUtil = WordUtil.newInstance();
-//                    Map<String,String> dataMap = wordUtil.convertMapByTemplate(savePath,tmplateWordPath,"");
-//                    sha01Service.saveFromWordDataMap(userLoginDetails.getTenant(),dataMap,shpcId);
-
-//                    Shpc shpc = this.shpcService.getByPK(shpcId);
-//                    if (shpc != null) {
-//                        shpc.setFilePath(savePath);
-//                        BeanTrans.setBaseProperties(shpc, userLoginDetails, "update");
-//                        this.shpcService.update(shpc);
-//                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new GenericException(e);
-                }
-            }else{
-                map.put("code", -1);
-                map.put("message", "请上传word");
-                return map;
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-            map.put("code", -1);
-            map.put("message", "读取文件错误，请检查word是否能正确打开");
-            return map;
-        }
-        try{
-
-        }catch(GenericException e){
-            logger.error(e, e);
-            map.put("code", -1);
-            map.put("message", e.getMessage());
-            return map;
-        }catch(Exception e){
-            logger.error(e, e);
-            map.put("code", -1);
-            map.put("message", "系统错误，请联系管理员");
-            return map;
-        }
-        map.put("code", 1);
+//        try{
+//            String fileName = file.getOriginalFilename();
+//            if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    throw new GenericException(e);
+//                }
+//            }else{
+//                map.put("code", -1);
+//                map.put("message", "请上传word");
+//                return map;
+//            }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            map.put("code", -1);
+//            map.put("message", "读取文件错误，请检查word是否能正确打开");
+//            return map;
+//        }
+//        try{
+//
+//        }catch(GenericException e){
+//            logger.error(e, e);
+//            map.put("code", -1);
+//            map.put("message", e.getMessage());
+//            return map;
+//        }catch(Exception e){
+//            logger.error(e, e);
+//            map.put("code", -1);
+//            map.put("message", "系统错误，请联系管理员");
+//            return map;
+//        }
+//        map.put("code", 1);
         return map;
     }
 
@@ -179,12 +132,12 @@ public class AppAsetA01Controller extends BaseController{
     @RequestMapping(value = "/add")
     public ModelAndView add(String b01Id) throws Exception{
         AppAsetA01Vo vo = new AppAsetA01Vo();
-        Integer maxPx = appGbcxA01Service.getMaxPx(b01Id);
-        if(maxPx != null){
-            vo.setA01Px(maxPx+1);
-        }else{
-            vo.setA01Px(1);
-        }
+//        Integer maxPx = appGbcxA01Service.getMaxPx(b01Id);
+//        if(maxPx != null){
+//            vo.setA01Px(maxPx+1);
+//        }else{
+//            vo.setA01Px(1);
+//        }
 
         return new ModelAndView("/saas/zzb/app/console/gbcx/a01/add","vo",vo);
     }
@@ -198,14 +151,6 @@ public class AppAsetA01Controller extends BaseController{
     public ModelAndView edit(@RequestParam(value="id")String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            AppAsetA01 a01 = this.appGbcxA01Service.getByPK(id);
-            AppAsetA01Vo a01Vo = new AppAsetA01Vo();
-            if (a01 == null) {
-                logger.error("数据不存在");
-                throw new GenericException("数据不存在");
-            }
-            BeanUtils.copyProperties(a01Vo, a01);
-            map.put("a01", a01Vo);
         }catch(Exception e){
             map.put("success", false);
             map.put("msg", "修改失败！");
@@ -224,17 +169,17 @@ public class AppAsetA01Controller extends BaseController{
     public @ResponseBody
     Map<String, Object> delete(@PathVariable("id")String AssetStatusId) {
         Map<String, Object> map = new HashMap<String, Object>();
-        try{
-            AppAsetA01 a01 = this.appGbcxA01Service.getByPK(AssetStatusId);
-            if(a01 != null){
-                this.appGbcxA01Service.delete(a01);
-            }
-            map.put("success", true);
-        }catch(Exception e){
-            map.put("success", false);
-            map.put("msg", "删除失败！");
-            throw new GenericException(e);
-        }
+//        try{
+//            AppAsetA01 a01 = this.appGbcxA01Service.getByPK(AssetStatusId);
+//            if(a01 != null){
+//                this.appGbcxA01Service.delete(a01);
+//            }
+//            map.put("success", true);
+//        }catch(Exception e){
+//            map.put("success", false);
+//            map.put("msg", "删除失败！");
+//            throw new GenericException(e);
+//        }
         return map;
 
     }
@@ -242,21 +187,21 @@ public class AppAsetA01Controller extends BaseController{
     @RequestMapping(value = "ajax/view")
     public ModelAndView view(@RequestParam(value="id")String id) {
         Map<String, Object> map = new HashMap<String, Object>();
-        try {
-            AppAsetA01 a01 = this.appGbcxA01Service.getByPK(id);
-            AppAsetA01Vo a01Vo = new AppAsetA01Vo();
-            if (a01 == null) {
-                logger.error("数据不存在");
-                throw new GenericException("数据不存在");
-            }
-            BeanUtils.copyProperties(a01Vo, a01);
-            map.put("a01Vo", a01Vo);
-            map.put("b01Id", "");
-        }catch(Exception e){
-            map.put("success", false);
-            map.put("msg", "查看失败！");
-            throw new GenericException(e);
-        }
+//        try {
+//            AppAsetA01 a01 = this.appGbcxA01Service.getByPK(id);
+//            AppAsetA01Vo a01Vo = new AppAsetA01Vo();
+//            if (a01 == null) {
+//                logger.error("数据不存在");
+//                throw new GenericException("数据不存在");
+//            }
+//            BeanUtils.copyProperties(a01Vo, a01);
+//            map.put("a01Vo", a01Vo);
+//            map.put("b01Id", "");
+//        }catch(Exception e){
+//            map.put("success", false);
+//            map.put("msg", "查看失败！");
+//            throw new GenericException(e);
+//        }
         return new ModelAndView("/saas/zzb/app/console/gbcx/a01/view", map);
     }
 
@@ -267,103 +212,104 @@ public class AppAsetA01Controller extends BaseController{
     @RequestMapping(value = "/save")
     public @ResponseBody Map<String, Object> save(@ModelAttribute AppAsetA01Vo a01Vo, HttpServletRequest req, @RequestParam(value="clFile",required = false) MultipartFile clFile) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
-        AppAsetA01 a01 = null;
-        int newPx = a01Vo.getA01Px();
-        int oldPx = 0;
-        Integer oldPxInteger = this.appGbcxA01Service.getMaxPx(a01Vo.getAppGbcxB01Id());
-        if(oldPxInteger != null){
-            oldPx = oldPxInteger.intValue();
-        }else{
-            oldPx = 1;
-        }
-
-        try {
-            if (a01Vo != null) {
-                String id = a01Vo.getId();
-                if (id != null && id.length() > 0) {//修改
-                    a01 = this.appGbcxA01Service.getByPK(id);
-                    oldPx = a01.getA01Px();
-                } else {//新增
-                    a01 = new AppAsetA01();
-                }
-                UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-                BeanUtils.copyProperties(a01, a01Vo);
-
-                a01.setTenant(userLoginDetails.getTenant());
-                if(clFile!=null && !clFile.isEmpty()) {
-
-                    String fileName = clFile.getOriginalFilename();
-                    if (fileName.endsWith(".doc") || fileName.endsWith(".DOC")
-                            || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
-                        String fileDir = uploadAbsolutePath + appGbcxA01Service.ATTS_PATH;
-                        File _fileDir = new File(fileDir);
-                        if (_fileDir.exists() == false) {
-                            _fileDir.mkdirs();
-                        }
-                        //附件存储路径
-                        String savePath = appGbcxA01Service.ATTS_PATH + UUIDUtil.getUUID() + "_" + fileName;
-                        String rPath =uploadAbsolutePath+ savePath;
-
-                        try {
-                            FileOutputStream fos = new FileOutputStream(new File(rPath));
-                            fos.write(clFile.getBytes());
-                            fos.flush();
-                            fos.close();
-                            a01.setZpPath(savePath);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            throw new GenericException(e);
-                        }
-                    }
-                }
-
-                if(oldPx!=newPx) {
-                    this.appGbcxA01Service.updatePx(a01Vo.getAppGbcxB01Id(),oldPx,newPx);
-                }
-                if (id != null && id.length() > 0) {
-                    BeanTrans.setBaseProperties(a01, userLoginDetails, "update");
-                    this.appGbcxA01Service.update(a01);
-                } else {
-                    BeanTrans.setBaseProperties(a01, userLoginDetails, "save");
-                    this.appGbcxA01Service.save(a01);
-                }
-                map.put("success", true);
-            }
-        } catch (Exception e) {
-            throw new GenericException(e);
-        }
+//        AppAsetA01 a01 = null;
+//        int newPx = a01Vo.getA01Px();
+//        int oldPx = 0;
+//        Integer oldPxInteger = this.appGbcxA01Service.getMaxPx(a01Vo.getAppGbcxB01Id());
+//        if(oldPxInteger != null){
+//            oldPx = oldPxInteger.intValue();
+//        }else{
+//            oldPx = 1;
+//        }
+//
+//        try {
+//            if (a01Vo != null) {
+//                String id = a01Vo.getId();
+//                if (id != null && id.length() > 0) {//修改
+//                    a01 = this.appGbcxA01Service.getByPK(id);
+//                    oldPx = a01.getA01Px();
+//                } else {//新增
+//                    a01 = new AppAsetA01();
+//                }
+//                UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+//                BeanUtils.copyProperties(a01, a01Vo);
+//
+//                a01.setTenant(userLoginDetails.getTenant());
+//                if(clFile!=null && !clFile.isEmpty()) {
+//
+//                    String fileName = clFile.getOriginalFilename();
+//                    if (fileName.endsWith(".doc") || fileName.endsWith(".DOC")
+//                            || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
+//                        String fileDir = uploadAbsolutePath + appGbcxA01Service.ATTS_PATH;
+//                        File _fileDir = new File(fileDir);
+//                        if (_fileDir.exists() == false) {
+//                            _fileDir.mkdirs();
+//                        }
+//                        //附件存储路径
+//                        String savePath = appGbcxA01Service.ATTS_PATH + UUIDUtil.getUUID() + "_" + fileName;
+//                        String rPath =uploadAbsolutePath+ savePath;
+//
+//                        try {
+//                            FileOutputStream fos = new FileOutputStream(new File(rPath));
+//                            fos.write(clFile.getBytes());
+//                            fos.flush();
+//                            fos.close();
+//                            a01.setZpPath(savePath);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                            throw new GenericException(e);
+//                        }
+//                    }
+//                }
+//
+//                if(oldPx!=newPx) {
+//                    this.appGbcxA01Service.updatePx(a01Vo.getAppGbcxB01Id(),oldPx,newPx);
+//                }
+//                if (id != null && id.length() > 0) {
+//                    BeanTrans.setBaseProperties(a01, userLoginDetails, "update");
+//                    this.appGbcxA01Service.update(a01);
+//                } else {
+//                    BeanTrans.setBaseProperties(a01, userLoginDetails, "save");
+//                    this.appGbcxA01Service.save(a01);
+//                }
+//                map.put("success", true);
+//            }
+//        } catch (Exception e) {
+//            throw new GenericException(e);
+//        }
         return map;
     }
 
     @RequestMapping("/{id}/photo")
     public HttpEntity<byte[]> getPhoto (@PathVariable("id")String id,
                                         HttpServletRequest request, HttpServletResponse response) throws IOException {
-        AppAsetA01 appGbcxA01 = this.appGbcxA01Service.getByPK(id);
-        if(appGbcxA01.getZpPath()!=null){
-            String zpRealPath = uploadAbsolutePath+appGbcxA01.getZpPath();
-            File file = new File(zpRealPath);
-            if(file.exists()){
-                FileInputStream fis = new FileInputStream(file);
-                StreamUtils.copy(fis,response.getOutputStream());
-                response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-                return new HttpEntity(HttpStatus.OK);
-            }else{
-                //为空或者没有返回默认图片
-                File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
-                FileInputStream fis = new FileInputStream(defaultfile);
-                StreamUtils.copy(fis,response.getOutputStream());
-                response.setContentType(MediaType.IMAGE_PNG_VALUE);
-                return new HttpEntity(HttpStatus.OK);
-            }
-        }else{
-            //为空或者没有返回默认图片
-            File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
-            FileInputStream fis = new FileInputStream(defaultfile);
-            StreamUtils.copy(fis,response.getOutputStream());
-
-            response.setContentType(MediaType.IMAGE_PNG_VALUE);
-            return new HttpEntity(HttpStatus.OK);
-        }
+//        AppAsetA01 appGbcxA01 = this.appGbcxA01Service.getByPK(id);
+//        if(appGbcxA01.getZpPath()!=null){
+//            String zpRealPath = uploadAbsolutePath+appGbcxA01.getZpPath();
+//            File file = new File(zpRealPath);
+//            if(file.exists()){
+//                FileInputStream fis = new FileInputStream(file);
+//                StreamUtils.copy(fis,response.getOutputStream());
+//                response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+//                return new HttpEntity(HttpStatus.OK);
+//            }else{
+//                //为空或者没有返回默认图片
+//                File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
+//                FileInputStream fis = new FileInputStream(defaultfile);
+//                StreamUtils.copy(fis,response.getOutputStream());
+//                response.setContentType(MediaType.IMAGE_PNG_VALUE);
+//                return new HttpEntity(HttpStatus.OK);
+//            }
+//        }else{
+//            //为空或者没有返回默认图片
+//            File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
+//            FileInputStream fis = new FileInputStream(defaultfile);
+//            StreamUtils.copy(fis,response.getOutputStream());
+//
+//            response.setContentType(MediaType.IMAGE_PNG_VALUE);
+//            return new HttpEntity(HttpStatus.OK);
+//        }
+        return null;
 
     }
 }

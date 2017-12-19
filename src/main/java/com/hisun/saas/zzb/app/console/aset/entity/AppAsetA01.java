@@ -22,6 +22,10 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     private String xm;
     @Column(name = "xb")
     private String xb;
+    @Column(name = "csny")
+    private String csny;
+    @Column(name = "nl")
+    private String nl;
     @Column(name = "mz")
     private String mz;
     @Column(name = "zw")
@@ -30,29 +34,66 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     private String csd;
     @Column(name = "jg")
     private String jg;
-    @Column(name = "csny")
-    private String csny;
+    @Column(name = "jkzk")
+    private String jkzk;
+
     @Column(name = "cjgzsj")
     private String cjgzsj;
     @Column(name = "rdsj")
     private String rdsj;
-    @Column(name = "qrzxlxwjzy")
-    private String qrzxlxwjzy;
-    @Column(name = "zzxlxwjzy")
-    private String zzxlxwjzy;
+    @Column(name = "qrzxl")
+    private String qrzxl;
+    @Column(name = "qrzxw")
+    private String qrzxw;
+    @Column(name = "qrz_byyx")
+    private String qrzByyx;
+    @Column(name = "qrz_zy")
+    private String qrzZy;
+    @Column(name = "zzxl")
+    private String zzxl;
+    @Column(name = "zzxw")
+    private String zzxw;
+    @Column(name = "zz_byyx")
+    private String zzByyx;
+    @Column(name = "zz_zy")
+    private String zzZy;
+
+
     @Column(name = "zyjszw")
     private String zyjszw;
+    @Column(name = "zytc")
+    private String zytc;
+
     @Column(name = "xrzjsj")
-    private String xrzwsj;
-    @Column(name = "xrzwsj")
     private String xrzjsj;
+    @Column(name = "xrzwsj")
+    private String xrzwsj;
+
+    @Column(name = "xrzw")
+    private String xrzw;
+    @Column(name = "nrzw")
+    private String nrzw;
+    @Column(name = "nmzw")
+    private String nmzw;
+    @Column(name = "file_path")
+    private String filepath;
+    @Column(name = "file2img_path")
+    private String file2ImgPath;
+    @Column(name = "gzjl_str")
+    private String gzjlStr;
+    @Column(name = "jcqk_str")
+    private String jcqkStr;
+    @Column(name = "khjg_str")
+    private String khjgStr;
+
+
     @Column(name = "a01_px")
     private int a01Px;
     @Column(name = "zp_path")
     private String zpPath;
 
-    @OneToMany(mappedBy = "appGbcxA01")
-    private List<AppAsetA02> appGbcxA02s;
+    @OneToMany(mappedBy = "appAsetA01")
+    private List<AppAsetA02> appAsetA02s;
 
    
     public String getId() {
@@ -153,28 +194,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.rdsj = rdsj;
     }
 
-   
-
-    public String getQrzxlxwjzy() {
-        return qrzxlxwjzy;
-    }
-
-    public void setQrzxlxwjzy(String qrzxlxwjzy) {
-        this.qrzxlxwjzy = qrzxlxwjzy;
-    }
-
-   
-
-    public String getZzxlxwjzy() {
-        return zzxlxwjzy;
-    }
-
-    public void setZzxlxwjzy(String zzxlxwjzy) {
-        this.zzxlxwjzy = zzxlxwjzy;
-    }
-
-   
-
     public String getZyjszw() {
         return zyjszw;
     }
@@ -223,61 +242,164 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.zpPath = zpPath;
     }
 
-    public List<AppAsetA02> getAppGbcxA02s() {
-        return appGbcxA02s;
+    public String getQrzxl() {
+        return qrzxl;
     }
 
-    public void setAppGbcxA02s(List<AppAsetA02> appGbcxA02s) {
-        this.appGbcxA02s = appGbcxA02s;
+    public void setQrzxl(String qrzxl) {
+        this.qrzxl = qrzxl;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AppAsetA01 that = (AppAsetA01) o;
-
-        if (a01Px != that.a01Px) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (xm != null ? !xm.equals(that.xm) : that.xm != null) return false;
-        if (xb != null ? !xb.equals(that.xb) : that.xb != null) return false;
-        if (mz != null ? !mz.equals(that.mz) : that.mz != null) return false;
-        if (zw != null ? !zw.equals(that.zw) : that.zw != null) return false;
-        if (csd != null ? !csd.equals(that.csd) : that.csd != null) return false;
-        if (jg != null ? !jg.equals(that.jg) : that.jg != null) return false;
-        if (csny != null ? !csny.equals(that.csny) : that.csny != null) return false;
-        if (cjgzsj != null ? !cjgzsj.equals(that.cjgzsj) : that.cjgzsj != null) return false;
-        if (rdsj != null ? !rdsj.equals(that.rdsj) : that.rdsj != null) return false;
-        if (qrzxlxwjzy != null ? !qrzxlxwjzy.equals(that.qrzxlxwjzy) : that.qrzxlxwjzy != null) return false;
-        if (zzxlxwjzy != null ? !zzxlxwjzy.equals(that.zzxlxwjzy) : that.zzxlxwjzy != null) return false;
-        if (zyjszw != null ? !zyjszw.equals(that.zyjszw) : that.zyjszw != null) return false;
-        if (xrzwsj != null ? !xrzwsj.equals(that.xrzwsj) : that.xrzwsj != null) return false;
-        if (xrzjsj != null ? !xrzjsj.equals(that.xrzjsj) : that.xrzjsj != null) return false;
-        if (zpPath != null ? !zpPath.equals(that.zpPath) : that.zpPath != null) return false;
-
-        return true;
+    public String getQrzxw() {
+        return qrzxw;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (xm != null ? xm.hashCode() : 0);
-        result = 31 * result + (xb != null ? xb.hashCode() : 0);
-        result = 31 * result + (mz != null ? mz.hashCode() : 0);
-        result = 31 * result + (zw != null ? zw.hashCode() : 0);
-        result = 31 * result + (csd != null ? csd.hashCode() : 0);
-        result = 31 * result + (jg != null ? jg.hashCode() : 0);
-        result = 31 * result + (csny != null ? csny.hashCode() : 0);
-        result = 31 * result + (cjgzsj != null ? cjgzsj.hashCode() : 0);
-        result = 31 * result + (rdsj != null ? rdsj.hashCode() : 0);
-        result = 31 * result + (qrzxlxwjzy != null ? qrzxlxwjzy.hashCode() : 0);
-        result = 31 * result + (zzxlxwjzy != null ? zzxlxwjzy.hashCode() : 0);
-        result = 31 * result + (zyjszw != null ? zyjszw.hashCode() : 0);
-        result = 31 * result + (xrzwsj != null ? xrzwsj.hashCode() : 0);
-        result = 31 * result + (xrzjsj != null ? xrzjsj.hashCode() : 0);
-        result = 31 * result + a01Px;
-        result = 31 * result + (zpPath != null ? zpPath.hashCode() : 0);
-        return result;
+    public void setQrzxw(String qrzxw) {
+        this.qrzxw = qrzxw;
+    }
+
+    public String getZzxl() {
+        return zzxl;
+    }
+
+    public void setZzxl(String zzxl) {
+        this.zzxl = zzxl;
+    }
+
+    public String getZzxw() {
+        return zzxw;
+    }
+
+    public void setZzxw(String zzxw) {
+        this.zzxw = zzxw;
+    }
+
+    public List<AppAsetA02> getAppAsetA02s() {
+        return appAsetA02s;
+    }
+
+    public void setAppAsetA02s(List<AppAsetA02> appAsetA02s) {
+        this.appAsetA02s = appAsetA02s;
+    }
+
+
+    public String getNl() {
+        return nl;
+    }
+
+    public void setNl(String nl) {
+        this.nl = nl;
+    }
+
+    public String getJkzk() {
+        return jkzk;
+    }
+
+    public void setJkzk(String jkzk) {
+        this.jkzk = jkzk;
+    }
+
+    public String getQrzByyx() {
+        return qrzByyx;
+    }
+
+    public void setQrzByyx(String qrzByyx) {
+        this.qrzByyx = qrzByyx;
+    }
+
+    public String getQrzZy() {
+        return qrzZy;
+    }
+
+    public void setQrzZy(String qrzZy) {
+        this.qrzZy = qrzZy;
+    }
+
+    public String getZzByyx() {
+        return zzByyx;
+    }
+
+    public void setZzByyx(String zzByyx) {
+        this.zzByyx = zzByyx;
+    }
+
+    public String getZzZy() {
+        return zzZy;
+    }
+
+    public void setZzZy(String zzZy) {
+        this.zzZy = zzZy;
+    }
+
+    public String getZytc() {
+        return zytc;
+    }
+
+    public void setZytc(String zytc) {
+        this.zytc = zytc;
+    }
+
+    public String getXrzw() {
+        return xrzw;
+    }
+
+    public void setXrzw(String xrzw) {
+        this.xrzw = xrzw;
+    }
+
+    public String getNrzw() {
+        return nrzw;
+    }
+
+    public void setNrzw(String nrzw) {
+        this.nrzw = nrzw;
+    }
+
+    public String getNmzw() {
+        return nmzw;
+    }
+
+    public void setNmzw(String nmzw) {
+        this.nmzw = nmzw;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    public String getFile2ImgPath() {
+        return file2ImgPath;
+    }
+
+    public void setFile2ImgPath(String file2ImgPath) {
+        this.file2ImgPath = file2ImgPath;
+    }
+
+    public String getGzjlStr() {
+        return gzjlStr;
+    }
+
+    public void setGzjlStr(String gzjlStr) {
+        this.gzjlStr = gzjlStr;
+    }
+
+    public String getJcqkStr() {
+        return jcqkStr;
+    }
+
+    public void setJcqkStr(String jcqkStr) {
+        this.jcqkStr = jcqkStr;
+    }
+
+    public String getKhjgStr() {
+        return khjgStr;
+    }
+
+    public void setKhjgStr(String khjgStr) {
+        this.khjgStr = khjgStr;
     }
 }

@@ -32,11 +32,13 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
     @OneToMany(mappedBy = "parentB01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<AppBsetB01> childrenB01s;
-    @OneToMany(mappedBy = "appGbcxB01",fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "appBsetB01",fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    private List<AppAsetA02> appGbcxA02s;
-    @OneToMany(mappedBy = "appGbcxB01", fetch = FetchType.LAZY)
-    private List<AppBsetFl2B01> appGbcxFl2B01s;
+    private List<AppAsetA02> appAsetA02s;
+
+    @OneToMany(mappedBy = "appBsetB01", fetch = FetchType.LAZY)
+    private List<AppBsetFl2B01> appBsetFl2B01s;
 
 
     public String getId() {
@@ -92,20 +94,20 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
         this.childrenB01s = childrenB01s;
     }
 
-    public List<AppAsetA02> getAppGbcxA02s() {
-        return appGbcxA02s;
+    public List<AppAsetA02> getAppAsetA02s() {
+        return appAsetA02s;
     }
 
-    public void setAppGbcxA02s(List<AppAsetA02> appGbcxA02s) {
-        this.appGbcxA02s = appGbcxA02s;
+    public void setAppAsetA02s(List<AppAsetA02> appAsetA02s) {
+        this.appAsetA02s = appAsetA02s;
     }
 
-    public List<AppBsetFl2B01> getAppGbcxFl2B01s() {
-        return appGbcxFl2B01s;
+    public List<AppBsetFl2B01> getAppBsetFl2B01s() {
+        return appBsetFl2B01s;
     }
 
-    public void setAppGbcxFl2B01s(List<AppBsetFl2B01> appGbcxFl2B01s) {
-        this.appGbcxFl2B01s = appGbcxFl2B01s;
+    public void setAppBsetFl2B01s(List<AppBsetFl2B01> appBsetFl2B01s) {
+        this.appBsetFl2B01s = appBsetFl2B01s;
     }
 
     @Override

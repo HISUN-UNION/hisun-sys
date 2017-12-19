@@ -18,10 +18,12 @@ public class AppBsetFl2B01 extends TenantEntity implements Serializable {
     @GeneratedValue(generator = "generator")
     @Column(name = "id", nullable = false, unique = true, length = 32)
     private String id;
-    @ManyToOne
-    private AppBsetFl appGbcxFl;
-    @ManyToOne
-    private AppBsetB01 appGbcxB01;
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "fl_id")
+    private AppBsetFl appBsetFl;
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "b01_id")
+    private AppBsetB01 appBsetB01;
     @Column(name = "px")
     private int px;
 
@@ -34,27 +36,27 @@ public class AppBsetFl2B01 extends TenantEntity implements Serializable {
         this.id = id;
     }
 
-    public AppBsetFl getAppGbcxFl() {
-        return appGbcxFl;
-    }
-
-    public void setAppGbcxFl(AppBsetFl appGbcxFl) {
-        this.appGbcxFl = appGbcxFl;
-    }
-
-    public AppBsetB01 getAppGbcxB01() {
-        return appGbcxB01;
-    }
-
-    public void setAppGbcxB01(AppBsetB01 appGbcxB01) {
-        this.appGbcxB01 = appGbcxB01;
-    }
-
     public int getPx() {
         return px;
     }
 
     public void setPx(int px) {
         this.px = px;
+    }
+
+    public AppBsetFl getAppBsetFl() {
+        return appBsetFl;
+    }
+
+    public void setAppBsetFl(AppBsetFl appBsetFl) {
+        this.appBsetFl = appBsetFl;
+    }
+
+    public AppBsetB01 getAppBsetB01() {
+        return appBsetB01;
+    }
+
+    public void setAppBsetB01(AppBsetB01 appBsetB01) {
+        this.appBsetB01 = appBsetB01;
     }
 }

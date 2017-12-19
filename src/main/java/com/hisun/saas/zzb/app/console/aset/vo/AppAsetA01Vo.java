@@ -1,30 +1,56 @@
 package com.hisun.saas.zzb.app.console.aset.vo;
 
+import com.hisun.util.StringUtils;
+
 /**
  * Created by zhouying on 2017/9/23.
  */
 public class AppAsetA01Vo {
 
-
     private String id;
     private String xm;
     private String xb;
+    private String csny;
+    private String nl;
     private String mz;
     private String zw;
     private String csd;
     private String jg;
-    private String csny;
+    private String jkzk;
+
     private String cjgzsj;
     private String rdsj;
-    private String qrzxlxwjzy;
-    private String zzxlxwjzy;
+    private String qrzxl;
+    private String qrzxw;
+    private String qrzByyx;
+    private String qrzZy;
+    private String zzxl;
+    private String zzxw;
+    private String zzByyx;
+    private String zzZy;
+
+
     private String zyjszw;
-    private String xrzwsj;
+    private String zytc;
+
     private String xrzjsj;
+    private String xrzwsj;
+
+    private String xrzw;
+    private String nrzw;
+    private String nmzw;
+    private String filepath;
+    private String file2ImgPath;
+    private String gzjlStr;
+    private String jcqkStr;
+    private String khjgStr;
+
     private int a01Px;
     private String zpPath;
 
-    private String appGbcxB01Id;
+    private String qrzxlxwjzy;
+    private String zzxlxwjzy;
+
 
     public String getId() {
         return id;
@@ -48,6 +74,22 @@ public class AppAsetA01Vo {
 
     public void setXb(String xb) {
         this.xb = xb;
+    }
+
+    public String getCsny() {
+        return csny;
+    }
+
+    public void setCsny(String csny) {
+        this.csny = csny;
+    }
+
+    public String getNl() {
+        return nl;
+    }
+
+    public void setNl(String nl) {
+        this.nl = nl;
     }
 
     public String getMz() {
@@ -82,12 +124,12 @@ public class AppAsetA01Vo {
         this.jg = jg;
     }
 
-    public String getCsny() {
-        return csny;
+    public String getJkzk() {
+        return jkzk;
     }
 
-    public void setCsny(String csny) {
-        this.csny = csny;
+    public void setJkzk(String jkzk) {
+        this.jkzk = jkzk;
     }
 
     public String getCjgzsj() {
@@ -106,20 +148,68 @@ public class AppAsetA01Vo {
         this.rdsj = rdsj;
     }
 
-    public String getQrzxlxwjzy() {
-        return qrzxlxwjzy;
+    public String getQrzxl() {
+        return qrzxl;
     }
 
-    public void setQrzxlxwjzy(String qrzxlxwjzy) {
-        this.qrzxlxwjzy = qrzxlxwjzy;
+    public void setQrzxl(String qrzxl) {
+        this.qrzxl = qrzxl;
     }
 
-    public String getZzxlxwjzy() {
-        return zzxlxwjzy;
+    public String getQrzxw() {
+        return qrzxw;
     }
 
-    public void setZzxlxwjzy(String zzxlxwjzy) {
-        this.zzxlxwjzy = zzxlxwjzy;
+    public void setQrzxw(String qrzxw) {
+        this.qrzxw = qrzxw;
+    }
+
+    public String getQrzByyx() {
+        return qrzByyx;
+    }
+
+    public void setQrzByyx(String qrzByyx) {
+        this.qrzByyx = qrzByyx;
+    }
+
+    public String getQrzZy() {
+        return qrzZy;
+    }
+
+    public void setQrzZy(String qrzZy) {
+        this.qrzZy = qrzZy;
+    }
+
+    public String getZzxl() {
+        return zzxl;
+    }
+
+    public void setZzxl(String zzxl) {
+        this.zzxl = zzxl;
+    }
+
+    public String getZzxw() {
+        return zzxw;
+    }
+
+    public void setZzxw(String zzxw) {
+        this.zzxw = zzxw;
+    }
+
+    public String getZzByyx() {
+        return zzByyx;
+    }
+
+    public void setZzByyx(String zzByyx) {
+        this.zzByyx = zzByyx;
+    }
+
+    public String getZzZy() {
+        return zzZy;
+    }
+
+    public void setZzZy(String zzZy) {
+        this.zzZy = zzZy;
     }
 
     public String getZyjszw() {
@@ -130,12 +220,12 @@ public class AppAsetA01Vo {
         this.zyjszw = zyjszw;
     }
 
-    public String getXrzwsj() {
-        return xrzwsj;
+    public String getZytc() {
+        return zytc;
     }
 
-    public void setXrzwsj(String xrzwsj) {
-        this.xrzwsj = xrzwsj;
+    public void setZytc(String zytc) {
+        this.zytc = zytc;
     }
 
     public String getXrzjsj() {
@@ -144,6 +234,78 @@ public class AppAsetA01Vo {
 
     public void setXrzjsj(String xrzjsj) {
         this.xrzjsj = xrzjsj;
+    }
+
+    public String getXrzwsj() {
+        return xrzwsj;
+    }
+
+    public void setXrzwsj(String xrzwsj) {
+        this.xrzwsj = xrzwsj;
+    }
+
+    public String getXrzw() {
+        return xrzw;
+    }
+
+    public void setXrzw(String xrzw) {
+        this.xrzw = xrzw;
+    }
+
+    public String getNrzw() {
+        return nrzw;
+    }
+
+    public void setNrzw(String nrzw) {
+        this.nrzw = nrzw;
+    }
+
+    public String getNmzw() {
+        return nmzw;
+    }
+
+    public void setNmzw(String nmzw) {
+        this.nmzw = nmzw;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    public String getFile2ImgPath() {
+        return file2ImgPath;
+    }
+
+    public void setFile2ImgPath(String file2ImgPath) {
+        this.file2ImgPath = file2ImgPath;
+    }
+
+    public String getGzjlStr() {
+        return gzjlStr;
+    }
+
+    public void setGzjlStr(String gzjlStr) {
+        this.gzjlStr = gzjlStr;
+    }
+
+    public String getJcqkStr() {
+        return jcqkStr;
+    }
+
+    public void setJcqkStr(String jcqkStr) {
+        this.jcqkStr = jcqkStr;
+    }
+
+    public String getKhjgStr() {
+        return khjgStr;
+    }
+
+    public void setKhjgStr(String khjgStr) {
+        this.khjgStr = khjgStr;
     }
 
     public int getA01Px() {
@@ -162,11 +324,20 @@ public class AppAsetA01Vo {
         this.zpPath = zpPath;
     }
 
-    public String getAppGbcxB01Id() {
-        return appGbcxB01Id;
+    public String getQrzxlxwjzy() {
+        return StringUtils.trimToEmpty(qrzxl)+StringUtils.trimToEmpty(qrzxw);
     }
 
-    public void setAppGbcxB01Id(String appGbcxB01Id) {
-        this.appGbcxB01Id = appGbcxB01Id;
+    public void setQrzxlxwjzy(String qrzxlxwjzy) {
+        this.qrzxlxwjzy = qrzxlxwjzy;
     }
+
+    public String getZzxlxwjzy() {
+        return StringUtils.trimToEmpty(zzxl)+StringUtils.trimToEmpty(zzxw);
+    }
+
+    public void setZzxlxwjzy(String zzxlxwjzy) {
+        this.zzxlxwjzy = zzxlxwjzy;
+    }
+
 }

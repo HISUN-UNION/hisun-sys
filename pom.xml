@@ -76,6 +76,10 @@
 			<systemPath>${project.basedir}/lib/aspose.slides-16.7.0.jar</systemPath>
 			<!--<classifier>jdk16</classifier>-->
 		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>sqljdbc4</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

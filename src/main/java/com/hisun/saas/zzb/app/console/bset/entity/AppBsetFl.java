@@ -30,8 +30,8 @@ public class AppBsetFl extends TenantEntity implements Serializable {
     @OneToMany(mappedBy = "parentFl", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<AppBsetFl> children;
-    @OneToMany(mappedBy = "appGbcxFl", fetch = FetchType.LAZY)
-    private List<AppBsetFl2B01> appGbcxFl2B01s;
+    @OneToMany(mappedBy = "appBsetFl", fetch = FetchType.LAZY)
+    private List<AppBsetFl2B01> appBsetFl2B01s;
 
 
     public String getId() {
@@ -74,11 +74,11 @@ public class AppBsetFl extends TenantEntity implements Serializable {
         this.children = children;
     }
 
-    public List<AppBsetFl2B01> getAppGbcxFl2B01s() {
-        return appGbcxFl2B01s;
+    public List<AppBsetFl2B01> getAppBsetFl2B01s() {
+        return appBsetFl2B01s;
     }
 
-    public void setAppGbcxFl2B01s(List<AppBsetFl2B01> appGbcxFl2B01s) {
-        this.appGbcxFl2B01s = appGbcxFl2B01s;
+    public void setAppBsetFl2B01s(List<AppBsetFl2B01> appBsetFl2B01s) {
+        this.appBsetFl2B01s = appBsetFl2B01s;
     }
 }
