@@ -70,6 +70,7 @@ public class AppBsetFl2B01ServiceImpl extends BaseServiceImpl<AppBsetFl2B01,Stri
 
             }
             values.append(")");
+
             List<Object> paramList = new ArrayList<Object>();
             this.appBsetFl2B01Dao.executeNativeBulk(fields.append(values).toString(),paramList);
             order++;

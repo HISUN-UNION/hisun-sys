@@ -57,6 +57,8 @@ public class Sha01 extends TenantEntity implements Serializable {
     private int px = 0;
     @Column(name = "ZP_PATH",length = 128)
     private String zppath;
+    @Column(name = "jsbs")
+    private String jsbs;
 
     @OneToMany(mappedBy = "sha01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
@@ -306,6 +308,14 @@ public class Sha01 extends TenantEntity implements Serializable {
         this.xgzdwjzw = xgzdwjzw;
     }
 
+    public String getJsbs() {
+        return jsbs;
+    }
+
+    public void setJsbs(String jsbs) {
+        this.jsbs = jsbs;
+    }
+
     public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
@@ -334,7 +344,11 @@ public class Sha01 extends TenantEntity implements Serializable {
         sb.append("(");
         sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
         sb.append(",'"+ StringUtils.trimNull2Empty(shpc.getId())+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(xm)+"'");
+        if(this.jsbs!=null){
+            sb.append(",'"+ StringUtils.trimNull2Empty(jsbs+xm)+"'");
+        }else{
+            sb.append(",'"+ StringUtils.trimNull2Empty(xm)+"'");
+        }
         sb.append(",'"+ StringUtils.trimNull2Empty(xb)+"'");
         sb.append(",'"+ StringUtils.trimNull2Empty(mz)+"'");
         sb.append(",'"+ StringUtils.trimNull2Empty(jg)+"'");

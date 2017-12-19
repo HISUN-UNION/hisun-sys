@@ -20,6 +20,8 @@ public class AppAsetA02 extends TenantEntity implements Serializable {
     private String id;
     @Column(name = "zwmc")
     private String zwmc;
+    @Column(name = "px")
+    private int px;//集体类排列顺序
 
     @ManyToOne(optional = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "a01_id")

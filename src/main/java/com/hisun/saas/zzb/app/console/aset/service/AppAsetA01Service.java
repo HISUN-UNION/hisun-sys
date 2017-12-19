@@ -11,7 +11,8 @@ import java.io.File;
  */
 public interface AppAsetA01Service extends BaseService<AppAsetA01,String> {
 
-    public static String ATTS_PATH = File.separator+"gbcx"+ File.separator;
+    String ATTS_PATH = File.separator+"aset"+ File.separator+"a01"+File.separator;
+    String ZP_PATH = File.separator+"aset"+ File.separator+"a01"+File.separator+"photo"+File.separator;
 
     Integer getMaxPx(String b01Id) ;
     void updatePx(String b01Id,int oldPx,int newPx);

@@ -12,9 +12,13 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.*;
 
@@ -25,6 +29,9 @@ import java.util.*;
 public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> implements AppAsetA01Service {
 
     private AppAsetA01Dao appAsetA01Dao;
+
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
 
     @Autowired
     public void setBaseDao(BaseDao<AppAsetA01, String> appAsetA01Dao) {
@@ -75,6 +82,13 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
 
     public int saveAsetA01FromYw(DataSource dataSource)throws Exception{
 
+        //初始化照片存储目录
+        String photoStoreDir = uploadAbsolutePath + AppAsetA01Service.ZP_PATH;
+        File photoStoreDirFile = new File(photoStoreDir);
+        if(photoStoreDirFile.exists()==false){
+            photoStoreDirFile.mkdirs();
+        }
+
         //处理了多少条
         int order = 0;
         Connection conn = dataSource.getConnection();
@@ -82,7 +96,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
 
         int count =0;
         List<Map<String, Object>> countList = queryRunner.query(conn,
-                "select count(*) as count from A000  ", new MapListHandler(),(Object[]) null);
+                "select count(*) as count from a000 where a000.a000_a0194 in ('01','31','11')  ", new MapListHandler(),(Object[]) null);
         for (Iterator<Map<String, Object>> li = countList.iterator(); li.hasNext();) {
             Map<String, Object> m = li.next();
             for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
@@ -95,8 +109,8 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
         int dealCount = count/400;
         for(int i=0;i<=dealCount;i++){
             int num = i*400;
-            String sql = " SELECT top 400 * FROM A000 where A000.PERSONCODE not in "
-                    + "(select top "+num+" A000.PERSONCODE from A000 order by A000.PERSONCODE)";
+            String sql = " SELECT top 400 * FROM A000 where  A000.a000_a0194 in ('01','31','11') and A000.PERSONCODE not in "
+                    + "(select top "+num+" A000.PERSONCODE from A000 where  A000.a000_a0194 in ('01','31','11')  order by A000.PERSONCODE)";
             List<Map<String, Object>> list = queryRunner.query(conn, sql, new MapListHandler(),(Object[]) null);
             for (Iterator<Map<String, Object>> li = list.iterator(); li.hasNext();) {
                 Map<String, Object> m = li.next();
@@ -106,7 +120,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                 StringBuffer values = new StringBuffer();
                 values.append(") values (");
                 values.append(" 0 ");
-
+                String personCode = "";
                 for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
                     Map.Entry<String, Object> e = mi.next();
                     String key = e.getKey();
@@ -114,6 +128,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                     if(key.equalsIgnoreCase("PERSONCODE")){
                         fields.append(",id");
                         values.append(",'"+value+"'");
+                        personCode = value.toString();
                     }else if(key.equalsIgnoreCase("A000_A0101")){
                         fields.append(",xm");
                         values.append(",'"+value+"'");
@@ -206,6 +221,56 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                         fields.append(",khjg_str");
                         values.append(",'"+value+"'");
                     }
+
+
+
+                }
+                //找到对应的工作经历
+                String gzjlSql = " select * from a043 where a043.personcode = '"+personCode+"' ";
+                List<Map<String, Object>> gzjlList = queryRunner.query(conn, gzjlSql, new MapListHandler(),(Object[]) null);
+                if(gzjlList.size()>0){
+                    Map<String,Object> gzjlMap = gzjlList.get(0);
+                    for (Iterator<String> it = gzjlMap.keySet().iterator(); it.hasNext();) {
+                        String key = it.next();
+                        Object value = gzjlMap.get(key)==null?"":gzjlMap.get(key);
+                        if(key.equalsIgnoreCase("A043_A4401")){
+                            fields.append(",gzjl_str");
+                            if(value.toString().equals("")==false){
+                                String gzjl = value.toString().replace("~", "-").replace("{","(").replace("}",")");
+                                values.append(",'"+gzjl+"'");
+                            }else{
+                                values.append(",''");
+                            }
+                        }
+                    }
+                }
+                //找到对应的照片
+                String zpSql = " select  * FROM APhoto where APhoto.personcode ='"+personCode+"' ";
+                List<Map<String, Object>> zpList = queryRunner.query(conn, zpSql, new MapListHandler(),(Object[]) null);
+                if(zpList.size()>0){
+                    Map<String,Object> zpMap = zpList.get(0);
+                    for (Iterator<String> it = zpMap.keySet().iterator(); it.hasNext();) {
+                        String key = it.next();
+                        Object value = zpMap.get(key);
+                        if(key.equalsIgnoreCase("Ole1")){
+                            if(value!=null){
+                                byte[] bytes = (byte[])value;
+                                if(bytes.length>0){
+                                    try {
+                                        String imageRealPath = photoStoreDir +personCode+".jpg";
+                                        OutputStream fos= new FileOutputStream(imageRealPath);
+                                        fos.write(bytes);
+                                        fos.close();
+                                        fields.append(",zp_path");
+                                        values.append(",'"+AppAsetA01Service.ZP_PATH+personCode+".jpg'");
+                                    } catch (Exception e1) {
+                                        //e1.printStackTrace();
+                                    }
+                                    bytes=null;
+                                }
+                            }
+                        }
+                    }
                 }
                 fields.append(",a01_px");
                 values.append(","+order+"");
@@ -214,7 +279,6 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
 
                 this.appAsetA01Dao.executeNativeBulk(fields.append(values).toString(),paramList);
                 order++;
-
             }
         }
 

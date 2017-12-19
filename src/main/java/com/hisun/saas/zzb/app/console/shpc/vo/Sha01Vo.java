@@ -31,6 +31,7 @@ public class Sha01Vo {
     private String xgzdwjzw;
     private int px = 0;
     private String zppath;
+    private String jsbs;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 
     private boolean isHavagbrmspbFile = false;//是否存在干部详细信息
@@ -71,6 +72,9 @@ public class Sha01Vo {
     }
 
     public String getXm() {
+        if(jsbs!=null){
+            return jsbs+xm;
+        }
         return xm;
     }
 
@@ -367,5 +371,13 @@ public class Sha01Vo {
 
     public void setHavaDascqkFile(boolean havaDascqkFile) {
         isHavaDascqkFile = havaDascqkFile;
+    }
+
+    public String getJsbs() {
+        return jsbs;
+    }
+
+    public void setJsbs(String jsbs) {
+        this.jsbs = jsbs;
     }
 }

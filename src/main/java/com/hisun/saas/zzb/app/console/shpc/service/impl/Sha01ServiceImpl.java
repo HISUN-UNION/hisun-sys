@@ -72,7 +72,11 @@ public class Sha01ServiceImpl extends BaseServiceImpl<Sha01,String> implements S
         for (Map map : list) {
             sha01Vo = new Sha01Vo();
             sha01Vo.setId(map.get("id").toString());
-            sha01Vo.setXm(map.get("xm")==null ?"":map.get("xm").toString());;
+            if(map.get("jsbs")!=null){
+                sha01Vo.setXm(map.get("jsbs").toString()+map.get("xm").toString());
+            }else {
+                sha01Vo.setXm(map.get("xm") == null ? "" : map.get("xm").toString());
+            }
             sha01Vo.setXb(map.get("xb")==null ?"":map.get("xb").toString());;
             sha01Vo.setMz(map.get("mz")==null ?"":map.get("mz").toString());
             sha01Vo.setJg(map.get("jg")==null ?"":map.get("jg").toString());

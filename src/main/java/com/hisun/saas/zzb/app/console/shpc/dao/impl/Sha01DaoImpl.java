@@ -61,11 +61,24 @@ public class Sha01DaoImpl extends TenantBaseDaoImpl<Sha01, String> implements Sh
             for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
                 String value = dataMap.get(key);
-
                 fieldSql.append(",");
                 fieldSql.append(WordUtil.getSqlField(key));
-                valueSql.append(",");
-                valueSql.append("'").append(value).append("'");
+                if(key.toLowerCase().indexOf("app_sh_a01.xm")>-1){
+                    if(value.indexOf("△")>-1){
+                        valueSql.append(",");
+                        valueSql.append("'").append(value.substring(1,value.length())).append("'");
+
+                        fieldSql.append(",");
+                        fieldSql.append("jsbs");
+                        valueSql.append(",'△'");
+                    }else{
+                        valueSql.append(",");
+                        valueSql.append("'").append(value).append("'");
+                    }
+                }else {
+                    valueSql.append(",");
+                    valueSql.append("'").append(value).append("'");
+                }
 
             }
             insertSql.append(fieldSql);
