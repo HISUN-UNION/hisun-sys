@@ -90,14 +90,18 @@ public class AppBsetFl extends TenantEntity implements Serializable {
         sb.append("(");
         sb.append("id");
         sb.append(",fl");
-        sb.append(",parent_id");
+        if(parentFl!=null) {
+            sb.append(",parent_id");
+        }
         sb.append(",px");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
         sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
         sb.append(",'"+ StringUtils.trimNull2Empty(fl)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(parentFl.getId())+"'");
+        if(parentFl!=null){
+            sb.append(",'" + StringUtils.trimNull2Empty(parentFl.getId()) + "'");
+        }
         sb.append(","+px);
         sb.append(")");
         return sb.toString();

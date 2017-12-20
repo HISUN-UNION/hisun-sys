@@ -465,6 +465,7 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         }
         sb.append(",'"+ StringUtils.trimNull2Empty(zzxl)+"'");
         sb.append(",'"+ StringUtils.trimNull2Empty(qrzxw)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(zzxw)+"'");
         sb.append(",'"+ StringUtils.trimNull2Empty(nl)+"'");
         sb.append(",'"+ StringUtils.trimNull2Empty(jkzk)+"'");
         sb.append(",'"+ StringUtils.trimNull2Empty(zytc)+"'");

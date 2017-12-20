@@ -96,7 +96,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
 
         int count =0;
         List<Map<String, Object>> countList = queryRunner.query(conn,
-                "select count(*) as count from a000 where a000.a000_a0194 in ('01','31','11')  ", new MapListHandler(),(Object[]) null);
+                "select count(*) as count from a000  ", new MapListHandler(),(Object[]) null);
         for (Iterator<Map<String, Object>> li = countList.iterator(); li.hasNext();) {
             Map<String, Object> m = li.next();
             for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
@@ -109,8 +109,8 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
         int dealCount = count/400;
         for(int i=0;i<=dealCount;i++){
             int num = i*400;
-            String sql = " SELECT top 400 * FROM A000 where  A000.a000_a0194 in ('01','31','11') and A000.PERSONCODE not in "
-                    + "(select top "+num+" A000.PERSONCODE from A000 where  A000.a000_a0194 in ('01','31','11')  order by A000.PERSONCODE)";
+            String sql = " SELECT top 400 * FROM A000 where  A000.PERSONCODE not in "
+                    + "(select top "+num+" A000.PERSONCODE from A000   order by A000.PERSONCODE)";
             List<Map<String, Object>> list = queryRunner.query(conn, sql, new MapListHandler(),(Object[]) null);
             for (Iterator<Map<String, Object>> li = list.iterator(); li.hasNext();) {
                 Map<String, Object> m = li.next();

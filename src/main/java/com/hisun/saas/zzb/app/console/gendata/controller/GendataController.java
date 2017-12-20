@@ -242,8 +242,12 @@ public class GendataController extends BaseController{
         resp.setContentType("multipart/form-data");
         resp.setHeader("Content-Disposition", "attachment;fileName="+encode(GendataService.DATA_PACKET_NAME+".zip"));
         OutputStream output=resp.getOutputStream();
-        byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+zipPath));
-        output.write(b);
+        FileInputStream fileInputStream = new FileInputStream(new File(uploadAbsolutePath+zipPath));
+        byte[] buffer = new byte[8192];
+        int length;
+        while ((length = fileInputStream.read(buffer)) != -1) {
+            output.write(buffer, 0, length);
+        }
         output.flush();
         output.close();
 

@@ -321,7 +321,7 @@ CREATE TABLE `app_bset_fl` (
 
 
 drop table if exists app_bset_b01;
-CREATE TABLE `app_gbcx_b01` (
+CREATE TABLE `app_bset_b01` (
   `id` varchar(32) NOT NULL,
   `b0101` varchar(255) NOT NULL,
   `parent_id` varchar(32) DEFAULT NULL,
@@ -372,7 +372,7 @@ CREATE TABLE `app_aset_a01` (
 ) ;
 
 drop table if exists app_aset_a02;
-CREATE TABLE `app_gbcx_a02` (
+CREATE TABLE `app_aset_a02` (
   `id` varchar(32) NOT NULL,
   `a01_id` varchar(32) NOT NULL,
   `b01_id` varchar(32) NOT NULL,

@@ -74,8 +74,8 @@ public class AppAsetA02ServiceImpl extends BaseServiceImpl<AppAsetA02,String> im
         int dealCount = count/400;
         for(int i=0;i<=dealCount;i++){
             int num = i*400;
-            String sql = " SELECT top 400 * FROM A001 where A001.id not in "
-                    + "(select top "+num+" A001.id from A001)";
+            String sql = " SELECT top 400 * FROM A001 where a001.a001_a0255 = '1' AND A001.id not in "
+                    + "(select top "+num+" A001.id from A001 WHERE a001.a001_a0255 = '1')";
             List<Map<String, Object>> list = queryRunner.query(conn, sql, new MapListHandler(),(Object[]) null);
             for (Iterator<Map<String, Object>> li = list.iterator(); li.hasNext();) {
                 Map<String, Object> m = li.next();
