@@ -12,6 +12,8 @@ public class ImportParameterVo {
 	private String dbUser;
 	private String dbPwd;
 
+
+
 	public String getImportType() {
 		return importType;
 	}
