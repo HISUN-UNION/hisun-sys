@@ -98,6 +98,9 @@ public class AppAsetA02ServiceImpl extends BaseServiceImpl<AppAsetA02,String> im
                         values.append(",'"+value+"'");
                         personCode = value.toString();
                     }else if(key.equalsIgnoreCase("A001_A0225")){
+                        fields.append(",jtl_px");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("A001_A0225A")){
                         fields.append(",px");
                         values.append(",'"+value+"'");
                     }else if(key.equalsIgnoreCase("A001_A0201B")){
@@ -107,6 +110,13 @@ public class AppAsetA02ServiceImpl extends BaseServiceImpl<AppAsetA02,String> im
                     }else if(key.equalsIgnoreCase("A001_A0215_SHOW")){
                         fields.append(",zwmc");
                         values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("A001_A0253A")){
+                        fields.append(",rzsj");
+                        if(value.toString().equals("")==false){
+                            values.append(",'"+ DateUtil.formatDateByFormat((Date) value,DateUtil.NOCHAR_PATTERN2)+"'");
+                        }else{
+                            values.append(",''");
+                        }
                     }
                 }
                 values.append(")");

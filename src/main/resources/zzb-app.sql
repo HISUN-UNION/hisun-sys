@@ -310,7 +310,17 @@ create table if not exists `app_mc_a01_gzjl` (
     CONSTRAINT app_sh_pc_atts_app_sh_pc_id_fk FOREIGN KEY (sh_pc_id) REFERENCES app_sh_pc (id)
 );
 
- drop table if exists app_bset_b01;
+drop table if exists app_bset_fl;
+CREATE TABLE `app_bset_fl` (
+  `id` varchar(32) NOT NULL,
+  `fl` varchar(32) NOT NULL,
+  `parent_id` varchar(32) DEFAULT NULL,
+  `px` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+
+drop table if exists app_bset_b01;
 CREATE TABLE `app_gbcx_b01` (
   `id` varchar(32) NOT NULL,
   `b0101` varchar(255) NOT NULL,
@@ -319,8 +329,16 @@ CREATE TABLE `app_gbcx_b01` (
   PRIMARY KEY (`id`)
 ) ;
 
- drop table if exists app_aset_a01;
-CREATE TABLE `app_gbcx_a01` (
+drop table if exists app_bset_fl_2_b01;
+CREATE TABLE `app_bset_fl_2_b01` (
+  `id` varchar(32) DEFAULT NULL,
+  `fl_id` varchar(32) DEFAULT NULL,
+  `b01_id` varchar(32) DEFAULT NULL,
+  `px` int(11) DEFAULT NULL
+) ;
+
+drop table if exists app_aset_a01;
+CREATE TABLE `app_aset_a01` (
   `id` varchar(32) NOT NULL,
   `xm` varchar(10) DEFAULT NULL,
   `xb` varchar(10) DEFAULT NULL,
@@ -331,15 +349,27 @@ CREATE TABLE `app_gbcx_a01` (
   `csny` varchar(20) DEFAULT NULL,
   `cjgzsj` varchar(20) DEFAULT NULL,
   `rdsj` varchar(20) DEFAULT NULL,
-  `qrzxlxwjzy` varchar(200) DEFAULT NULL,
-  `zzxlxwjzy` varchar(200) DEFAULT NULL,
+  `qrzxl` varchar(200) DEFAULT NULL,
   `zyjszw` varchar(200) DEFAULT NULL,
   `xrzwsj` varchar(200) DEFAULT NULL,
   `xrzjsj` varchar(200) DEFAULT NULL,
-  `a01_px` int(11) NOT NULL,
   `zp_path` varchar(128) DEFAULT NULL,
+  `zzxl` varchar(100) DEFAULT NULL,
+  `qrzxw` varchar(100) DEFAULT NULL,
+  `zzxw` varchar(100) DEFAULT NULL,
+  `nl` varchar(10) DEFAULT NULL,
+  `jkzk` varchar(24) DEFAULT NULL,
+  `zytc` varchar(60) DEFAULT NULL,
+  `qrz_byyx` varchar(128) DEFAULT NULL,
+  `zz_byyx` varchar(128) DEFAULT NULL,
+  `xrzw` varchar(128) DEFAULT NULL,
+  `nrzw` varchar(128) DEFAULT NULL,
+  `nmzw` varchar(128) DEFAULT NULL,
+  `file2img_path` varchar(255) DEFAULT NULL,
+  `qrz_zy` varchar(100) DEFAULT NULL,
+  `zz_zy` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-);
+) ;
 
 drop table if exists app_aset_a02;
 CREATE TABLE `app_gbcx_a02` (
@@ -347,55 +377,13 @@ CREATE TABLE `app_gbcx_a02` (
   `a01_id` varchar(32) NOT NULL,
   `b01_id` varchar(32) NOT NULL,
   `zwmc` varchar(120) NOT NULL,
+  `px` int(11) NOT NULL,
+  `jtl_px` int(11) NOT NULL,
+  `rzsj` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `app_gbcx_a02_app_gbcx_a01_id_fk` FOREIGN KEY (`a01_id`) REFERENCES app_aset_a01 (`id`),
   CONSTRAINT `app_gbcx_a02_app_gbcx_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES app_bset_b01 (`id`)
 );
 
-drop table if exists `app_zscx_b01` ;
-CREATE TABLE `app_zscx_b01` (
-  `id` varchar(32) NOT NULL,
-  `b0101` varchar(255) NOT NULL,
-  `parent_id` varchar(32) DEFAULT NULL,
-  `px` int(11) NOT NULL DEFAULT '99',
-  `zs_comment` varchar(255) DEFAULT NULL,
-  `data_type` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-);
 
-drop table if exists `app_zscx_zs` ;
-CREATE TABLE `app_zscx_zs` (
-  `id` varchar(32) NOT NULL,
-  `zwmc` varchar(120) NOT NULL,
-  `xp` int(11) NOT NULL,
-  `sp` int(11) NOT NULL,
-  `cqb` int(11) NOT NULL,
-  `b01_id` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `app_zscx_zs_app_zscx_b01_id_fk` FOREIGN KEY (`b01_id`) REFERENCES `app_zscx_b01` (`id`)
-);
-
-drop table if exists `app_zscx_zs_a01` ;
-CREATE TABLE `app_zscx_zs_a01` (
-  `id` varchar(32) NOT NULL,
-  `xm` varchar(10) DEFAULT NULL,
-  `xb` varchar(10) DEFAULT NULL,
-  `mz` varchar(10) DEFAULT NULL,
-  `zw` varchar(255) DEFAULT NULL,
-  `csd` varchar(40) DEFAULT NULL,
-  `jg` varchar(20) DEFAULT NULL,
-  `csny` varchar(20) DEFAULT NULL,
-  `cjgzsj` varchar(20) DEFAULT NULL,
-  `rdsj` varchar(20) DEFAULT NULL,
-  `qrzxlxwjzy` varchar(200) DEFAULT NULL,
-  `zzxlxwjzy` varchar(200) DEFAULT NULL,
-  `zyjszw` varchar(200) DEFAULT NULL,
-  `xrzwsj` varchar(200) DEFAULT NULL,
-  `xrzjsj` varchar(200) DEFAULT NULL,
-  `a01_px` int(11) NOT NULL,
-  `zp_path` varchar(128) DEFAULT NULL,
-  `zs_id` varchar(32) NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `app_zscx_a01_app_zscx_zs_id_fk` FOREIGN KEY (`zs_id`) REFERENCES `app_zscx_zs` (`id`)
-);
 

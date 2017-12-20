@@ -2,6 +2,7 @@ package com.hisun.saas.zzb.app.console.bset.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA02;
+import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -130,5 +131,26 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
         result = 31 * result + (b0101 != null ? b0101.hashCode() : 0);
         result = 31 * result + px;
         return result;
+    }
+
+
+    public String toSqliteInsertSql(){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" app_bset_b01 ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",b0101");
+        sb.append(",parent_id");
+        sb.append(",px");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(b0101)+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(parentB01.getId())+"'");
+        sb.append(","+px);
+        sb.append(")");
+        return sb.toString();
     }
 }
