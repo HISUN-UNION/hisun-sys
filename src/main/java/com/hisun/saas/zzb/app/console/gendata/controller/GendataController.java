@@ -171,6 +171,7 @@ public class GendataController extends BaseController{
         try{
             UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
             String checkBoxTypeValues = request.getParameter("checkBoxTypeValues")==null?"":request.getParameter("checkBoxTypeValues").toString();//选择需要导出的类型
+            String[] generatorTypeValues= checkBoxTypeValues.split(",");
 
             String pcs = request.getParameter("checkHyyjValues")==null?"":request.getParameter("checkHyyjValues").toString();//会议研究ID
             String gbmcs = request.getParameter("checkGbmcValues")==null?"":request.getParameter("checkGbmcValues").toString();//干部名册ID
@@ -193,6 +194,15 @@ public class GendataController extends BaseController{
 
             if(tjs!=null &&tjs.length()>0){
                 map.put(GendataVo.GBTJ_DATA,tjs);
+            }
+            if(!checkBoxTypeValues.equals("")){
+                for (String generatorTypeValue : generatorTypeValues) {
+                    if(generatorTypeValue.equals(GendataVo.GBCX_DATA)){
+                        map.put(GendataVo.GBCX_DATA,"TRUE");
+                    }else if(generatorTypeValue.equals(GendataVo.ZSCX_DATA)){
+                        map.put(GendataVo.ZSCX_DATA,"TRUE");
+                    }
+                }
             }
             Gendata gendata = new Gendata();
             gendata.setTenant(userLoginDetails.getTenant());

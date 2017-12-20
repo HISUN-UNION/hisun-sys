@@ -53,10 +53,10 @@
 				</div>
 			</li>
 			<li>
-				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="gbcx" /> 干部查询</h4>
+				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="GBCX" /> 干部查询</h4>
 			</li>
 			<li>
-				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="zxcx" /> 职数查询</h4>
+				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="ZSCX" /> 职数查询</h4>
 			</li>
 			<li class="heightauto">
 				<h4  class=""><input class="checkbox" type="checkbox" name="checkBoxValue" id="CheckAllGbmc" value="gbmc" /> <a href="###">干部名册</a></h4>
@@ -181,10 +181,23 @@
 				}
 			}
 		});
+		var checkBoxTypeValues = "";//选择类型的值
+		$("input[name=checkBoxValue]").each(function() {
+			if ($(this).attr("checked")) {
+				if ($(this).val() == "GBCX") {//分类目前只有干部查询可加入选择的内容中
+					if (checkBoxTypeValues == "") {
+						checkBoxTypeValues = $(this).val();
+					} else {
+						checkBoxTypeValues = checkBoxTypeValues + "," + $(this).val();
+					}
+				}
+			}
+		});
 		document.getElementById("checkHyyjValues").value = checkHyyjValues;
 		document.getElementById("checkGbmcValues").value = checkGbmcValues;
 		document.getElementById("checkGbtjValues").value = checkGbtjValues;
-		if(''==checkHyyjValues&&''==checkGbmcValues&&''==checkGbtjValues)
+		document.getElementById("checkBoxTypeValues").value = checkBoxTypeValues;
+		if(''==checkHyyjValues&&''==checkGbmcValues&&''==checkGbtjValues&&''==checkBoxTypeValues)
 		{
 			flag = false;
 			showTip('提示','请先选择需要生成数据的项', 1500);

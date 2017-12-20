@@ -2,6 +2,7 @@ package com.hisun.saas.zzb.app.console.aset.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import com.hisun.util.StringUtils;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -94,7 +95,9 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     @Column(name = "zp_path")
     private String zpPath;
 
-    @OneToMany(mappedBy = "appAsetA01")
+    @OneToMany(mappedBy = "appAsetA01" ,fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @OrderBy("px ASC")
     private List<AppAsetA02> appAsetA02s;
 
    

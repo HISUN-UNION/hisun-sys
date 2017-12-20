@@ -149,9 +149,11 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
                     for (String id : ids) {
                         this.genGbmcData(id, sqliteDB, imgdir, attsdir);
                     }
+                }else if (key.equals(GendataVo.GBCX_DATA)) {
+                    //生成干部查询数据包
+                    this.genGbcxData(sqliteDB,imgdir,attsdir);
                 }
-                //生成干部查询数据包
-                this.genGbcxData(sqliteDB,imgdir,attsdir);
+
             }
             //生成配置数据包
             this.genConfigData(dbdir + GendataService.SQLITE_DB_NAME);

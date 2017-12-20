@@ -2,6 +2,8 @@ package com.hisun.saas.zzb.app.console.aset.vo;
 
 import com.hisun.util.StringUtils;
 
+import java.util.List;
+
 /**
  * Created by zhouying on 2017/9/23.
  */
@@ -50,7 +52,7 @@ public class AppAsetA01Vo {
 
     private String qrzxlxwjzy;
     private String zzxlxwjzy;
-
+    private List<AppAsetA02Vo> appAsetA02Vos;
 
     public String getId() {
         return id;
@@ -325,7 +327,7 @@ public class AppAsetA01Vo {
     }
 
     public String getQrzxlxwjzy() {
-        return StringUtils.trimToEmpty(qrzxl)+StringUtils.trimToEmpty(qrzxw);
+        return qrzxlxwjzy;
     }
 
     public void setQrzxlxwjzy(String qrzxlxwjzy) {
@@ -333,11 +335,17 @@ public class AppAsetA01Vo {
     }
 
     public String getZzxlxwjzy() {
-        return StringUtils.trimToEmpty(zzxl)+StringUtils.trimToEmpty(zzxw);
+        return zzxlxwjzy;
     }
 
     public void setZzxlxwjzy(String zzxlxwjzy) {
         this.zzxlxwjzy = zzxlxwjzy;
     }
+    public List<AppAsetA02Vo> getAppAsetA02Vos() {
+        return appAsetA02Vos;
+    }
 
+    public void setAppAsetA02Vos(List<AppAsetA02Vo> appAsetA02Vos) {
+        this.appAsetA02Vos = appAsetA02Vos;
+    }
 }

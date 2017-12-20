@@ -12,7 +12,8 @@ public class GendataVo {
     public static String SHPC_DATA="SHPC";
     public static String GBTJ_DATA="GBTJ";
     public static String GBMC_DATA="GBMC";
-
+    public static String GBCX_DATA="GBCX";
+    public static String ZSCX_DATA="ZSCX";
     private String id;
     private String path;
     private List<ShpcVo> shpcVoList;

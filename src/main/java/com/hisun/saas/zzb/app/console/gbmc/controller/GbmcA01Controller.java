@@ -114,7 +114,7 @@ public class GbmcA01Controller extends BaseController{
             }
             hql = hql+" and a01.tombstone =? order by a01.gbMcB01.px,a01.px";
             paramList.add(0);
-            int total = this.gbMcA01Service.count("select  count(a01.id) "+hql,paramList);
+            int total = this.gbMcA01Service.count("select  count(DISTINCT a01.id) "+hql,paramList);
             List<GbMcA01> gbMcA01s = this.gbMcA01Service.list("select  DISTINCT(a01) "+hql,paramList, pageNum,
                     pageSize);
             List<GbMcA01Vo> shpcVos = new ArrayList<GbMcA01Vo>();

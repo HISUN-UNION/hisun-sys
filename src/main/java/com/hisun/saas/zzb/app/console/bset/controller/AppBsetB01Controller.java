@@ -181,7 +181,7 @@ public class AppBsetB01Controller extends BaseController{
             }
             hql = hql+" and b01.tombstone =? order by b01.px";
             paramList.add(0);
-            int total = this.appBsetB01Service.count("select  count(b01.id) "+hql,paramList);
+            int total = this.appBsetB01Service.count("select  count(distinct b01.id) "+hql,paramList);
             List<AppBsetB01> appBsetB01s = this.appBsetB01Service.list("select  DISTINCT(b01) "+hql,paramList, pageNum,
                     pageSize);
 //            Long total = appBsetB01Service.count(query);
