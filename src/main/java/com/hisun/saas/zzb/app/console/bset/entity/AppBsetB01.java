@@ -41,6 +41,9 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
     @OneToMany(mappedBy = "appBsetB01", fetch = FetchType.LAZY)
     private List<AppBsetFl2B01> appBsetFl2B01s;
 
+    @Column(name = "query_code")
+    private String queryCode;
+
 
     public String getId() {
         return id;
@@ -109,6 +112,14 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
 
     public void setAppBsetFl2B01s(List<AppBsetFl2B01> appBsetFl2B01s) {
         this.appBsetFl2B01s = appBsetFl2B01s;
+    }
+
+    public String getQueryCode() {
+        return queryCode;
+    }
+
+    public void setQueryCode(String queryCode) {
+        this.queryCode = queryCode;
     }
 
     @Override

@@ -16,6 +16,9 @@ import java.util.List;
 @Table(name = "app_bset_fl")
 public class AppBsetFl extends TenantEntity implements Serializable {
 
+    public static int DISPLAY=0;
+    public static int HIDDEN=1;
+
     @Id
     @GenericGenerator(name = "generator", strategy = "uuid.hex")
     @GeneratedValue(generator = "generator")
@@ -33,6 +36,8 @@ public class AppBsetFl extends TenantEntity implements Serializable {
     private List<AppBsetFl> children;
     @OneToMany(mappedBy = "appBsetFl", fetch = FetchType.LAZY)
     private List<AppBsetFl2B01> appBsetFl2B01s;
+    @Column(name = "is_hidden")
+    private int isHidden =DISPLAY;
 
 
     public String getId() {
@@ -83,6 +88,14 @@ public class AppBsetFl extends TenantEntity implements Serializable {
         this.appBsetFl2B01s = appBsetFl2B01s;
     }
 
+    public int getIsHidden() {
+        return isHidden;
+    }
+
+    public void setIsHidden(int isHidden) {
+        this.isHidden = isHidden;
+    }
+
     public String toSqliteInsertSql(){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
@@ -94,6 +107,7 @@ public class AppBsetFl extends TenantEntity implements Serializable {
             sb.append(",parent_id");
         }
         sb.append(",px");
+        sb.append(",is_hidden");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
@@ -103,6 +117,7 @@ public class AppBsetFl extends TenantEntity implements Serializable {
             sb.append(",'" + StringUtils.trimNull2Empty(parentFl.getId()) + "'");
         }
         sb.append(","+px);
+        sb.append(","+isHidden);
         sb.append(")");
         return sb.toString();
     }

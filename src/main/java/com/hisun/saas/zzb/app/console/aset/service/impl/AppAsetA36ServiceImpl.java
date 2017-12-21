@@ -55,7 +55,7 @@ public class AppAsetA36ServiceImpl extends BaseServiceImpl<AppAsetA36,String> im
 
         int count =0;
         List<Map<String, Object>> countList = queryRunner.query(conn,
-                " select count(*) as count from a035 ", new MapListHandler(),(Object[]) null);
+                " select count(*) as count from a035  ", new MapListHandler(),(Object[]) null);
         for (Iterator<Map<String, Object>> li = countList.iterator(); li.hasNext();) {
             Map<String, Object> m = li.next();
             for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
@@ -122,16 +122,19 @@ public class AppAsetA36ServiceImpl extends BaseServiceImpl<AppAsetA36,String> im
                 fields.append(",shgx_px");
                 values.append(","+order);
                 values.append(")");
+                List<Object> paramList = new ArrayList<Object>();
+                this.appAsetA36Dao.executeNativeBulk(fields.append(values).toString(), paramList);
+                order++;
                 //判断干部是否存在
-                CommonConditionQuery query = new CommonConditionQuery();
-                query.add(CommonRestrictions.and(" id = :personCode", "personCode", personCode));
-                List<AppAsetA01> appAsetA01s =  this.appAsetA01Service.list(query,null);
-
-                if(appAsetA01s!=null && appAsetA01s.size()>0) {
-                    List<Object> paramList = new ArrayList<Object>();
-                    this.appAsetA36Dao.executeNativeBulk(fields.append(values).toString(), paramList);
-                    order++;
-                }
+//                CommonConditionQuery query = new CommonConditionQuery();
+//                query.add(CommonRestrictions.and(" id = :personCode", "personCode", personCode));
+//                List<AppAsetA01> appAsetA01s =  this.appAsetA01Service.list(query,null);
+//
+//                if(appAsetA01s!=null && appAsetA01s.size()>0) {
+//                    List<Object> paramList = new ArrayList<Object>();
+//                    this.appAsetA36Dao.executeNativeBulk(fields.append(values).toString(), paramList);
+//                    order++;
+//                }
             }
         }
 
