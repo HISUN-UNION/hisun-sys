@@ -81,7 +81,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
 
 
     public int saveAsetA01FromYw(DataSource dataSource)throws Exception{
-
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         //初始化照片存储目录
         String photoStoreDir = uploadAbsolutePath + AppAsetA01Service.ZP_PATH;
         File photoStoreDirFile = new File(photoStoreDir);
@@ -116,10 +116,13 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                 Map<String, Object> m = li.next();
                 StringBuffer fields = new StringBuffer();
                 fields.append("insert into app_aset_a01 (");
-                fields.append(" tombstone ");
+                fields.append(" tombstone,tenant_id,create_user_id,create_user_name ");
                 StringBuffer values = new StringBuffer();
                 values.append(") values (");
                 values.append(" 0 ");
+                values.append(",'").append(userLoginDetails.getTenant().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUser().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUsername()).append("'");
                 String personCode = "";
                 for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
                     Map.Entry<String, Object> e = mi.next();
@@ -147,7 +150,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                     }else if(key.equalsIgnoreCase("A000_A0111_SHOW")){
                         fields.append(",jg");
                         values.append(",'"+value+"'");
-                    }else if(key.equalsIgnoreCase("A000_A010")){
+                    }else if(key.equalsIgnoreCase("A000_A0107")){
                         fields.append(",csny");
                         if(value.toString().equals("")==false){
                             values.append(",'"+ DateUtil.formatDateByFormat((Date) value,DateUtil.NOCHAR_PATTERN2)+"'");

@@ -97,8 +97,13 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
 
     @OneToMany(mappedBy = "appAsetA01" ,fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
-    @OrderBy("px ASC")
+    @OrderBy("px asc ")
     private List<AppAsetA02> appAsetA02s;
+
+    @OneToMany(mappedBy = "appAsetA01" ,fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @OrderBy("shgx_px asc ")
+    private List<AppAsetA36> appAsetA36s;
 
    
     public String getId() {

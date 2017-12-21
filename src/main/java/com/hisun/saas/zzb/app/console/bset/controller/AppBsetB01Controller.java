@@ -12,8 +12,10 @@ import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
+import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA36;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA02Service;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA36Service;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
@@ -58,6 +60,8 @@ public class AppBsetB01Controller extends BaseController{
     private AppAsetA01Service appAsetA01Service;
     @Resource
     private AppAsetA02Service appAsetA02Service;
+    @Resource
+    private AppAsetA36Service  appAsetA36Service;
 
     @RequestMapping(value = "/")
     public ModelAndView list(){
@@ -351,11 +355,12 @@ public class AppBsetB01Controller extends BaseController{
                     "1433",
                     "gcmis","sa","Admin@123");
             int count =0;
-//            count = this.appBsetFlService.saveBsetFlFromYw(dataSource);
-//            count = this.appBsetB01Service.saveBsetB01FromYw(dataSource);
-//            count = this.appBsetFl2B01Service.saveBsetFl2B01FromYw(dataSource);
-            count = this.appAsetA01Service.saveAsetA01FromYw(dataSource);
-            count = this.appAsetA02Service.saveAsetA02FromYw(dataSource);
+            //count = this.appBsetFlService.saveBsetFlFromYw(dataSource);
+           // count = this.appBsetB01Service.saveBsetB01FromYw(dataSource);
+            //count = this.appBsetFl2B01Service.saveBsetFl2B01FromYw(dataSource);
+           // count = this.appAsetA01Service.saveAsetA01FromYw(dataSource);
+           // count = this.appAsetA02Service.saveAsetA02FromYw(dataSource);
+            count = this.appAsetA36Service.saveAsetA36FromYw(dataSource);
             map.put("success", true);
             map.put("transferCount",count);
         }catch(Exception e){

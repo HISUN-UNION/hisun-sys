@@ -359,10 +359,10 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         List<AppAsetA01> appAsetA01s = this.appAsetA01Dao.list();
         for(AppAsetA01 appAsetA01: appAsetA01s){
             sqliteDBUtil.insert(sqlite, appAsetA01.toSqliteInsertSql());
-            if(appAsetA01.getZpPath()!=null
-                    && appAsetA01.getZpPath().isEmpty()==false){
-                this.copyFile(appAsetA01.getZpPath(),imgDir);
-            }
+//            if(appAsetA01.getZpPath()!=null
+//                    && appAsetA01.getZpPath().isEmpty()==false){
+//                this.copyFile(appAsetA01.getZpPath(),imgDir);
+//            }
             if(appAsetA01.getFile2ImgPath()!=null
                     &&appAsetA01.getFile2ImgPath().isEmpty()==false){
                 this.copyFile(appAsetA01.getFile2ImgPath(),attsDir);

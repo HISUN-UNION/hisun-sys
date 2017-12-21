@@ -88,7 +88,7 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
 
 
     public int saveBsetB01FromYw(DataSource dataSource)throws Exception{
-
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         //处理了多少条
         int order = 0;
         Connection conn = dataSource.getConnection();
@@ -117,10 +117,12 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
                 Map<String, Object> m = li.next();
                 StringBuffer fields = new StringBuffer();
                 fields.append("insert into app_bset_b01 (");
-                fields.append(" tombstone ");
+                fields.append(" tombstone,tenant_id,create_user_id,create_user_name ");
                 StringBuffer values = new StringBuffer();
                 values.append(") values (");
-                values.append(" 0 ");
+                values.append(",'").append(userLoginDetails.getTenant().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUser().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUsername()).append("'");
 
                 for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
                     Map.Entry<String, Object> e = mi.next();

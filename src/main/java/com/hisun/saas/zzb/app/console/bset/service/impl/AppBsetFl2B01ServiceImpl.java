@@ -2,6 +2,8 @@ package com.hisun.saas.zzb.app.console.bset.service.impl;
 
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
+import com.hisun.saas.sys.auth.UserLoginDetails;
+import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.bset.dao.AppBsetFl2B01Dao;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFl2B01Service;
@@ -36,6 +38,7 @@ public class AppBsetFl2B01ServiceImpl extends BaseServiceImpl<AppBsetFl2B01,Stri
 
 
     public int saveBsetFl2B01FromYw(DataSource dataSource)throws Exception{
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         //处理了多少条
         int order = 0;
         Connection conn = dataSource.getConnection();
@@ -48,10 +51,13 @@ public class AppBsetFl2B01ServiceImpl extends BaseServiceImpl<AppBsetFl2B01,Stri
 
             StringBuffer fields = new StringBuffer();
             fields.append("insert into app_bset_fl_2_b01 (");
-            fields.append(" tombstone,id ");
+            fields.append(" tombstone,id,tenant_id,create_user_id,create_user_name ");
             StringBuffer values = new StringBuffer();
             values.append(") values (");
             values.append(" 0,'"+ UUIDUtil.getUUID()+"'");
+            values.append(",'").append(userLoginDetails.getTenant().getId()).append("'")
+                    .append(",'").append(userLoginDetails.getUser().getId()).append("'")
+                    .append(",'").append(userLoginDetails.getUsername()).append("'");
 
             for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
                 Map.Entry<String, Object> e = mi.next();
