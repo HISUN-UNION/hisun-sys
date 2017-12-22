@@ -81,12 +81,12 @@
 	<div class="row-fluid">
 		<div class="row-fluid">
 			<!-- 脚本目录 -->
-			<div id="scriptCatalog" class="span6" style="width: 20%">
+			<div id="scriptCatalog" class="span6" style="width: 20%; margin: 0px;padding: 0px">
 				<div class="portlet box grey">
 					<div class="portlet-body fuelux">
 						<div class="tab-pane active" id="tab_1_1">
 							<span id="errorInfo" style="color: red;position: absolute;"></span>
-							<div class="zTreeDemoBackground" id="zTreeDiv" style=" background: #f1f3f6 !important; overflow: auto;">
+							<div class="zTreeDemoBackground" id="zTreeDiv" style=" background: #f1f3f6 !important; overflow: auto;margin: 0px;padding: 0px">
 								<ul id="customTree" class="ztree"></ul>
 							</div>
 						</div>
