@@ -53,7 +53,7 @@ public class AppAsetA01Vo {
     private String qrzxlxwjzy;
     private String zzxlxwjzy;
     private List<AppAsetA02Vo> appAsetA02Vos;
-
+    private List<String> gzjlStrs ;
     public String getId() {
         return id;
     }
@@ -347,5 +347,13 @@ public class AppAsetA01Vo {
 
     public void setAppAsetA02Vos(List<AppAsetA02Vo> appAsetA02Vos) {
         this.appAsetA02Vos = appAsetA02Vos;
+    }
+
+    public List<String> getGzjlStrs() {
+        return gzjlStrs;
+    }
+
+    public void setGzjlStrs(List<String> gzjlStrs) {
+        this.gzjlStrs = gzjlStrs;
     }
 }

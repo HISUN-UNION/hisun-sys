@@ -37,11 +37,11 @@
         <div class="clearfix fr">
             <%--<a class="btn red" href="javascript:del('${a01Vo.xm }')"><i class=" icon-remove-sign"></i>删除</a>--%>
                  <a class="btn blue" herf="javascript:void(0)" onclick="fileDown()"><i
-                         class="icon-circle-arrow-down"></i>下载干部任免审批表</a>
+                         class="icon-circle-arrow-down"></i>干部任免审批表</a>
 
             <a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
         </div>
-        <div class="mainoneright">
+        <div class="mainoneright" style="width: 560px;">
             <div class="Fullname">${a01Vo.xm}</div>
             <div class="gerenintrodu">${a01Vo.csny}生，${a01Vo.jg}人，${a01Vo.cjgzsj}参加工作，${a01Vo.rdsj}加入中国共产党。</div>
             <ul class="ulonleftjx">
@@ -50,12 +50,12 @@
             </ul>
         </div>
     </div>
-    <%--<div class="maintwo">--%>
-        <%--<h1 class="tith1">工作经历</h1>--%>
-        <%--<c:forEach items="${a01Vo.gzjlVos}" var="vo">--%>
-            <%--<p><c:out value="${vo.jlsm}"></c:out></p>--%>
-        <%--</c:forEach>--%>
-    <%--</div>--%>
+    <div class="maintwo">
+        <h1 class="tith1">工作经历</h1>
+        <c:forEach items="${a01Vo.gzjlStrs}" var="gzjlStr">
+            <p>${gzjlStr}</p>
+        </c:forEach>
+    </div>
 
 </div>
 

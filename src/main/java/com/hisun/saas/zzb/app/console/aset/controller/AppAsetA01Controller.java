@@ -20,6 +20,7 @@ import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01Vo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
+import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.util.DateUtil;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WebUtil;
@@ -248,6 +249,9 @@ public class AppAsetA01Controller extends BaseController{
                 throw new GenericException("数据不存在");
             }
             BeanUtils.copyProperties(a01Vo, a01);
+            if(a01.getGzjlStr()!=null && !a01.getGzjlStr().equals("")){
+                a01Vo.setGzjlStrs(GzjlUtil.matchGzjlStr(a01.getGzjlStr()));
+            }
             map.put("a01Vo", a01Vo);
             map.put("b01Id", b01Id);
         }catch(Exception e){
