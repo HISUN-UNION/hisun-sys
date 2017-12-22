@@ -22,7 +22,9 @@ import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01Vo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.DateUtil;
 import com.hisun.util.UUIDUtil;
+import com.hisun.util.WebUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -37,10 +39,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,14 +79,12 @@ public class AppAsetA01Controller extends BaseController{
         Map<String, Object> map = Maps.newHashMap();
         try {
             List<Object> paramList = Lists.newArrayList();
-            String hql = " from AppAsetA01 a01 left join a01.appAsetA02s a02 where ";
+            String hql = " from AppAsetA01 a01 left join a01.appAsetA02s a02 left join a02.appBsetB01 b01 left join b01.appBsetFl2B01s fltob01 where a02.id is not null and fltob01.id is not null";
             String b0101 = "";
             if(StringUtils.isNotBlank(b01Id)) {
-                if(b01Id.equals("allA01")){
-                    hql = hql+" 1<>1";
-                }else{
+                if(!b01Id.equals("allA01")){
                     paramList.add(b01Id);
-                    hql = hql+" a02.appBsetB01.id = ?";
+                    hql = hql+" and a02.appBsetB01.id = ?";
                     AppBsetB01 appBsetB01 = this.appBsetB01Service.getByPK(b01Id);
                     b0101 = appBsetB01.getB0101();
                 }
@@ -97,7 +95,7 @@ public class AppAsetA01Controller extends BaseController{
                 paramList.add("%"+ xmQuery+ "%");
                 hql = hql+" and a01.xm like ?";
             }
-            hql = hql+" and a01.tombstone =? order by a02.jtlPx,a01.a01Px";
+            hql = hql+" and a01.tombstone =? order by b01.px,a02.jtlPx,a01.a01Px";
             paramList.add(0);
             int total = this.appAsetA01Service.count("select  count(distinct a01.id) "+hql,paramList);
             List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) "+hql,paramList, pageNum,
@@ -240,18 +238,18 @@ public class AppAsetA01Controller extends BaseController{
     }
 
     @RequestMapping(value = "ajax/view")
-    public ModelAndView view(@RequestParam(value="id")String id) {
+    public ModelAndView view(@RequestParam(value="id")String id,@RequestParam(value="b01Id")String b01Id) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-//            AppAsetA01 a01 = this.appGbcxA01Service.getByPK(id);
-//            AppAsetA01Vo a01Vo = new AppAsetA01Vo();
-//            if (a01 == null) {
-//                logger.error("数据不存在");
-//                throw new GenericException("数据不存在");
-//            }
-//            BeanUtils.copyProperties(a01Vo, a01);
-//            map.put("a01Vo", a01Vo);
-//            map.put("b01Id", "");
+            AppAsetA01 a01 = this.appAsetA01Service.getByPK(id);
+            AppAsetA01Vo a01Vo = new AppAsetA01Vo();
+            if (a01 == null) {
+                logger.error("数据不存在");
+                throw new GenericException("数据不存在");
+            }
+            BeanUtils.copyProperties(a01Vo, a01);
+            map.put("a01Vo", a01Vo);
+            map.put("b01Id", b01Id);
         }catch(Exception e){
             map.put("success", false);
             map.put("msg", "查看失败！");
@@ -364,5 +362,28 @@ public class AppAsetA01Controller extends BaseController{
             response.setContentType(MediaType.IMAGE_PNG_VALUE);
             return new HttpEntity(HttpStatus.OK);
         }
+    }
+    @RequestMapping(value="/ajax/down")
+    public void fileDown(String id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        AppAsetA01 appAsetA01 = this.appAsetA01Service.getByPK(id);
+        if(appAsetA01.getFilepath()!=null && !appAsetA01.getFilepath().equals("")){
+            resp.setContentType("multipart/form-data");
+            //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
+            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(appAsetA01.getFilepath().substring(appAsetA01.getFilepath().lastIndexOf(File.separator)+1)));
+            OutputStream output=resp.getOutputStream();
+            byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+appAsetA01.getFilepath()));
+            output.write(b);
+            output.flush();
+            output.close();
+        }
+
+    }
+    private String encode(String filename) throws UnsupportedEncodingException {
+        if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
+            filename = URLEncoder.encode(filename, "UTF-8");
+        } else {
+            filename = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
+        }
+        return filename;
     }
 }

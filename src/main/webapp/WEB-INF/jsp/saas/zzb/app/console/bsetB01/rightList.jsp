@@ -46,22 +46,22 @@
 					<div class="caption">${flmc} 机构</div>
 					<div class="clearfix fr">
 
-						<div class="btn-group">
-							<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
-								导入数据 <i class="icon-angle-down"></i>
-							</a>
-							<ul class="dropdown-menu" style="left: -112px;">
-								<li >
-									<a onclick="importParmenter('gwyglxt')">从公务员管理系统(浙大网新)</a>
-								</li>
-								<li>
-									<a onclick="importParmenter('zzzhywpt')">从组织综合业务平台(广州三零)</a>
-								</li>
-								<li>
-									<a onclick="importParmenter('gbglxt')">从干部管理系统(长沙远望)</a>
-								</li>
-							</ul>
-						</div>
+						<%--<div class="btn-group">--%>
+							<%--<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">--%>
+								<%--导入数据 <i class="icon-angle-down"></i>--%>
+							<%--</a>--%>
+							<%--<ul class="dropdown-menu" style="left: -112px;">--%>
+								<%--<li >--%>
+									<%--<a onclick="importParmenter('gwyglxt')">从公务员管理系统(浙大网新)</a>--%>
+								<%--</li>--%>
+								<%--<li>--%>
+									<%--<a onclick="importParmenter('zzzhywpt')">从组织综合业务平台(广州三零)</a>--%>
+								<%--</li>--%>
+								<%--<li>--%>
+									<%--<a onclick="importParmenter('gbglxt')">从干部管理系统(长沙远望)</a>--%>
+								<%--</li>--%>
+							<%--</ul>--%>
+						<%--</div>--%>
 						<%--<span class="controllerClass btn green file_but" >--%>
 							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
 							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>

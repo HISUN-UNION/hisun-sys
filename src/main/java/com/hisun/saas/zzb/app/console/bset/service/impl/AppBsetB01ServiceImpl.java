@@ -1,18 +1,29 @@
 package com.hisun.saas.zzb.app.console.bset.service.impl;
 
+import com.google.common.collect.Lists;
 import com.hisun.base.dao.BaseDao;
+import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrder;
+import com.hisun.base.dao.util.CommonOrderBy;
+import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.bset.dao.AppBsetB01Dao;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
+import com.hisun.saas.zzb.app.console.bset.vo.B01TreeVo;
+import com.hisun.util.WebUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.util.*;
@@ -24,7 +35,8 @@ import java.util.*;
 public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> implements AppBsetB01Service {
 
     private AppBsetB01Dao appBsetB01Dao;
-
+    @Resource
+    private AppBsetFlService appBsetFlService;
     @Autowired
     public void setBaseDao(BaseDao<AppBsetB01, String> appBsetB01Dao) {
         this.baseDao = appBsetB01Dao;
@@ -149,7 +161,118 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
         DbUtils.close(conn);
         return order;
     }
+    //得到树的集合 dataSourceTyle fl为先读取分类，找分类下的机构 b01表示直接找机构组成树结构
+    public List<B01TreeVo> getB01TreeVoList(String dataSourceTyle)throws Exception{
+        if(dataSourceTyle.equals("fl")){
+            return getB01TreeVoListByFl();
+        }else{
+            return getB01TreeVoListByB01();
+        }
+    }
+    private List<B01TreeVo> getB01TreeVoListByFl()throws Exception{
+        CommonConditionQuery query = new CommonConditionQuery();
+
+        CommonOrderBy orderBy = new CommonOrderBy();
+        orderBy.add(CommonOrder.asc("parentFl.id"));
+        orderBy.add(CommonOrder.asc("px"));
+        List<AppBsetFl> sppBsetFls = this.appBsetFlService.list(query, orderBy);
+        List<B01TreeVo> b01TreeVoList = Lists.newArrayList();
+        if(sppBsetFls != null){
+            for (AppBsetFl fl : sppBsetFls) {
+                B01TreeVo b01TreeVo = new B01TreeVo();
+                b01TreeVo.setId(fl.getId());
+                if(fl.getParentFl()!=null){//由于部分节点找不到parent 故做此处理
+                    try {
+                        fl.getParentFl().getId();
+                    }catch(Exception e) {
+                        b01TreeVo.setpId("0");
+                        b01TreeVo.setName(fl.getFl());
+                        b01TreeVo.setIsParent(true);
+                        b01TreeVo.setDropInner(true);
+                        b01TreeVo.setOpen(true);
+                        b01TreeVo.setDataType("fl");
+                        b01TreeVoList.add(b01TreeVo);
+                        continue;
+                    }
+                }
+                if(fl.getParentFl() != null) {
+                    b01TreeVo.setpId(fl.getParentFl().getId());
+                    b01TreeVo.setName(fl.getFl());
+                    b01TreeVo.setHref(fl.getId());
+                    b01TreeVo.setNoR(false);
+                    b01TreeVo.setDropInner(true);
+                }else{
+                    b01TreeVo.setpId("0");
+                    b01TreeVo.setName(fl.getFl());
+                    b01TreeVo.setIsParent(true);
+                    b01TreeVo.setDropInner(true);
+                    b01TreeVo.setOpen(true);
+                }
+                b01TreeVo.setDataType("fl");
+//                        if(StringUtils.isNotBlank(inst.getMonitor().getIcon())){
+//                            b01TreeVo.setIcon(contextPath + "/monitor/ajax/icon/" + inst.getMonitor().getId() + ".jpg?OWASP_CSRFTOKEN=" + request.getSession().getAttribute("OWASP_CSRFTOKEN"));
+//                        } else {
+//                            b01TreeVo.setIcon(contextPath + MonitorVo.DEFAULT_PATH);
+//                        }
+                b01TreeVoList.add(b01TreeVo);
+                if(fl.getAppBsetFl2B01s()!=null){//将机构增加到树
+                    for(AppBsetFl2B01 fl2b01 : fl.getAppBsetFl2B01s()){
+                        try {
+                            fl2b01.getAppBsetB01().getId();
+                        }catch(Exception e) {
+                            continue;
+                        }
+                        AppBsetB01 appBsetB01 = fl2b01.getAppBsetB01();
+                        if(appBsetB01!=null) {
+                            b01TreeVo = new B01TreeVo();
+                            b01TreeVo.setpId(fl.getId());
+                            b01TreeVo.setId(appBsetB01.getId());
+                            b01TreeVo.setName(appBsetB01.getB0101());
+                            b01TreeVo.setHref(appBsetB01.getId());
+                            b01TreeVo.setDataType("b01");
+                            b01TreeVo.setNoR(false);
+                            b01TreeVo.setDropInner(true);
+                            b01TreeVoList.add(b01TreeVo);
+                        }
+                    }
+                }
+            }
+        }
+        return b01TreeVoList;
+    }
 
 
+    private List<B01TreeVo> getB01TreeVoListByB01()throws Exception{
+        CommonConditionQuery query = new CommonConditionQuery();
+        CommonOrderBy orderBy = new CommonOrderBy();
 
+        orderBy.add(CommonOrder.asc("queryCode"));
+        orderBy.add(CommonOrder.asc("parentB01.id"));
+        orderBy.add(CommonOrder.asc("px"));
+        List<AppBsetB01> appBsetB01s = this.appBsetB01Dao.list(query, orderBy);
+        List<B01TreeVo> b01TreeVoList = Lists.newArrayList();
+        if(appBsetB01s != null) {
+            for (AppBsetB01 b01 : appBsetB01s) {
+                B01TreeVo b01TreeVo = new B01TreeVo();
+                b01TreeVo.setId(b01.getId());
+                if(b01.getParentB01()!= null) {
+                    b01TreeVo.setpId(b01.getParentB01().getId());
+                    b01TreeVo.setName(b01.getB0101());
+                    b01TreeVo.setHref(b01.getId());
+                    b01TreeVo.setNoR(false);
+                    b01TreeVo.setDataType("b01");
+                    b01TreeVo.setDropInner(true);
+                }else{
+                    b01TreeVo.setpId("0");
+                    b01TreeVo.setName(b01.getB0101());
+                    b01TreeVo.setIsParent(true);
+                    b01TreeVo.setDropInner(true);
+                    b01TreeVo.setDataType("b01");
+                    b01TreeVo.setOpen(true);
+                }
+                b01TreeVoList.add(b01TreeVo);
+            }
+        }
+        return b01TreeVoList;
+    }
 }

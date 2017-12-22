@@ -100,10 +100,10 @@
 						<tbody>
 						<c:forEach items="${pager.datas}" var="vo">
 							<tr style="text-overflow:ellipsis;">
-								<%--<td title="${vo.xm}"><a href="${path}/zzb/app/console/asetA01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>--%>
-								<td title="${vo.xm}">
-									<c:out value="${vo.xm}"></c:out>
-								</td>
+								<td title="${vo.xm}"><a <a href="javascript:view('${vo.id }')" class=""><c:out value="${vo.xm}"></c:out></a></td>
+								<%--<td title="${vo.xm}">--%>
+									<%--<c:out value="${vo.xm}"></c:out>--%>
+								<%--</td>--%>
 								<td title="${vo.xb}" ><c:out value="${vo.xb}"></c:out></td>
 								<td title="${vo.csny}"><c:out value="${vo.csny}"></c:out></td>
 								<td title="${vo.xrzw}"><c:out value="${vo.xrzw}"></c:out></td>
@@ -302,7 +302,8 @@
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
 			},
 			data:{
-				'id':id
+				'id':id,
+				'b01Id':"${b01Id}"
 			},
 			success:function(html){
 				$("#catalogList").html(html);

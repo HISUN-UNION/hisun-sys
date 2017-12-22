@@ -1,45 +1,27 @@
-package com.hisun.saas.zzb.app.console.exchange.entity;
+package com.hisun.saas.zzb.app.console.exchange.vo;
 
-import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
-import org.hibernate.annotations.GenericGenerator;
+import com.hisun.base.vo.TombstoneVo;
+import com.hisun.saas.zzb.app.console.appclient.entity.AppClient;
+import com.hisun.saas.zzb.app.console.exchange.entity.ExchangeActuator;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Column;
 
 /**
- * Created by zhouying on 2017/12/21.
+ * Created by zhouying on 2017/9/23.
  */
-@Entity
-@Table(name = "app_exchange_actuator")
-public class ExchangeActuator extends TenantEntity implements Serializable {
+public class ExchangeActuatorVo extends TombstoneVo {
 
-    public static int source_gwyglxt=1;//从公务员管理系统(浙大网新)
-    public static int source_zzzhywpt=2;//从组织综合业务平台(广州三零)
-    public static int source_gbglxt=3;//从干部管理系统(长沙远望)
-    @Id
-    @GenericGenerator(name = "generator", strategy = "uuid.hex")
-    @GeneratedValue(generator = "generator")
-    @Column(name = "id", nullable = false, unique = true, length = 32)
+
     private String id;
-
-    @Column(name = "actuator_name")
-    private String actuatorName;
-    @Column(name = "data_source_type")
     private int sourceType;
-    @Column(name = "ip")
+    private String sourceTypeValue;
     private String ip;
-    @Column(name = "port")
     private String port;
-    @Column(name = "database_name")
     private String databaseName;
-    @Column(name = "database_user_name")
     private String userName;
-    @Column(name = "database_password")
     private String password;
-    @Column(name = "sort")
     private int sort;
-
-
+    private String actuatorName;
     public String getId() {
         return id;
     }
@@ -102,6 +84,21 @@ public class ExchangeActuator extends TenantEntity implements Serializable {
 
     public void setSort(int sort) {
         this.sort = sort;
+    }
+
+    public String getSourceTypeValue() {
+        if(this.sourceType== ExchangeActuator.source_gwyglxt){
+            return "公务员管理系统(浙大网新)";
+        }else if(this.sourceType== ExchangeActuator.source_zzzhywpt){
+            return "组织综合业务平台(广州三零)";
+        }else if(this.sourceType== ExchangeActuator.source_gbglxt){
+            return "干部管理系统(长沙远望)";
+        }
+        return "";
+    }
+
+    public void setSourceTypeValue(String sourceTypeValue) {
+        this.sourceTypeValue = sourceTypeValue;
     }
 
     public String getActuatorName() {

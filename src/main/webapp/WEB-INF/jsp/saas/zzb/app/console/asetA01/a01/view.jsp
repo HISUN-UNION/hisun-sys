@@ -36,14 +36,17 @@
         </div>
         <div class="clearfix fr">
             <%--<a class="btn red" href="javascript:del('${a01Vo.xm }')"><i class=" icon-remove-sign"></i>删除</a>--%>
+                 <a class="btn blue" herf="javascript:void(0)" onclick="fileDown()"><i
+                         class="icon-circle-arrow-down"></i>下载干部任免审批表</a>
+
             <a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright">
-            <div class="Fullname">${a01Vo.xm}aaa</div>
+            <div class="Fullname">${a01Vo.xm}</div>
             <div class="gerenintrodu">${a01Vo.csny}生，${a01Vo.jg}人，${a01Vo.cjgzsj}参加工作，${a01Vo.rdsj}加入中国共产党。</div>
             <ul class="ulonleftjx">
-                <li><span>全日制学历学位及专业：</span>${a01Vo.qrzxlxwjzy}</li>
-                <li><span>&nbsp;&nbsp;&nbsp;在职学历学位及专业：</span>${a01Vo.zzxlxwjzy}</li>
+                <li><span>全日制学历学位及专业：</span>${a01Vo.qrzxl}${a01Vo.qrzxw}${a01Vo.qrzZy}</li>
+                <li><span>&nbsp;&nbsp;&nbsp;在职学历学位及专业：</span></span>${a01Vo.zzxl}${a01Vo.zzxw}${a01Vo.zzZy}</li>
             </ul>
         </div>
     </div>
@@ -119,8 +122,12 @@
         });
     }
 
-    function gbrmspbDown() {
-        window.open("${path }/zzb/app/console/GbMca01/gbrmspb/ajax/down?gbMcA01Id=${a01Vo.id}");
+    function fileDown() {
+        if("${a01Vo.filepath}"==""){
+            showTip("提示", "没有可下载的任免审批表!", 2000);
+        }else{
+             window.open("${path }/zzb/app/console/asetA01/ajax/down?id=${a01Vo.id}");
+        }
     }
 
 

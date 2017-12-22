@@ -76,81 +76,19 @@ public class AppBsetB01Controller extends BaseController{
     Map<String,Object> loadTree(HttpServletRequest request)throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
+            String dataSourceTyle = "b01";//用于记录机构树组合方式 如果分类的顶级节点为隐藏则由b01直接组成
             CommonConditionQuery query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" parentFl.id is null and  tombstone = :tombstone", "tombstone", 0));
             CommonOrderBy orderBy = new CommonOrderBy();
-//            orderBy.add(CommonOrder.desc("dataType"));
             orderBy.add(CommonOrder.asc("parentFl.id"));
             orderBy.add(CommonOrder.asc("px"));
-//            List<AppBsetB01> appGbcxB01s = this.appBsetB01Service.list(query, orderBy);
-            List<AppBsetFl> sppBsetFls = this.appBsetFlService.list(query, orderBy);
-            List<B01TreeVo> b01TreeVoList = Lists.newArrayList();
-            String contextPath = WebUtil.getRequest().getContextPath();
-            if(sppBsetFls != null){
-                for (AppBsetFl fl : sppBsetFls) {
-                    B01TreeVo b01TreeVo = new B01TreeVo();
-                    b01TreeVo.setId(fl.getId());
-
-                    // 自定义分组信息
-
-                        if(fl.getParentFl()!=null){//由于部分节点找不到parent 故做此处理
-                            try {
-                                fl.getParentFl().getId();
-                            }catch(Exception e) {
-                                b01TreeVo.setpId("0");
-                                b01TreeVo.setName(fl.getFl());
-                                b01TreeVo.setIsParent(true);
-                                b01TreeVo.setDropInner(true);
-                                b01TreeVo.setOpen(true);
-                                b01TreeVo.setDataType("fl");
-                                b01TreeVoList.add(b01TreeVo);
-                                continue;
-                            }
-                        }
-                        if(fl.getParentFl() != null) {
-                            b01TreeVo.setpId(fl.getParentFl().getId());
-                            b01TreeVo.setName(fl.getFl());
-                            b01TreeVo.setHref(fl.getId());
-                            b01TreeVo.setNoR(false);
-                            b01TreeVo.setDropInner(true);
-                        }else{
-                            b01TreeVo.setpId("0");
-                            b01TreeVo.setName(fl.getFl());
-                            b01TreeVo.setIsParent(true);
-                            b01TreeVo.setDropInner(true);
-                            b01TreeVo.setOpen(true);
-                        }
-                        b01TreeVo.setDataType("fl");
-//                        if(StringUtils.isNotBlank(inst.getMonitor().getIcon())){
-//                            b01TreeVo.setIcon(contextPath + "/monitor/ajax/icon/" + inst.getMonitor().getId() + ".jpg?OWASP_CSRFTOKEN=" + request.getSession().getAttribute("OWASP_CSRFTOKEN"));
-//                        } else {
-//                            b01TreeVo.setIcon(contextPath + MonitorVo.DEFAULT_PATH);
-//                        }
-                        b01TreeVoList.add(b01TreeVo);
-                        if(fl.getAppBsetFl2B01s()!=null){//将机构增加到树
-                            for(AppBsetFl2B01 fl2b01 : fl.getAppBsetFl2B01s()){
-                                try {
-                                    fl2b01.getAppBsetB01().getId();
-                                }catch(Exception e) {
-                                    continue;
-                                }
-                                AppBsetB01 appBsetB01 = fl2b01.getAppBsetB01();
-                                if(appBsetB01!=null) {
-                                    b01TreeVo = new B01TreeVo();
-                                    b01TreeVo.setpId(fl.getId());
-                                    b01TreeVo.setId(appBsetB01.getId());
-                                    b01TreeVo.setName(appBsetB01.getB0101());
-                                    b01TreeVo.setHref(appBsetB01.getId());
-                                    b01TreeVo.setDataType("b01");
-                                    b01TreeVo.setNoR(false);
-                                    b01TreeVo.setDropInner(true);
-                                    b01TreeVoList.add(b01TreeVo);
-                                }
-                            }
-                        }
+            List<AppBsetFl> topAppBsetFls = this.appBsetFlService.list(query, orderBy);
+            if(topAppBsetFls!=null && topAppBsetFls.size()>0){
+                if(topAppBsetFls.get(0).getIsHidden()==AppBsetFl.DISPLAY){
+                    dataSourceTyle = "fl";
                 }
             }
-            // 添加根节点
-//            b01TreeVoList.add(new B01TreeVo().oneRoot());
+            List<B01TreeVo> b01TreeVoList = this.appBsetB01Service.getB01TreeVoList(dataSourceTyle);
             // 添加未分组节点
             map.put("customTree", b01TreeVoList);
             map.put("success", true);
@@ -161,6 +99,7 @@ public class AppBsetB01Controller extends BaseController{
         }
         return map;
     }
+
     @RequestMapping(value="/ajax/list")
     public ModelAndView getList(String queryId,String b0101Query,
                                 @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
@@ -173,10 +112,22 @@ public class AppBsetB01Controller extends BaseController{
             List<Object> paramList = Lists.newArrayList();
             String hql = " from AppBsetB01 b01 left join b01.appBsetFl2B01s fl2b01 where ";
             if(StringUtils.isNotBlank(queryId)) {
-                paramList.add(queryId);
-                hql = hql+" fl2b01.appBsetFl.id = ?";
-                AppBsetFl appBsetFl = this.appBsetFlService.getByPK(queryId);
-                flmc = appBsetFl.getFl();
+                CommonConditionQuery query1 = new CommonConditionQuery();
+                query1.add(CommonRestrictions.and(" id =:id", "id",queryId));
+                query1.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+                CommonOrderBy orderBy = new CommonOrderBy();
+                List<AppBsetFl> appBsetFls = this.appBsetFlService.list(query1, orderBy);
+                if(appBsetFls!=null && appBsetFls.size()>0) {
+                    paramList.add(queryId);
+                    hql = hql + " fl2b01.appBsetFl.id = ?";
+
+                    flmc = appBsetFls.get(0).getFl();
+                }else{
+                    paramList.add(queryId);
+                    hql = hql + " b01.parentB01.id = ?";
+                    AppBsetB01 appBsetB01 = this.appBsetB01Service.getByPK(queryId);
+                    flmc = appBsetB01.getB0101();
+                }
             }
 
             if(b0101Query!=null && !b0101Query.equals("")){

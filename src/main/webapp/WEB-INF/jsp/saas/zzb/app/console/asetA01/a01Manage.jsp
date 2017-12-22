@@ -355,6 +355,8 @@
 		dataType = treeNode.dataType;
 		if(treeNode==null || dataType != "fl") {
 			loadRightPage(treeNode.id);
+		}else if(treeNode.getParentNode()==null ||treeNode.getParentNode()==undefined){
+			loadRightPage("allA01");
 		}
 	}
 
