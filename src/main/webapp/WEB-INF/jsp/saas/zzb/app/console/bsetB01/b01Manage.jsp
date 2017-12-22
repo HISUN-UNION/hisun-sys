@@ -82,9 +82,9 @@
 		<div class="row-fluid">
 			<!-- 脚本目录 -->
 			<div id="scriptCatalog" class="span6" style="width: 20%; margin: 0px;padding: 0px">
-				<div class="portlet box grey">
-					<div class="portlet-body fuelux">
-						<div class="tab-pane active" id="tab_1_1">
+				<div class="portlet box grey" style="margin: 0px;padding: 0px">
+					<div class="portlet-body fuelux"style="margin: 0px;padding: 0px">
+						<div class="tab-pane active" id="tab_1_1"style="margin: 0px;padding: 0px">
 							<span id="errorInfo" style="color: red;position: absolute;"></span>
 							<div class="zTreeDemoBackground" id="zTreeDiv" style=" background: #f1f3f6 !important; overflow: auto;margin: 0px;padding: 0px">
 								<ul id="customTree" class="ztree"></ul>
@@ -131,7 +131,7 @@
 		});
 
 		function changeTreeDivHeight(){
-			var divHeight = $(window).height()-90;
+			var divHeight = $(window).height()-60;
 			$("#zTreeDiv").css('height',divHeight);
 //			$('#zTreeDiv').height(divHeight);
 //			$(".main_left").height(mainHeight);

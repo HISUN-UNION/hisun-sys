@@ -42,7 +42,7 @@
             <a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright" style="width: 560px;">
-            <div class="Fullname" style="line-height: 45px;">${a01Vo.xm}</div>
+            <div class="Fullname">${a01Vo.xm}</div>
             <div class="gerenintrodu">${a01Vo.csny}生，${a01Vo.jg}人，${a01Vo.cjgzsj}参加工作，${a01Vo.rdsj}加入中国共产党。</div>
             <ul class="ulonleftjx">
                 <li><span>全日制学历学位及专业：</span>${a01Vo.qrzxl}${a01Vo.qrzxw}${a01Vo.qrzZy}</li>
