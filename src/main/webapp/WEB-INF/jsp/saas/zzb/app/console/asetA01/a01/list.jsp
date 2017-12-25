@@ -100,16 +100,16 @@
 						<tbody>
 						<c:forEach items="${pager.datas}" var="vo">
 							<tr style="text-overflow:ellipsis;">
-								<td title="${vo.xm}"><a <a href="javascript:view('${vo.id }')" class=""><c:out value="${vo.xm}"></c:out></a></td>
+								<td title="${vo.xm}"><a href="javascript:view('${vo.id }')" class=""><c:out value="${vo.xm}"></c:out></a></td>
 								<%--<td title="${vo.xm}">--%>
 									<%--<c:out value="${vo.xm}"></c:out>--%>
 								<%--</td>--%>
 								<td title="${vo.xb}" ><c:out value="${vo.xb}"></c:out></td>
-								<td title="${vo.csny}"><c:out value="${vo.csny}"></c:out></td>
+								<td title="${vo.csnyStr}" style="text-align: center"><c:out value="${vo.csnyStr}"></c:out><br>(<c:out value="${vo.nl}"></c:out>岁)</td>
 								<td title="${vo.xrzw}"><c:out value="${vo.xrzw}"></c:out></td>
-								<td ><c:out value="${vo.qrzxl}"></c:out><c:out value="${vo.qrzxw}"></c:out></td>
-								<td ><c:out value="${vo.zzxl}"></c:out><c:out value="${vo.zzxw}"></c:out></td>
-								<td ><c:out value="${vo.xrzjsj}"></c:out></td>
+								<td ><c:out value="${vo.gbrmspbQrzxlxw}"></c:out></td>
+								<td ><c:out value="${vo.gbrmspbZzxlxw}"></c:out></td>
+								<td ><c:out value="${vo.xrzjsjStr}"></c:out></td>
 								<%--<td><c:out value="${vo.zyjszw}"></c:out></td>--%>
 								<%--<td><c:out value="${vo.xrzwsj}"></c:out></td>--%>
 								<%--<td title="${vo.xrzjsj}"><c:out value="${vo.xrzjsj}"></c:out></td>--%>

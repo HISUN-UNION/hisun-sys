@@ -521,7 +521,7 @@ function showPrompModal(title, content, content01,url,data,fuc) {
 	window.fuc = fuc;
 }
 
-function showPrompModal2(title, content, content01,url,data,fuc) {
+function showPrompModal2(title,name, content, content01,url,data,fuc) {
 	$("#PromptmodalTitle").html(title);
 	$("#PrompModalContent").html(content);
 	$("#PrompModalContent01").html(content01);
@@ -529,7 +529,7 @@ function showPrompModal2(title, content, content01,url,data,fuc) {
 	$('#Prompt').modal('show');
 	window.url = url;
 	window.data = data;
-	window.title = title;
+	window.title = name;
 	window.fuc = fuc;
 }
 $(function(){
@@ -543,6 +543,10 @@ $(function(){
 	$("#PromptClose").on("click",function(){
 		$("#PromptName").val("");
 		$("#PromptBtn").removeClass("hover");
+		try{
+			myLoading.hide();
+		}catch(e){}
+
 	});
 	$("#PromptBtn").click(function() {
 		if(window.title===$("#PromptName").val()){

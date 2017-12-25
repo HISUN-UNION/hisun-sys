@@ -54,8 +54,8 @@
 										<td><c:out value="${vo.databaseName}"></c:out></td>
 										<td><c:out value="${vo.userName}"></c:out></td>
 										<td class="Left_alignment">
-											<a href="javascript:importData('${vo.id }','${vo.sourceTypeValue}')" class="">导入数据</a>|
-											<a href="javascript:clearData('${vo.id }','${vo.sourceTypeValue}')" class="">清除导入数据</a>|
+											<a href="javascript:importData('${vo.id }','${vo.actuatorName}')" class="">导入数据</a>|
+											<a href="javascript:clearData('${vo.id }','${vo.actuatorName}')" class="">清除导入数据</a>|
 											<a href="${path}/zzb/app/console/exchange/edit?id=${vo.id }" class="">编辑</a>|
 											<a href="javascript:del('${vo.id }','${vo.sourceTypeValue}')" class="">删除</a>
 										</td>
@@ -109,74 +109,104 @@
 			});
 		};
 		var importData = function(id,name){
+			var title = "您确定要导入数据"+name+"吗？";
+			var msg = "请认真审核确认后再进行操作，确认后请在下面填写你要执行数据导入的信息。";
+			var tip = "请输入你要执行导入操作的名称";
+			myLoading.show();
+			showPrompModal2(title,name,msg,tip,"${path}/zzb/app/console/exchange/ajax/importData?id=" + id,null, function(json){
 
-			$.ajax({
-				type:"POST",
-				url:"${path}/zzb/app/console/exchange/ajax/importData",
-				dataType : "json",
-				headers:{
-					"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
-				},
-				data:{
-					'id':id
-				},
-				beforeSend: function (XHR) {
-					myLoading.show();
-				},
-				success:function(data){
-
-					if (data.success == true) {
-						showTip("提示","导入成功", 2000);
-						<%--setTimeout(function(){window.location.href = "${path}/zzb/app/console/exchange/"},2000);--%>
-					}else{
-						showTip("提示", data.message, 2000);
-					}
-				},
-				error : function(){
-					showTip("提示","出错了,请检查网络!",2000);
-				},
-				complete: function (XHR, TS) {
+				if(json.success == true){
 					myLoading.hide();
+					showTip("提示","导入成功", 1500);
+				}else{
+					myLoading.hide();
+					showTip("提示", json.message, 2000);
 				}
-			});
+
+			})
+//			showTip("提示","导入数据可能需要消耗较长时间，请耐心等待！", 2000);
+			<%--$.ajax({--%>
+				<%--type:"POST",--%>
+				<%--url:"${path}/zzb/app/console/exchange/ajax/importData",--%>
+				<%--dataType : "json",--%>
+				<%--headers:{--%>
+					<%--"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'--%>
+				<%--},--%>
+				<%--data:{--%>
+					<%--'id':id--%>
+				<%--},--%>
+				<%--beforeSend: function (XHR) {--%>
+					<%--myLoading.show();--%>
+				<%--},--%>
+				<%--success:function(data){--%>
+
+					<%--if (data.success == true) {--%>
+						<%--showTip("提示","导入成功", 2000);--%>
+						<%--&lt;%&ndash;setTimeout(function(){window.location.href = "${path}/zzb/app/console/exchange/"},2000);&ndash;%&gt;--%>
+					<%--}else{--%>
+						<%--showTip("提示", data.message, 2000);--%>
+					<%--}--%>
+				<%--},--%>
+				<%--error : function(){--%>
+					<%--showTip("提示","出错了,请检查网络!",2000);--%>
+				<%--},--%>
+				<%--complete: function (XHR, TS) {--%>
+					<%--myLoading.hide();--%>
+				<%--}--%>
+			<%--});--%>
 		}
 		var clearData = function(id,name){
-			$.ajax({
-				type:"POST",
-				url:"${path}/zzb/app/console/exchange/ajax/clearData",
-				dataType : "json",
-				headers:{
-					"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
-				},
-				data:{
-					'id':id
-				},
-				beforeSend: function (XHR) {
-					myLoading.show();
-				},
-				success:function(data){
+			var title = "您确定要清除"+name+"吗？";
+			var msg = "这个操作不能撤消，这将永久清除导入数据，清除后将不可恢复，请认真审核确认后再进行操作，确认后请在下面填写你要清除的信息。";
+			var tip = "请输入你要清除的名称";
+			myLoading.show();
+			showPrompModal2(title,name,msg,tip,"${path}/zzb/app/console/exchange/ajax/clearData?id=" + id,null, function(json){
 
-					if (data.success == true) {
-						showTip("提示","成功清除导入数据", 2000);
-						<%--setTimeout(function(){window.location.href = "${path}/zzb/app/console/exchange/"},2000);--%>
-					}else{
-						showTip("提示", data.message, 2000);
-					}
-				},
-				error : function(){
-					showTip("提示","出错了,请检查网络!",2000);
-				},
-				complete: function (XHR, TS) {
+				if(json.success == true){
 					myLoading.hide();
+					showTip("提示","成功清除导入数据", 1500);
+				}else{
+					myLoading.hide();
+					showTip("提示", json.message, 2000);
 				}
-			});
+
+			})
+			<%--$.ajax({--%>
+				<%--type:"POST",--%>
+				<%--url:"${path}/zzb/app/console/exchange/ajax/clearData",--%>
+				<%--dataType : "json",--%>
+				<%--headers:{--%>
+					<%--"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'--%>
+				<%--},--%>
+				<%--data:{--%>
+					<%--'id':id--%>
+				<%--},--%>
+				<%--beforeSend: function (XHR) {--%>
+					<%--myLoading.show();--%>
+				<%--},--%>
+				<%--success:function(data){--%>
+
+					<%--if (data.success == true) {--%>
+						<%--showTip("提示","成功清除导入数据", 2000);--%>
+						<%--&lt;%&ndash;setTimeout(function(){window.location.href = "${path}/zzb/app/console/exchange/"},2000);&ndash;%&gt;--%>
+					<%--}else{--%>
+						<%--showTip("提示", data.message, 2000);--%>
+					<%--}--%>
+				<%--},--%>
+				<%--error : function(){--%>
+					<%--showTip("提示","出错了,请检查网络!",2000);--%>
+				<%--},--%>
+				<%--complete: function (XHR, TS) {--%>
+					<%--myLoading.hide();--%>
+				<%--}--%>
+			<%--});--%>
 		}
-		function showConfirm1(name, operation) {
+		function showConfirmImport(name, operation) {
 			var tempInConfirmModal = name;
 			if (name != null && name.length > 0) {
 				tempInConfirmModal = "“" + name + "”";
 			}
-			var defaultOperation ="删除";
+			var defaultOperation ="导入数据";
 			if (operation != null) {
 				defaultOperation = operation;
 			}

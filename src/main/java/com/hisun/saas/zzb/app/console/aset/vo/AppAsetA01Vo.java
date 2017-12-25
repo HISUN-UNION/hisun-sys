@@ -19,6 +19,7 @@ public class AppAsetA01Vo {
     private String xm;
     private String xb;
     private String csny;
+    private String csnyStr;
     private String nl;
     private String gbrmspbCsnyAndNl;
     private String mz;
@@ -49,6 +50,7 @@ public class AppAsetA01Vo {
     private String zytc;
 
     private String xrzjsj;
+    private String xrzjsjStr;
     private String xrzwsj;
 
     private String xrzw;
@@ -375,11 +377,20 @@ public class AppAsetA01Vo {
 
     public String getGbrmspbCsnyAndNl() {
         return DateUtil.covertPatternStringToOtherPatternString(this.csny,
-                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "\n" + "(" + this.nl + "岁)";
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "<br>" + "(" + this.nl + "岁)";
     }
 
     public void setGbrmspbCsnyAndNl(String gbrmspbCsnyAndNl) {
         this.gbrmspbCsnyAndNl = gbrmspbCsnyAndNl;
+    }
+
+    public String getCsnyStr() {
+       return  DateUtil.covertPatternStringToOtherPatternString(this.csny,
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM);
+    }
+
+    public void setCsnyStr(String csnyStr) {
+        this.csnyStr = csnyStr;
     }
 
     public String getCjgzsjStr() {
@@ -450,4 +461,12 @@ public class AppAsetA01Vo {
         this.gbrmspbZzByyxAndZy = gbrmspbZzByyxAndZy;
     }
 
+    public String getXrzjsjStr() {
+        return  DateUtil.covertPatternStringToOtherPatternString(this.xrzjsj,
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM);
+    }
+
+    public void setXrzjsjStr(String xrzjsjStr) {
+        this.xrzjsjStr = xrzjsjStr;
+    }
 }
