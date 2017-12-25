@@ -123,11 +123,11 @@
     }
 
     function fileDown() {
-        if("${a01Vo.filepath}"==""){
-            showTip("提示", "没有可下载的任免审批表!", 2000);
-        }else{
+        //if("${a01Vo.filepath}"==""){
+       //     showTip("提示", "没有可下载的任免审批表!", 2000);
+       // }else{
              window.open("${path }/zzb/app/console/asetA01/ajax/down?id=${a01Vo.id}");
-        }
+       // }
     }
 
 

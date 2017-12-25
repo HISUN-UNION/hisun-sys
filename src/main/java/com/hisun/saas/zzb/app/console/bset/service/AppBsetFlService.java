@@ -10,6 +10,8 @@ import javax.sql.DataSource;
  */
 public interface AppBsetFlService extends BaseService<AppBsetFl,String> {
 
-    int saveBsetFlFromYw(DataSource dataSource)throws Exception;
+    int saveFromYw(DataSource dataSource)throws Exception;
+
+    void deleteAllData()throws Exception;
 
 }

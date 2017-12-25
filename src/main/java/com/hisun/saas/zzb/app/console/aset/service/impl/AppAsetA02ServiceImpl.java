@@ -53,7 +53,7 @@ public class AppAsetA02ServiceImpl extends BaseServiceImpl<AppAsetA02,String> im
     }
 
 
-    public int saveAsetA02FromYw(DataSource dataSource)throws Exception{
+    public int saveFromYw(DataSource dataSource)throws Exception{
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
 
         //处理了多少条

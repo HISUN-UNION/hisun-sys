@@ -4,8 +4,10 @@ import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.bset.dao.AppBsetFl2B01Dao;
 import com.hisun.saas.zzb.app.console.bset.dao.AppBsetFlDao;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -30,13 +32,16 @@ public class AppBsetFlServiceImpl extends BaseServiceImpl<AppBsetFl,String> impl
     private AppBsetFlDao appBsetFlDao;
 
     @Autowired
+    private AppBsetFl2B01Dao appBsetFl2B01Dao;
+
+    @Autowired
     public void setBaseDao(BaseDao<AppBsetFl, String> appBsetFlDao) {
         this.baseDao = appBsetFlDao;
         this.appBsetFlDao = (AppBsetFlDao) appBsetFlDao;
     }
 
 
-    public int saveBsetFlFromYw(DataSource dataSource)throws Exception{
+    public int saveFromYw(DataSource dataSource)throws Exception{
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         //处理了多少条
         int order = 0;
@@ -93,6 +98,11 @@ public class AppBsetFlServiceImpl extends BaseServiceImpl<AppBsetFl,String> impl
 
         DbUtils.close(conn);
         return order;
+    }
+
+    public void deleteAllData() throws Exception{
+        this.appBsetFl2B01Dao.deleteBatch(null);
+        this.appBsetFlDao.deleteBatch(null);
     }
 
 }

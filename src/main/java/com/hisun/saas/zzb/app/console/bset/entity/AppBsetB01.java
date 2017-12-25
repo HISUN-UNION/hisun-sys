@@ -156,6 +156,7 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
             sb.append(",parent_id");
         }
         sb.append(",px");
+        sb.append(",query_code");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
@@ -165,6 +166,7 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
             sb.append(",'" + StringUtils.trimNull2Empty(parentB01.getId()) + "'");
         }
         sb.append(","+px);
+        sb.append(",'"+ StringUtils.trimNull2Empty(queryCode)+"'");
         sb.append(")");
         return sb.toString();
     }

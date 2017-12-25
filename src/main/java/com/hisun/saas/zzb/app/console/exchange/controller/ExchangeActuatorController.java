@@ -9,20 +9,25 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA02Service;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA36Service;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetFl2B01Service;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.exchange.entity.ExchangeActuator;
 import com.hisun.saas.zzb.app.console.exchange.service.ExchangeActuatorService;
 import com.hisun.saas.zzb.app.console.exchange.vo.ExchangeActuatorVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
-import com.hisun.util.DateUtil;
+import com.hisun.util.C3p0Util;
 import org.apache.commons.beanutils.BeanUtils;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +42,21 @@ public class ExchangeActuatorController extends BaseController {
     @Resource
     private ExchangeActuatorService exchangeActuatorService;
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @Resource
+    private AppBsetB01Service appBsetB01Service;
+    @Resource
+    private AppBsetFlService appBsetFlService;
+    @Resource
+    private AppBsetFl2B01Service appBsetFl2B01Service;
+    @Resource
+    private AppAsetA01Service appAsetA01Service;
+    @Resource
+    private AppAsetA02Service appAsetA02Service;
+    @Resource
+    private AppAsetA36Service appAsetA36Service;
 
     @RequestMapping("/")
-    public ModelAndView list(HttpServletRequest req,String identificationQuery,String statusQuery,
+    public ModelAndView list(HttpServletRequest req, String identificationQuery, String statusQuery,
                              @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                              @RequestParam(value = "pageSize", defaultValue = "20") int pageSize) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
@@ -49,10 +64,10 @@ public class ExchangeActuatorController extends BaseController {
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
 
-            if(identificationQuery!=null && !identificationQuery.equals("")){
-                query.add(CommonRestrictions.and(" identification like:identificationQuery", "identificationQuery", "%"+ identificationQuery+ "%"));
+            if (identificationQuery != null && !identificationQuery.equals("")) {
+                query.add(CommonRestrictions.and(" identification like:identificationQuery", "identificationQuery", "%" + identificationQuery + "%"));
             }
-            if(statusQuery!=null && !statusQuery.equals("") && !statusQuery.equals("-1")){
+            if (statusQuery != null && !statusQuery.equals("") && !statusQuery.equals("-1")) {
                 query.add(CommonRestrictions.and(" status = :statusQuery", "statusQuery", Integer.valueOf(statusQuery)));
             }
             CommonOrderBy orderBy = new CommonOrderBy();
@@ -82,40 +97,43 @@ public class ExchangeActuatorController extends BaseController {
 
     /**
      * 调转到新增页面
+     *
      * @return
      */
     @RequestMapping(value = "/ajax/addOrEdit")
-    public ModelAndView addOrEdit(@RequestParam(value="dataType",required=false)String dataType,@RequestParam(value="parentId",required=false)String parentId,@RequestParam(value="id",required=false)String id) {
+    public ModelAndView addOrEdit(@RequestParam(value = "dataType", required = false) String dataType, @RequestParam(value = "parentId", required = false) String parentId, @RequestParam(value = "id", required = false) String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         ExchangeActuatorVo vo = new ExchangeActuatorVo();
         try {
-            if(id==null || id.equals("")) {
+            if (id == null || id.equals("")) {
                 Integer maxPx = exchangeActuatorService.getMaxPx();
                 if (maxPx != null) {
                     vo.setSort(maxPx + 1);
                 } else {
                     vo.setSort(1);
                 }
-            }else{
+            } else {
                 ExchangeActuator exchangeActuator = this.exchangeActuatorService.getByPK(id);
                 if (exchangeActuator == null) {
                     logger.error("数据不存在");
                     throw new GenericException("数据不存在");
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             map.put("success", false);
             map.put("msg", "修改失败！");
             throw new GenericException(e);
         }
-        return new ModelAndView("/saas/zzb/app/console/exchange/addAndEditImport","vo",vo);
+        return new ModelAndView("/saas/zzb/app/console/exchange/addAndEditImport", "vo", vo);
     }
+
     /**
      * 调转到新增页面
+     *
      * @return
      */
     @RequestMapping(value = "/add")
-    public ModelAndView add() throws Exception{
+    public ModelAndView add() throws Exception {
         ExchangeActuatorVo vo = new ExchangeActuatorVo();
         Integer maxPx = exchangeActuatorService.getMaxPx();
         if (maxPx != null) {
@@ -125,16 +143,17 @@ public class ExchangeActuatorController extends BaseController {
         }
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("vo", vo);
-        return new ModelAndView("/saas/zzb/app/console/exchange/add",map);
+        return new ModelAndView("/saas/zzb/app/console/exchange/add", map);
     }
 
     /**
      * 调转到修改页面
+     *
      * @return
      */
 //    @RequiresPermissions("admin-assetStatus:edit")
     @RequestMapping(value = "/edit")
-    public ModelAndView edit(@RequestParam(value="id")String id) {
+    public ModelAndView edit(@RequestParam(value = "id") String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             ExchangeActuator exchangeActuator = this.exchangeActuatorService.getByPK(id);
@@ -145,7 +164,7 @@ public class ExchangeActuatorController extends BaseController {
             ExchangeActuatorVo vo = new ExchangeActuatorVo();
             BeanUtils.copyProperties(vo, exchangeActuator);
             map.put("vo", vo);
-        }catch(Exception e){
+        } catch (Exception e) {
             map.put("success", false);
             map.put("msg", "修改失败！");
             throw new GenericException(e);
@@ -155,14 +174,16 @@ public class ExchangeActuatorController extends BaseController {
 
     /**
      * 保存部务会信息
+     *
      * @return
      */
     @RequestMapping(value = "/save")
-    public @ResponseBody Map<String, Object> save(@ModelAttribute ExchangeActuatorVo exchangeActuatorVo, HttpServletRequest req) throws GenericException {
+    public
+    @ResponseBody
+    Map<String, Object> save(@ModelAttribute ExchangeActuatorVo exchangeActuatorVo, HttpServletRequest req) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
         ExchangeActuator exchangeActuator = null;
-       
-      
+
 
         try {
             if (exchangeActuatorVo != null) {
@@ -192,17 +213,19 @@ public class ExchangeActuatorController extends BaseController {
         }
         return map;
     }
+
     @RequestMapping(value = "/delete/{id}")
-    public @ResponseBody
-    Map<String, Object> delete(@PathVariable("id")String id) {
+    public
+    @ResponseBody
+    Map<String, Object> delete(@PathVariable("id") String id) {
         Map<String, Object> map = new HashMap<String, Object>();
-        try{
+        try {
             ExchangeActuator exchangeActuator = this.exchangeActuatorService.getByPK(id);
-            if(exchangeActuator != null){
+            if (exchangeActuator != null) {
                 this.exchangeActuatorService.delete(exchangeActuator);
             }
             map.put("success", true);
-        }catch(Exception e){
+        } catch (Exception e) {
             map.put("success", false);
             map.put("msg", "删除失败！");
             throw new GenericException(e);
@@ -212,18 +235,30 @@ public class ExchangeActuatorController extends BaseController {
     }
 
     @RequestMapping(value = "/ajax/importData")
-    public @ResponseBody Map<String, Object> importData(@RequestParam(value="id")String id, HttpServletRequest req) throws GenericException {
+    public
+    @ResponseBody
+    Map<String, Object> importData(@RequestParam(value = "id") String id, HttpServletRequest req) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
-        ExchangeActuator exchangeActuator = this.exchangeActuatorService.getByPK(id);
-        int sourceType = exchangeActuator.getSourceType();
-        if(sourceType==ExchangeActuator.source_gwyglxt){//从公务员管理系统(浙大网新)
-
-        }else if(sourceType==ExchangeActuator.source_zzzhywpt){//从组织综合业务平台(广州三零)
-
-        }else if(sourceType==ExchangeActuator.source_gbglxt){//从干部管理系统(长沙远望)
-
-        }
         try {
+            ExchangeActuator exchangeActuator = this.exchangeActuatorService.getByPK(id);
+            int sourceType = exchangeActuator.getSourceType();
+            if (sourceType == ExchangeActuator.source_gwyglxt) {//从公务员管理系统(浙大网新)
+
+
+            } else if (sourceType == ExchangeActuator.source_zzzhywpt) {//从组织综合业务平台(广州三零)
+
+            } else if (sourceType == ExchangeActuator.source_gbglxt) {//从干部管理系统(长沙远望)
+                DataSource dataSource = C3p0Util.getSqlServerDataSource(exchangeActuator.getIp(),
+                        exchangeActuator.getPort(),
+                        exchangeActuator.getDatabaseName(),
+                        exchangeActuator.getUserName(), exchangeActuator.getPassword());
+                this.appBsetFlService.saveFromYw(dataSource);
+                this.appBsetB01Service.saveFromYw(dataSource);
+                this.appBsetFl2B01Service.saveFromYw(dataSource);
+                this.appAsetA01Service.saveFromYw(dataSource);
+                this.appAsetA02Service.saveFromYw(dataSource);
+                this.appAsetA36Service.saveFromYw(dataSource);
+            }
             map.put("success", true);
         } catch (Exception e) {
             map.put("success", false);
@@ -232,19 +267,24 @@ public class ExchangeActuatorController extends BaseController {
         }
         return map;
     }
+
     @RequestMapping(value = "/ajax/clearData")
-    public @ResponseBody Map<String, Object> clearData(@RequestParam(value="id")String id, HttpServletRequest req) throws GenericException {
+    public
+    @ResponseBody
+    Map<String, Object> clearData(@RequestParam(value = "id") String id, HttpServletRequest req) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
-        ExchangeActuator exchangeActuator = this.exchangeActuatorService.getByPK(id);
-        int sourceType = exchangeActuator.getSourceType();
-        if(sourceType==ExchangeActuator.source_gwyglxt){//从公务员管理系统(浙大网新)
-
-        }else if(sourceType==ExchangeActuator.source_zzzhywpt){//从组织综合业务平台(广州三零)
-
-        }else if(sourceType==ExchangeActuator.source_gbglxt){//从干部管理系统(长沙远望)
-
-        }
         try {
+            ExchangeActuator exchangeActuator = this.exchangeActuatorService.getByPK(id);
+            int sourceType = exchangeActuator.getSourceType();
+            if (sourceType == ExchangeActuator.source_gwyglxt) {//从公务员管理系统(浙大网新)
+
+            } else if (sourceType == ExchangeActuator.source_zzzhywpt) {//从组织综合业务平台(广州三零)
+
+            } else if (sourceType == ExchangeActuator.source_gbglxt) {//从干部管理系统(长沙远望)
+                this.appAsetA01Service.deleteAllData();
+                this.appBsetB01Service.deleteAllData();
+                this.appBsetFlService.deleteAllData();
+            }
             map.put("success", true);
         } catch (Exception e) {
             map.put("success", false);

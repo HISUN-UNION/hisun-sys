@@ -10,6 +10,7 @@ import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.bset.dao.AppBsetB01Dao;
+import com.hisun.saas.zzb.app.console.bset.dao.AppBsetFl2B01Dao;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
@@ -35,8 +36,11 @@ import java.util.*;
 public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> implements AppBsetB01Service {
 
     private AppBsetB01Dao appBsetB01Dao;
-    @Resource
+    @Autowired
     private AppBsetFlService appBsetFlService;
+    @Autowired
+    private AppBsetFl2B01Dao appBsetFl2B01Dao;
+
     @Autowired
     public void setBaseDao(BaseDao<AppBsetB01, String> appBsetB01Dao) {
         this.baseDao = appBsetB01Dao;
@@ -99,7 +103,7 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
     }
 
 
-    public int saveBsetB01FromYw(DataSource dataSource)throws Exception{
+    public int saveFromYw(DataSource dataSource)throws Exception{
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         //处理了多少条
         int order = 0;
@@ -173,7 +177,7 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
         CommonConditionQuery query = new CommonConditionQuery();
 
         CommonOrderBy orderBy = new CommonOrderBy();
-        orderBy.add(CommonOrder.asc("parentFl.id"));
+        orderBy.add(CommonOrder.asc("parentFl.px"));
         orderBy.add(CommonOrder.asc("px"));
         List<AppBsetFl> sppBsetFls = this.appBsetFlService.list(query, orderBy);
         List<B01TreeVo> b01TreeVoList = Lists.newArrayList();
@@ -274,5 +278,11 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
             }
         }
         return b01TreeVoList;
+    }
+
+
+    public void deleteAllData() throws Exception{
+        this.appBsetFl2B01Dao.deleteBatch(null);
+        this.appBsetB01Dao.deleteBatch(null);
     }
 }

@@ -1,7 +1,11 @@
 package com.hisun.saas.zzb.app.console.aset.vo;
 
+import com.hisun.util.DateUtil;
 import com.hisun.util.StringUtils;
+import org.jboss.aop.metadata.SimpleMetaData;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,11 +13,14 @@ import java.util.List;
  */
 public class AppAsetA01Vo {
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM");
+
     private String id;
     private String xm;
     private String xb;
     private String csny;
     private String nl;
+    private String gbrmspbCsnyAndNl;
     private String mz;
     private String zw;
     private String csd;
@@ -21,15 +28,21 @@ public class AppAsetA01Vo {
     private String jkzk;
 
     private String cjgzsj;
+    private String cjgzsjStr;
     private String rdsj;
+    private String rdsjStr;
     private String qrzxl;
     private String qrzxw;
+    private String gbrmspbQrzxlxw;
     private String qrzByyx;
     private String qrzZy;
+    private String gbrmspbQrzByyxAndZy;
     private String zzxl;
     private String zzxw;
+    private String gbrmspbZzxlxw;
     private String zzByyx;
     private String zzZy;
+    private String gbrmspbZzByyxAndZy;
 
 
     private String zyjszw;
@@ -53,7 +66,9 @@ public class AppAsetA01Vo {
     private String qrzxlxwjzy;
     private String zzxlxwjzy;
     private List<AppAsetA02Vo> appAsetA02Vos;
-    private List<String> gzjlStrs ;
+    private List<String> gzjlStrs;
+
+
     public String getId() {
         return id;
     }
@@ -341,6 +356,7 @@ public class AppAsetA01Vo {
     public void setZzxlxwjzy(String zzxlxwjzy) {
         this.zzxlxwjzy = zzxlxwjzy;
     }
+
     public List<AppAsetA02Vo> getAppAsetA02Vos() {
         return appAsetA02Vos;
     }
@@ -356,4 +372,82 @@ public class AppAsetA01Vo {
     public void setGzjlStrs(List<String> gzjlStrs) {
         this.gzjlStrs = gzjlStrs;
     }
+
+    public String getGbrmspbCsnyAndNl() {
+        return DateUtil.covertPatternStringToOtherPatternString(this.csny,
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "\n" + "(" + this.nl + "岁)";
+    }
+
+    public void setGbrmspbCsnyAndNl(String gbrmspbCsnyAndNl) {
+        this.gbrmspbCsnyAndNl = gbrmspbCsnyAndNl;
+    }
+
+    public String getCjgzsjStr() {
+        return DateUtil.covertPatternStringToOtherPatternString(this.cjgzsj,
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM);
+    }
+
+    public void setCjgzsjStr(String cjgzsjStr) {
+        this.cjgzsjStr = cjgzsjStr;
+    }
+
+    public String getRdsjStr() {
+        return DateUtil.covertPatternStringToOtherPatternString(this.rdsj,
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM);
+    }
+
+    public void setRdsjStr(String rdsjStr) {
+        this.rdsjStr = rdsjStr;
+    }
+
+    public String getGbrmspbQrzxlxw() {
+
+        return StringUtils.trimNull2Empty(this.qrzxl)
+                + "\n" + StringUtils.trimNull2Empty(this.qrzxw);
+    }
+
+    public void setGbrmspbQrzxlxw(String gbrmspbQrzxlxw) {
+        this.gbrmspbQrzxlxw = gbrmspbQrzxlxw;
+    }
+
+    public String getGbrmspbQrzByyxAndZy() {
+        String s = "";
+        if (StringUtils.isEmpty(this.qrzByyx) == false) {
+            s += this.qrzByyx;
+        }
+        if (StringUtils.isEmpty(this.qrzZy) == false) {
+            s += this.qrzZy + "专业";
+        }
+        return s;
+    }
+
+    public void setGbrmspbQrzByyxAndZy(String gbrmspbQrzByyxAndZy) {
+        this.gbrmspbQrzByyxAndZy = gbrmspbQrzByyxAndZy;
+    }
+
+    public String getGbrmspbZzxlxw() {
+
+        return StringUtils.trimNull2Empty(this.zzxl)
+                + "\n" + StringUtils.trimNull2Empty(this.zzxw);
+    }
+
+    public void setGbrmspbZzxlxw(String gbrmspbZzxlxw) {
+        this.gbrmspbZzxlxw = gbrmspbZzxlxw;
+    }
+
+    public String getGbrmspbZzByyxAndZy() {
+        String s = "";
+        if (StringUtils.isEmpty(this.zzByyx) == false) {
+            s += this.zzByyx;
+        }
+        if (StringUtils.isEmpty(this.zzZy) == false) {
+            s += this.zzZy + "专业";
+        }
+        return s;
+    }
+
+    public void setGbrmspbZzByyxAndZy(String gbrmspbZzByyxAndZy) {
+        this.gbrmspbZzByyxAndZy = gbrmspbZzByyxAndZy;
+    }
+
 }

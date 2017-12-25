@@ -35,9 +35,11 @@ public class AppBsetFl extends TenantEntity implements Serializable {
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<AppBsetFl> children;
     @OneToMany(mappedBy = "appBsetFl", fetch = FetchType.LAZY)
+    @OrderBy("px asc ")
     private List<AppBsetFl2B01> appBsetFl2B01s;
     @Column(name = "is_hidden")
     private int isHidden =DISPLAY;
+
 
 
     public String getId() {

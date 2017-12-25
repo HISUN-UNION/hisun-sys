@@ -10,6 +10,6 @@ import javax.sql.DataSource;
  */
 public interface AppAsetA36Service extends BaseService<AppAsetA36,String> {
 
-    int saveAsetA36FromYw(DataSource dataSource)throws Exception;
+    int saveFromYw(DataSource dataSource)throws Exception;
 
 }

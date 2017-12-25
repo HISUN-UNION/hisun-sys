@@ -1,16 +1,25 @@
 package com.hisun.saas.zzb.app.console.aset.service.impl;
 
+import com.aspose.words.*;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.aset.dao.AppAsetA01Dao;
+import com.hisun.saas.zzb.app.console.aset.dao.AppAsetA02Dao;
+import com.hisun.saas.zzb.app.console.aset.dao.AppAsetA36Dao;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
-import com.hisun.util.DateUtil;
+import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01Vo;
+import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA36Vo;
+import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01gbrmspb;
+import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
+import com.hisun.util.*;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by zhouying on 2017/9/16.
@@ -32,6 +42,11 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
 
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
+
+    @Autowired
+    private AppAsetA36Dao appAsetA36Dao;
+    @Autowired
+    private AppAsetA02Dao appAsetA02Dao;
 
     @Autowired
     public void setBaseDao(BaseDao<AppAsetA01, String> appAsetA01Dao) {
@@ -80,7 +95,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
     }
 
 
-    public int saveAsetA01FromYw(DataSource dataSource)throws Exception{
+    public int saveFromYw(DataSource dataSource)throws Exception{
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         //初始化照片存储目录
         String photoStoreDir = uploadAbsolutePath + AppAsetA01Service.ZP_PATH;
@@ -134,7 +149,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                         personCode = value.toString();
                     }else if(key.equalsIgnoreCase("A000_A0101")){
                         fields.append(",xm");
-                        values.append(",'"+value+"'");
+                        values.append(",'"+StringUtils.trim(value.toString())+"'");
                     }else if(key.equalsIgnoreCase("A000_A0104_SHOW")){
                         fields.append(",xb");
                         values.append(",'"+value+"'");
@@ -290,5 +305,78 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
     }
 
 
+    public void saveAsGbrmspb(AppAsetA01 appAsetA01)throws Exception{
+        AppAsetA01Vo appAsetA01Vo = new AppAsetA01Vo();
+        BeanUtils.copyProperties(appAsetA01Vo,appAsetA01);
+        Map<String ,Object> dataMap = ReflectionVoUtil.map(appAsetA01Vo);
+
+        WordUtil wordUtil = WordUtil.newInstance();
+        Document gbrmspbTemplateDoc = wordUtil.read(uploadAbsolutePath+ AppAsetA01Service.GBRMSPB_DOC_TEMPLATE);
+        DocumentBuilder builder = new DocumentBuilder(gbrmspbTemplateDoc);
+        NodeCollection tables = gbrmspbTemplateDoc.getChildNodes(NodeType.TABLE,true);
+        int tableIndex =0;
+        for(Iterator<Table> iterator = tables.iterator(); iterator.hasNext();){
+            Table table = iterator.next();
+            NodeCollection rows =  table.getChildNodes(NodeType.ROW,true);
+            int rowIndex=0;
+            for(Iterator<Row> rowIterator= rows.iterator();rowIterator.hasNext();){
+                Row row = rowIterator.next();
+                NodeCollection cells =  row.getChildNodes(NodeType.CELL,true);
+                int colIndex =0;
+                for(Iterator<Cell> cellIterator= cells.iterator();cellIterator.hasNext();){
+                    Cell cell = cellIterator.next();
+                    String trimText = wordUtil.trim(cell.getText());
+                    builder.moveToCell(tableIndex, rowIndex, colIndex, 0);
+                    if (trimText.startsWith(WordUtil.dataPrefix)) {
+                        String field = wordUtil.getSqlField(trimText);
+                        String value = dataMap.get(field)==null?"":dataMap.get(field).toString();
+                        builder.write(value);
+                        gbrmspbTemplateDoc.getRange().replace(trimText,"",
+                                new FindReplaceOptions(FindReplaceDirection.FORWARD));
+                    }else if(trimText.startsWith(WordUtil.imageSign)){
+                        builder.insertImage(uploadAbsolutePath+appAsetA01.getZpPath(),94,122);
+                        gbrmspbTemplateDoc.getRange().replace(trimText,"",
+                                new FindReplaceOptions(FindReplaceDirection.FORWARD));
+                    }else if (trimText.startsWith(WordUtil.rangeSign)){
+                        if(appAsetA01.getAppAsetA36s()!=null && appAsetA01.getAppAsetA36s().size()>0){
+                            String field = wordUtil.getSqlField(trimText);
+                            for(int i= 0;i< appAsetA01.getAppAsetA36s().size();i++){
+                                if(i>9){break;}//最多取10条数据
+                                builder.moveToCell(tableIndex, rowIndex+i, colIndex, 0);
+                                AppAsetA36Vo appAsetA36Vo = new AppAsetA36Vo();
+                                BeanUtils.copyProperties(appAsetA36Vo,appAsetA01.getAppAsetA36s().get(i));
+                                Map<String,Object> a36DataMap = ReflectionVoUtil.map(appAsetA36Vo);
+                                String value = a36DataMap.get(field)==null?"":a36DataMap.get(field).toString();
+                                builder.write(value);
+                            }
+                        }
+                        gbrmspbTemplateDoc.getRange().replace(trimText,"",
+                                new FindReplaceOptions(FindReplaceDirection.FORWARD));
+                    }
+                    colIndex++;
+                }
+                rowIndex++;
+            }
+            tableIndex++;
+        }
+        String saveWordPath = AppAsetA01Service.ATTS_PATH+ UUIDUtil.getUUID()+".docx";
+        gbrmspbTemplateDoc.save(uploadAbsolutePath+saveWordPath);
+        appAsetA01.setFilepath(saveWordPath);
+
+        String pdfPath = AppAsetA01Service.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
+        String pdfRealPath = uploadAbsolutePath+pdfPath;
+        WordConvertUtil.newInstance().convert(uploadAbsolutePath+saveWordPath,pdfRealPath,WordConvertUtil.PDF);
+        appAsetA01.setFile2ImgPath(pdfPath);
+
+        this.update(appAsetA01);
+    }
+
+
+   public void deleteAllData() throws Exception{
+       this.appAsetA36Dao.deleteBatch(null);
+       this.appAsetA02Dao.deleteBatch(null);
+       this.appAsetA01Dao.deleteBatch(null);
+       FileUtils.deleteDirectory(new File(uploadAbsolutePath+AppAsetA01Service.ATTS_PATH));
+    }
 
 }

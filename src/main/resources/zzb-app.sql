@@ -316,6 +316,7 @@ CREATE TABLE `app_bset_fl` (
   `fl` varchar(32) NOT NULL,
   `parent_id` varchar(32) DEFAULT NULL,
   `px` int(11) DEFAULT NULL,
+  `is_hidden` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -326,6 +327,7 @@ CREATE TABLE `app_bset_b01` (
   `b0101` varchar(255) NOT NULL,
   `parent_id` varchar(32) DEFAULT NULL,
   `px` int(11) NOT NULL DEFAULT '99',
+  `query_code` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ;
 

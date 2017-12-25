@@ -1,6 +1,7 @@
 package com.hisun.saas.zzb.app.console.aset.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.util.DateUtil;
 import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,9 +18,9 @@ import java.util.List;
 @Table(name = "app_aset_a01")
 public class AppAsetA01 extends TenantEntity implements Serializable {
     @Id
-    @GenericGenerator(name="generator",strategy="uuid.hex")
-    @GeneratedValue(generator="generator")
-    @Column(name="id",nullable=false,unique=true,length=32)
+    @GenericGenerator(name = "generator", strategy = "uuid.hex")
+    @GeneratedValue(generator = "generator")
+    @Column(name = "id", nullable = false, unique = true, length = 32)
     private String id;
     @Column(name = "xm")
     private String xm;
@@ -95,17 +96,17 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     @Column(name = "zp_path")
     private String zpPath;
 
-    @OneToMany(mappedBy = "appAsetA01" ,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "appAsetA01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     @OrderBy("px asc ")
     private List<AppAsetA02> appAsetA02s;
 
-    @OneToMany(mappedBy = "appAsetA01" ,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "appAsetA01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     @OrderBy("shgx_px asc ")
     private List<AppAsetA36> appAsetA36s;
 
-   
+
     public String getId() {
         return id;
     }
@@ -114,7 +115,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.id = id;
     }
 
-   
 
     public String getXm() {
         return xm;
@@ -124,7 +124,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.xm = xm;
     }
 
-   
 
     public String getXb() {
         return xb;
@@ -134,7 +133,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.xb = xb;
     }
 
-   
 
     public String getMz() {
         return mz;
@@ -144,7 +142,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.mz = mz;
     }
 
-   
 
     public String getZw() {
         return zw;
@@ -154,7 +151,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.zw = zw;
     }
 
-   
 
     public String getCsd() {
         return csd;
@@ -164,7 +160,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.csd = csd;
     }
 
-   
 
     public String getJg() {
         return jg;
@@ -174,7 +169,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.jg = jg;
     }
 
-   
 
     public String getCsny() {
         return csny;
@@ -184,7 +178,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.csny = csny;
     }
 
-   
 
     public String getCjgzsj() {
         return cjgzsj;
@@ -194,7 +187,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.cjgzsj = cjgzsj;
     }
 
-   
 
     public String getRdsj() {
         return rdsj;
@@ -212,7 +204,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.zyjszw = zyjszw;
     }
 
-   
 
     public String getXrzwsj() {
         return xrzwsj;
@@ -222,7 +213,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.xrzwsj = xrzwsj;
     }
 
-   
 
     public String getXrzjsj() {
         return xrzjsj;
@@ -232,7 +222,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.xrzjsj = xrzjsj;
     }
 
-   
 
     public int getA01Px() {
         return a01Px;
@@ -242,7 +231,6 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.a01Px = a01Px;
     }
 
-   
 
     public String getZpPath() {
         return zpPath;
@@ -413,7 +401,16 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.khjgStr = khjgStr;
     }
 
-    public String toSqliteInsertSql(){
+
+    public List<AppAsetA36> getAppAsetA36s() {
+        return appAsetA36s;
+    }
+
+    public void setAppAsetA36s(List<AppAsetA36> appAsetA36s) {
+        this.appAsetA36s = appAsetA36s;
+    }
+
+    public String toSqliteInsertSql() {
         StringBuffer sb = new StringBuffer("");
         sb.append("insert into ");
         sb.append("app_aset_a01 ");
@@ -450,47 +447,52 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(xm)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(xb)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(mz)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(zw)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(csd)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(jg)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(csny)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(cjgzsj)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(rdsj)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(qrzxl)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(zyjszw)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(xrzwsj)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(xrzjsj)+"'");
-        if (StringUtils.isEmpty(zpPath)){
+        sb.append("'" + StringUtils.trimNull2Empty(id) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(xm) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(xb) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(mz) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(zw) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(csd) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(jg) + "'");
+        sb.append(",'" + DateUtil.covertPatternStringToOtherPatternString(this.csny,
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "'");
+        sb.append(",'" + DateUtil.covertPatternStringToOtherPatternString(this.cjgzsj,
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "'");
+        sb.append(",'" + DateUtil.covertPatternStringToOtherPatternString(this.rdsj,
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(qrzxl) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(zyjszw) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(xrzwsj) + "'");
+        sb.append(",'" + DateUtil.covertPatternStringToOtherPatternString(this.xrzjsj,
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "'");
+
+        if (StringUtils.isEmpty(zpPath)) {
             sb.append(",''");
-        }else{
-            String attsPath ="img/aset/"+zpPath.substring(zpPath.lastIndexOf(File.separator)+1);
-            sb.append(",'"+attsPath+"'");
+        } else {
+            String attsPath = "img/aset/" + zpPath.substring(zpPath.lastIndexOf(File.separator) + 1);
+            sb.append(",'" + attsPath + "'");
 
         }
-        sb.append(",'"+ StringUtils.trimNull2Empty(zzxl)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(qrzxw)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(zzxw)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(nl)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(jkzk)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(zytc)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(qrzByyx)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(zzByyx)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(xrzw)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(nrzw)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(nmzw)+"'");
-        if (StringUtils.isEmpty(file2ImgPath)){
+        sb.append(",'" + StringUtils.trimNull2Empty(zzxl) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(qrzxw) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(zzxw) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(nl) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(jkzk) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(zytc) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(qrzByyx) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(zzByyx) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(xrzw) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(nrzw) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(nmzw) + "'");
+        if (StringUtils.isEmpty(file2ImgPath)) {
             sb.append(",''");
-        }else{
-            String attsPath ="atts/aset/"+file2ImgPath.substring(file2ImgPath.lastIndexOf(File.separator)+1);
-            sb.append(",'"+attsPath+"'");
+        } else {
+            String attsPath = "atts/aset/" + file2ImgPath.substring(file2ImgPath.lastIndexOf(File.separator) + 1);
+            sb.append(",'" + attsPath + "'");
 
         }
-        sb.append(",'"+ StringUtils.trimNull2Empty(qrzZy)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(zzZy)+"'");
+        sb.append(",'" + StringUtils.trimNull2Empty(qrzZy) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(zzZy) + "'");
         sb.append(")");
         return sb.toString();
     }

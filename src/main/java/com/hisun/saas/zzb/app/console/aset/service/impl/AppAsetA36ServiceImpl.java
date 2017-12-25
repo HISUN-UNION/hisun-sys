@@ -45,7 +45,7 @@ public class AppAsetA36ServiceImpl extends BaseServiceImpl<AppAsetA36,String> im
     }
 
 
-    public int saveAsetA36FromYw(DataSource dataSource)throws Exception{
+    public int saveFromYw(DataSource dataSource)throws Exception{
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
 
         //处理了多少条

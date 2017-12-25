@@ -52,7 +52,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/zzb/app/console/asetA01")
-public class AppAsetA01Controller extends BaseController{
+public class AppAsetA01Controller extends BaseController {
     @Resource
     private AppAsetA01Service appAsetA01Service;
     @Resource
@@ -66,40 +66,40 @@ public class AppAsetA01Controller extends BaseController{
     private final static String DEFAULT_IMG_HEAD_PATH = "/WEB-INF/images/defaultHeadImage.png";
 
     @RequestMapping(value = "/")
-    public ModelAndView list(){
+    public ModelAndView list() {
 
         return new ModelAndView("saas/zzb/app/console/asetA01/a01Manage");
 
 
-
     }
-    @RequestMapping(value="/ajax/list")
-    public ModelAndView getList(String b01Id,String xmQuery,
-                                         @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+
+    @RequestMapping(value = "/ajax/list")
+    public ModelAndView getList(String b01Id, String xmQuery,
+                                @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         Map<String, Object> map = Maps.newHashMap();
         try {
             List<Object> paramList = Lists.newArrayList();
-            String hql = " from AppAsetA01 a01 left join a01.appAsetA02s a02 left join a02.appBsetB01 b01 left join b01.appBsetFl2B01s fltob01 where a02.id is not null and fltob01.id is not null";
+            String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  inner join b01.appBsetFl2B01s fltob01  where 1=1 ";
             String b0101 = "";
-            if(StringUtils.isNotBlank(b01Id)) {
-                if(!b01Id.equals("allA01")){
+            if (StringUtils.isNotBlank(b01Id)) {
+                if (!b01Id.equals("allA01")) {
                     paramList.add(b01Id);
-                    hql = hql+" and a02.appBsetB01.id = ?";
+                    hql = hql + " and a02.appBsetB01.id = ?";
                     AppBsetB01 appBsetB01 = this.appBsetB01Service.getByPK(b01Id);
                     b0101 = appBsetB01.getB0101();
                 }
 
             }
 
-            if(xmQuery!=null && !xmQuery.equals("")){
-                paramList.add("%"+ xmQuery+ "%");
-                hql = hql+" and a01.xm like ?";
+            if (xmQuery != null && !xmQuery.equals("")) {
+                paramList.add("%" + xmQuery + "%");
+                hql = hql + " and a01.xm like ?";
             }
-            hql = hql+" and a01.tombstone =? order by b01.px,a02.jtlPx,a01.a01Px";
+            hql = hql + " and a01.tombstone =? order by fltob01.px,b01.px,a02.jtlPx ";
             paramList.add(0);
-            int total = this.appAsetA01Service.count("select  count(distinct a01.id) "+hql,paramList);
-            List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) "+hql,paramList, pageNum,
+            int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
+            List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql, paramList, pageNum,
                     pageSize);
             List<AppAsetA01Vo> appAsetA01Vos = new ArrayList<AppAsetA01Vo>();
             for (AppAsetA01 a01 : appAsetA01s) {
@@ -126,19 +126,20 @@ public class AppAsetA01Controller extends BaseController{
             map.put("b0101", b0101);
             map.put("success", true);
         } catch (Exception e) {
-            logger.error(e,e);
+            logger.error(e, e);
             map.put("success", false);
         }
         return new ModelAndView("saas/zzb/app/console/asetA01/a01/list", map);
 
     }
 
-    @RequestMapping(value="/ajax/execute")
-    public @ResponseBody
-    Map<String,Object> importExcel(String b01Id, String token, @RequestParam(value="attachFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @RequestMapping(value = "/ajax/execute")
+    public
+    @ResponseBody
+    Map<String, Object> importExcel(String b01Id, String token, @RequestParam(value = "attachFile", required = false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-        Map<String,Object> map = new HashMap<String,Object>();
-        if(file==null || file.isEmpty()){
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (file == null || file.isEmpty()) {
             map.put("code", -1);
             map.put("message", "文件没有内容");
             return map;
@@ -181,10 +182,11 @@ public class AppAsetA01Controller extends BaseController{
 
     /**
      * 调转到新增页面
+     *
      * @return
      */
     @RequestMapping(value = "/add")
-    public ModelAndView add(String b01Id) throws Exception{
+    public ModelAndView add(String b01Id) throws Exception {
         AppAsetA01Vo vo = new AppAsetA01Vo();
 //        Integer maxPx = appGbcxA01Service.getMaxPx(b01Id);
 //        if(maxPx != null){
@@ -193,19 +195,20 @@ public class AppAsetA01Controller extends BaseController{
 //            vo.setA01Px(1);
 //        }
 
-        return new ModelAndView("/saas/zzb/app/console/asetA01/a01/add","vo",vo);
+        return new ModelAndView("/saas/zzb/app/console/asetA01/a01/add", "vo", vo);
     }
 
     /**
      * 调转到修改页面
+     *
      * @return
      */
 //    @RequiresPermissions("admin-assetStatus:edit")
     @RequestMapping(value = "/edit")
-    public ModelAndView edit(@RequestParam(value="id")String id) {
+    public ModelAndView edit(@RequestParam(value = "id") String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-        }catch(Exception e){
+        } catch (Exception e) {
             map.put("success", false);
             map.put("msg", "修改失败！");
             throw new GenericException(e);
@@ -216,20 +219,22 @@ public class AppAsetA01Controller extends BaseController{
 
     /**
      * 调转到修改页面
+     *
      * @return
      */
 //    @RequiresPermissions("admin-assetStatus:delete")
     @RequestMapping(value = "/delete/{id}")
-    public @ResponseBody
-    Map<String, Object> delete(@PathVariable("id")String AssetStatusId) {
+    public
+    @ResponseBody
+    Map<String, Object> delete(@PathVariable("id") String AssetStatusId) {
         Map<String, Object> map = new HashMap<String, Object>();
-        try{
+        try {
             AppAsetA01 a01 = this.appAsetA01Service.getByPK(AssetStatusId);
-            if(a01 != null){
+            if (a01 != null) {
                 this.appAsetA01Service.delete(a01);
             }
             map.put("success", true);
-        }catch(Exception e){
+        } catch (Exception e) {
             map.put("success", false);
             map.put("msg", "删除失败！");
             throw new GenericException(e);
@@ -239,7 +244,7 @@ public class AppAsetA01Controller extends BaseController{
     }
 
     @RequestMapping(value = "ajax/view")
-    public ModelAndView view(@RequestParam(value="id")String id,@RequestParam(value="b01Id")String b01Id) {
+    public ModelAndView view(@RequestParam(value = "id") String id, @RequestParam(value = "b01Id") String b01Id) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             AppAsetA01 a01 = this.appAsetA01Service.getByPK(id);
@@ -249,12 +254,12 @@ public class AppAsetA01Controller extends BaseController{
                 throw new GenericException("数据不存在");
             }
             BeanUtils.copyProperties(a01Vo, a01);
-            if(a01.getGzjlStr()!=null && !a01.getGzjlStr().equals("")){
+            if (a01.getGzjlStr() != null && !a01.getGzjlStr().equals("")) {
                 a01Vo.setGzjlStrs(GzjlUtil.matchGzjlStr(a01.getGzjlStr()));
             }
             map.put("a01Vo", a01Vo);
             map.put("b01Id", b01Id);
-        }catch(Exception e){
+        } catch (Exception e) {
             map.put("success", false);
             map.put("msg", "查看失败！");
             throw new GenericException(e);
@@ -264,10 +269,13 @@ public class AppAsetA01Controller extends BaseController{
 
     /**
      * 保存信息
+     *
      * @return
      */
     @RequestMapping(value = "/save")
-    public @ResponseBody Map<String, Object> save(@ModelAttribute AppAsetA01Vo a01Vo, HttpServletRequest req, @RequestParam(value="clFile",required = false) MultipartFile clFile) throws GenericException {
+    public
+    @ResponseBody
+    Map<String, Object> save(@ModelAttribute AppAsetA01Vo a01Vo, HttpServletRequest req, @RequestParam(value = "clFile", required = false) MultipartFile clFile) throws GenericException {
         Map<String, Object> map = new HashMap<String, Object>();
 //        AppAsetA01 a01 = null;
 //        int newPx = a01Vo.getA01Px();
@@ -338,50 +346,52 @@ public class AppAsetA01Controller extends BaseController{
     }
 
     @RequestMapping("/{id}/photo")
-    public HttpEntity<byte[]> getPhoto (@PathVariable("id")String id,
-                                        HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public HttpEntity<byte[]> getPhoto(@PathVariable("id") String id,
+                                       HttpServletRequest request, HttpServletResponse response) throws IOException {
         AppAsetA01 appAsetA01 = this.appAsetA01Service.getByPK(id);
-        if(appAsetA01.getZpPath()!=null){
-            String zpRealPath = uploadAbsolutePath+appAsetA01.getZpPath();
+        if (appAsetA01.getZpPath() != null) {
+            String zpRealPath = uploadAbsolutePath + appAsetA01.getZpPath();
             File file = new File(zpRealPath);
-            if(file.exists()){
+            if (file.exists()) {
                 FileInputStream fis = new FileInputStream(file);
-                StreamUtils.copy(fis,response.getOutputStream());
+                StreamUtils.copy(fis, response.getOutputStream());
                 response.setContentType(MediaType.IMAGE_JPEG_VALUE);
                 return new HttpEntity(HttpStatus.OK);
-            }else{
+            } else {
                 //为空或者没有返回默认图片
                 File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
                 FileInputStream fis = new FileInputStream(defaultfile);
-                StreamUtils.copy(fis,response.getOutputStream());
+                StreamUtils.copy(fis, response.getOutputStream());
                 response.setContentType(MediaType.IMAGE_PNG_VALUE);
                 return new HttpEntity(HttpStatus.OK);
             }
-        }else{
+        } else {
             //为空或者没有返回默认图片
             File defaultfile = new File(request.getServletContext().getRealPath(DEFAULT_IMG_HEAD_PATH));
             FileInputStream fis = new FileInputStream(defaultfile);
-            StreamUtils.copy(fis,response.getOutputStream());
+            StreamUtils.copy(fis, response.getOutputStream());
 
             response.setContentType(MediaType.IMAGE_PNG_VALUE);
             return new HttpEntity(HttpStatus.OK);
         }
     }
-    @RequestMapping(value="/ajax/down")
-    public void fileDown(String id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
-        AppAsetA01 appAsetA01 = this.appAsetA01Service.getByPK(id);
-        if(appAsetA01.getFilepath()!=null && !appAsetA01.getFilepath().equals("")){
-            resp.setContentType("multipart/form-data");
-            //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
-            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(appAsetA01.getFilepath().substring(appAsetA01.getFilepath().lastIndexOf(File.separator)+1)));
-            OutputStream output=resp.getOutputStream();
-            byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+appAsetA01.getFilepath()));
-            output.write(b);
-            output.flush();
-            output.close();
-        }
 
+    @RequestMapping(value = "/ajax/down")
+    public void fileDown(String id, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        AppAsetA01 appAsetA01 = this.appAsetA01Service.getByPK(id);
+        if (appAsetA01.getFilepath() == null || appAsetA01.getFilepath().equals("")) {
+            this.appAsetA01Service.saveAsGbrmspb(appAsetA01);
+        }
+        resp.setContentType("multipart/form-data");
+        //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
+        resp.setHeader("Content-Disposition", "attachment;fileName=" + encode(appAsetA01.getFilepath().substring(appAsetA01.getFilepath().lastIndexOf(File.separator) + 1)));
+        OutputStream output = resp.getOutputStream();
+        byte[] b = FileUtils.readFileToByteArray(new File(uploadAbsolutePath + appAsetA01.getFilepath()));
+        output.write(b);
+        output.flush();
+        output.close();
     }
+
     private String encode(String filename) throws UnsupportedEncodingException {
         if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
             filename = URLEncoder.encode(filename, "UTF-8");

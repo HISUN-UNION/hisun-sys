@@ -117,16 +117,5 @@ public class AppAsetA36 extends TenantEntity implements Serializable{
         this.appAsetA01 = appAsetA01;
     }
 
-    public Map<String,String> toSqlFieldMap(){
-        Map<String,String> fieldMap = new HashMap<String,String>();
-        fieldMap.put("cw",cw);
-        fieldMap.put("xm",xm);
-        fieldMap.put("nl",nl);
-        fieldMap.put("csny",csny);
-        fieldMap.put("zzmm",zzmm);
-        fieldMap.put("gzdwjzw",gzdwjzw);
-        fieldMap.put("shgx_px",String.valueOf(px));
-        return fieldMap;
-    }
 
 }

@@ -37,7 +37,7 @@ public class AppBsetFl2B01ServiceImpl extends BaseServiceImpl<AppBsetFl2B01,Stri
 
 
 
-    public int saveBsetFl2B01FromYw(DataSource dataSource)throws Exception{
+    public int saveFromYw(DataSource dataSource)throws Exception{
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         //处理了多少条
         int order = 0;

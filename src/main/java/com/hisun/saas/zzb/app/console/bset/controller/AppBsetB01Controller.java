@@ -298,26 +298,4 @@ public class AppBsetB01Controller extends BaseController{
         return map;
     }
 
-    @RequestMapping(value="/tranfer/from/yw")
-    public @ResponseBody Map<String,Object> tranferFromYw () throws GenericException{
-        Map<String,Object> map = Maps.newHashMap();
-        try {
-            DataSource dataSource = C3p0Util.getSqlServerDataSource("192.168.0.120",
-                    "1433",
-                    "gcmis","sa","Admin@123");
-            int count =0;
-            //count = this.appBsetFlService.saveBsetFlFromYw(dataSource);
-           // count = this.appBsetB01Service.saveBsetB01FromYw(dataSource);
-            //count = this.appBsetFl2B01Service.saveBsetFl2B01FromYw(dataSource);
-           // count = this.appAsetA01Service.saveAsetA01FromYw(dataSource);
-           // count = this.appAsetA02Service.saveAsetA02FromYw(dataSource);
-            count = this.appAsetA36Service.saveAsetA36FromYw(dataSource);
-            map.put("success", true);
-            map.put("transferCount",count);
-        }catch(Exception e){
-            map.put("success", false);
-            logger.error(e, e);
-        }
-        return map;
-    }
 }
