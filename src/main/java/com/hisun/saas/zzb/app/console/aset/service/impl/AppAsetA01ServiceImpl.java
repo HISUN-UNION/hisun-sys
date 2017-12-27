@@ -149,7 +149,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                         personCode = value.toString();
                     }else if(key.equalsIgnoreCase("A000_A0101")){
                         fields.append(",xm");
-                        values.append(",'"+StringUtils.trim(value.toString())+"'");
+                        values.append(",'"+(value.toString().replace(" ",""))+"'");
                     }else if(key.equalsIgnoreCase("A000_A0104_SHOW")){
                         fields.append(",xb");
                         values.append(",'"+value+"'");
@@ -275,8 +275,8 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                                 byte[] bytes = (byte[])value;
                                 if(bytes.length>0){
                                     try {
-                                        String imageRealPath = photoStoreDir +personCode+".jpg";
-                                        OutputStream fos= new FileOutputStream(imageRealPath);
+                                        File imageFile = new File(photoStoreDir +personCode+".jpg");
+                                        OutputStream fos= new FileOutputStream(imageFile);
                                         fos.write(bytes);
                                         fos.close();
                                         fields.append(",zp_path");
@@ -334,7 +334,9 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                         gbrmspbTemplateDoc.getRange().replace(trimText,"",
                                 new FindReplaceOptions(FindReplaceDirection.FORWARD));
                     }else if(trimText.startsWith(WordUtil.imageSign)){
-                        builder.insertImage(uploadAbsolutePath+appAsetA01.getZpPath(),94,122);
+                        if(StringUtils.isEmpty(appAsetA01.getZpPath())==false) {
+                            builder.insertImage(uploadAbsolutePath + appAsetA01.getZpPath(), 94, 122);
+                        }
                         gbrmspbTemplateDoc.getRange().replace(trimText,"",
                                 new FindReplaceOptions(FindReplaceDirection.FORWARD));
                     }else if (trimText.startsWith(WordUtil.rangeSign)){
@@ -359,11 +361,11 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
             }
             tableIndex++;
         }
-        String saveWordPath = AppAsetA01Service.ATTS_PATH+ UUIDUtil.getUUID()+".docx";
+        String saveWordPath = AppAsetA01Service.GBRMSPB_PATH+ UUIDUtil.getUUID()+".docx";
         gbrmspbTemplateDoc.save(uploadAbsolutePath+saveWordPath);
         appAsetA01.setFilepath(saveWordPath);
 
-        String pdfPath = AppAsetA01Service.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
+        String pdfPath = AppAsetA01Service.GBRMSPB_PATH+UUIDUtil.getUUID()+".pdf";
         String pdfRealPath = uploadAbsolutePath+pdfPath;
         WordConvertUtil.newInstance().convert(uploadAbsolutePath+saveWordPath,pdfRealPath,WordConvertUtil.PDF);
         appAsetA01.setFile2ImgPath(pdfPath);
@@ -376,7 +378,8 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
        this.appAsetA36Dao.deleteBatch(null);
        this.appAsetA02Dao.deleteBatch(null);
        this.appAsetA01Dao.deleteBatch(null);
-       FileUtils.deleteDirectory(new File(uploadAbsolutePath+AppAsetA01Service.ATTS_PATH));
+       FileUtils.deleteDirectory(new File(uploadAbsolutePath+AppAsetA01Service.ZP_PATH));
+       FileUtils.deleteDirectory(new File(uploadAbsolutePath+AppAsetA01Service.GBRMSPB_PATH));
     }
 
 }

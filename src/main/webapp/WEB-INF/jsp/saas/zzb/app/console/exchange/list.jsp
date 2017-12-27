@@ -109,9 +109,9 @@
 			});
 		};
 		var importData = function(id,name){
-			var title = "您确定要导入数据"+name+"吗？";
-			var msg = "请认真审核确认后再进行操作，确认后请在下面填写你要执行数据导入的信息。";
-			var tip = "请输入你要执行导入操作的名称";
+			var title = "您确定要使用["+name+"]数据源导入数据吗？";
+			var msg = "系统将在执行导入数据之前，将自动清除原有数据，此过程可能需要几十分钟。请确认后再进行操作，确认后请在下面填写数据源名称。";
+			var tip = "请输入数据源的名称";
 			myLoading.show();
 			showPrompModal2(title,name,msg,tip,"${path}/zzb/app/console/exchange/ajax/importData?id=" + id,null, function(json){
 
@@ -156,9 +156,9 @@
 			<%--});--%>
 		}
 		var clearData = function(id,name){
-			var title = "您确定要清除"+name+"吗？";
-			var msg = "这个操作不能撤消，这将永久清除导入数据，清除后将不可恢复，请认真审核确认后再进行操作，确认后请在下面填写你要清除的信息。";
-			var tip = "请输入你要清除的名称";
+			var title = "您确定要清除数据源["+name+"]导入的数据吗？";
+			var msg = "这个操作不能撤消，这将永久清除导入数据，清除后将不可恢复，请确认后再进行操作，确认后请在下面填写数据源名称。";
+			var tip = "请输入数据源名称";
 			myLoading.show();
 			showPrompModal2(title,name,msg,tip,"${path}/zzb/app/console/exchange/ajax/clearData?id=" + id,null, function(json){
 

@@ -1,5 +1,6 @@
 package com.hisun.saas.zzb.app.console.exchange.controller;
 
+import com.google.common.collect.Lists;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.dao.util.CommonOrder;
@@ -9,9 +10,11 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA02Service;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA36Service;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFl2B01Service;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
@@ -21,6 +24,7 @@ import com.hisun.saas.zzb.app.console.exchange.vo.ExchangeActuatorVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.C3p0Util;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -243,7 +247,13 @@ public class ExchangeActuatorController extends BaseController {
             ExchangeActuator exchangeActuator = this.exchangeActuatorService.getByPK(id);
             int sourceType = exchangeActuator.getSourceType();
             if (sourceType == ExchangeActuator.source_gwyglxt) {//从公务员管理系统(浙大网新)
-
+                DataSource dataSource = C3p0Util.getMySQLDataSource(exchangeActuator.getIp(),
+                        exchangeActuator.getPort(),
+                        exchangeActuator.getDatabaseName(),
+                        exchangeActuator.getUserName(), exchangeActuator.getPassword());
+                this.appBsetFlService.saveFromZdwx(dataSource);
+                this.appBsetB01Service.saveFromZdwx(dataSource);
+                this.appBsetFl2B01Service.saveFromZdwx(dataSource);
 
             } else if (sourceType == ExchangeActuator.source_zzzhywpt) {//从组织综合业务平台(广州三零)
 
@@ -258,6 +268,20 @@ public class ExchangeActuatorController extends BaseController {
                 this.appAsetA01Service.saveFromYw(dataSource);
                 this.appAsetA02Service.saveFromYw(dataSource);
                 this.appAsetA36Service.saveFromYw(dataSource);
+                //生成干部任免审批表,分批次生成
+                List<Object> paramList = Lists.newArrayList();
+                String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  inner join b01.appBsetFl2B01s fltob01  where 1=1 ";
+                hql = hql + " and a01.tombstone =? order by fltob01.px,b01.px,a02.jtlPx ";
+                paramList.add(0);
+                int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
+                int dealCount = total/200;
+                for(int i=1;i<=dealCount+1;i++) {
+                    List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql, paramList,i,200);
+                    for(AppAsetA01 appAsetA01 : appAsetA01s){
+                        this.appAsetA01Service.saveAsGbrmspb(appAsetA01);
+                    }
+                }
+
             }
             map.put("success", true);
         } catch (Exception e) {

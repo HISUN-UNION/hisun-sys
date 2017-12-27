@@ -324,4 +324,63 @@ public class GbMcA01 extends TenantEntity implements Serializable {
         sb.append(")");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GbMcA01 gbMcA01 = (GbMcA01) o;
+
+        if (px != gbMcA01.px) return false;
+        if (id != null ? !id.equals(gbMcA01.id) : gbMcA01.id != null) return false;
+        if (gbMcB01 != null ? !gbMcB01.equals(gbMcA01.gbMcB01) : gbMcA01.gbMcB01 != null) return false;
+        if (gbMc != null ? !gbMc.equals(gbMcA01.gbMc) : gbMcA01.gbMc != null) return false;
+        if (xm != null ? !xm.equals(gbMcA01.xm) : gbMcA01.xm != null) return false;
+        if (mz != null ? !mz.equals(gbMcA01.mz) : gbMcA01.mz != null) return false;
+        if (zw != null ? !zw.equals(gbMcA01.zw) : gbMcA01.zw != null) return false;
+        if (csd != null ? !csd.equals(gbMcA01.csd) : gbMcA01.csd != null) return false;
+        if (jg != null ? !jg.equals(gbMcA01.jg) : gbMcA01.jg != null) return false;
+        if (csny != null ? !csny.equals(gbMcA01.csny) : gbMcA01.csny != null) return false;
+        if (cjgzsj != null ? !cjgzsj.equals(gbMcA01.cjgzsj) : gbMcA01.cjgzsj != null) return false;
+        if (rdsj != null ? !rdsj.equals(gbMcA01.rdsj) : gbMcA01.rdsj != null) return false;
+        if (qrzxlxwjzy != null ? !qrzxlxwjzy.equals(gbMcA01.qrzxlxwjzy) : gbMcA01.qrzxlxwjzy != null) return false;
+        if (zzxlxwjzy != null ? !zzxlxwjzy.equals(gbMcA01.zzxlxwjzy) : gbMcA01.zzxlxwjzy != null) return false;
+        if (zyjszw != null ? !zyjszw.equals(gbMcA01.zyjszw) : gbMcA01.zyjszw != null) return false;
+        if (xrzwsj != null ? !xrzwsj.equals(gbMcA01.xrzwsj) : gbMcA01.xrzwsj != null) return false;
+        if (xrzjsj != null ? !xrzjsj.equals(gbMcA01.xrzjsj) : gbMcA01.xrzjsj != null) return false;
+        if (zppath != null ? !zppath.equals(gbMcA01.zppath) : gbMcA01.zppath != null) return false;
+        if (gbMca01gzjls != null ? !gbMca01gzjls.equals(gbMcA01.gbMca01gzjls) : gbMcA01.gbMca01gzjls != null)
+            return false;
+        if (gbMca01gbrmspbs != null ? !gbMca01gbrmspbs.equals(gbMcA01.gbMca01gbrmspbs) : gbMcA01.gbMca01gbrmspbs != null)
+            return false;
+        return gbMcA01shgxes != null ? gbMcA01shgxes.equals(gbMcA01.gbMcA01shgxes) : gbMcA01.gbMcA01shgxes == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (gbMcB01 != null ? gbMcB01.hashCode() : 0);
+        result = 31 * result + (gbMc != null ? gbMc.hashCode() : 0);
+        result = 31 * result + (xm != null ? xm.hashCode() : 0);
+        result = 31 * result + (mz != null ? mz.hashCode() : 0);
+        result = 31 * result + (zw != null ? zw.hashCode() : 0);
+        result = 31 * result + (csd != null ? csd.hashCode() : 0);
+        result = 31 * result + (jg != null ? jg.hashCode() : 0);
+        result = 31 * result + (csny != null ? csny.hashCode() : 0);
+        result = 31 * result + (cjgzsj != null ? cjgzsj.hashCode() : 0);
+        result = 31 * result + (rdsj != null ? rdsj.hashCode() : 0);
+        result = 31 * result + (qrzxlxwjzy != null ? qrzxlxwjzy.hashCode() : 0);
+        result = 31 * result + (zzxlxwjzy != null ? zzxlxwjzy.hashCode() : 0);
+        result = 31 * result + (zyjszw != null ? zyjszw.hashCode() : 0);
+        result = 31 * result + (xrzwsj != null ? xrzwsj.hashCode() : 0);
+        result = 31 * result + (xrzjsj != null ? xrzjsj.hashCode() : 0);
+        result = 31 * result + px;
+        result = 31 * result + (zppath != null ? zppath.hashCode() : 0);
+        result = 31 * result + (gbMca01gzjls != null ? gbMca01gzjls.hashCode() : 0);
+        result = 31 * result + (gbMca01gbrmspbs != null ? gbMca01gbrmspbs.hashCode() : 0);
+        result = 31 * result + (gbMcA01shgxes != null ? gbMcA01shgxes.hashCode() : 0);
+        return result;
+    }
 }

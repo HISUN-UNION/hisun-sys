@@ -9,6 +9,7 @@ import com.hisun.saas.zzb.app.console.bset.dao.AppBsetFlDao;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
+import com.hisun.saas.zzb.app.console.util.EntityWrapper;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
@@ -103,6 +104,21 @@ public class AppBsetFlServiceImpl extends BaseServiceImpl<AppBsetFl,String> impl
     public void deleteAllData() throws Exception{
         this.appBsetFl2B01Dao.deleteBatch(null);
         this.appBsetFlDao.deleteBatch(null);
+    }
+
+    public  int saveFromZdwx(DataSource dataSource)throws Exception{
+        //自动生成隐藏分类及关联关系
+        List<AppBsetFl> appBsetFls =  this.appBsetFlDao.find("from AppBsetFl fl where fl.parentFl.id is null",null,null);
+        if(appBsetFls==null || appBsetFls.size()==0) {
+            UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+            AppBsetFl fl = new AppBsetFl();
+            fl.setFl("隐藏分类");
+            fl.setPx(1);
+            fl.setIsHidden(AppBsetFl.HIDDEN);
+            EntityWrapper.wrapperSaveBaseProperties(fl, userLoginDetails);
+            this.appBsetFlDao.save(fl);
+        }
+        return 1;
     }
 
 }

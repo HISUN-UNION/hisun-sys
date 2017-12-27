@@ -1,12 +1,20 @@
 package com.hisun.saas.zzb.app.console.bset.service.impl;
 
 import com.hisun.base.dao.BaseDao;
+import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
+import com.hisun.saas.zzb.app.console.bset.dao.AppBsetB01Dao;
 import com.hisun.saas.zzb.app.console.bset.dao.AppBsetFl2B01Dao;
+import com.hisun.saas.zzb.app.console.bset.dao.AppBsetFlDao;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFl2B01Service;
+import com.hisun.saas.zzb.app.console.util.EntityWrapper;
 import com.hisun.util.UUIDUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -28,6 +36,10 @@ import java.util.Map;
 public class AppBsetFl2B01ServiceImpl extends BaseServiceImpl<AppBsetFl2B01,String> implements AppBsetFl2B01Service {
 
     private AppBsetFl2B01Dao appBsetFl2B01Dao;
+    @Autowired
+    private AppBsetFlDao appBsetFlDao;
+    @Autowired
+    private AppBsetB01Dao appBsetB01Dao;
 
     @Autowired
     public void setBaseDao(BaseDao<AppBsetFl2B01, String> appBsetFl2B01Dao) {
@@ -59,6 +71,8 @@ public class AppBsetFl2B01ServiceImpl extends BaseServiceImpl<AppBsetFl2B01,Stri
                     .append(",'").append(userLoginDetails.getUser().getId()).append("'")
                     .append(",'").append(userLoginDetails.getUsername()).append("'");
 
+            String b01Id="b01Id";
+            String flId="flId";
             for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
                 Map.Entry<String, Object> e = mi.next();
                 String key = e.getKey();
@@ -66,9 +80,11 @@ public class AppBsetFl2B01ServiceImpl extends BaseServiceImpl<AppBsetFl2B01,Stri
                 if(key.equalsIgnoreCase("nodeID")){
                     fields.append(",fl_id");
                     values.append(",'"+value+"'");
+                    flId = value.toString();
                 }else if(key.equalsIgnoreCase("unitCodeNo")){
                     fields.append(",b01_id");
                     values.append(",'"+value+"'");
+                    b01Id = value.toString();
                 }else if(key.equalsIgnoreCase("sortID")){
                     fields.append(",px");
                     values.append(",'"+value+"'");
@@ -77,14 +93,37 @@ public class AppBsetFl2B01ServiceImpl extends BaseServiceImpl<AppBsetFl2B01,Stri
             }
             values.append(")");
 
-            List<Object> paramList = new ArrayList<Object>();
-            this.appBsetFl2B01Dao.executeNativeBulk(fields.append(values).toString(),paramList);
-            order++;
+            CommonConditionQuery query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" id = :b01Id", "b01Id", b01Id));
+            List<AppBsetB01> appBsetB01s = this.appBsetB01Dao.list(query,null);
 
+            CommonConditionQuery flQuery = new CommonConditionQuery();
+            flQuery.add(CommonRestrictions.and(" id = :flId", "flId", flId));
+            List<AppBsetFl> appBsetFls =  this.appBsetFlDao.list(flQuery,null);
+
+            if(appBsetB01s!=null && appBsetB01s.size()>0
+                    && appBsetFls!=null && appBsetFls.size()>0) {
+                List<Object> paramList = new ArrayList<Object>();
+                this.appBsetFl2B01Dao.executeNativeBulk(fields.append(values).toString(), paramList);
+                order++;
+            }
         }
 
         DbUtils.close(conn);
         return order;
+    }
+
+    public  int saveFromZdwx(DataSource dataSource)throws Exception{
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        List<AppBsetB01> appBsetB01s = this.appBsetB01Dao.find("from AppBsetB01 b01 where b01.parentB01.id is null",null,null);
+        List<AppBsetFl> appBsetFls =  this.appBsetFlDao.find("from AppBsetFl fl where fl.parentFl.id is null",null,null);
+        AppBsetFl2B01 appBsetFl2B01 = new AppBsetFl2B01();
+        appBsetFl2B01.setPx(1);
+        appBsetFl2B01.setAppBsetB01(appBsetB01s.get(0));
+        appBsetFl2B01.setAppBsetFl(appBsetFls.get(0));
+        EntityWrapper.wrapperSaveBaseProperties(appBsetFl2B01,userLoginDetails);
+        this.appBsetFl2B01Dao.save(appBsetFl2B01);
+        return 1;
     }
 
 }

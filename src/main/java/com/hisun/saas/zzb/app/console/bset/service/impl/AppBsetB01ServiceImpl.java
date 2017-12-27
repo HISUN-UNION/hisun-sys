@@ -17,6 +17,7 @@ import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.bset.vo.B01TreeVo;
+import com.hisun.saas.zzb.app.console.util.EntityWrapper;
 import com.hisun.util.WebUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -136,6 +137,7 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
                 fields.append(" tombstone,tenant_id,create_user_id,create_user_name ");
                 StringBuffer values = new StringBuffer();
                 values.append(") values (");
+                values.append(" 0 ");
                 values.append(",'").append(userLoginDetails.getTenant().getId()).append("'")
                         .append(",'").append(userLoginDetails.getUser().getId()).append("'")
                         .append(",'").append(userLoginDetails.getUsername()).append("'");
@@ -284,5 +286,79 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
     public void deleteAllData() throws Exception{
         this.appBsetFl2B01Dao.deleteBatch(null);
         this.appBsetB01Dao.deleteBatch(null);
+    }
+
+
+    public int saveFromZdwx(DataSource dataSource)throws Exception{
+
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        //处理了多少条
+        int order = 0;
+        Connection conn = dataSource.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+
+        int count =0;
+        List<Map<String, Object>> countList = queryRunner.query(conn,
+                "select count(*) as count from b01  where b01.status = 1 and b01.b0111 <> '-1' " , new MapListHandler(),(Object[]) null);
+        for (Iterator<Map<String, Object>> li = countList.iterator(); li.hasNext();) {
+            Map<String, Object> m = li.next();
+            for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
+                Map.Entry<String, Object> e = mi.next();
+                Object value = e.getValue();
+                count = ((Long)value).intValue();
+            }
+        }
+        //每次处理400条
+        int dealCount = count/400;
+        for(int i=0;i<=dealCount;i++){
+            int num = i*400;
+            String sql = "select * from b01  where b01.status = 1 and b01.b0111 <> '-1' "
+                    +"order by b01.b0111 limit "+num+",400";
+            List<Map<String, Object>> list = queryRunner.query(conn, sql, new MapListHandler(),(Object[]) null);
+            for (Iterator<Map<String, Object>> li = list.iterator(); li.hasNext();) {
+                Map<String, Object> m = li.next();
+                StringBuffer fields = new StringBuffer();
+                fields.append("insert into app_bset_b01 (");
+                fields.append(" tombstone,tenant_id,create_user_id,create_user_name ");
+                StringBuffer values = new StringBuffer();
+                values.append(") values (");
+                values.append(" 0 ");
+                values.append(",'").append(userLoginDetails.getTenant().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUser().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUsername()).append("'");
+
+                for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
+                    Map.Entry<String, Object> e = mi.next();
+                    String key = e.getKey();
+                    Object value = e.getValue()==null?"":e.getValue();
+                    if(key.equalsIgnoreCase("b0111")){
+                        fields.append(",id");
+                        values.append(",'"+value+"'");
+                        fields.append(",query_code");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("b0101")){
+                        fields.append(",b0101");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("b0121")){
+                        //-1的父机构相当于最顶层
+                        if((value.toString().equals("-1")==false)){
+                            fields.append(",parent_id");
+                            values.append(",'"+value+"'");
+                        }
+                    }else if(key.equalsIgnoreCase("sortid")){
+                        fields.append(",px");
+                        values.append(",'"+value+"'");
+                    }
+                }
+                values.append(")");
+                List<Object> paramList = new ArrayList<Object>();
+                this.appBsetB01Dao.executeNativeBulk(fields.append(values).toString(),paramList);
+                order++;
+
+            }
+        }
+
+        DbUtils.close(conn);
+        return order;
     }
 }

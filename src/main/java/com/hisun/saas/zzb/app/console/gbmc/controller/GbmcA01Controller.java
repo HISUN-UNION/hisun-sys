@@ -248,7 +248,7 @@ public class GbmcA01Controller extends BaseController{
     public HttpEntity<byte[]> getPhoto (@PathVariable("id")String id,
                                         HttpServletRequest request, HttpServletResponse response) throws IOException {
         GbMcA01 gbMcA01 = this.gbMcA01Service.getByPK(id);
-        if(gbMcA01.getZppath()!=null){
+        if(StringUtils.isEmpty(gbMcA01.getZppath())==false){
             File file = new File(uploadAbsolutePath+gbMcA01.getZppath());
             if(file.exists()){
                 FileInputStream fis = new FileInputStream(file);

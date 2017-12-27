@@ -13,8 +13,6 @@ import java.util.List;
  */
 public class AppAsetA01Vo {
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM");
-
     private String id;
     private String xm;
     private String xb;
@@ -377,7 +375,7 @@ public class AppAsetA01Vo {
 
     public String getGbrmspbCsnyAndNl() {
         return DateUtil.covertPatternStringToOtherPatternString(this.csny,
-                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "<br>" + "(" + this.nl + "岁)";
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "\n" + "(" + this.nl + "岁)";
     }
 
     public void setGbrmspbCsnyAndNl(String gbrmspbCsnyAndNl) {

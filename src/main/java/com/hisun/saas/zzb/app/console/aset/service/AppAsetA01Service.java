@@ -14,7 +14,7 @@ public interface AppAsetA01Service extends BaseService<AppAsetA01,String> {
     String ATTS_PATH = File.separator+"aset"+ File.separator+"a01"+File.separator;
     String ZP_PATH = File.separator+"aset"+ File.separator+"a01"+File.separator+"photo"+File.separator;
     String GBRMSPB_PATH = File.separator+"aset"+ File.separator+"a01"+File.separator+"gbrmspb"+File.separator;
-    String GBRMSPB_DOC_TEMPLATE = GBRMSPB_PATH+"gbrmspb.docx";
+    String GBRMSPB_DOC_TEMPLATE = File.separator+"aset"+ File.separator+"a01"+File.separator+"template"+File.separator+"gbrmspb.docx";
 
 
     Integer getMaxPx(String b01Id) ;

@@ -349,7 +349,7 @@ public class AppAsetA01Controller extends BaseController {
     public HttpEntity<byte[]> getPhoto(@PathVariable("id") String id,
                                        HttpServletRequest request, HttpServletResponse response) throws IOException {
         AppAsetA01 appAsetA01 = this.appAsetA01Service.getByPK(id);
-        if (appAsetA01.getZpPath() != null) {
+        if (StringUtils.isEmpty(appAsetA01.getZpPath())==false) {
             String zpRealPath = uploadAbsolutePath + appAsetA01.getZpPath();
             File file = new File(zpRealPath);
             if (file.exists()) {

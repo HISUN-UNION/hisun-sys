@@ -11,5 +11,5 @@ import javax.sql.DataSource;
 public interface AppBsetFl2B01Service extends BaseService<AppBsetFl2B01,String> {
 
      int saveFromYw(DataSource dataSource)throws Exception;
-
+     int saveFromZdwx(DataSource dataSource)throws Exception;
 }
