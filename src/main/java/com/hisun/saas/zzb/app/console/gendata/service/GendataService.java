@@ -13,15 +13,21 @@ public interface GendataService extends BaseService<Gendata,String>{
 
    public static String DATA_PATH = File.separator+"appdata"+File.separator;
    public static String IMG_PATH="img"+File.separator;
+   public static String APP_IMG_PATH="img/";
    public static String ATTS_PATH="atts"+File.separator;
+   public static String APP_ATTS_PATH="atts/";
    public static String DB_PATH="db"+File.separator;
+   public static String APP_DB_PATH="db/";
    public static String SQLITE_DB_NAME="zzb-app.db";
    public static String DATA_PACKET_NAME="zzb-app-android";
 
 
-   String saveAppData(Gendata gendata,Map<String,String> map) throws Exception;
+   String saveAppData(Gendata gendata,Map<String,String> selectedMap) throws Exception;
 
    String saveAppInitData(Gendata gendata) throws Exception;
+
+   String saveAppDataFromAnotherAppData(Gendata newPacket,Map<String,String> selectedMap,
+                                          Gendata oldPacket,Map<String,String> selectedMapFromOldPacket)throws Exception;
 
 
 }

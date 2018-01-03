@@ -3,6 +3,8 @@ package com.hisun.saas.zzb.app.console.gbmc.controller;
 import com.aspose.words.*;
 import com.hisun.base.controller.BaseController;
 import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonOrder;
+import com.hisun.base.dao.util.CommonOrderBy;
 import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
@@ -68,18 +70,16 @@ public class GbmcController extends BaseController{
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             CommonConditionQuery query = new CommonConditionQuery();
-            // query.add(CommonRestrictions.and(" shlx = :shlx", "shlx", Shpc.SHLX_BWH));
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
             if(mcQuery!=null && !mcQuery.equals("")){
                 query.add(CommonRestrictions.and(" mc like:mcQuery", "mcQuery", "%"+ mcQuery+ "%"));
             }
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.asc("px"));
 
-//            CommonOrderBy orderBy = new CommonOrderBy();
-//            orderBy.add(CommonOrder.desc("pcsj"));
 
             Long total = this.gbMcService.count(query);
-            List<GbMc> gbmcs = this.gbMcService.list(query, null, pageNum,
-                    pageSize);
+            List<GbMc> gbmcs = this.gbMcService.list(query, orderBy, pageNum,pageSize);
             List<GbMcVo> gbMcVos = new ArrayList<GbMcVo>();
             if (gbmcs != null) {// entity ==> vo
                 for (GbMc gbMc : gbmcs) {

@@ -94,29 +94,4 @@ public class AppAsetA02 extends TenantEntity implements Serializable {
         this.rzsj = rzsj;
     }
 
-    public String toSqliteInsertSql(){
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" app_aset_a02 ");
-        sb.append("(");
-        sb.append("id");
-        sb.append(",a01_id");
-        sb.append(",b01_id");
-        sb.append(",zwmc");
-        sb.append(",rzsj");
-        sb.append(",px");
-        sb.append(",jtl_px");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(appAsetA01.getId())+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(appBsetB01.getId())+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(zwmc)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(rzsj)+"'");
-        sb.append(","+px);
-        sb.append(","+jtlPx);
-        sb.append(")");
-        return sb.toString();
-    }
 }

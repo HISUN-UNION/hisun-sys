@@ -6,15 +6,16 @@ import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.apiregister.dao.ApiRegisterDao;
 import com.hisun.saas.zzb.app.console.apiregister.entity.ApiRegister;
-import com.hisun.saas.zzb.app.console.aset.dao.AppAsetA01Dao;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA02;
-import com.hisun.saas.zzb.app.console.bset.dao.AppBsetB01Dao;
-import com.hisun.saas.zzb.app.console.bset.dao.AppBsetFl2B01Dao;
-import com.hisun.saas.zzb.app.console.bset.dao.AppBsetFlDao;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA02Service;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetFl2B01Service;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcDao;
 import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbtj.dao.GbtjDao;
@@ -27,7 +28,6 @@ import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.*;
-import com.sun.jersey.core.impl.provider.entity.XMLJAXBElementProvider;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -37,7 +37,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2017/9/16.
@@ -54,11 +57,15 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
     @Resource
     private ApiRegisterDao apiRegisterDao;
     @Resource
-    private AppBsetB01Dao appBsetB01Dao;
+    private AppBsetB01Service appBsetB01Service;
     @Resource
-    private AppBsetFlDao appBsetFlDao;
+    private AppBsetFlService appBsetFlService;
     @Resource
-    private AppAsetA01Dao appAsetA01Dao;
+    private AppBsetFl2B01Service appBsetFl2B01Service;
+    @Resource
+    private AppAsetA01Service appAsetA01Service;
+    @Resource
+    private AppAsetA02Service appAsetA02Service;
 
 
     @Value("${upload.absolute.path}")
@@ -112,7 +119,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
 
 
     @Override
-    public String saveAppData(Gendata gendata, Map<String, String> map) throws Exception {
+    public String saveAppData(Gendata gendata, Map<String, String> selectedMap) throws Exception {
         //初始化数据目录
         String uuid = UUIDUtil.getUUID();
         String dataDir = uploadAbsolutePath + GendataService.DATA_PATH + uuid + File.separator;
@@ -132,10 +139,10 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         //初始化sqlite数据库
         this.initSqlite(sqliteDB);
 
-        if (map != null && map.size() > 0) {
-            for (Iterator<String> it = map.keySet().iterator(); it.hasNext(); ) {
+        if (selectedMap != null && selectedMap.size() > 0) {
+            for (Iterator<String> it = selectedMap.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
-                String value = map.get(key);
+                String value = selectedMap.get(key);
                 String[] ids = value.split(",");
                 if (key.equals(GendataVo.SHPC_DATA)) {
                     for (String id : ids) {
@@ -172,6 +179,14 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
         this.save(gendata);
         return gendata.getId();
+    }
+
+
+    public  String saveAppDataFromAnotherAppData(Gendata newPacket,Map<String,String> selectedMap,
+                                         Gendata oldPacket,Map<String,String> selectedMapFromOldPacket)throws Exception{
+
+
+        return "";
     }
 
 
@@ -338,38 +353,38 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
     }
 
 
-    private void genGbcxData(String sqlite, String imgDir, String attsDir) throws Exception {
-        imgDir +="aset/";
-        attsDir +="aset/";
+    private void genGbcxData(String sqlite,String imgdir,String attsdir) throws Exception {
+        String a01Imgdir = imgdir.substring(0,attsdir.length()-1) + AppAsetA01Service.ZP_PATH;
+        String a01Attsdir = attsdir.substring(0,attsdir.length()-1) + AppAsetA01Service.ATTS_PATH;
         SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
         //分类及机构
-        List<AppBsetFl> appBsetFls = this.appBsetFlDao.list();
+        List<AppBsetFl> appBsetFls = this.appBsetFlService.list();
         for (AppBsetFl appBsetFl : appBsetFls) {
-            sqliteDBUtil.insert(sqlite, appBsetFl.toSqliteInsertSql());
+            sqliteDBUtil.insert(sqlite, this.appBsetFlService.toSqliteInsertSql(appBsetFl));
         }
-        List<AppBsetB01> appBsetB01s = this.appBsetB01Dao.list();
+        List<AppBsetB01> appBsetB01s = this.appBsetB01Service.list();
         for (AppBsetB01 b01 : appBsetB01s) {
-            sqliteDBUtil.insert(sqlite, b01.toSqliteInsertSql());
+            sqliteDBUtil.insert(sqlite,this.appBsetB01Service.toSqliteInsertSql(b01));
             List<AppBsetFl2B01> appBsetFl2B01s = b01.getAppBsetFl2B01s();
             for (AppBsetFl2B01 appBsetFl2B01 : appBsetFl2B01s) {
-                sqliteDBUtil.insert(sqlite, appBsetFl2B01.toSqliteInsertSql());
+                sqliteDBUtil.insert(sqlite, this.appBsetFl2B01Service.toSqliteInsertSql(appBsetFl2B01));
             }
         }
         //干部信息
-        List<AppAsetA01> appAsetA01s = this.appAsetA01Dao.list();
+        List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list();
         for(AppAsetA01 appAsetA01: appAsetA01s){
-            sqliteDBUtil.insert(sqlite, appAsetA01.toSqliteInsertSql());
+            sqliteDBUtil.insert(sqlite, this.appAsetA01Service.toSqliteInsertSql(appAsetA01));
 //            if(appAsetA01.getZpPath()!=null
 //                    && appAsetA01.getZpPath().isEmpty()==false){
 //                this.copyFile(appAsetA01.getZpPath(),imgDir);
 //            }
             if(appAsetA01.getFile2ImgPath()!=null
                     &&appAsetA01.getFile2ImgPath().isEmpty()==false){
-                this.copyFile(appAsetA01.getFile2ImgPath(),attsDir);
+                this.copyFile(appAsetA01.getFile2ImgPath(),a01Attsdir);
             }
             List<AppAsetA02> appAsetA02s = appAsetA01.getAppAsetA02s();
             for(AppAsetA02 appAsetA02 : appAsetA02s){
-                sqliteDBUtil.insert(sqlite, appAsetA02.toSqliteInsertSql());
+                sqliteDBUtil.insert(sqlite, this.appAsetA02Service.toSqliteInsertSql(appAsetA02));
             }
         }
     }

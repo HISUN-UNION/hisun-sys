@@ -283,7 +283,6 @@ public class Sha01 extends TenantEntity implements Serializable {
         this.grzdsxes = grzdsxes;
     }
 
-
     public List<Shtpsj> getShtpsjs() {
         return shtpsjs;
     }

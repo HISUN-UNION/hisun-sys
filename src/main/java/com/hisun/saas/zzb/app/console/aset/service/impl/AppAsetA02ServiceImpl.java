@@ -14,6 +14,7 @@ import com.hisun.saas.zzb.app.console.aset.service.AppAsetA02Service;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
 import com.hisun.util.DateUtil;
+import com.hisun.util.StringUtils;
 import com.hisun.util.UUIDUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -148,5 +149,30 @@ public class AppAsetA02ServiceImpl extends BaseServiceImpl<AppAsetA02,String> im
     }
 
 
+    public String toSqliteInsertSql(AppAsetA02 entity){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" app_aset_a02 ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",a01_id");
+        sb.append(",b01_id");
+        sb.append(",zwmc");
+        sb.append(",rzsj");
+        sb.append(",px");
+        sb.append(",jtl_px");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.trimNull2Empty(entity.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getAppAsetA01().getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getAppBsetB01().getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getZwmc())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getRzsj())+"'");
+        sb.append(","+entity.getPx());
+        sb.append(","+entity.getJtlPx());
+        sb.append(")");
+        return sb.toString();
+    }
 
 }

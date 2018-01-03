@@ -18,6 +18,7 @@ import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.bset.vo.B01TreeVo;
 import com.hisun.saas.zzb.app.console.util.EntityWrapper;
+import com.hisun.util.StringUtils;
 import com.hisun.util.WebUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -360,5 +361,32 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
 
         DbUtils.close(conn);
         return order;
+    }
+
+
+    public String toSqliteInsertSql(AppBsetB01 entity){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" app_bset_b01 ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",b0101");
+        if(entity.getParentB01()!= null) {
+            sb.append(",parent_id");
+        }
+        sb.append(",px");
+        sb.append(",query_code");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.trimNull2Empty(entity.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getB0101())+"'");
+        if(entity.getParentB01()!=null) {
+            sb.append(",'" + StringUtils.trimNull2Empty(entity.getParentB01().getId()) + "'");
+        }
+        sb.append(","+entity.getPx());
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getQueryCode())+"'");
+        sb.append(")");
+        return sb.toString();
     }
 }

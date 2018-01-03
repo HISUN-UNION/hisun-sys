@@ -10,6 +10,7 @@ import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.util.EntityWrapper;
+import com.hisun.util.StringUtils;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
@@ -119,6 +120,32 @@ public class AppBsetFlServiceImpl extends BaseServiceImpl<AppBsetFl,String> impl
             this.appBsetFlDao.save(fl);
         }
         return 1;
+    }
+
+    public String toSqliteInsertSql(AppBsetFl entity){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" app_bset_fl ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",fl");
+        if(entity.getParentFl()!=null) {
+            sb.append(",parent_id");
+        }
+        sb.append(",px");
+        sb.append(",is_hidden");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.trimNull2Empty(entity.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getFl())+"'");
+        if(entity.getParentFl()!=null){
+            sb.append(",'" + StringUtils.trimNull2Empty(entity.getParentFl().getId()) + "'");
+        }
+        sb.append(","+entity.getPx());
+        sb.append(","+entity.getIsHidden());
+        sb.append(")");
+        return sb.toString();
     }
 
 }

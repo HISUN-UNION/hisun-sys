@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Created by zhouying on 2017/9/23.
  */
 @Entity
-@Table(name = "APP_GENDATA")
+@Table(name = "app_data_packet")
 public class Gendata extends TenantEntity implements Serializable {
 
     public static int IS_CURRENT=1;
@@ -22,7 +22,7 @@ public class Gendata extends TenantEntity implements Serializable {
     @Column(name="ID",nullable=false,unique=true,length=32)
     private String id;
 
-    @Column(name = "PATH",length = 255)
+    @Column(name = "path",length = 255)
     private String path;
 
     @Column(name = "is_current_packet")//是否当前数据包 0-不是数据包，1-当前数据包
@@ -33,6 +33,8 @@ public class Gendata extends TenantEntity implements Serializable {
 
     @Column(name = "packet_size",length = 32)
     private String packetSize;
+
+
 
     public String getId() {
         return id;
@@ -73,4 +75,5 @@ public class Gendata extends TenantEntity implements Serializable {
     public void setPacketSize(String packetSize) {
         this.packetSize = packetSize;
     }
+
 }

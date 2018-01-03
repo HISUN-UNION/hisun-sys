@@ -14,6 +14,8 @@ import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01Vo;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA36Vo;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01gbrmspb;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
+import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
+import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.util.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbutils.DbUtils;
@@ -280,7 +282,8 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                                         fos.write(bytes);
                                         fos.close();
                                         fields.append(",zp_path");
-                                        values.append(",'"+AppAsetA01Service.ZP_PATH+personCode+".jpg'");
+                                        String storePath = AppAsetA01Service.ZP_PATH+personCode+".jpg";
+                                        values.append(",'"+storePath.replace("\\", "\\\\")+"'");
                                     } catch (Exception e1) {
                                         //e1.printStackTrace();
                                     }
@@ -296,8 +299,11 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
                 List<Object> paramList = new ArrayList<Object>();
 
                 this.appAsetA01Dao.executeNativeBulk(fields.append(values).toString(),paramList);
+
                 order++;
+
             }
+
         }
 
         DbUtils.close(conn);
@@ -380,6 +386,95 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
        this.appAsetA01Dao.deleteBatch(null);
        FileUtils.deleteDirectory(new File(uploadAbsolutePath+AppAsetA01Service.ZP_PATH));
        FileUtils.deleteDirectory(new File(uploadAbsolutePath+AppAsetA01Service.GBRMSPB_PATH));
+    }
+
+
+
+    public String toSqliteInsertSql(AppAsetA01 entity) {
+        StringBuffer sb = new StringBuffer("");
+        sb.append("insert into ");
+        sb.append("app_aset_a01 ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",xm");
+        sb.append(",xb");
+        sb.append(",mz");
+        sb.append(",zw");
+        sb.append(",csd");
+        sb.append(",jg");
+        sb.append(",csny");
+        sb.append(",cjgzsj");
+        sb.append(",rdsj");
+        sb.append(",qrzxl");
+        sb.append(",zyjszw");
+        sb.append(",xrzwsj");
+        sb.append(",xrzjsj");
+        sb.append(",zp_path");
+        sb.append(",zzxl");
+        sb.append(",qrzxw");
+        sb.append(",zzxw");
+        sb.append(",nl");
+        sb.append(",jkzk");
+        sb.append(",zytc");
+        sb.append(",qrz_byyx");
+        sb.append(",zz_byyx");
+        sb.append(",xrzw");
+        sb.append(",nrzw");
+        sb.append(",nmzw");
+        sb.append(",file2img_path");
+        sb.append(",qrz_zy");
+        sb.append(",zz_zy");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'" + StringUtils.trimNull2Empty(entity.getId()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXm()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXb()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getMz()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZw()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getCsd()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getJg()) + "'");
+        sb.append(",'" + DateUtil.covertPatternStringToOtherPatternString(entity.getCsny(),
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "'");
+        sb.append(",'" + DateUtil.covertPatternStringToOtherPatternString(entity.getCjgzsj(),
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "'");
+        sb.append(",'" + DateUtil.covertPatternStringToOtherPatternString(entity.getRdsj(),
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getQrzxl()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZyjszw()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXrzwsj()) + "'");
+        sb.append(",'" + DateUtil.covertPatternStringToOtherPatternString(entity.getXrzjsj(),
+                DateUtil.yyyyMMdd, DateUtil.yyyydotMM) + "'");
+
+        if (StringUtils.isEmpty(entity.getZpPath())) {
+            sb.append(",''");
+        } else {
+            String attsPath = GendataService.APP_IMG_PATH+AppAsetA01Service.APP_ZP_PATH+ FileUtil.getFileName(entity.getZpPath());
+            sb.append(",'" + attsPath + "'");
+
+        }
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZzxl()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getQrzxw()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZzxw()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getNl()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getJkzk()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZytc()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getQrzByyx()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZzByyx()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXrzwsj()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getNrzw()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getNmzw()) + "'");
+        if (StringUtils.isEmpty(entity.getFile2ImgPath())) {
+            sb.append(",''");
+        } else {
+            String attsPath = GendataService.APP_ATTS_PATH+AppAsetA01Service.APP_ATTS_PATH+ FileUtil.getFileName(entity.getFile2ImgPath());
+            sb.append(",'" + attsPath + "'");
+
+        }
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getQrzZy()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZzZy()) + "'");
+        sb.append(")");
+        return sb.toString();
     }
 
 }

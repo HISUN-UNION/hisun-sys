@@ -98,29 +98,4 @@ public class AppBsetFl extends TenantEntity implements Serializable {
         this.isHidden = isHidden;
     }
 
-    public String toSqliteInsertSql(){
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" app_bset_fl ");
-        sb.append("(");
-        sb.append("id");
-        sb.append(",fl");
-        if(parentFl!=null) {
-            sb.append(",parent_id");
-        }
-        sb.append(",px");
-        sb.append(",is_hidden");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(fl)+"'");
-        if(parentFl!=null){
-            sb.append(",'" + StringUtils.trimNull2Empty(parentFl.getId()) + "'");
-        }
-        sb.append(","+px);
-        sb.append(","+isHidden);
-        sb.append(")");
-        return sb.toString();
-    }
 }

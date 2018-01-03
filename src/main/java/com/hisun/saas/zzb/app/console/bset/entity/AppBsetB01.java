@@ -145,29 +145,4 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
     }
 
 
-    public String toSqliteInsertSql(){
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" app_bset_b01 ");
-        sb.append("(");
-        sb.append("id");
-        sb.append(",b0101");
-        if(parentB01!= null) {
-            sb.append(",parent_id");
-        }
-        sb.append(",px");
-        sb.append(",query_code");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(b0101)+"'");
-        if(parentB01!=null) {
-            sb.append(",'" + StringUtils.trimNull2Empty(parentB01.getId()) + "'");
-        }
-        sb.append(","+px);
-        sb.append(",'"+ StringUtils.trimNull2Empty(queryCode)+"'");
-        sb.append(")");
-        return sb.toString();
-    }
 }
