@@ -63,29 +63,5 @@ public class ShpcAtts  extends TenantEntity implements Serializable {
         this.filepath = filepath;
     }
 
-    public String toSqliteInsertSql(){
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" APP_SH_PC_ATTS ");
-        sb.append("(");
-        sb.append("ID");
-        sb.append(",SH_PC_ID");
-        sb.append(",FILE_NAME");
-        sb.append(",FILE_PATH");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(shpc.getId())+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(filename)+"'");
-        if (StringUtils.isEmpty(filepath)){
-            sb.append(",''");
-        }else{
-            String attsPath ="atts/"+filepath.substring(filepath.lastIndexOf(File.separator)+1);
-            sb.append(",'"+attsPath+"'");
 
-        }
-        sb.append(")");
-        return sb.toString();
-    }
 }

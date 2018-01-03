@@ -10,5 +10,7 @@ import java.io.File;
  */
 public interface Sha01kcclService extends BaseService<Sha01kccl,String> {
 
-    public static String ATTS_PATH = File.separator+"sha01"+File.separator+"kccl"+ File.separator;;
+    String ATTS_PATH = Sha01Service.ATTS_PATH+"kccl"+ File.separator;
+    String APP_ATTS_PATH = Sha01Service.APP_ATTS_PATH+"kccl/";
+    String toSqliteInsertSql(Sha01kccl kccl);
 }

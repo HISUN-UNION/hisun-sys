@@ -15,10 +15,14 @@ import java.util.Map;
  */
 public interface Sha01Service extends BaseService<Sha01,String> {
 
-    public static String ATTS_PATH = File.separator+"sha01"+ File.separator;
+    String ATTS_PATH = ShpcService.ATTS_PATH+"sha01"+ File.separator;
+    String APP_ATTS_PATH = ShpcService.APP_ATTS_PATH+"sha01/";
+    String IMG_PATH=ATTS_PATH+"photo"+File.separator;
+    String APP_IMG_PATH = APP_ATTS_PATH+"photo/";
+    String IMPORT_DOC_TEMPLATE = ATTS_PATH +"sha01.docx";
 
-    public void saveFromWordDataMap(Tenant tenant, Map<String, String> dataMap, String pcId);
 
+    void saveFromWordDataMap(Tenant tenant, Map<String, String> dataMap, String pcId);
     PagerVo<Sha01Vo> getSha01VoS(int pageSize, int pageNum, String shpcId, String xmQuery, String noFileQuert);
-
+    String toSqliteInsertSql(Sha01 sha01);
 }

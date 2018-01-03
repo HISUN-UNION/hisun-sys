@@ -11,6 +11,8 @@ import java.io.File;
  */
 public interface Sha01dascqkService extends BaseService<Sha01dascqk,String> {
 
-    public static String ATTS_PATH = File.separator+"sha01"+File.separator+"dascqk"+ File.separator;;
+    String ATTS_PATH = Sha01Service.ATTS_PATH+"dascqk"+ File.separator;
+    String APP_ATTS_PATH = Sha01Service.APP_ATTS_PATH+"dascqk/";
 
+    String toSqliteInsertSql(Sha01dascqk entity);
 }

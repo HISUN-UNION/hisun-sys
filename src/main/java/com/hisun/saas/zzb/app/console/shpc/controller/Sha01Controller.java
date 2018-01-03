@@ -179,7 +179,7 @@ public class Sha01Controller extends BaseController {
 
                     //处理上传文件
                     //先将word转成Map
-                    String tmplateWordPath = fileDir+File.separator+"sha01.docx";
+                    String tmplateWordPath = uploadAbsolutePath+Sha01Service.IMPORT_DOC_TEMPLATE;
                     WordUtil wordUtil = WordUtil.newInstance();
                     Map<String,String> dataMap = wordUtil.convertMapByTemplate(savePath,tmplateWordPath,"");
                     sha01Service.saveFromWordDataMap(userLoginDetails.getTenant(),dataMap,shpcId);

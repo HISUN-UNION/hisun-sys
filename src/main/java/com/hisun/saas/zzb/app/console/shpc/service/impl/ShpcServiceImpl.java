@@ -9,24 +9,29 @@ import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
+import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
-import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
-import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
-import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
-import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
+import com.hisun.saas.zzb.app.console.shpc.entity.*;
+import com.hisun.saas.zzb.app.console.shpc.service.*;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
 import com.hisun.saas.zzb.app.console.shtp.entity.Shtpsj;
 import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
+import com.hisun.util.FileUtil;
+import com.hisun.util.SqliteDBUtil;
+import com.hisun.util.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,12 +47,31 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
     @Resource
     private Sha01Service sha01Service;
     @Resource
+    private Sha01gbrmspbService sha01gbrmspbService;
+    @Resource
+    private Sha01gzjlService sha01gzjlService;
+    @Resource
+    private Sha01dascqkService sha01dascqkService;
+    @Resource
+    private Sha01dascqktipsService sha01dascqktipsService;
+    @Resource
+    private Sha01kcclService sha01kcclService;
+    @Resource
+    private Sha01grzdsxService sha01grzdsxService;
+    @Resource
+    private ShpcAttsService shpcAttsService;
+    @Resource
     private ShtpsjService shtpsjService;
+
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
+
     @Autowired
     public void setBaseDao(BaseDao<Shpc, String> shpcDao) {
         this.baseDao = shpcDao;
         this.shpcDao = (ShpcDao) shpcDao;
     }
+
     @Override
     public List<Sha01Vo> getShpcById(String shpcId) throws Exception{
         CommonConditionQuery query = new CommonConditionQuery();
@@ -244,4 +268,139 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
         paramMap.put("tenant_id", userLoginDetails.getTenantId());
         this.shpcDao.update(sql, paramMap);
     }
+
+
+    public String toSqliteInsertSql(Shpc entity){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" APP_SH_PC ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append(",PC_MC");
+        sb.append(",SHLX");
+        sb.append(",PC_SJ");
+        sb.append(",SJLX");
+        sb.append(",PATH");
+        sb.append(",PC_PX");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.trimNull2Empty(entity.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getPcmc())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getShlx())+"'");
+        if(entity.getPcsj()!=null){
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            sb.append(",'"+ df.format(entity.getPcsj())+"'");
+        }else{
+            sb.append(",''");
+        }
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getSjlx())+"'");
+        if (StringUtils.isEmpty(entity.getFilePath())){
+            sb.append(",''");
+        }else{
+            String attsPath ="atts/"+ FileUtil.getFileName(entity.getFilePath());
+            sb.append(",'"+attsPath+"'");
+
+        }
+        sb.append(",'"+entity.getPx()+"'");
+        sb.append(")");
+        return sb.toString();
+    }
+
+
+    public void saveAsSqlite(String shpcId,String sqlite) throws Exception{
+        Shpc shpc = this.shpcDao.getPK(shpcId);
+        if (shpc != null) {
+            SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
+            sqliteDBUtil.insert(sqlite, this.toSqliteInsertSql(shpc));
+            if (StringUtils.isEmpty(shpc.getFilePath()) == false) {
+                FileUtil.copyFile(uploadAbsolutePath+shpc.getFilePath(),
+                        GendataService.APP_ATTS_PATH+ShpcService.APP_ATTS_PATH);
+            }
+            //上会批次附件
+            List<ShpcAtts> shpcAttses = shpc.getShpcAttses();
+            if (shpcAttses != null) {
+                for (ShpcAtts shpcAtts : shpcAttses) {
+                    //初始化结构数据
+                    sqliteDBUtil.insert(sqlite,this.shpcAttsService.toSqliteInsertSql(shpcAtts));
+                    if (StringUtils.isEmpty(shpcAtts.getFilepath()) == false) {
+                        FileUtil.copyFile(uploadAbsolutePath+shpcAtts.getFilepath(),
+                                GendataService.APP_ATTS_PATH+ShpcAttsService.APP_ATTS_PATH);
+                    }
+                }
+            }
+            //干部
+            List<Sha01> sha01s = shpc.getSha01s();
+            if (sha01s != null) {
+                for (Sha01 sha01 : sha01s) {
+                    //初始化结构数据
+                    sqliteDBUtil.insert(sqlite, this.sha01Service.toSqliteInsertSql(sha01));
+                    //初始化非机构化数据
+                    if (sha01.getZppath() != null) {
+                        FileUtil.copyFile(uploadAbsolutePath+sha01.getZppath(),
+                                GendataService.APP_IMG_PATH+Sha01Service.APP_IMG_PATH);
+                    }
+                    //工作经历
+                    List<Sha01gzjl> gzjls = sha01.getGzjls();
+                    if (gzjls != null) {
+                        for (Sha01gzjl sha01gzjl : gzjls) {
+                            sqliteDBUtil.insert(sqlite,this.sha01gzjlService.toSqliteInsertSql(sha01gzjl));
+                        }
+                    }
+                    //干部任免审批表
+                    List<Sha01gbrmspb> sha01gbrmspbs = sha01.getGbrmspbs();
+                    if (sha01gbrmspbs != null) {
+                        for (Sha01gbrmspb gbrmspb : sha01gbrmspbs) {
+                            sqliteDBUtil.insert(sqlite, this.sha01gbrmspbService.toSqliteInsertSql(gbrmspb));
+                            if (gbrmspb.getFile2imgPath() != null) {
+                                FileUtil.copyFile(uploadAbsolutePath+gbrmspb.getFile2imgPath(),
+                                        GendataService.APP_ATTS_PATH+Sha01gbrmspbService.APP_ATTS_PATH);
+                            }
+                        }
+                    }
+                    //考察材料
+                    List<Sha01kccl> sha01kccls = sha01.getKccls();
+                    if (sha01kccls != null) {
+                        for (Sha01kccl kccl : sha01kccls) {
+                            sqliteDBUtil.insert(sqlite, this.sha01kcclService.toSqliteInsertSql(kccl));
+                            if (kccl.getFile2imgPath() != null) {
+                                FileUtil.copyFile(uploadAbsolutePath+kccl.getFile2imgPath(),
+                                        GendataService.APP_ATTS_PATH+Sha01kcclService.APP_ATTS_PATH);
+                            }
+                        }
+                    }
+                    //档案任前审核表
+                    List<Sha01dascqk> sha01dascqks = sha01.getDascqks();
+                    if (sha01dascqks != null) {
+                        for (Sha01dascqk sha01dascqk : sha01dascqks) {
+                            sqliteDBUtil.insert(sqlite, this.sha01dascqkService.toSqliteInsertSql(sha01dascqk));
+                            if (sha01dascqk.getFile2imgPath() != null) {
+                                FileUtil.copyFile(uploadAbsolutePath+sha01dascqk.getFile2imgPath(),
+                                        GendataService.APP_ATTS_PATH+Sha01dascqkService.APP_ATTS_PATH);
+                            }
+                            //档案审查表提示表
+                            List<Sha01dascqktips> sha01dascqktipses = sha01dascqk.getSha01dascqktips();
+                            if (sha01dascqktipses != null) {
+                                for (Sha01dascqktips tip : sha01dascqktipses) {
+                                    sqliteDBUtil.insert(sqlite,this.sha01dascqktipsService.toSqliteInsertSql(tip));
+                                }
+                            }
+                        }
+                    }
+                    //个人重大事项
+                    List<Sha01grzdsx> sha01grzdsxes = sha01.getGrzdsxes();
+                    if (sha01grzdsxes != null) {
+                        for (Sha01grzdsx sha01grzdsx : sha01grzdsxes) {
+                            sqliteDBUtil.insert(sqlite, this.sha01grzdsxService.toSqliteInsertSql(sha01grzdsx));
+                            if (sha01grzdsx.getFile2imgPath() != null) {
+                                FileUtil.copyFile(uploadAbsolutePath+sha01grzdsx.getFile2imgPath(),
+                                        GendataService.APP_ATTS_PATH+Sha01grzdsxService.APP_ATTS_PATH);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

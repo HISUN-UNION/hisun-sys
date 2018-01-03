@@ -7,15 +7,18 @@ import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
+import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.shpc.dao.Sha01Dao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
+import com.hisun.util.FileUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -131,5 +134,64 @@ public class Sha01ServiceImpl extends BaseServiceImpl<Sha01,String> implements S
             }
         }
         return page;
+    }
+
+    public String toSqliteInsertSql(Sha01 sha01){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" APP_SH_A01 ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append(",APP_SH_PC_ID");
+        sb.append(",XM");
+        sb.append(",XB");
+        sb.append(",MZ");
+        sb.append(",JG");
+        sb.append(",CSNY");
+        sb.append(",CJGZSJ");
+        sb.append(",RDSJ");
+        sb.append(",WHCD");
+        sb.append(",RXJBSJ");
+        sb.append(",MZTJQK");
+        sb.append(",YWFPJL");
+        sb.append(",XGZDWJZW");
+        sb.append(",NTZPBYJ");
+        sb.append(",SHYJ");
+        sb.append(",ZP_PATH");
+        sb.append(",A01_PX");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getId())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getShpc().getId())+"'");
+        if(sha01.getJsbs()!=null){
+            sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getJsbs()+sha01.getXm())+"'");
+        }else{
+            sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getXm())+"'");
+        }
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getXb())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getMz())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getJg())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getCsny())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getCjgzsj())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getRdsj())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getWhcd())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getRxjbsj())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getMztjqk())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getYwfpjl())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getXgzdwjzw())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getNtzpbyj())+"'");
+        sb.append(",'"+ com.hisun.util.StringUtils.trimNull2Empty(sha01.getShyj())+"'");
+        if (com.hisun.util.StringUtils.isEmpty(sha01.getZppath())){
+            sb.append(",''");
+        }else{
+            String filepath = GendataService.APP_IMG_PATH+Sha01Service.APP_IMG_PATH+ FileUtil.getFileName(sha01.getZppath());
+            sb.append(",'"+filepath+"'");
+
+        }
+        sb.append(","+ sha01.getPx()+"");
+
+        sb.append(")");
+        return sb.toString();
     }
 }

@@ -160,42 +160,4 @@ public class Shpc extends TenantEntity implements Serializable{
         this.mb = mb;
     }
 
-    public String toSqliteInsertSql(){
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" APP_SH_PC ");
-        sb.append("(");
-        sb.append("ID");
-        sb.append(",PC_MC");
-        sb.append(",SHLX");
-        sb.append(",PC_SJ");
-        //sb.append(",sh_zt");
-        sb.append(",SJLX");
-        sb.append(",PATH");
-        sb.append(",PC_PX");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(pcmc)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(shlx)+"'");
-        if(pcsj!=null){
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            sb.append(",'"+ df.format(pcsj)+"'");
-        }else{
-            sb.append(",''");
-        }
-        //sb.append(",'"+ shZt+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(sjlx)+"'");
-        if (StringUtils.isEmpty(filePath)){
-            sb.append(",''");
-        }else{
-            String attsPath ="atts/"+filePath.substring(filePath.lastIndexOf(File.separator)+1);
-            sb.append(",'"+attsPath+"'");
-
-        }
-        sb.append(",'"+ px+"'");
-        sb.append(")");
-        return sb.toString();
-    }
 }

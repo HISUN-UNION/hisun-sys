@@ -6,6 +6,8 @@ import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcA01gzjlDao;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01gzjl;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gzjlService;
+import com.hisun.saas.zzb.app.console.util.GzjlUtil;
+import com.hisun.util.StringUtils;
 import com.hisun.util.WordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +46,7 @@ public class GbMcA01gzjlServiceImpl extends BaseServiceImpl<GbMcA01gzjl,String> 
         //解析gzjlStr
         if(gzjlStr!=null){
             int px =1;
-           List<String> list = matcherGzjl(gzjlStr);
+           List<String> list = GzjlUtil.matchGzjlStr(gzjlStr);
             for(String str : list){
                 gzjl = new GbMcA01gzjl();
                 gzjl.setGbMcA01(gbMcA01);
@@ -58,52 +60,28 @@ public class GbMcA01gzjlServiceImpl extends BaseServiceImpl<GbMcA01gzjl,String> 
 
     }
 
-    private List<String> matcherGzjl(String str){
-        List<String> list = new ArrayList<String>();
-        //工作经历正则
-        String parttern = "([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3}).(?:0?[1-9]|1[0-2])"
-                +"--(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3}).(?:0?[1-9]|1[0-2]))?"
-                +"\\s*\\S\\W*([^\\(\\（]*[\\)\\）])?";
-        Pattern r = Pattern.compile(parttern);
-        Matcher matcher = r.matcher(str);
-        while (matcher.find()){
-            list.add(matcher.group(0));
-        }
-        return list;
-    }
-
-    public static void main (String[] args ){
-        String str ="1984.07-1991.05 浙江省平阳县物价局、县委办公室、县委组织部、党史研究\n" +
-                "                室工作，历任县委办秘书、团支书（其间：1988.09--1990.1\n" +
-                "                2  杭州大学函授部中文系中文专业学习，获文学学士学位）\n" +
-                "1991.05-1995.05 广东省人民检察院政治部科员、科室负责人、副科长、科长\n" +
-                "                （其间：1992.02-1992.05 借调最高人民检察院政治部工作，\n" +
-                "                1992.09-1995.07  广东广播电视大学法律专业学习）\n" +
-                "1995.05-2000.02 广东省委组织部地方干部处主任科员（其间：1996.09-1999\n" +
-                "                .08 中山大学研究生院政治经济学专业学习，获经济学硕士学\n" +
-                "                位；1999.06--2000.01 带队驻韶关市翁源县阳东村抓农村基\n" +
-                "                层组织建设）\n" +
-                "2000.02-2000.03 广东省委组织部地方干部处助理调研员\n" +
-                "2000.03-2003.03 增城市委常委、组织部部长（其间：1999.09-2002.05  暨南\n" +
-                "                大学管理学院企业管理系产业经济学专业学习，获经济学博士\n" +
-                "                学位）\n" +
-                "2003.03-2006.09 增城市委常委、副市长（其间：2004.04--2006.04 南开大学\n" +
-                "                经济学院人口、资源与环境经济学专业博士后）\n" +
-                "2006.09-2011.04 广州市旅游局副局长、党委委员\n" +
-                "2011.04-2011.05 广州市城市管理委员会党委副书记，广州市旅游局副局长、\n" +
-                "                党委委员\n" +
-                "2011.05-2013.01 广州市城市管理委员会党委副书记\n" +
-                "2013.01-        广州市民政局党委书记";
-        String parttern = "([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3}).(?:0?[1-9]|1[0-2])-(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3}).(?:0?[1-9]|1[0-2]))?\\s*\\S\\W*([^\\(\\（]*[\\)\\）])?";
-
-        Pattern r = Pattern.compile(parttern);
-        Matcher matcher = r.matcher(str);
-        int i = 0;
-        while (matcher.find()){
-            System.out.println(matcher.group(0).replaceAll("\\vt",""));
-        }
-
-
+    public String toSqliteInsertSql(GbMcA01gzjl entity){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" APP_MC_A01_GZJL ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append(",APP_MC_A01_ID");
+        sb.append(",C_SJ");
+        sb.append(",Z_SJ");
+        sb.append(",JLSM");
+        sb.append(",GZJL_PX");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.trimNull2Empty(entity.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getGbMcA01().getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getCsj())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getZsj())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getJlsm())+"'");
+        sb.append(","+ entity.getPx()+"");
+        sb.append(")");
+        return sb.toString();
     }
 
 }

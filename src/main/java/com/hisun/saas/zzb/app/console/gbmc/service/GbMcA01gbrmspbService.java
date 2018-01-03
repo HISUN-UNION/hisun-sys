@@ -10,11 +10,11 @@ import java.io.File;
  */
 public interface GbMcA01gbrmspbService extends BaseService<GbMcA01gbrmspb,String> {
 
-    public static String ATTS_PATH = File.separator+"mca01"+File.separator+"gbrmspb"+ File.separator;
-    public static String APP_ATTS_PATH="mca01/gbrmspb/";
-    public static String GBRMSPB_DOC_TEMPLATE = File.separator+"mca01"+File.separator+"gbrmspb"+ File.separator+"gbrmspb.docx";
+    String ATTS_PATH = GbMcA01Service.ATTS_PATH+"gbrmspb"+ File.separator;
+    String APP_ATTS_PATH=GbMcA01Service.APP_ATTS_PATH+"gbrmspb/";
+    String GBRMSPB_DOC_TEMPLATE = ATTS_PATH+"gbrmspb.docx";
 
 
     public String saveFromWord(GbMcA01gbrmspb gbrmspb, String wordsourcePath, String templatePath) throws Exception;
-
+    String toSqliteInsertSql(GbMcA01gbrmspb entity);
 }

@@ -11,8 +11,9 @@ import java.util.Map;
  */
 public interface Sha01gbrmspbService extends BaseService<Sha01gbrmspb,String> {
 
-    public static String ATTS_PATH = File.separator+"sha01"+File.separator+"gbrmspb"+ File.separator;
+    String ATTS_PATH = Sha01Service.ATTS_PATH+"gbrmspb"+ File.separator;
+    String APP_ATTS_PATH= Sha01Service.APP_ATTS_PATH+"gbrmspb/";
 
-    public String saveFromWord(Sha01gbrmspb gbrmspb , String wordsourcePath,String templatePath) throws Exception;
-
+    String saveFromWord(Sha01gbrmspb gbrmspb , String wordsourcePath,String templatePath) throws Exception;
+    String toSqliteInsertSql(Sha01gbrmspb entity);
 }

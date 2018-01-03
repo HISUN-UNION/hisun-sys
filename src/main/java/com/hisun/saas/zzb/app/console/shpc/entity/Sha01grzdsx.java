@@ -60,28 +60,5 @@ public class Sha01grzdsx extends TenantEntity implements Serializable {
         this.file2imgPath = file2imgPath;
     }
 
-    public String toSqliteInsertSql(){
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" APP_SH_A01_GRZDSX ");
-        sb.append("(");
-        sb.append("ID");
-        sb.append(",APP_SH_A01_ID");
-        sb.append(",PATH");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(sha01.getId())+"'");
-        if (StringUtils.isEmpty(file2imgPath)){
-            sb.append(",''");
-        }else{
-            String attsPath ="atts/"+file2imgPath.substring(file2imgPath.lastIndexOf(File.separator)+1);
-            sb.append(",'"+attsPath+"'");
-
-        }
-        sb.append(")");
-        return sb.toString();
-    }
 
 }

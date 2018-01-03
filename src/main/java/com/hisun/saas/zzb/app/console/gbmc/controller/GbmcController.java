@@ -17,14 +17,11 @@ import com.hisun.saas.zzb.app.console.gbmc.service.GbMcB01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
 import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcVo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
-import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.util.CompressUtil;
-import com.hisun.util.JacksonUtil;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -35,9 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.util.*;
 import java.util.List;
 
@@ -187,7 +182,7 @@ public class GbmcController extends BaseController{
                     BeanTrans.setBaseProperties(gbMc, userLoginDetails, "save");
                     String gbmcDir = uploadAbsolutePath + GbMcService.ATTS_PATH;//名册
                     String gbrmspbDir = uploadAbsolutePath + GbMcA01gbrmspbService.ATTS_PATH;//干部任免审批表
-                    String zpDir = uploadAbsolutePath + GbMcA01Service.ATTS_ZP_PATH;//照片
+                    String zpDir = uploadAbsolutePath + GbMcA01Service.IMG_PATH;//照片
                     if (gbmcFile != null && !gbmcFile.isEmpty()) {
                         //处理名册数据
                         String fileName = gbmcFile.getOriginalFilename();

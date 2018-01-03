@@ -11,5 +11,7 @@ import java.io.File;
  */
 public interface GbMcB01Service extends BaseService<GbMcB01,String> {
 
-    public static String ATTS_PATH = File.separator+"mcb01"+ File.separator;
+    String ATTS_PATH =GbMcService.ATTS_PATH+"mcb01"+ File.separator;
+    String APP_ATTS_PATH =GbMcService.APP_ATTS_PATH+"mcb01/";
+    String toSqliteInsertSql(GbMcB01 entity);
 }

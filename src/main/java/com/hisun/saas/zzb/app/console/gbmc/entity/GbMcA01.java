@@ -273,58 +273,6 @@ public class GbMcA01 extends TenantEntity implements Serializable {
         this.gbMcA01shgxes.add(gbMcA01shgx);
     }
 
-    public String toSqliteInsertSql() {
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" insert into ");
-        sb.append(" app_mc_a01 ");
-        sb.append("(");
-        sb.append("id");
-        sb.append(",b01_id");
-        sb.append(",xm");
-        sb.append(",mz");
-        sb.append(",zw");
-        sb.append(",csd");
-        sb.append(",jg");
-        sb.append(",csny");
-        sb.append(",cjgzsj");
-        sb.append(",rdsj");
-        sb.append(",qrzxlxwjzy");
-        sb.append(",zzxlxwjzy");
-        sb.append(",zyjszw");
-        sb.append(",xrzwsj");
-        sb.append(",xrzjsj");
-        sb.append(",zp_path");
-        sb.append(",a01_px");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'" + StringUtils.trimNull2Empty(id) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(gbMcB01.getId()) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(xm) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(mz) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(zw) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(csd) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(jg) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(csny) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(cjgzsj) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(rdsj) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(qrzxlxwjzy) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(zzxlxwjzy) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(zyjszw) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(xrzwsj) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(xrzjsj) + "'");
-        if (StringUtils.isEmpty(zppath)) {
-            sb.append(",''");
-        } else {
-            String filepath = "img/" + zppath.substring(zppath.lastIndexOf(File.separator) + 1);
-            sb.append(",'" + filepath + "'");
-
-        }
-        sb.append("," + px + "");
-        sb.append(")");
-        return sb.toString();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -8,14 +8,15 @@ import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcA01Dao;
 import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcB01Dao;
 import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcDao;
 import com.hisun.saas.zzb.app.console.gbmc.entity.*;
-import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
+import com.hisun.saas.zzb.app.console.gbmc.service.*;
 import com.hisun.saas.zzb.app.console.gbtj.dao.GbtjDao;
 import com.hisun.saas.zzb.app.console.gbtj.entity.Gbtj;
+import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.util.GzjlUtil;
-import com.hisun.util.JacksonUtil;
-import com.hisun.util.UUIDUtil;
+import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,11 +33,22 @@ import java.util.Map;
 public class GbMcServiceImpl extends BaseServiceImpl<GbMc,String> implements GbMcService {
 
     private GbMcDao gbMcDao;
-
     @Resource
     private GbMcB01Dao gbMcB01Dao;
     @Resource
     private GbMcA01Dao gbMcA01Dao;
+
+    @Resource
+    private GbMcB01Service gbMcB01Service;
+    @Resource
+    private GbMcA01Service gbMcA01Service;
+    @Resource
+    private GbMcA01gbrmspbService gbMcA01gbrmspbService;
+    @Resource
+    private GbMcA01gzjlService gbMcA01gzjlService;
+
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
 
     @Autowired
     public void setBaseDao(BaseDao<GbMc, String> gbMcDao) {
@@ -112,6 +124,68 @@ public class GbMcServiceImpl extends BaseServiceImpl<GbMc,String> implements GbM
         return s;
     }
 
+    public String toSqliteInsertSql(GbMc entity){
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" INSERT INTO ");
+        sb.append(" app_mc ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",mc");
+        sb.append(",px");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.trimNull2Empty(entity.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getMc())+"'");
+        sb.append(","+entity.getPx());
+        sb.append(")");
+        return sb.toString();
+    }
+
+
+    public void saveAsSqlite(String mcId, String sqlite) throws Exception {
+        GbMc gbMc = this.getPK(mcId);
+        if (gbMc != null) {
+            SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
+            sqliteDBUtil.insert(sqlite, toSqliteInsertSql(gbMc));
+            //单位目录
+            List<GbMcB01> gbMcB01s = gbMc.getGbMcB01s();
+            if (gbMcB01s != null) {
+                for (GbMcB01 gbMcB01 : gbMcB01s) {
+                    sqliteDBUtil.insert(sqlite, this.gbMcB01Service.toSqliteInsertSql(gbMcB01));
+                    List<GbMcA01> gbMcA01s = gbMcB01.getGbMcA01s();
+                    for (GbMcA01 gbMcA01 : gbMcA01s) {
+                        //初始化结构数据
+                        sqliteDBUtil.insert(sqlite, this.gbMcA01Service.toSqliteInsertSql(gbMcA01));
+                        //初始化非机构化数据
+//                        if (gbMcA01.getZppath() != null) {
+//                            FileUtil.copyFile(uploadAbsolutePath+gbMcA01.getZppath(),
+//                                    GendataService.APP_IMG_PATH+GbMcA01Service.APP_IMG_PATH);
+//                        }
+                        //工作经历
+                        List<GbMcA01gzjl> gbMcA01gzjls = gbMcA01.getGbMca01gzjls();
+                        if (gbMcA01gzjls != null) {
+                            for (GbMcA01gzjl gbMcA01gzjl : gbMcA01gzjls) {
+                                sqliteDBUtil.insert(sqlite, this.gbMcA01gzjlService.toSqliteInsertSql(gbMcA01gzjl));
+                            }
+                        }
+                        //干部任免审批表
+                        List<GbMcA01gbrmspb> gbMcA01gbrmspbs = gbMcA01.getGbMca01gbrmspbs();
+                        if (gbMcA01gbrmspbs != null) {
+                            for (GbMcA01gbrmspb gbrmspb : gbMcA01gbrmspbs) {
+                                sqliteDBUtil.insert(sqlite, this.gbMcA01gbrmspbService.toSqliteInsertSql(gbrmspb));
+                                if (gbrmspb.getFile2imgPath() != null) {
+                                    FileUtil.copyFile(uploadAbsolutePath+gbrmspb.getFile2imgPath(),
+                                            GendataService.APP_ATTS_PATH+GbMcA01gbrmspbService.APP_ATTS_PATH);
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
 
 
 

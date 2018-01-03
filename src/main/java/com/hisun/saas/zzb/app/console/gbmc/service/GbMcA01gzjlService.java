@@ -13,6 +13,6 @@ public interface GbMcA01gzjlService extends BaseService<GbMcA01gzjl,String> {
 
 
     public void saveFromWord(GbMcA01 gbMcA01, Map<String, String> dataMap);
-
+    String toSqliteInsertSql(GbMcA01gzjl entity);
 
 }

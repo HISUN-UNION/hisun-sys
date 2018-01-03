@@ -90,23 +90,6 @@ public class GbMc extends TenantEntity implements Serializable{
         this.gbMcA01s = gbMcA01s;
     }
 
-    public String toSqliteInsertSql(){
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" app_mc ");
-        sb.append("(");
-        sb.append("id");
-        sb.append(",mc");
-        sb.append(",px");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(mc)+"'");
-        sb.append(","+px);
-        sb.append(")");
-        return sb.toString();
-    }
 
     public String getMb() {
         return mb;

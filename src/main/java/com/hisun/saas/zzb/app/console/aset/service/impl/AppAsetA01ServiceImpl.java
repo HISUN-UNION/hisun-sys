@@ -467,7 +467,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
         if (StringUtils.isEmpty(entity.getFile2ImgPath())) {
             sb.append(",''");
         } else {
-            String attsPath = GendataService.APP_ATTS_PATH+AppAsetA01Service.APP_ATTS_PATH+ FileUtil.getFileName(entity.getFile2ImgPath());
+            String attsPath = GendataService.APP_ATTS_PATH+AppAsetA01Service.APP_GBRMSPB_PATH+ FileUtil.getFileName(entity.getFile2ImgPath());
             sb.append(",'" + attsPath + "'");
 
         }

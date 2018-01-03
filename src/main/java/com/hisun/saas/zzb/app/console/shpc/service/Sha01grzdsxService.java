@@ -10,5 +10,8 @@ import java.io.File;
  */
 public interface Sha01grzdsxService extends BaseService<Sha01grzdsx,String> {
 
-    public static String ATTS_PATH = File.separator+"sha01"+File.separator+"grzdsx"+ File.separator;
+    String ATTS_PATH = Sha01Service.ATTS_PATH+"grzdsx"+ File.separator;
+    String APP_ATTS_PATH = Sha01Service.APP_ATTS_PATH + "grzdsx/";
+
+    String toSqliteInsertSql(Sha01grzdsx entity);
 }

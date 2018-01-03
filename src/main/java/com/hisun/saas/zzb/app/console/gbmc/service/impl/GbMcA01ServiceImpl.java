@@ -9,6 +9,7 @@ import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcA01Dao;
 import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
+import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
@@ -200,6 +201,61 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01, String> impleme
             WordConvertUtil.newInstance().convert(uploadAbsolutePath + saveWordPath, pdfRealPath, WordConvertUtil.PDF);
             gbMcA01gbrmspb.setFile2imgPath(pdfPath);
         }
+    }
+
+
+
+    public String toSqliteInsertSql(GbMcA01 entity) {
+        StringBuffer sb = new StringBuffer("");
+        sb.append(" insert into ");
+        sb.append(" app_mc_a01 ");
+        sb.append("(");
+        sb.append("id");
+        sb.append(",b01_id");
+        sb.append(",xm");
+        sb.append(",mz");
+        sb.append(",zw");
+        sb.append(",csd");
+        sb.append(",jg");
+        sb.append(",csny");
+        sb.append(",cjgzsj");
+        sb.append(",rdsj");
+        sb.append(",qrzxlxwjzy");
+        sb.append(",zzxlxwjzy");
+        sb.append(",zyjszw");
+        sb.append(",xrzwsj");
+        sb.append(",xrzjsj");
+        sb.append(",zp_path");
+        sb.append(",a01_px");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'" + StringUtils.trimNull2Empty(entity.getId()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getGbMcB01().getId()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXm()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getMz()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZw()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getCsd()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getJg()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getCsny()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getCjgzsj()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getRdsj()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getQrzxlxwjzy()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZzxlxwjzy()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getZyjszw()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXrzwsj()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXrzjsj()) + "'");
+        if (StringUtils.isEmpty(entity.getZppath())) {
+            sb.append(",''");
+        } else {
+            String filepath = GendataService.APP_IMG_PATH+GbMcA01Service.APP_IMG_PATH
+                    + FileUtil.getFileName(entity.getZppath());
+            sb.append(",'" + filepath + "'");
+
+        }
+        sb.append("," + entity.getPx() + "");
+        sb.append(")");
+        return sb.toString();
     }
 
 }

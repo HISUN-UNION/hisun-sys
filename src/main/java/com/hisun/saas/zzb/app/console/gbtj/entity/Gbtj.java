@@ -73,25 +73,4 @@ public class Gbtj extends TenantEntity implements Serializable{
         this.tblx = tblx;
     }
 
-    public String toSqliteInsertSql(){
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" APP_DWJG_TJ ");
-        sb.append("(");
-        sb.append("ID");
-        sb.append(",TJ_MC");
-        sb.append(",TJ_JSON_DATA");
-        sb.append(",TBLX");
-        sb.append(",TJ_PX");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(tjmc)+"'");
-        sb.append(",'"+tjjsondata+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(tblx)+"'");
-        sb.append(","+ px+"");
-        sb.append(")");
-        return sb.toString();
-    }
 }

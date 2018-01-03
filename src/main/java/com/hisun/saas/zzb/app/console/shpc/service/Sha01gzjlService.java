@@ -13,8 +13,7 @@ public interface Sha01gzjlService extends BaseService<Sha01gzjl,String> {
 
 
      void saveFromWord(Sha01 sha01, Map<String, String> dataMap);
-
      void saveGzjls(Sha01 sha01,String gzjlStr);
-
+     String toSqliteInsertSql(Sha01gzjl entity);
 
 }

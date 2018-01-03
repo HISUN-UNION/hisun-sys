@@ -15,14 +15,14 @@ import java.util.concurrent.ExecutionException;
  */
 public interface GbMcA01Service extends BaseService<GbMcA01,String> {
 
-    String ATTS_PATH = File.separator+"mca01"+ File.separator;
-    String ATTS_ZP_PATH = File.separator+"mca01"+ File.separator+"photo"+File.separator;
-    String APP_ATTS_ZP_PATH="mca01/photo/";
+    String ATTS_PATH = GbMcService.ATTS_PATH+"mca01"+ File.separator;
+    String APP_ATTS_PATH = GbMcService.APP_ATTS_PATH+"mca01/";
+    String IMG_PATH = ATTS_PATH+"photo"+File.separator;
+    String APP_IMG_PATH=APP_ATTS_PATH+"photo/";
     String IMPORT_DOC_TEMPLATE = ATTS_PATH +"gbmca01.docx";
 
 
     void saveFromWordDataMap(Map<String, String> dataMap, GbMcB01 gbMcB01) throws Exception;
-
     void updateA01FromYwJson(String gbmcId,String ywJsonPath,String photoPath) throws Exception;
-
+    String toSqliteInsertSql(GbMcA01 entity);
 }

@@ -16,7 +16,9 @@ import java.util.Map;
 public interface GbMcService extends BaseService<GbMc,String> {
 
     String ATTS_PATH = File.separator+"gbmc"+ File.separator;
-
+    String APP_ATTS_PATH = "gbmc/";
     int getA01Count(String id) throws Exception;
     void saveFromWordDataMap(GbMc gbMc,List<Map<String, String>> dataList);
+    String toSqliteInsertSql(GbMc entity);
+    void saveAsSqlite(String id,String sqlite) throws Exception;
 }

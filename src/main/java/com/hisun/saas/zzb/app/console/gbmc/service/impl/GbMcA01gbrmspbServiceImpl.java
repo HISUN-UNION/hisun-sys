@@ -9,11 +9,9 @@ import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01gzjl;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gzjlService;
+import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
-import com.hisun.util.Pdf2ImgUtil;
-import com.hisun.util.UUIDUtil;
-import com.hisun.util.WordConvertUtil;
-import com.hisun.util.WordUtil;
+import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -106,6 +104,81 @@ public class GbMcA01gbrmspbServiceImpl extends BaseServiceImpl<GbMcA01gbrmspb, S
         String pdfRealPath = uploadAbsolutePath+pdfPath;
         WordConvertUtil.newInstance().convert(wordsourcePath,pdfRealPath,WordConvertUtil.PDF);
         gbrmspb.setFile2imgPath(pdfPath);
+    }
+
+    public String toSqliteInsertSql(GbMcA01gbrmspb entity){
+        StringBuffer sb = new StringBuffer("");
+        sb.append("INSERT INTO ");
+        sb.append("APP_MC_A01_GBRMSPB ");
+        sb.append("(");
+        sb.append("ID");
+        sb.append(",APP_MC_A01_ID");
+        sb.append(",XM");
+        sb.append(",XB");
+        sb.append(",CSNY");
+        sb.append(",NL");
+        sb.append(",MZ");
+        sb.append(",JG");
+        sb.append(",CSD");
+        sb.append(",RDSJ");
+        sb.append(",CJGZSJ");
+        sb.append(",JKZK");
+        sb.append(",ZYJSZW");
+        sb.append(",ZYTC");
+        sb.append(",XL_QRZ");
+        sb.append(",XW_QRZ");
+        sb.append(",XL_ZZ");
+        sb.append(",XW_ZZ");
+        sb.append(",QRZ_BYYX");
+        sb.append(",ZZ_BYYX");
+        sb.append(",XRZW");
+        sb.append(",NRZW");
+        sb.append(",NMZW");
+        sb.append(",RMLY");
+        sb.append(",CBDWYJ");
+        sb.append(",SPJGYJ");
+        sb.append(",XZJGRMYJ");
+        sb.append(",PATH");
+        sb.append(")");
+        sb.append(" VALUES");
+        sb.append("(");
+        sb.append("'"+ StringUtils.trimNull2Empty(entity.getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getGbMcA01().getId())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getXm())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getXb())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getCsny())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getNl())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getMz())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getJg())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getCsd())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getRdsj())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getCjgzsj())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getJkzk())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getZyjszw())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getZytc())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getXlqrz())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getXwqrz())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getXlzz())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getXwzz())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getQrz_byyx())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getZz_byyx())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getXrzw())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getNrzw())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getNmzw())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getRmly())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getCbdwyj())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getSpjgyj())+"'");
+        sb.append(",'"+ StringUtils.trimNull2Empty(entity.getXzjgrmyj())+"'");
+        if (StringUtils.isEmpty(entity.getFile2imgPath())){
+            sb.append(",''");
+        }else{
+            String attsPath = GendataService.APP_ATTS_PATH+GbMcA01gbrmspbService.APP_ATTS_PATH
+                    +FileUtil.getFileName(entity.getFile2imgPath());
+            sb.append(",'"+attsPath+"'");
+
+        }
+        sb.append(")");
+        return sb.toString();
     }
 
 }

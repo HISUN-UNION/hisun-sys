@@ -49,22 +49,5 @@ public class Sha01dascqktips extends TenantEntity implements Serializable {
         this.tip = tip;
     }
 
-    public String toSqliteInsertSql(){
-        StringBuffer sb = new StringBuffer("");
-        sb.append(" INSERT INTO ");
-        sb.append(" APP_SH_A01_DASCQK_TIPS ");
-        sb.append("(");
-        sb.append("ID");
-        sb.append(",APP_SH_A01_DASCQK_ID");
-        sb.append(",TIP");
-        sb.append(")");
-        sb.append(" VALUES");
-        sb.append("(");
-        sb.append("'"+ StringUtils.trimNull2Empty(id)+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(sha01dascqk.getId())+"'");
-        sb.append(",'"+ StringUtils.trimNull2Empty(tip)+"'");
-        sb.append(")");
-        return sb.toString();
-    }
 
 }
