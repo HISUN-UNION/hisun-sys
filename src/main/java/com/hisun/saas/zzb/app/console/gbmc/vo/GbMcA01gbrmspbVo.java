@@ -1,7 +1,5 @@
 package com.hisun.saas.zzb.app.console.gbmc.vo;
 
-import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
-
 /**
  * Created by zhouying on 2017/9/8.
  */
@@ -30,7 +28,7 @@ public class GbMcA01gbrmspbVo {
 
 
     private String xwzz;
-    private String  qrz_byyx;
+    private String qrz_byyx;
     private String zz_byyx;
     private String xrzw;
     private String nrzw;
@@ -38,6 +36,13 @@ public class GbMcA01gbrmspbVo {
     private String cbdwyj;
     private String spjgyj;
     private String xzjgrmyj;
+
+    private String filepath;
+    private String file2imgPath;
+
+    private String gzjlStr;
+    private String jcqkStr;
+    private String khjgStr;
 
 
     public String getId() {
@@ -254,5 +259,45 @@ public class GbMcA01gbrmspbVo {
 
     public void setXzjgrmyj(String xzjgrmyj) {
         this.xzjgrmyj = xzjgrmyj;
+    }
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+    public String getFile2imgPath() {
+        return file2imgPath;
+    }
+
+    public void setFile2imgPath(String file2imgPath) {
+        this.file2imgPath = file2imgPath;
+    }
+
+    public String getGzjlStr() {
+        return gzjlStr;
+    }
+
+    public void setGzjlStr(String gzjlStr) {
+        this.gzjlStr = gzjlStr;
+    }
+
+    public String getJcqkStr() {
+        return jcqkStr;
+    }
+
+    public void setJcqkStr(String jcqkStr) {
+        this.jcqkStr = jcqkStr;
+    }
+
+    public String getKhjgStr() {
+        return khjgStr;
+    }
+
+    public void setKhjgStr(String khjgStr) {
+        this.khjgStr = khjgStr;
     }
 }

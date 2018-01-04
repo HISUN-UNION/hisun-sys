@@ -446,12 +446,4 @@ public class GbMcA01gbrmspb extends TenantEntity implements Serializable{
         return fieldMap;
     }
 
-    public static void main(String[] args)throws Exception{
-        GbMcA01gbrmspb vo = new GbMcA01gbrmspb();
-        vo.setXm("zhou");
-        Map<String,Object> map = ReflectionVoUtil.map(vo);
-        System.out.println(map);
-        GbMcA01gbrmspb newVo = (GbMcA01gbrmspb)ReflectionVoUtil.vo(GbMcA01gbrmspb.class,map);
-        System.out.println(newVo);
-    }
 }

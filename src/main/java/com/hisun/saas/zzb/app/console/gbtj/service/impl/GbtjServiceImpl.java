@@ -49,7 +49,7 @@ public class GbtjServiceImpl extends BaseServiceImpl<Gbtj,String> implements Gbt
     }
 
 
-    public void saveAsSqlite(String gbtjId, String sqlite) throws ClassNotFoundException,SQLException{
+    public void saveAsSqlite(String gbtjId, String sqlite,String imgdir,String attsdir) throws ClassNotFoundException,SQLException{
         SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
         Gbtj gbtj = this.getByPK(gbtjId);
         sqliteDBUtil.insert(sqlite, this.toSqliteInsertSql(gbtj));

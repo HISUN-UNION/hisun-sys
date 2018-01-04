@@ -34,6 +34,7 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     private String mz;
     @Column(name = "zw")
     private String zw;
+
     @Column(name = "csd")
     private String csd;
     @Column(name = "jg")

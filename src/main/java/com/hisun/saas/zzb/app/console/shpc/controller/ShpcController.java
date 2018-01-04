@@ -230,7 +230,7 @@ public class ShpcController extends BaseController {
                                 _fileDir.mkdirs();
                             }
                             //附件存储路径
-                            String savePath = fileDir + UUIDUtil.getUUID() + "_" + fileName;
+                            String savePath = fileDir + UUIDUtil.getUUID() +"."+ FileUtil.getExtend(fileName);
                             try {
                                 FileOutputStream fos = new FileOutputStream(new File(savePath));
                                 fos.write(clFile.getBytes());
@@ -266,7 +266,7 @@ public class ShpcController extends BaseController {
                 }
 
                 if (clFile != null && !clFile.isEmpty()) {
-                    if (shpcVo.getSjlx().equals(Shpc.SJLX_GB)) {//材料文件上传
+                    if (shpcVo.getSjlx().equals(Shpc.SJLX_GB)) {
                         String fileName = clFile.getOriginalFilename();
                         if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ) {
                             String fileDir = uploadAbsolutePath + Sha01Service.ATTS_PATH;
@@ -274,7 +274,7 @@ public class ShpcController extends BaseController {
                             if (_fileDir.exists() == false) {
                                 _fileDir.mkdirs();
                             }
-                            String savePath = fileDir + UUIDUtil.getUUID() + "_" + fileName;
+                            String savePath = fileDir + UUIDUtil.getUUID() +"."+ FileUtil.getExtend(fileName);;
 
                             try {
                                 FileOutputStream fos = new FileOutputStream(new File(savePath));
@@ -284,11 +284,11 @@ public class ShpcController extends BaseController {
 
                                 //处理上传文件
                                 //先将word转成Map
-                                String tmplateWordPath = fileDir + File.separator + "sha01.docx";
+                                String tmplateWordPath = uploadAbsolutePath+Sha01Service.IMPORT_DOC_TEMPLATE;
                                 WordUtil wordUtil = WordUtil.newInstance();
                                 Map<String, String> dataMap = wordUtil.convertMapByTemplate(savePath, tmplateWordPath, "");
                                 sha01Service.saveFromWordDataMap(userLoginDetails.getTenant(), dataMap, shpcId);
-
+                                FileUtils.deleteQuietly(new File(savePath));
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 throw new GenericException(e);

@@ -143,7 +143,7 @@ public class GbMcServiceImpl extends BaseServiceImpl<GbMc,String> implements GbM
     }
 
 
-    public void saveAsSqlite(String mcId, String sqlite) throws Exception {
+    public void saveAsSqlite(String mcId, String sqlite,String imgdir,String attsdir) throws Exception {
         GbMc gbMc = this.getPK(mcId);
         if (gbMc != null) {
             SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
@@ -176,7 +176,7 @@ public class GbMcServiceImpl extends BaseServiceImpl<GbMc,String> implements GbM
                                 sqliteDBUtil.insert(sqlite, this.gbMcA01gbrmspbService.toSqliteInsertSql(gbrmspb));
                                 if (gbrmspb.getFile2imgPath() != null) {
                                     FileUtil.copyFile(uploadAbsolutePath+gbrmspb.getFile2imgPath(),
-                                            GendataService.APP_ATTS_PATH+GbMcA01gbrmspbService.APP_ATTS_PATH);
+                                            attsdir+GbMcA01gbrmspbService.ATTS_PATH);
                                 }
                             }
                         }

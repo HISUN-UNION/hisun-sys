@@ -11,5 +11,5 @@ import java.sql.SQLException;
 public interface GbtjService extends BaseService<Gbtj,String> {
 
     String toSqliteInsertSql(Gbtj gbtj);
-    void saveAsSqlite(String gbtjId, String sqlite)throws ClassNotFoundException,SQLException;
+    void saveAsSqlite(String gbtjId, String sqlite,String imgdir,String attsdir)throws ClassNotFoundException,SQLException;
 }

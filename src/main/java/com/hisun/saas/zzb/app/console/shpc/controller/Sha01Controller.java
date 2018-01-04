@@ -15,9 +15,11 @@ import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
 import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
+import com.hisun.util.FileUtil;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,13 +165,14 @@ public class Sha01Controller extends BaseController {
 
         try{
             String fileName = file.getOriginalFilename();
-            if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
+            if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC")
+                    ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
                 String fileDir = uploadAbsolutePath +Sha01Service.ATTS_PATH;
                 File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
-                String savePath = fileDir + UUIDUtil.getUUID()+"_"+fileName;
+                String savePath = fileDir + UUIDUtil.getUUID()+"."+ FileUtil.getExtend(fileName);
 
                 try {
                     FileOutputStream fos = new FileOutputStream(new File(savePath));
@@ -183,13 +186,7 @@ public class Sha01Controller extends BaseController {
                     WordUtil wordUtil = WordUtil.newInstance();
                     Map<String,String> dataMap = wordUtil.convertMapByTemplate(savePath,tmplateWordPath,"");
                     sha01Service.saveFromWordDataMap(userLoginDetails.getTenant(),dataMap,shpcId);
-
-//                    Shpc shpc = this.shpcService.getByPK(shpcId);
-//                    if (shpc != null) {
-//                        shpc.setFilePath(savePath);
-//                        BeanTrans.setBaseProperties(shpc, userLoginDetails, "update");
-//                        this.shpcService.update(shpc);
-//                    }
+                    FileUtils.deleteQuietly(new File(savePath));
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);

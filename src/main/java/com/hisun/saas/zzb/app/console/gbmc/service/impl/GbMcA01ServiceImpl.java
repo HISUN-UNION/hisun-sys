@@ -9,9 +9,11 @@ import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcA01Dao;
 import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01Service;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
+import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01gbrmspbVo;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.util.*;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +63,7 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01, String> impleme
                 List<Map<String, String>> gbrmsbpDataList = util.fromJson(json, List.class);
                 for (Map<String, String> dataMap : gbrmsbpDataList) {
                     String xm = com.hisun.util.StringUtils.trimBlankCharacter2Empty(dataMap.get("name"));
-                    if (xm != null) {
+                    if (StringUtils.isEmpty(xm)==false) {
                         //在A01表中找到对应的记录
                         CommonConditionQuery query = new CommonConditionQuery();
                         query.add(CommonRestrictions.and(" xm like :xmQuery", "xmQuery", "%" + xm + "%"));
@@ -78,7 +80,7 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01, String> impleme
                                     //处理照片
                                     String photoFileName = dataMap.get("photos");
                                     if (photoFileName != null && StringUtils.isEmpty(photoFileName) == false) {
-                                        String photoStorePath = GbMcA01Service.ATTS_PATH + UUIDUtil.getUUID() + ".jpg";
+                                        String photoStorePath = GbMcA01Service.IMG_PATH + UUIDUtil.getUUID() + ".jpg";
                                         String photoRealStorePath = uploadAbsolutePath + photoStorePath;
                                         if (photos != null) {
                                             for (File photo : photos.listFiles()) {
@@ -141,9 +143,10 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01, String> impleme
             Document gbrmspbTemplateDoc = wordUtil.read(uploadAbsolutePath + GbMcA01gbrmspbService.GBRMSPB_DOC_TEMPLATE);
             DocumentBuilder builder = new DocumentBuilder(gbrmspbTemplateDoc);
             GbMcA01gbrmspb gbMcA01gbrmspb = gbMcA01.getGbMca01gbrmspbs().get(0);
-            Map<String, String> gbrmspbFieldMap = gbMcA01gbrmspb.toFieldMap();
-            // Map<String,Object> stringObjectMapnew = ReflectionVoUtil.map(gbMcA01gbrmspb);
-            // System.out.println(stringObjectMapnew);
+            GbMcA01gbrmspbVo gbMcA01gbrmspbVo = new GbMcA01gbrmspbVo();
+            BeanUtils.copyProperties(gbMcA01gbrmspbVo,gbMcA01gbrmspb);
+            Map<String,Object> gbrmspbFieldMap = ReflectionVoUtil.map(gbMcA01gbrmspbVo);
+
             NodeCollection tables = gbrmspbTemplateDoc.getChildNodes(NodeType.TABLE, true);
             int tableIndex = 0;
             for (Iterator<Table> iterator = tables.iterator(); iterator.hasNext(); ) {
@@ -159,8 +162,8 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01, String> impleme
                         String trimText = wordUtil.trim(cell.getText());
                         builder.moveToCell(tableIndex, rowIndex, colIndex, 0);
                         if (trimText.startsWith(WordUtil.dataPrefix)) {
-                            String field = wordUtil.getSqlField(trimText).toLowerCase();
-                            String value = gbrmspbFieldMap.get(field);
+                            String field = wordUtil.getSqlField(trimText);
+                            String value = gbrmspbFieldMap.get(field)==null?"":gbrmspbFieldMap.get(field).toString();
                             builder.write(value);
                             gbrmspbTemplateDoc.getRange().replace(trimText, "",
                                     new FindReplaceOptions(FindReplaceDirection.FORWARD));
@@ -172,14 +175,14 @@ public class GbMcA01ServiceImpl extends BaseServiceImpl<GbMcA01, String> impleme
                                     new FindReplaceOptions(FindReplaceDirection.FORWARD));
                         } else if (trimText.startsWith(WordUtil.rangeSign)) {
                             if (gbMcA01.getGbMcA01shgxes() != null && gbMcA01.getGbMcA01shgxes().size() > 0) {
-                                String field = wordUtil.getSqlField(trimText).toLowerCase();
+                                String field = wordUtil.getSqlField(trimText);
                                 for (int i = 0; i < gbMcA01.getGbMcA01shgxes().size(); i++) {
                                     if (i > 9) {
                                         break;
                                     }//最多取10条数据
                                     builder.moveToCell(tableIndex, rowIndex + i, colIndex, 0);
-                                    Map<String, String> shgxFieldMap = gbMcA01.getGbMcA01shgxes().get(i).toSqlFieldMap();
-                                    String value = shgxFieldMap.get(field);
+                                    Map<String, Object> shgxFieldMap = ReflectionVoUtil.map(gbMcA01.getGbMcA01shgxes().get(i));
+                                    String value = shgxFieldMap.get(field)==null?"":shgxFieldMap.get(field).toString();
                                     builder.write(value);
                                 }
                             }

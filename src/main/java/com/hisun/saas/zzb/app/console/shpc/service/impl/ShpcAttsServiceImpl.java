@@ -2,9 +2,11 @@ package com.hisun.saas.zzb.app.console.shpc.service.impl;
 
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
+import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.shpc.dao.ShpcAttsDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.ShpcAtts;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcAttsService;
+import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.util.FileUtil;
 import com.hisun.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,8 @@ public class ShpcAttsServiceImpl extends BaseServiceImpl<ShpcAtts,String> implem
         if (StringUtils.isEmpty(entity.getFilepath())){
             sb.append(",''");
         }else{
-            String attsPath ="atts/"+ FileUtil.getFileName(entity.getFilepath());
+            String attsPath = GendataService.APP_ATTS_PATH+ ShpcAttsService.APP_ATTS_PATH
+                    + FileUtil.getFileName(entity.getFilepath());
             sb.append(",'"+attsPath+"'");
 
         }

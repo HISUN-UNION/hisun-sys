@@ -20,5 +20,5 @@ public interface GbMcService extends BaseService<GbMc,String> {
     int getA01Count(String id) throws Exception;
     void saveFromWordDataMap(GbMc gbMc,List<Map<String, String>> dataList);
     String toSqliteInsertSql(GbMc entity);
-    void saveAsSqlite(String id,String sqlite) throws Exception;
+    void saveAsSqlite(String id,String sqlite,String imgdir,String attsdir) throws Exception;
 }

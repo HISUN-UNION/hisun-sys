@@ -461,7 +461,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getZytc()) + "'");
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getQrzByyx()) + "'");
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getZzByyx()) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXrzwsj()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXrzw()) + "'");
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getNrzw()) + "'");
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getNmzw()) + "'");
         if (StringUtils.isEmpty(entity.getFile2ImgPath())) {

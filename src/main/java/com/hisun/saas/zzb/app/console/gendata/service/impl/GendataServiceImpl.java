@@ -144,19 +144,19 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
                 String[] ids = value.split(",");
                 if (key.equals(GendataVo.SHPC_DATA)) {
                     for (String id : ids) {
-                        this.shpcService.saveAsSqlite(id,sqliteDB);
+                        this.shpcService.saveAsSqlite(id,sqliteDB,imgdir,attsdir);
                     }
                 } else if (key.equals(GendataVo.GBTJ_DATA)) {
                     for (String id : ids) {
-                        this.gbtjService.saveAsSqlite(id, sqliteDB);
+                        this.gbtjService.saveAsSqlite(id, sqliteDB,imgdir,attsdir);
                     }
                 } else if (key.equals(GendataVo.GBMC_DATA)) {
                     for (String id : ids) {
-                        this.gbMcService.saveAsSqlite(id,sqliteDB);
+                        this.gbMcService.saveAsSqlite(id,sqliteDB,imgdir,attsdir);
                     }
                 }else if (key.equals(GendataVo.GBCX_DATA)) {
                     //生成干部查询数据包
-                    this.gbcxService.saveAsSqlite(sqliteDB);
+                    this.gbcxService.saveAsSqlite(sqliteDB,imgdir,attsdir);
                 }
 
             }

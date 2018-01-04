@@ -1,5 +1,6 @@
 package com.hisun.saas.zzb.app.console.gbcx.service.impl;
 
+import com.google.common.collect.Lists;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA02;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
@@ -41,7 +42,7 @@ public class GbcxServiceImpl implements GbcxService {
     @Resource
     private AppAsetA02Service appAsetA02Service;
 
-    public void saveAsSqlite(String sqlite) throws Exception {
+    public void saveAsSqlite(String sqlite,String imgdir,String attsdir) throws Exception {
         SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
         //分类及机构
         List<AppBsetFl> appBsetFls = this.appBsetFlService.list();
@@ -57,22 +58,32 @@ public class GbcxServiceImpl implements GbcxService {
             }
         }
         //干部信息
-        List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list();
-        for(AppAsetA01 appAsetA01: appAsetA01s){
-            sqliteDBUtil.insert(sqlite, this.appAsetA01Service.toSqliteInsertSql(appAsetA01));
+        List<Object> paramList = Lists.newArrayList();
+        String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  inner join b01.appBsetFl2B01s fltob01  where a01.tombstone =?";
+        String orderBy ="  order by fltob01.px,b01.px,a02.jtlPx ";
+        paramList.add(0);
+        int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
+        int dealCount = total/200;
+        for(int i=1;i<=dealCount+1;i++) {
+            List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql+orderBy, paramList,i,200);
+            for(AppAsetA01 appAsetA01: appAsetA01s){
+                sqliteDBUtil.insert(sqlite, this.appAsetA01Service.toSqliteInsertSql(appAsetA01));
 //            if(appAsetA01.getZpPath()!=null
 //                    && appAsetA01.getZpPath().isEmpty()==false){
 //                this.copyFile(appAsetA01.getZpPath(),imgDir);
 //            }
-            if(appAsetA01.getFile2ImgPath()!=null
-                    &&appAsetA01.getFile2ImgPath().isEmpty()==false){
-               FileUtil.copyFile(uploadAbsolutePath+appAsetA01.getFile2ImgPath(),
-                       GendataService.APP_ATTS_PATH+AppAsetA01Service.APP_ATTS_PATH);
-            }
-            List<AppAsetA02> appAsetA02s = appAsetA01.getAppAsetA02s();
-            for(AppAsetA02 appAsetA02 : appAsetA02s){
-                sqliteDBUtil.insert(sqlite, this.appAsetA02Service.toSqliteInsertSql(appAsetA02));
+                if(appAsetA01.getFile2ImgPath()!=null
+                        &&appAsetA01.getFile2ImgPath().isEmpty()==false){
+                    FileUtil.copyFile(uploadAbsolutePath+appAsetA01.getFile2ImgPath(),
+                            attsdir+AppAsetA01Service.GBRMSPB_PATH);
+                }
+                List<AppAsetA02> appAsetA02s = appAsetA01.getAppAsetA02s();
+                for(AppAsetA02 appAsetA02 : appAsetA02s){
+                    sqliteDBUtil.insert(sqlite, this.appAsetA02Service.toSqliteInsertSql(appAsetA02));
+                }
             }
         }
+
+
     }
 }

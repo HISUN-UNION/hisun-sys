@@ -298,7 +298,8 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
         if (StringUtils.isEmpty(entity.getFilePath())){
             sb.append(",''");
         }else{
-            String attsPath ="atts/"+ FileUtil.getFileName(entity.getFilePath());
+            String attsPath =GendataService.APP_ATTS_PATH+ShpcService.APP_ATTS_PATH
+                    +FileUtil.getFileName(entity.getFilePath());
             sb.append(",'"+attsPath+"'");
 
         }
@@ -308,14 +309,14 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
     }
 
 
-    public void saveAsSqlite(String shpcId,String sqlite) throws Exception{
+    public void saveAsSqlite(String shpcId,String sqlite,String imgdir,String attsdir) throws Exception{
         Shpc shpc = this.shpcDao.getPK(shpcId);
         if (shpc != null) {
             SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
             sqliteDBUtil.insert(sqlite, this.toSqliteInsertSql(shpc));
             if (StringUtils.isEmpty(shpc.getFilePath()) == false) {
                 FileUtil.copyFile(uploadAbsolutePath+shpc.getFilePath(),
-                        GendataService.APP_ATTS_PATH+ShpcService.APP_ATTS_PATH);
+                        attsdir+ShpcService.ATTS_PATH);
             }
             //上会批次附件
             List<ShpcAtts> shpcAttses = shpc.getShpcAttses();
@@ -325,7 +326,7 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
                     sqliteDBUtil.insert(sqlite,this.shpcAttsService.toSqliteInsertSql(shpcAtts));
                     if (StringUtils.isEmpty(shpcAtts.getFilepath()) == false) {
                         FileUtil.copyFile(uploadAbsolutePath+shpcAtts.getFilepath(),
-                                GendataService.APP_ATTS_PATH+ShpcAttsService.APP_ATTS_PATH);
+                                attsdir+ShpcAttsService.ATTS_PATH);
                     }
                 }
             }
@@ -338,7 +339,7 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
                     //初始化非机构化数据
                     if (sha01.getZppath() != null) {
                         FileUtil.copyFile(uploadAbsolutePath+sha01.getZppath(),
-                                GendataService.APP_IMG_PATH+Sha01Service.APP_IMG_PATH);
+                                imgdir+Sha01Service.IMG_PATH);
                     }
                     //工作经历
                     List<Sha01gzjl> gzjls = sha01.getGzjls();
@@ -354,7 +355,7 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
                             sqliteDBUtil.insert(sqlite, this.sha01gbrmspbService.toSqliteInsertSql(gbrmspb));
                             if (gbrmspb.getFile2imgPath() != null) {
                                 FileUtil.copyFile(uploadAbsolutePath+gbrmspb.getFile2imgPath(),
-                                        GendataService.APP_ATTS_PATH+Sha01gbrmspbService.APP_ATTS_PATH);
+                                        attsdir+Sha01gbrmspbService.ATTS_PATH);
                             }
                         }
                     }
@@ -365,7 +366,7 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
                             sqliteDBUtil.insert(sqlite, this.sha01kcclService.toSqliteInsertSql(kccl));
                             if (kccl.getFile2imgPath() != null) {
                                 FileUtil.copyFile(uploadAbsolutePath+kccl.getFile2imgPath(),
-                                        GendataService.APP_ATTS_PATH+Sha01kcclService.APP_ATTS_PATH);
+                                        attsdir+Sha01kcclService.ATTS_PATH);
                             }
                         }
                     }
@@ -376,7 +377,7 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
                             sqliteDBUtil.insert(sqlite, this.sha01dascqkService.toSqliteInsertSql(sha01dascqk));
                             if (sha01dascqk.getFile2imgPath() != null) {
                                 FileUtil.copyFile(uploadAbsolutePath+sha01dascqk.getFile2imgPath(),
-                                        GendataService.APP_ATTS_PATH+Sha01dascqkService.APP_ATTS_PATH);
+                                        attsdir+Sha01dascqkService.ATTS_PATH);
                             }
                             //档案审查表提示表
                             List<Sha01dascqktips> sha01dascqktipses = sha01dascqk.getSha01dascqktips();
@@ -394,7 +395,7 @@ public class ShpcServiceImpl extends BaseServiceImpl<Shpc,String> implements Shp
                             sqliteDBUtil.insert(sqlite, this.sha01grzdsxService.toSqliteInsertSql(sha01grzdsx));
                             if (sha01grzdsx.getFile2imgPath() != null) {
                                 FileUtil.copyFile(uploadAbsolutePath+sha01grzdsx.getFile2imgPath(),
-                                        GendataService.APP_ATTS_PATH+Sha01grzdsxService.APP_ATTS_PATH);
+                                        attsdir+Sha01grzdsxService.ATTS_PATH);
                             }
                         }
                     }

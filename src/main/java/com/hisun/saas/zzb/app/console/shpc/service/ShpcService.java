@@ -20,5 +20,5 @@ public interface ShpcService extends BaseService<Shpc,String> {
     Integer getMaxPx() ;
     void updatePx(int oldPx,int newPx);
     String toSqliteInsertSql(Shpc entity);
-    void saveAsSqlite(String shpcId,String sqlite) throws Exception;
+    void saveAsSqlite(String shpcId,String sqlite,String imgdir,String attsdir) throws Exception;
 }

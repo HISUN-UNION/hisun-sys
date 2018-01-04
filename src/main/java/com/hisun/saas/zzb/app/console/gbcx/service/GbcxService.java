@@ -5,5 +5,5 @@ package com.hisun.saas.zzb.app.console.gbcx.service;
  */
 public interface GbcxService {
 
-    void saveAsSqlite(String sqlite)throws Exception;
+    void saveAsSqlite(String sqlite,String imgdir,String attsdir)throws Exception;
 }
