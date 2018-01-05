@@ -68,11 +68,11 @@
 					</div>
 				</li>
 				<li>
-					<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'GBCX')" id="checkBoxGBCX"  name="checkBoxValue" value="GBCX" /> 干部查询</h4>
+					<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'GBCX')" id="checkBoxGBCX"  name="checkBoxValue" value="GBCX" /> 干部和职数查询</h4>
 				</li>
-				<li>
-					<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'ZSCX')"  id="checkBoxZSCX"  name="checkBoxValue" value="ZSCX" /> 职数查询</h4>
-				</li>
+				<%--<li>--%>
+					<%--<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'ZSCX')"  id="checkBoxZSCX"  name="checkBoxValue" value="ZSCX" /> 职数查询</h4>--%>
+				<%--</li>--%>
 				<li class="heightauto">
 					<h4  class=""><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'gbmc')"  id="CheckAllGbmc" value="gbmc" /> <a href="###">干部名册</a></h4>
 					<div class="Choicetwo">
@@ -106,14 +106,14 @@
 				</c:if>
 				<c:if test="${isLoadGbcxData eq 'true'}">
 					<li>
-						<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldGBCX')"   id="oldcheckBoxGBCX" name="oldCheckBoxValue" value="GBCX" /> 干部查询</h4>
+						<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldGBCX')"   id="oldcheckBoxGBCX" name="oldCheckBoxValue" value="GBCX" /> 干部和职数查询</h4>
 					</li>
 				</c:if>
-				<c:if test="${isLoadZsxcData eq 'true'}">
-					<li>
-						<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldZSCX')"   id="oldcheckBoxZSCX" name="oldCheckBoxValue" value="ZSCX" /> 职数查询</h4>
-					</li>
-				</c:if>
+				<%--<c:if test="${isLoadZsxcData eq 'true'}">--%>
+					<%--<li>--%>
+						<%--<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldZSCX')"   id="oldcheckBoxZSCX" name="oldCheckBoxValue" value="ZSCX" /> 职数查询</h4>--%>
+					<%--</li>--%>
+				<%--</c:if>--%>
 				<c:if test="${oldGbmcVos!= null && fn:length(oldGbmcVos)> 0}">
 					<li class="heightauto">
 						<h4  class=""><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldgbmc')"  id="oldCheckAllGbmc" value="gbmc" /> <a href="###">干部名册</a></h4>
@@ -164,24 +164,24 @@
 				$("#oldcheckBoxGBCX").attr("checked",false);
 			}
 		});
-		$("#checkBoxZSCX").click(function() {
-			if ($(this).attr("checked")) {
-				$("#oldcheckBoxZSCX").parent().removeClass("checked");
-				$("#oldcheckBoxZSCX").attr("checked",false);
-			}
-		});
+//		$("#checkBoxZSCX").click(function() {
+//			if ($(this).attr("checked")) {
+//				$("#oldcheckBoxZSCX").parent().removeClass("checked");
+//				$("#oldcheckBoxZSCX").attr("checked",false);
+//			}
+//		});
 		$("#oldcheckBoxGBCX").click(function() {
 			if ($(this).attr("checked")) {
 				$("#checkBoxGBCX").parent().removeClass("checked");
 				$("#checkBoxGBCX").attr("checked",false);
 			}
 		});
-		$("#oldcheckBoxZSCX").click(function() {
-			if ($(this).attr("checked")) {
-				$("#checkBoxZSCX").parent().removeClass("checked");
-				$("#checkBoxZSCX").attr("checked",false);
-			}
-		});
+//		$("#oldcheckBoxZSCX").click(function() {
+//			if ($(this).attr("checked")) {
+//				$("#checkBoxZSCX").parent().removeClass("checked");
+//				$("#checkBoxZSCX").attr("checked",false);
+//			}
+//		});
 
 		$("#checkBoxHyyjValue").click(function() {
 			if ($(this).attr("checked")) {

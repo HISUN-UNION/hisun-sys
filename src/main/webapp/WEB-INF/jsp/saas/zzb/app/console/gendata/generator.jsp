@@ -60,11 +60,11 @@
 				</div>
 			</li>
 			<li>
-				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="GBCX" /> 干部查询</h4>
+				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="GBCX" /> 干部和职数查询</h4>
 			</li>
-			<li>
-				<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="ZSCX" /> 职数查询</h4>
-			</li>
+			<%--<li>--%>
+				<%--<h4><input class="checkbox" type="checkbox" name="checkBoxValue" value="ZSCX" /> 职数查询</h4>--%>
+			<%--</li>--%>
 			<li class="heightauto">
 				<h4  class=""><input class="checkbox" type="checkbox" name="checkBoxValue" id="CheckAllGbmc" value="gbmc" /> <a href="###">干部名册</a></h4>
 				<div class="Choicetwo">
@@ -197,7 +197,7 @@
 		var checkBoxTypeValues = "";//选择类型的值
 		$("input[name=checkBoxValue]").each(function() {
 			if ($(this).attr("checked")) {
-				if ($(this).val() == "GBCX" || $(this).val() == "ZSCX" ) {//分类目前只有干部查询可加入选择的内容中
+				if ($(this).val() == "GBCX" ) {//分类目前只有干部查询可加入选择的内容中
 					if (checkBoxTypeValues == "") {
 						checkBoxTypeValues = $(this).val();
 					} else {

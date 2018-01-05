@@ -313,9 +313,10 @@ public class GendataController extends BaseController{
                 for (String generatorTypeValue : generatorTypeValues) {
                     if(generatorTypeValue.equals(GendataVo.GBCX_DATA)){
                         map.put(GendataVo.GBCX_DATA,"TRUE");
-                    }else if(generatorTypeValue.equals(GendataVo.ZSCX_DATA)){
-                        map.put(GendataVo.ZSCX_DATA,"TRUE");
                     }
+//                    else if(generatorTypeValue.equals(GendataVo.ZSCX_DATA)){
+//                        map.put(GendataVo.ZSCX_DATA,"TRUE");
+//                    }
                 }
             }
             Gendata gendata = new Gendata();
@@ -380,9 +381,10 @@ public class GendataController extends BaseController{
                 for (String generatorTypeValue : oldgeneratorTypeValues) {
                     if(generatorTypeValue.equals(GendataVo.GBCX_DATA)){
                         oldMap.put(GendataVo.GBCX_DATA,"TRUE");
-                    }else if(generatorTypeValue.equals(GendataVo.ZSCX_DATA)){
-                        oldMap.put(GendataVo.ZSCX_DATA,"TRUE");
                     }
+//                    else if(generatorTypeValue.equals(GendataVo.ZSCX_DATA)){
+//                        oldMap.put(GendataVo.ZSCX_DATA,"TRUE");
+//                    }
                 }
             }
 
@@ -402,9 +404,10 @@ public class GendataController extends BaseController{
                 for (String generatorTypeValue : generatorTypeValues) {
                     if(generatorTypeValue.equals(GendataVo.GBCX_DATA)){
                         map.put(GendataVo.GBCX_DATA,"TRUE");
-                    }else if(generatorTypeValue.equals(GendataVo.ZSCX_DATA)){
-                        map.put(GendataVo.ZSCX_DATA,"TRUE");
                     }
+//                    else if(generatorTypeValue.equals(GendataVo.ZSCX_DATA)){
+//                        map.put(GendataVo.ZSCX_DATA,"TRUE");
+//                    }
                 }
             }
             Gendata gendata = new Gendata();
