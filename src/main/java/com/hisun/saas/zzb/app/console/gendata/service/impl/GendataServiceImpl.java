@@ -175,16 +175,80 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
 
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
-        this.save(gendata);
-        return gendata.getId();
+        return this.save(gendata);
     }
 
 
     public  String saveAppDataFromAnotherAppData(Gendata newPacket,Map<String,String> selectedMap,
                                          Gendata oldPacket,Map<String,String> selectedMapFromOldPacket)throws Exception{
 
+        if(oldPacket!=null && selectedMapFromOldPacket!=null
+                &&selectedMapFromOldPacket.size()>0){
+            File oldPacketFile = new File(uploadAbsolutePath+oldPacket.getPath());
+            if(oldPacketFile.exists()){
+                //解压原有数据包到指定目录
+                String uuid = UUIDUtil.getUUID();
+                String unzipDir = uploadAbsolutePath + GendataService.DATA_PATH + uuid+File.separator;
+                CompressUtil.unzip(oldPacketFile.getAbsolutePath(),unzipDir);
+                List<String> dirs = new ArrayList<>();
+                String imgdir = unzipDir + GendataService.IMG_PATH;
+                dirs.add(imgdir);
+                String attsdir = unzipDir+ GendataService.ATTS_PATH;
+                dirs.add(attsdir);
+                this.initDataDir(dirs);
+                String sqliteDB = unzipDir + GendataService.SQLITE_DB_NAME;
+                //根据用户所选择的数据进行保留,其他的删除
+                SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
+//                String sql = "delete from app_sh_pc where id = ?";
+//                sqliteDBUtil.update(sqliteDB,"");
 
-        return "";
+
+
+                //新选择的数据进行增加
+                if (selectedMap != null && selectedMap.size() > 0) {
+                    for (Iterator<String> it = selectedMap.keySet().iterator(); it.hasNext(); ) {
+                        String key = it.next();
+                        String value = selectedMap.get(key);
+                        String[] ids = value.split(",");
+                        if (key.equals(GendataVo.SHPC_DATA)) {
+                            for (String id : ids) {
+                                this.shpcService.saveAsSqlite(id,sqliteDB,imgdir,attsdir);
+                            }
+                        } else if (key.equals(GendataVo.GBTJ_DATA)) {
+                            for (String id : ids) {
+                                this.gbtjService.saveAsSqlite(id, sqliteDB,imgdir,attsdir);
+                            }
+                        } else if (key.equals(GendataVo.GBMC_DATA)) {
+                            for (String id : ids) {
+                                this.gbMcService.saveAsSqlite(id,sqliteDB,imgdir,attsdir);
+                            }
+                        }else if (key.equals(GendataVo.GBCX_DATA)) {
+                            //生成干部查询数据包
+                            this.gbcxService.saveAsSqlite(sqliteDB,imgdir,attsdir);
+                        }
+
+                    }
+                }
+                String appDataZipPath = GendataService.DATA_PATH + UUIDUtil.getUUID() + ".zip";
+                String appDataZipRealPath = uploadAbsolutePath + appDataZipPath;
+                //压缩数据文件
+                CompressUtil.zip(appDataZipRealPath, unzipDir, GendataService.DATA_PACKET_NAME);
+                newPacket.setPath(appDataZipPath);
+
+                File f = new File(appDataZipRealPath);
+                newPacket.setPacketMd5(Md5Util.getMD5(f));
+                newPacket.setPacketSize(Long.toString(f.length()));
+
+                UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+                BeanTrans.setBaseProperties(newPacket, userLoginDetails, "save");
+                return this.save(newPacket);
+            }else {
+                return "";
+            }
+        }else{
+            return this.saveAppData(newPacket,selectedMap);
+        }
+
     }
 
 
