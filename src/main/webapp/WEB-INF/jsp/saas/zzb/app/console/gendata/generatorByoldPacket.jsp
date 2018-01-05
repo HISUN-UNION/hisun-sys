@@ -99,14 +99,14 @@
 						<h4 class=""><input class="checkbox"  id="oldCheckAllHyyj" type="checkbox" onclick="setCheckedValues(this,'oldhyyj')"  value="hyyj" /><a href="###">会议研究</a></h4>
 						<div class="Choicetwo">
 							<c:forEach items="${oldShpcVos}" var="vo">
-								<p><label><input clt="oldCheckBoxHyyjValueGroup" id="oldCheckBoxHyyjValue"  name="oldCheckBoxHyyjValue"  type="checkbox" onclick="setCheckedValues(this,'oldhyyj')"  value="${vo.id}" />${vo.pcmc}</label></p>
+								<p><label><input clt="oldCheckBoxHyyjValueGroup" id="oldCheckBoxHyyjValue" disabled  name="oldCheckBoxHyyjValue"  type="checkbox" onclick="setCheckedValues(this,'oldhyyj')"  value="${vo.id}" />${vo.pcmc}</label></p>
 							</c:forEach>
 						</div>
 					</li>
 				</c:if>
 				<c:if test="${isLoadGbcxData eq 'true'}">
 					<li>
-						<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldGBCX')"   id="oldcheckBoxGBCX" name="oldCheckBoxValue" value="GBCX" /> 干部和职数查询</h4>
+						<h4><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldGBCX')"    id="oldcheckBoxGBCX" name="oldCheckBoxValue" value="GBCX" /> 干部和职数查询</h4>
 					</li>
 				</c:if>
 				<%--<c:if test="${isLoadZsxcData eq 'true'}">--%>
@@ -119,7 +119,7 @@
 						<h4  class=""><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldgbmc')"  id="oldCheckAllGbmc" value="gbmc" /> <a href="###">干部名册</a></h4>
 						<div class="Choicetwo">
 							<c:forEach items="${oldGbmcVos}" var="vo">
-								<p><label><input clt="oldCheckBoxGbmcValueGroup" id="oldCheckBoxGbmcValue"  name="oldCheckBoxGbmcValue"  type="checkbox" onclick="setCheckedValues(this,'oldgbmc')"  value="${vo.id}" />${vo.mc}</label></p>
+								<p><label><input clt="oldCheckBoxGbmcValueGroup" id="oldCheckBoxGbmcValue" disabled name="oldCheckBoxGbmcValue"  type="checkbox" onclick="setCheckedValues(this,'oldgbmc')"  value="${vo.id}" />${vo.mc}</label></p>
 							</c:forEach>
 						</div>
 					</li>
@@ -129,7 +129,7 @@
 						<h4  class=""><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldgbdwtj')" id="oldCheckAllGbtj" value="gbdwtj" />  <a href="###">干部队伍统计</a></h4>
 						<div class="Choicetwo">
 							<c:forEach items="${oldGbtjVos}" var="vo">
-								<p><label><input clt="oldCheckBoxGbtjValueGroup" id="oldCheckBoxGbtjValue"  name="oldCheckBoxGbtjValue"  type="checkbox" onclick="setCheckedValues(this,'oldgbdwtj')"  value="${vo.id}" />${vo.tjmc}</label></p>
+								<p><label><input clt="oldCheckBoxGbtjValueGroup" id="oldCheckBoxGbtjValue" disabled  name="oldCheckBoxGbtjValue"  type="checkbox" onclick="setCheckedValues(this,'oldgbdwtj')"  value="${vo.id}" />${vo.tjmc}</label></p>
 							</c:forEach>
 						</div>
 					</li>
