@@ -364,6 +364,28 @@ public class GendataController extends BaseController{
             if(appDataDir.exists()==false){
                 appDataDir.mkdirs();
             }
+            Map<String,String> oldMap = new HashMap<String,String>();
+            if(oldpcs!=null &&oldpcs.length()>0){
+                oldMap.put(GendataVo.SHPC_DATA,oldpcs);
+            }
+
+            if(oldgbmcs!=null &&oldgbmcs.length()>0){
+                oldMap.put(GendataVo.GBMC_DATA,oldgbmcs);
+            }
+
+            if(oldtjs!=null &&oldtjs.length()>0){
+                oldMap.put(GendataVo.GBTJ_DATA,oldtjs);
+            }
+            if(!oldcheckBoxTypeValues.equals("")){
+                for (String generatorTypeValue : oldgeneratorTypeValues) {
+                    if(generatorTypeValue.equals(GendataVo.GBCX_DATA)){
+                        oldMap.put(GendataVo.GBCX_DATA,"TRUE");
+                    }else if(generatorTypeValue.equals(GendataVo.ZSCX_DATA)){
+                        oldMap.put(GendataVo.ZSCX_DATA,"TRUE");
+                    }
+                }
+            }
+
             Map<String,String> map = new HashMap<String,String>();
             if(pcs!=null &&pcs.length()>0){
                 map.put(GendataVo.SHPC_DATA,pcs);
@@ -389,8 +411,9 @@ public class GendataController extends BaseController{
             gendata.setTenant(userLoginDetails.getTenant());
             gendata.setPacketName(packetName);
 
+            Gendata oldGendata = this.gendataService.getByPK(oldPacketId);
 
-            String id = this.gendataService.saveAppData(gendata,map);
+            String id = this.gendataService.saveAppDataFromAnotherAppData(gendata,map,oldGendata,oldMap);
             rsmap.put("gendataId", id);
         }catch(Exception e){
             logger.error(e, e);
