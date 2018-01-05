@@ -57,12 +57,13 @@
 		</div>
 
 		<div style="width: 50%;float: left">
+			<b style="margin-left:40px;font-size:15px;">&nbsp;</b>
 			<ul class="ulChoicelist">
 				<li class="heightauto">
 					<h4 class=""><input class="checkbox"  id="CheckAllHyyj" type="checkbox" onclick="setCheckedValues(this,'hyyj')"  value="hyyj" /><a href="###">会议研究</a></h4>
 					<div class="Choicetwo">
 						<c:forEach items="${shpcVos}" var="vo">
-							<p><label><input clt="checkBoxHyyjValueGroup"  name="checkBoxHyyjValue"  type="checkbox" onclick="setCheckedValues(this,'hyyj')"  value="${vo.id}" />${vo.pcmc}</label></p>
+							<p><label><input clt="checkBoxHyyjValueGroup" id="checkBoxHyyjValue" name="checkBoxHyyjValue"  type="checkbox" onclick="setCheckedValues(this,'hyyj')"  value="${vo.id}" />${vo.pcmc}</label></p>
 						</c:forEach>
 					</div>
 				</li>
@@ -76,7 +77,7 @@
 					<h4  class=""><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'gbmc')"  id="CheckAllGbmc" value="gbmc" /> <a href="###">干部名册</a></h4>
 					<div class="Choicetwo">
 						<c:forEach items="${gbmcVos}" var="vo">
-							<p><label><input clt="checkBoxGbmcValueGroup"  name="checkBoxGbmcValue"  type="checkbox" onclick="setCheckedValues(this,'gbmc')"  value="${vo.id}" />${vo.mc}</label></p>
+							<p><label><input clt="checkBoxGbmcValueGroup" id="checkBoxGbmcValue" name="checkBoxGbmcValue"  type="checkbox" onclick="setCheckedValues(this,'gbmc')"  value="${vo.id}" />${vo.mc}</label></p>
 						</c:forEach>
 					</div>
 				</li>
@@ -84,7 +85,7 @@
 					<h4  class=""><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'gbdwtj')"  id="CheckAllGbtj" value="gbdwtj" />  <a href="###">干部队伍统计</a></h4>
 					<div class="Choicetwo">
 						<c:forEach items="${gbtjVos}" var="vo">
-							<p><label><input clt="checkBoxGbtjValueGroup"  name="checkBoxGbtjValue"  type="checkbox" onclick="setCheckedValues(this,'gbdwtj')"  value="${vo.id}" />${vo.tjmc}</label></p>
+							<p><label><input clt="checkBoxGbtjValueGroup" id="checkBoxGbtjValue" name="checkBoxGbtjValue"  type="checkbox" onclick="setCheckedValues(this,'gbdwtj')"  value="${vo.id}" />${vo.tjmc}</label></p>
 						</c:forEach>
 					</div>
 				</li>
@@ -98,7 +99,7 @@
 						<h4 class=""><input class="checkbox"  id="oldCheckAllHyyj" type="checkbox" onclick="setCheckedValues(this,'oldhyyj')"  value="hyyj" /><a href="###">会议研究</a></h4>
 						<div class="Choicetwo">
 							<c:forEach items="${oldShpcVos}" var="vo">
-								<p><label><input clt="oldCheckBoxHyyjValueGroup"  name="oldCheckBoxHyyjValue"  type="checkbox" onclick="setCheckedValues(this,'oldhyyj')"  value="${vo.id}" />${vo.pcmc}</label></p>
+								<p><label><input clt="oldCheckBoxHyyjValueGroup" id="oldCheckBoxHyyjValue"  name="oldCheckBoxHyyjValue"  type="checkbox" onclick="setCheckedValues(this,'oldhyyj')"  value="${vo.id}" />${vo.pcmc}</label></p>
 							</c:forEach>
 						</div>
 					</li>
@@ -118,7 +119,7 @@
 						<h4  class=""><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldgbmc')"  id="oldCheckAllGbmc" value="gbmc" /> <a href="###">干部名册</a></h4>
 						<div class="Choicetwo">
 							<c:forEach items="${oldGbmcVos}" var="vo">
-								<p><label><input clt="oldCheckBoxGbmcValueGroup"  name="oldCheckBoxGbmcValue"  type="checkbox" onclick="setCheckedValues(this,'oldgbmc')"  value="${vo.id}" />${vo.mc}</label></p>
+								<p><label><input clt="oldCheckBoxGbmcValueGroup" id="oldCheckBoxGbmcValue"  name="oldCheckBoxGbmcValue"  type="checkbox" onclick="setCheckedValues(this,'oldgbmc')"  value="${vo.id}" />${vo.mc}</label></p>
 							</c:forEach>
 						</div>
 					</li>
@@ -128,7 +129,7 @@
 						<h4  class=""><input class="checkbox" type="checkbox" onclick="setCheckedValues(this,'oldgbdwtj')" id="oldCheckAllGbtj" value="gbdwtj" />  <a href="###">干部队伍统计</a></h4>
 						<div class="Choicetwo">
 							<c:forEach items="${oldGbtjVos}" var="vo">
-								<p><label><input clt="oldCheckBoxGbtjValueGroup"  name="oldCheckBoxGbtjValue"  type="checkbox" onclick="setCheckedValues(this,'oldgbdwtj')"  value="${vo.id}" />${vo.tjmc}</label></p>
+								<p><label><input clt="oldCheckBoxGbtjValueGroup" id="oldCheckBoxGbtjValue"  name="oldCheckBoxGbtjValue"  type="checkbox" onclick="setCheckedValues(this,'oldgbdwtj')"  value="${vo.id}" />${vo.tjmc}</label></p>
 							</c:forEach>
 						</div>
 					</li>
@@ -156,7 +157,7 @@
 <script type="text/javascript">
 	(function(){
 		App.init();
-
+//===========================================同一分类数据，两边不能同时选择
 		$("#checkBoxGBCX").click(function() {
 			if ($(this).attr("checked")) {
 				$("#oldcheckBoxGBCX").parent().removeClass("checked");
@@ -181,6 +182,74 @@
 				$("#checkBoxZSCX").attr("checked",false);
 			}
 		});
+
+		$("#checkBoxHyyjValue").click(function() {
+			if ($(this).attr("checked")) {
+				$("input[name=oldCheckBoxHyyjValue]").each(function() {
+					$(this).parent().removeClass("checked")
+					$(this).attr("checked",false);
+				});
+			}
+			$("#oldCheckAllHyyj").parent().removeClass("checked");
+			$("#oldCheckAllHyyj").attr("checked",false);
+		});
+
+		$("#checkBoxGbmcValue").click(function() {
+			if ($(this).attr("checked")) {
+				$("input[name=oldCheckBoxGbmcValue]").each(function() {
+					$(this).parent().removeClass("checked")
+					$(this).attr("checked",false);
+				});
+			}
+			$("#oldCheckAllGbmc").parent().removeClass("checked");
+			$("#oldCheckAllGbmc").attr("checked",false);
+		});
+
+		$("#checkBoxGbtjValue").click(function() {
+			if ($(this).attr("checked")) {
+				$("input[name=oldCheckBoxGbtjValue]").each(function() {
+					$(this).parent().removeClass("checked")
+					$(this).attr("checked",false);
+				});
+				$("#oldCheckAllGbtj").parent().removeClass("checked");
+				$("#oldCheckAllGbtj").attr("checked",false);
+			}
+		});
+
+		$("#oldCheckBoxHyyjValue").click(function() {
+			if ($(this).attr("checked")) {
+				$("input[name=checkBoxHyyjValue]").each(function() {
+					$(this).parent().removeClass("checked")
+					$(this).attr("checked",false);
+				});
+				$("#CheckAllHyyj").parent().removeClass("checked");
+				$("#CheckAllHyyj").attr("checked",false);
+			}
+		});
+
+		$("#oldCheckBoxGbmcValue").click(function() {
+			if ($(this).attr("checked")) {
+				$("input[name=checkBoxGbmcValue]").each(function() {
+					$(this).parent().removeClass("checked")
+					$(this).attr("checked",false);
+				});
+				$("#CheckAllGbmc").parent().removeClass("checked");
+				$("#CheckAllGbmc").attr("checked",false);
+			}
+		});
+
+		$("#oldCheckBoxGbtjValue").click(function() {
+			if ($(this).attr("checked")) {
+				$("input[name=checkBoxGbtjValue]").each(function() {
+					$(this).parent().removeClass("checked")
+					$(this).attr("checked",false);
+				});
+				$("#CheckAllGbtj").parent().removeClass("checked");
+				$("#CheckAllGbtj").attr("checked",false);
+			}
+		});
+
+
 		$("#CheckAllHyyj").click(function() {
 			if ($(this).attr("checked")) {
 				$("input[name=checkBoxHyyjValue]").each(function() {
@@ -240,6 +309,8 @@
 				});
 			}
 		});
+
+
 
 		<!-- old-->
 		$("#oldCheckAllHyyj").click(function() {
@@ -303,6 +374,8 @@
 		});
 	})();
 
+
+	//====================================================================================
 
 
 	$(function(){
