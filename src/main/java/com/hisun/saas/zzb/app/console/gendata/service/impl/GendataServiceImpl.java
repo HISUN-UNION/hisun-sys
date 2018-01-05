@@ -4,24 +4,12 @@ import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.saas.zzb.app.console.apiregister.dao.ApiRegisterDao;
 import com.hisun.saas.zzb.app.console.apiregister.entity.ApiRegister;
 import com.hisun.saas.zzb.app.console.apiregister.service.ApiRegisterService;
-import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
-import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA02;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
-import com.hisun.saas.zzb.app.console.aset.service.AppAsetA02Service;
-import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
-import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
-import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl2B01;
-import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
-import com.hisun.saas.zzb.app.console.bset.service.AppBsetFl2B01Service;
-import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.gbcx.service.GbcxService;
-import com.hisun.saas.zzb.app.console.gbmc.dao.GbMcDao;
 import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbmc.service.*;
-import com.hisun.saas.zzb.app.console.gbtj.dao.GbtjDao;
 import com.hisun.saas.zzb.app.console.gbtj.entity.Gbtj;
 import com.hisun.saas.zzb.app.console.gbtj.service.GbtjService;
 import com.hisun.saas.zzb.app.console.gendata.dao.GendataDao;
@@ -29,10 +17,10 @@ import com.hisun.saas.zzb.app.console.gendata.entity.DataPacketContent;
 import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
-import com.hisun.saas.zzb.app.console.shpc.dao.ShpcDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.saas.zzb.app.console.shpc.service.ShpcService;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
+import com.hisun.saas.zzb.app.console.util.EntityWrapper;
 import com.hisun.util.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -43,10 +31,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Created by zhouying on 2017/9/16.
@@ -94,12 +80,12 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         String attsdir = dataDir + GendataService.ATTS_PATH;
         dirs.add(attsdir);
         //初始化非机构化数据存储目录
-        this.initDataDir(dirs);
+        this.initAppStoreDir(dirs);
         String sqliteDB = dbdir + GendataService.SQLITE_DB_NAME;
         //初始化sqlite数据库
-        this.initSqlite(sqliteDB);
+        this.initAppSqliteDB(sqliteDB);
         //生成配置数据包
-        this.genConfigData(dbdir + GendataService.SQLITE_DB_NAME);
+        this.newAppConfigData(dbdir + GendataService.SQLITE_DB_NAME);
 
         //压缩数据文件
         CompressUtil.zip(appDataZipRealPath, dataDir, GendataService.DATA_PACKET_NAME);
@@ -134,13 +120,32 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         String attsdir = dataDir + GendataService.ATTS_PATH;
         dirs.add(attsdir);
         //初始化非机构化数据存储目录
-        this.initDataDir(dirs);
+        this.initAppStoreDir(dirs);
         String sqliteDB = dbdir + GendataService.SQLITE_DB_NAME;
         //初始化sqlite数据库
-        this.initSqlite(sqliteDB);
+        this.initAppSqliteDB(sqliteDB);
+        //根据页面选择,生成业务数据包
+        this.newAppData(gendata,selectedMap,sqliteDB,imgdir,attsdir);
+        //生成配置数据包
+        this.newAppConfigData(dbdir + GendataService.SQLITE_DB_NAME);
+        //压缩数据文件
+        CompressUtil.zip(appDataZipRealPath, dataDir, GendataService.DATA_PACKET_NAME);
+        gendata.setPath(appDataZipPath);
+
+        File f = new File(appDataZipRealPath);
+        //FileInputStream inputStream = new FileInputStream(f);
+        //gendata.setPacketMd5(DigestUtils.md5Hex(IOUtils.toByteArray(inputStream)));
+        gendata.setPacketMd5(Md5Util.getMD5(f));
+        gendata.setPacketSize(Long.toString(f.length()));
+
+        BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
+        return this.save(gendata);
+    }
 
 
-
+    private void newAppData(Gendata gendata, Map<String, String> selectedMap,
+                            String sqliteDB, String imgdir, String attsdir) throws Exception {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         if (selectedMap != null && selectedMap.size() > 0) {
             for (Iterator<String> it = selectedMap.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
@@ -212,27 +217,14 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
                 }
 
             }
-            //生成配置数据包
-            this.genConfigData(dbdir + GendataService.SQLITE_DB_NAME);
+
         }
-        //压缩数据文件
-        CompressUtil.zip(appDataZipRealPath, dataDir, GendataService.DATA_PACKET_NAME);
-        gendata.setPath(appDataZipPath);
-
-        File f = new File(appDataZipRealPath);
-        //FileInputStream inputStream = new FileInputStream(f);
-        //gendata.setPacketMd5(DigestUtils.md5Hex(IOUtils.toByteArray(inputStream)));
-        gendata.setPacketMd5(Md5Util.getMD5(f));
-        gendata.setPacketSize(Long.toString(f.length()));
-
-        BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
-        return this.save(gendata);
     }
 
 
     public  String saveAppDataFromAnotherAppData(Gendata newPacket,Map<String,String> selectedMap,
                                          Gendata oldPacket,Map<String,String> selectedMapFromOldPacket)throws Exception{
-
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         if(oldPacket!=null && selectedMapFromOldPacket!=null
                 &&selectedMapFromOldPacket.size()>0){
             File oldPacketFile = new File(uploadAbsolutePath+oldPacket.getPath());
@@ -241,57 +233,95 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
                 String uuid = UUIDUtil.getUUID();
                 String unzipDir = uploadAbsolutePath + GendataService.DATA_PATH + uuid+File.separator;
                 CompressUtil.unzip(oldPacketFile.getAbsolutePath(),unzipDir);
+                String oldDataDir = unzipDir+GendataService.DATA_PACKET_NAME+File.separator;
                 List<String> dirs = new ArrayList<>();
-                String imgdir = unzipDir + GendataService.IMG_PATH;
+                String imgdir = oldDataDir+ GendataService.IMG_PATH;
                 dirs.add(imgdir);
-                String attsdir = unzipDir+ GendataService.ATTS_PATH;
+                String attsdir = oldDataDir+ GendataService.ATTS_PATH;
                 dirs.add(attsdir);
-                this.initDataDir(dirs);
-                String sqliteDB = unzipDir + GendataService.SQLITE_DB_NAME;
+                this.initAppStoreDir(dirs);
+                String sqliteDB = oldDataDir+GendataService.DB_PATH +GendataService.SQLITE_DB_NAME;
+
                 //根据用户所选择的数据进行保留,其他的删除
-                SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
-//                String sql = "delete from app_sh_pc where id = ?";
-//                sqliteDBUtil.update(sqliteDB,"");
-
-
-
-                //新选择的数据进行增加
-                if (selectedMap != null && selectedMap.size() > 0) {
-                    for (Iterator<String> it = selectedMap.keySet().iterator(); it.hasNext(); ) {
-                        String key = it.next();
-                        String value = selectedMap.get(key);
-                        String[] ids = value.split(",");
-                        if (key.equals(GendataVo.SHPC_DATA)) {
-                            for (String id : ids) {
-                                this.shpcService.saveAsSqlite(id,sqliteDB,imgdir,attsdir);
-                            }
-                        } else if (key.equals(GendataVo.GBTJ_DATA)) {
-                            for (String id : ids) {
-                                this.gbtjService.saveAsSqlite(id, sqliteDB,imgdir,attsdir);
-                            }
-                        } else if (key.equals(GendataVo.GBMC_DATA)) {
-                            for (String id : ids) {
-                                this.gbMcService.saveAsSqlite(id,sqliteDB,imgdir,attsdir);
-                            }
-                        }else if (key.equals(GendataVo.GBCX_DATA)) {
-                            //生成干部查询数据包
-                            this.gbcxService.saveAsSqlite(sqliteDB,imgdir,attsdir);
-                        }
-
+                if(selectedMapFromOldPacket.containsKey(GendataVo.SHPC_DATA)==false){
+                    this.clearShpcDataInSqliteDB(sqliteDB,oldDataDir);
+                }else{
+                    //如果选择了,则生成DataPacketContent
+                    //没有被选择数据需要清除掉
+                    String idStr = selectedMapFromOldPacket.get(GendataVo.SHPC_DATA);
+                    List<String> ids = Arrays.asList(idStr.split(","));
+                    List<DataPacketContent> shpcDataPacketContents = oldPacket.getShpcDataPacketContents();
+                    for(DataPacketContent dataPacketContent : shpcDataPacketContents){
+//                        if(ids.contains(dataPacketContent.getDataId())==false){
+//
+//                        }else{
+                            DataPacketContent newDataPacketContent = new DataPacketContent();
+                            newDataPacketContent.setDataId(dataPacketContent.getDataId());
+                            newDataPacketContent.setDataType(DataPacketContent.SHPC_DATA);
+                            newDataPacketContent.setSort(dataPacketContent.getSort());
+                            newDataPacketContent.setName(dataPacketContent.getName());
+                            EntityWrapper.wrapperSaveBaseProperties(newDataPacketContent,userLoginDetails);
+                            newPacket.addDataPacketContent(newDataPacketContent);
+//                        }
                     }
                 }
+                if(selectedMapFromOldPacket.containsKey(GendataVo.GBMC_DATA)==false){
+                    this.clearGbmcDataInSqliteDB(sqliteDB,oldDataDir);
+                }else{
+                    List<DataPacketContent> gbmcDataPacketContents = oldPacket.getGbmcDataPacketContents();
+                    for(DataPacketContent dataPacketContent : gbmcDataPacketContents){
+                        DataPacketContent newDataPacketContent = new DataPacketContent();
+                        newDataPacketContent.setDataId(dataPacketContent.getDataId());
+                        newDataPacketContent.setDataType(DataPacketContent.GBMC_DATA);
+                        newDataPacketContent.setSort(dataPacketContent.getSort());
+                        newDataPacketContent.setName(dataPacketContent.getName());
+                        EntityWrapper.wrapperSaveBaseProperties(newDataPacketContent,userLoginDetails);
+                        newPacket.addDataPacketContent(newDataPacketContent);
+                    }
+                }
+                if(selectedMapFromOldPacket.containsKey(GendataVo.GBCX_DATA)==false) {
+                    this.clearGbcxDataInSqliteDB(sqliteDB,oldDataDir);
+                }else{
+                    List<DataPacketContent> gbcxDataPacketContents = oldPacket.getGbcxDataPacketContents();
+                    for(DataPacketContent dataPacketContent : gbcxDataPacketContents){
+                        DataPacketContent newDataPacketContent = new DataPacketContent();
+                        newDataPacketContent.setDataId(dataPacketContent.getDataId());
+                        newDataPacketContent.setDataType(DataPacketContent.GBCX_DATA);
+                        newDataPacketContent.setSort(dataPacketContent.getSort());
+                        newDataPacketContent.setName(dataPacketContent.getName());
+                        EntityWrapper.wrapperSaveBaseProperties(newDataPacketContent,userLoginDetails);
+                        newPacket.addDataPacketContent(newDataPacketContent);
+                    }
+
+                }
+                if(selectedMapFromOldPacket.containsKey(GendataVo.GBTJ_DATA)==false){
+                    this.clearGbtjDataInSqliteDB(sqliteDB,oldDataDir);
+                }else{
+                    List<DataPacketContent> gbtjDataPacketContents = oldPacket.getGbtjDataPacketContents();
+                    for(DataPacketContent dataPacketContent : gbtjDataPacketContents){
+                        DataPacketContent newDataPacketContent = new DataPacketContent();
+                        newDataPacketContent.setDataId(dataPacketContent.getDataId());
+                        newDataPacketContent.setDataType(DataPacketContent.GBTJ_DATA);
+                        newDataPacketContent.setSort(dataPacketContent.getSort());
+                        newDataPacketContent.setName(dataPacketContent.getName());
+                        EntityWrapper.wrapperSaveBaseProperties(newDataPacketContent,userLoginDetails);
+                        newPacket.addDataPacketContent(newDataPacketContent);
+                    }
+                }
+                //处理新选择的数据进行增加
+                this.newAppData(newPacket,selectedMap,sqliteDB,imgdir,attsdir);
+
                 String appDataZipPath = GendataService.DATA_PATH + UUIDUtil.getUUID() + ".zip";
                 String appDataZipRealPath = uploadAbsolutePath + appDataZipPath;
                 //压缩数据文件
-                CompressUtil.zip(appDataZipRealPath, unzipDir, GendataService.DATA_PACKET_NAME);
+                CompressUtil.zip(appDataZipRealPath, oldDataDir, GendataService.DATA_PACKET_NAME);
                 newPacket.setPath(appDataZipPath);
 
                 File f = new File(appDataZipRealPath);
                 newPacket.setPacketMd5(Md5Util.getMD5(f));
                 newPacket.setPacketSize(Long.toString(f.length()));
-
-                UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-                BeanTrans.setBaseProperties(newPacket, userLoginDetails, "save");
+                EntityWrapper.wrapperSaveBaseProperties(newPacket,userLoginDetails);
+                FileUtils.deleteDirectory(new File(unzipDir));
                 return this.save(newPacket);
             }else {
                 return "";
@@ -302,8 +332,73 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
 
     }
 
+    private void clearShpcDataInSqliteDB(String sqliteDB,String storePath) throws SQLException,
+            ClassNotFoundException, IOException {
+        SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
+        List<String> clearSqls = new ArrayList<String>();
+        clearSqls.add("delete from app_sh_pc_atts");
+        clearSqls.add("delete from app_sh_a01_shgx");
+        clearSqls.add("delete from app_sh_a01_gzjl");
+        clearSqls.add("delete from app_sh_a01_kccl");
+        clearSqls.add("delete from app_sh_a01_gbrmspb");
+        clearSqls.add("delete from app_sh_a01_dascqk_tips");
+        clearSqls.add("delete from app_sh_a01_dascqk");
+        clearSqls.add("delete from app_sh_a01_grzdsx");
+        clearSqls.add("delete from app_sh_a01_jc");
+        clearSqls.add("delete from app_sh_a01_ndkh");
+        clearSqls.add("delete from app_sh_a01");
+        clearSqls.add("delete from app_sh_pc");
+        for(String sql : clearSqls){
+            sqliteDBUtil.update(sqliteDB,sql);
+        }
+        FileUtils.deleteDirectory(new File(storePath+GendataService.ATTS_PATH+ShpcService.ATTS_PATH));
+    }
 
-    private void initDataDir(List<String> dirs) {
+    private void clearGbmcDataInSqliteDB(String sqliteDB,String storePath) throws SQLException,
+            ClassNotFoundException, IOException {
+        SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
+        List<String> clearSqls = new ArrayList<String>();
+        clearSqls.add("delete from app_mc_a01_gzjl");
+        clearSqls.add("delete from app_mc_a01_gbrmspb");
+        clearSqls.add("delete from app_mc_a01");
+        clearSqls.add("delete from app_mc_b01");
+        clearSqls.add("delete from app_mc");
+        for(String sql : clearSqls){
+            sqliteDBUtil.update(sqliteDB,sql);
+        }
+        FileUtils.deleteDirectory(new File(storePath+GendataService.ATTS_PATH+GbMcService.ATTS_PATH));
+    }
+
+    private void clearGbtjDataInSqliteDB(String sqliteDB,String storePath) throws SQLException,
+            ClassNotFoundException, IOException {
+        SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
+        List<String> clearSqls = new ArrayList<String>();
+        clearSqls.add("delete from app_dwjg_tj");
+        for(String sql : clearSqls){
+            sqliteDBUtil.update(sqliteDB,sql);
+        }
+    }
+
+
+    private void clearGbcxDataInSqliteDB(String sqliteDB,String storePath) throws SQLException,
+            ClassNotFoundException, IOException {
+        SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
+        List<String> clearSqls = new ArrayList<String>();
+        clearSqls.add("delete from app_zscx_zs");
+        clearSqls.add("delete from app_zscx_zs_a01");
+        clearSqls.add("delete from app_aset_a02");
+        clearSqls.add("delete from app_aset_a01");
+        clearSqls.add("delete from app_bset_fl_2_b01");
+        clearSqls.add("delete from app_bset_b01");
+        clearSqls.add("delete from app_bset_fl");
+        for(String sql : clearSqls){
+            sqliteDBUtil.update(sqliteDB,sql);
+        }
+        FileUtils.deleteDirectory(new File(storePath+GendataService.ATTS_PATH+AppAsetA01Service.ATTS_PATH));
+        FileUtils.deleteDirectory(new File(storePath+GendataService.IMG_PATH+AppAsetA01Service.ZP_PATH));
+    }
+
+    private void initAppStoreDir(List<String> dirs) {
         if (dirs != null) {
             for (String s : dirs) {
                 //初始化数据存储目录
@@ -316,7 +411,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
 
     }
 
-    private void genConfigData(String sqlite) throws Exception {
+    private void newAppConfigData(String sqlite) throws Exception {
         SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
         //api数据
         List<ApiRegister> apiRegisters = this.apiRegisterService.list();
@@ -327,7 +422,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         }
     }
 
-    private void initSqlite(String sqlite) throws Exception {
+    private void initAppSqliteDB(String sqlite) throws Exception {
 
         SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
         sqliteDBUtil.createDatabase(sqlite);
