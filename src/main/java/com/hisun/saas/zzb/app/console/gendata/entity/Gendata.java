@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,5 +98,13 @@ public class Gendata extends TenantEntity implements Serializable {
 
     public void setDataPacketContents(List<DataPacketContent> dataPacketContents) {
         this.dataPacketContents = dataPacketContents;
+    }
+
+    public void addDataPacketContent(DataPacketContent dataPacketContent){
+        if(this.dataPacketContents==null){
+            this.dataPacketContents = new ArrayList<DataPacketContent>();
+        }
+        dataPacketContent.setGendata(this);
+        this.dataPacketContents.add(dataPacketContent);
     }
 }

@@ -39,9 +39,6 @@ public class DataPacketContent extends TenantEntity implements Serializable {
     @Column(name = "sort")
     private int sort;
 
-    @Column(name = "parent_id",length = 32)
-    private String parent_id;
-
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "data_packet_id")
     private Gendata gendata;
@@ -84,14 +81,6 @@ public class DataPacketContent extends TenantEntity implements Serializable {
 
     public void setSort(int sort) {
         this.sort = sort;
-    }
-
-    public String getParent_id() {
-        return parent_id;
-    }
-
-    public void setParent_id(String parent_id) {
-        this.parent_id = parent_id;
     }
 
     public Gendata getGendata() {
