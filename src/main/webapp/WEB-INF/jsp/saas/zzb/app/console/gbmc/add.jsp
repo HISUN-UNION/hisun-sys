@@ -74,7 +74,7 @@
 							<div  id="gbmcFileGroup" class="control-group">
 								<label class="control-label">名册文件</label>
 								<div class="controls">
-									<input type="file" class="default"  name="gbmcFile" id="gbmcFile" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
+									<input type="file" class="default"  name="gbmcFile" id="gbmcFile" fileSizeLimit="20" onchange="setName(this)"  fileType="doc,docx,DOC,DOCX"/>
 									<p class="textprompt">附件支持的格式有：'doc','docx'</p>
 								</div>
 							</div>
@@ -117,6 +117,15 @@
 	<script type="text/javascript" src="<%=path%>/js/bootstrap-datepicker.zh-CN.js"></script>
 	<script type="text/javascript" src="${path }/js/common/loading.js"></script>
 <script type="text/javascript">
+	function setName(obj) {
+		if (obj.value != "") {
+			var fileName  = obj.value.substring(obj.value.lastIndexOf('\\')+1);
+			fileName = fileName.substring(0,fileName.lastIndexOf('.'));
+			if($("#mc").val()==""){
+				$("#mc").val(fileName);
+			}
+		}
+	}
 	var myLoading = new MyLoading("${path}",20000);
 //	(function(){
 //		App.init();

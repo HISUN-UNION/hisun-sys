@@ -43,6 +43,13 @@
 	<input type="hidden" name="checkGbtjValues" value="" id="checkGbtjValues">
 
 	<div class="row-fluid mb10">
+		<div id="packetNameGroup" class="control-group">
+			<label class="control-label" style="width:100px">数据包名称<span class="required">*</span></label>
+			<div class="controls" style="margin-left:100px">
+				<input type="text" class="span6 m-wrap" name="packetName" required maxlength="200" id="packetName" />
+			</div>
+
+		</div>
 		<ul class="ulChoicelist">
 			<li class="heightauto">
 				<h4 class=""><input class="checkbox"  name="checkBoxValue" id="CheckAllHyyj" type="checkbox" value="hyyj" /><a href="###">会议研究</a></h4>
@@ -151,6 +158,12 @@
 		var checkHyyjValues="";//会议研究列表记录值
 		var checkGbmcValues="";//干部名册列表记录值
 		var checkGbtjValues="";//干部统计列表记录值
+		var packetName = $("#packetName").val();
+		if(packetName.trim()==""){
+			flag = false;
+			showTip('提示','数据包名称不能为空', 1500);
+			return;
+		}
 		var flag= true;
 		$("input[name=checkBoxHyyjValue]").each(function() {
 			if ($(this).attr("checked")) {

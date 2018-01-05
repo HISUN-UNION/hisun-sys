@@ -93,7 +93,7 @@
 							<div  id="clFileGroup" class="control-group">
 								<label id="clFilelb" class="control-label">干部名单</label>
 								<div class="controls">
-									<input type="file" class="default"  name="clFile" id="clFile" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
+									<input type="file" class="default"  name="clFile" id="clFile" onchange="setName(this)" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
 									<p class="textprompt">附件支持的格式有：'doc','docx'</p>
 									<p class="Errorred" id="attachFileError"></p>
 								</div>
@@ -206,7 +206,15 @@ function formSubmit(){
 		}
 	});
 }
-
+	function setName(obj) {
+		if (obj.value != "") {
+			var fileName  = obj.value.substring(obj.value.lastIndexOf('\\')+1);
+			fileName = fileName.substring(0,fileName.lastIndexOf('.'));
+			if($("#pcmc").val()==""){
+				$("#pcmc").val(fileName);
+			}
+		}
+	}
 	function changeFile(obj){
 		if(obj.value =="2"){
 
