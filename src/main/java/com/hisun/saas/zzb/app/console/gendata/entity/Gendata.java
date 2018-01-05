@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.xml.crypto.Data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,4 +108,59 @@ public class Gendata extends TenantEntity implements Serializable {
         dataPacketContent.setGendata(this);
         this.dataPacketContents.add(dataPacketContent);
     }
+
+    public List<DataPacketContent> getShpcDataPacketContents() {
+        if(this.dataPacketContents!=null){
+            List<DataPacketContent> newDataPacketContents = new ArrayList<>();
+            for(DataPacketContent dataPacketContent : this.dataPacketContents){
+                if(dataPacketContent.getDataType()== DataPacketContent.SHPC_DATA){
+                    newDataPacketContents.add(dataPacketContent);
+                }
+            }
+            return newDataPacketContents;
+        }
+        return null;
+    }
+
+    public List<DataPacketContent> getGbcxDataPacketContents() {
+        if(this.dataPacketContents!=null){
+            List<DataPacketContent> newDataPacketContents = new ArrayList<>();
+            for(DataPacketContent dataPacketContent : this.dataPacketContents){
+                if(dataPacketContent.getDataType()== DataPacketContent.GBCX_DATA){
+                    newDataPacketContents.add(dataPacketContent);
+                }
+            }
+            return newDataPacketContents;
+        }
+        return null;
+    }
+
+    public List<DataPacketContent> getGbtjDataPacketContents() {
+        if(this.dataPacketContents!=null){
+            List<DataPacketContent> newDataPacketContents = new ArrayList<>();
+            for(DataPacketContent dataPacketContent : this.dataPacketContents){
+                if(dataPacketContent.getDataType()== DataPacketContent.GBTJ_DATA){
+                    newDataPacketContents.add(dataPacketContent);
+                }
+            }
+            return newDataPacketContents;
+        }
+        return null;
+    }
+
+
+    public List<DataPacketContent> getGbmcDataPacketContents() {
+        if(this.dataPacketContents!=null){
+            List<DataPacketContent> newDataPacketContents = new ArrayList<>();
+            for(DataPacketContent dataPacketContent : this.dataPacketContents){
+                if(dataPacketContent.getDataType()== DataPacketContent.GBMC_DATA){
+                    newDataPacketContents.add(dataPacketContent);
+                }
+            }
+            return newDataPacketContents;
+        }
+        return null;
+    }
+
+
 }
