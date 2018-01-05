@@ -25,6 +25,7 @@ import com.hisun.saas.zzb.app.console.gbtj.dao.GbtjDao;
 import com.hisun.saas.zzb.app.console.gbtj.entity.Gbtj;
 import com.hisun.saas.zzb.app.console.gbtj.service.GbtjService;
 import com.hisun.saas.zzb.app.console.gendata.dao.GendataDao;
+import com.hisun.saas.zzb.app.console.gendata.entity.DataPacketContent;
 import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
@@ -137,6 +138,10 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         //初始化sqlite数据库
         this.initSqlite(sqliteDB);
 
+        List<DataPacketContent> dataPacketContents = new ArrayList<DataPacketContent>();
+        DataPacketContent dataPacketContent = new DataPacketContent();
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+
         if (selectedMap != null && selectedMap.size() > 0) {
             for (Iterator<String> it = selectedMap.keySet().iterator(); it.hasNext(); ) {
                 String key = it.next();
@@ -144,19 +149,66 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
                 String[] ids = value.split(",");
                 if (key.equals(GendataVo.SHPC_DATA)) {
                     for (String id : ids) {
+                        dataPacketContent = new DataPacketContent();
+                        Shpc shpc = this.shpcService.getPK(id);
+                        dataPacketContent.setDataId(id);
+                        dataPacketContent.setGendata(gendata);
+                        dataPacketContent.setDataType(DataPacketContent.SHPC_DATA);
+                        dataPacketContent.setSort(shpc.getPx());
+                        dataPacketContent.setName(shpc.getPcmc());
+                        dataPacketContent.setParent_id(GendataVo.SHPC_DATA);
+                        dataPacketContent.setTenant(userLoginDetails.getTenant());
+                        dataPacketContents.add(dataPacketContent);
                         this.shpcService.saveAsSqlite(id,sqliteDB,imgdir,attsdir);
                     }
                 } else if (key.equals(GendataVo.GBTJ_DATA)) {
                     for (String id : ids) {
+                        Gbtj gbtj = this.gbtjService.getPK(id);
+                        dataPacketContent.setDataId(id);
+                        dataPacketContent.setGendata(gendata);
+                        dataPacketContent.setDataType(DataPacketContent.GBTJ_DATA);
+                        dataPacketContent.setSort(gbtj.getPx());
+                        dataPacketContent.setName(gbtj.getTjmc());
+                        dataPacketContent.setParent_id(GendataVo.GBTJ_DATA);
+                        dataPacketContent.setTenant(userLoginDetails.getTenant());
+                        dataPacketContents.add(dataPacketContent);
                         this.gbtjService.saveAsSqlite(id, sqliteDB,imgdir,attsdir);
                     }
                 } else if (key.equals(GendataVo.GBMC_DATA)) {
                     for (String id : ids) {
+                        GbMc gbMc = this.gbMcService.getPK(id);
+                        dataPacketContent.setDataId(id);
+                        dataPacketContent.setGendata(gendata);
+                        dataPacketContent.setDataType(DataPacketContent.GBMC_DATA);
+                        dataPacketContent.setSort(gbMc.getPx());
+                        dataPacketContent.setName(gbMc.getMc());
+                        dataPacketContent.setParent_id(GendataVo.GBMC_DATA);
+                        dataPacketContent.setTenant(userLoginDetails.getTenant());
+                        dataPacketContents.add(dataPacketContent);
                         this.gbMcService.saveAsSqlite(id,sqliteDB,imgdir,attsdir);
                     }
                 }else if (key.equals(GendataVo.GBCX_DATA)) {
                     //生成干部查询数据包
                     this.gbcxService.saveAsSqlite(sqliteDB,imgdir,attsdir);
+                    dataPacketContent = new DataPacketContent();
+                    dataPacketContent.setDataId(GendataVo.GBCX_DATA);
+                    dataPacketContent.setGendata(gendata);
+                    dataPacketContent.setDataType(DataPacketContent.GBCX_DATA);
+                    dataPacketContent.setSort(2);
+                    dataPacketContent.setName("干部查询");
+                    dataPacketContent.setTenant(userLoginDetails.getTenant());
+                    dataPacketContents.add(dataPacketContent);
+                }else if (key.equals(GendataVo.ZSCX_DATA)) {
+                    //生成职数查询数据包
+//                    this.gbcxService.saveAsSqlite(sqliteDB);
+                    dataPacketContent = new DataPacketContent();
+                    dataPacketContent.setDataId(GendataVo.ZSCX_DATA);
+                    dataPacketContent.setGendata(gendata);
+                    dataPacketContent.setDataType(DataPacketContent.ZSCX_DATA);
+                    dataPacketContent.setSort(3);
+                    dataPacketContent.setName("职数查询");
+                    dataPacketContent.setTenant(userLoginDetails.getTenant());
+                    dataPacketContents.add(dataPacketContent);
                 }
 
             }
@@ -173,7 +225,6 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         gendata.setPacketMd5(Md5Util.getMD5(f));
         gendata.setPacketSize(Long.toString(f.length()));
 
-        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
         this.save(gendata);
         return gendata.getId();

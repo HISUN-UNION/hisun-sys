@@ -1,10 +1,12 @@
 package com.hisun.saas.zzb.app.console.gendata.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by zhouying on 2017/9/23.
@@ -34,7 +36,12 @@ public class Gendata extends TenantEntity implements Serializable {
     @Column(name = "packet_size",length = 32)
     private String packetSize;
 
+    @Column(name = "packet_name",length = 32)
+    private String packetName;
 
+    @OneToMany(mappedBy="gendata",fetch= FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<DataPacketContent> dataPacketContents;
 
     public String getId() {
         return id;
@@ -76,4 +83,19 @@ public class Gendata extends TenantEntity implements Serializable {
         this.packetSize = packetSize;
     }
 
+    public String getPacketName() {
+        return packetName;
+    }
+
+    public void setPacketName(String packetName) {
+        this.packetName = packetName;
+    }
+
+    public List<DataPacketContent> getDataPacketContents() {
+        return dataPacketContents;
+    }
+
+    public void setDataPacketContents(List<DataPacketContent> dataPacketContents) {
+        this.dataPacketContents = dataPacketContents;
+    }
 }

@@ -16,7 +16,9 @@ import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcVo;
 import com.hisun.saas.zzb.app.console.gbtj.entity.Gbtj;
 import com.hisun.saas.zzb.app.console.gbtj.service.GbtjService;
 import com.hisun.saas.zzb.app.console.gbtj.vo.GbtjVo;
+import com.hisun.saas.zzb.app.console.gendata.entity.DataPacketContent;
 import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
+import com.hisun.saas.zzb.app.console.gendata.service.DataPacketContentService;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.gendata.vo.GendataVo;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
@@ -64,6 +66,9 @@ public class GendataController extends BaseController{
     private GbMcService gbMcService;
     @Autowired
     private ShpcService shpcService;
+    @Autowired
+    private DataPacketContentService dataPacketContentService;
+
 
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
@@ -79,7 +84,7 @@ public class GendataController extends BaseController{
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.desc("isCurrentPacket"));
-            orderBy.add(CommonOrder.asc("createDate"));
+            orderBy.add(CommonOrder.desc("createDate"));
             Long total = this.gendataService.count(query);
             List<Gendata> gendatas = this.gendataService.list(query, orderBy, pageNum,
                     pageSize);
@@ -165,6 +170,114 @@ public class GendataController extends BaseController{
         return new ModelAndView("saas/zzb/app/console/gendata/generator",map);
     }
 
+    //基于原有数据包
+    @RequestMapping(value = "/loadGeneratorByoldPacket")
+    public ModelAndView loadGeneratorByoldPacket(@RequestParam(value = "oldPacketId") String oldPacketId){
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            String oldPacketName = "";
+            //=======================加载原有数据包数据源
+            CommonConditionQuery query = new CommonConditionQuery();
+            Gendata gendata = this.gendataService.getByPK(oldPacketId);
+            oldPacketName = gendata.getPacketName();
+
+            query.add(CommonRestrictions.and(" gendata.id = :oldPacketId", "oldPacketId",oldPacketId));
+            CommonOrderBy orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.asc("dataType"));
+            orderBy.add(CommonOrder.asc("sort"));
+            List<DataPacketContent> dataPacketContents = this.dataPacketContentService.list(query, orderBy);
+            List<ShpcVo> oldShpcVos = new ArrayList<ShpcVo>();
+            List<GbMcVo> oldGbmcVos = new ArrayList<GbMcVo>();
+            List<GbtjVo> oldGbtjVos = new ArrayList<GbtjVo>();
+            String isLoadGbcxData = "false";
+            String isLoadZsxcData = "false";
+            for(DataPacketContent dataPacketContent : dataPacketContents)            {
+                if(dataPacketContent.getDataType()==DataPacketContent.SHPC_DATA){
+                    ShpcVo vo = new ShpcVo();
+                    vo.setId(dataPacketContent.getId());
+                    vo.setPcmc(dataPacketContent.getName());
+                    oldShpcVos.add(vo);
+                }else if(dataPacketContent.getDataType()==DataPacketContent.GBMC_DATA){
+                    GbMcVo vo = new GbMcVo();
+                    vo.setId(dataPacketContent.getId());
+                    vo.setMc(dataPacketContent.getName());
+                    oldGbmcVos.add(vo);
+                }else if(dataPacketContent.getDataType()==DataPacketContent.GBTJ_DATA){
+                    GbtjVo vo = new GbtjVo();
+                    vo.setId(dataPacketContent.getId());
+                    vo.setTjmc(dataPacketContent.getName());
+                    oldGbtjVos.add(vo);
+                }else if(dataPacketContent.getDataType()==DataPacketContent.GBCX_DATA){
+                    isLoadGbcxData = "true";
+                }else if(dataPacketContent.getDataType()==DataPacketContent.ZSCX_DATA){
+                    isLoadZsxcData = "true";
+                }
+            }
+            //==============================加载新的数据源
+            //获取会议研究列表数据
+            query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            query.add(CommonRestrictions.and(" shZt = :shZt", "shZt", 0));
+            orderBy = new CommonOrderBy();
+            orderBy.add(CommonOrder.asc("px"));
+            List<Shpc> shpcs = this.shpcService.list(query, orderBy);
+            List<ShpcVo> shpcVos = new ArrayList<ShpcVo>();
+            if (shpcs != null) {// entity ==> vo
+                for (Shpc shpc : shpcs) {
+                    ShpcVo vo = new ShpcVo();
+                    BeanUtils.copyProperties(vo, shpc);
+                    vo.setPcsjValue(DateUtil.formatDateByFormat(shpc.getPcsj(), "yyyyMMdd"));
+                    vo.setA01Count(shpc.getSha01s().size());
+                    shpcVos.add(vo);
+                }
+            }
+
+            //获取干部名册数据
+            query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            List<GbMc> gbmcs = this.gbMcService.list(query, null);
+            List<GbMcVo> gbmcVos = new ArrayList<GbMcVo>();
+            if (gbmcs != null) {// entity ==> vo
+                for (GbMc gbMc : gbmcs) {
+                    GbMcVo vo = new GbMcVo();
+                    BeanUtils.copyProperties(vo, gbMc);
+                    gbmcVos.add(vo);
+                }
+            }
+
+            //获取队伍统计数据
+            query = new CommonConditionQuery();
+            query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            List<Gbtj> gbtjs = this.gbtjService.list(query, null);
+            List<GbtjVo> gbtjVos = new ArrayList<GbtjVo>();
+            if (gbmcs != null) {// entity ==> vo
+                for (Gbtj gbmc : gbtjs) {
+                    GbtjVo vo = new GbtjVo();
+                    BeanUtils.copyProperties(vo, gbmc);
+                    gbtjVos.add(vo);
+                }
+            }
+            map.put("oldPacketName", oldPacketName);
+            map.put("oldShpcVos", oldShpcVos);
+            map.put("oldGbmcVos", oldGbmcVos);
+            map.put("oldGbtjVos", oldGbtjVos);
+            map.put("isLoadGbcxData", isLoadGbcxData);
+            map.put("isLoadZsxcData", isLoadZsxcData);
+            map.put("oldPacketId", oldPacketId);
+
+            map.put("shpcVos", shpcVos);
+            map.put("gbmcVos", gbmcVos);
+            map.put("gbtjVos", gbtjVos);
+
+
+
+        }catch (Exception e) {
+            throw new GenericException(e);
+        }
+
+        return new ModelAndView("saas/zzb/app/console/gendata/generatorByoldPacket",map);
+    }
+
     @RequestMapping(value = "/generator")
     public @ResponseBody Map<String,Object> generator(HttpServletResponse response, HttpServletRequest request) throws Exception{
         Map<String,Object> rsmap = new HashMap<String,Object>();
@@ -176,6 +289,7 @@ public class GendataController extends BaseController{
             String pcs = request.getParameter("checkHyyjValues")==null?"":request.getParameter("checkHyyjValues").toString();//会议研究ID
             String gbmcs = request.getParameter("checkGbmcValues")==null?"":request.getParameter("checkGbmcValues").toString();//干部名册ID
             String tjs = request.getParameter("checkGbtjValues")==null?"":request.getParameter("checkGbtjValues").toString();//干部统计ID
+            String packetName = request.getParameter("packetName")==null?"":request.getParameter("packetName").toString();//packetName
 
 
             String appDataPath=resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH;
@@ -206,6 +320,76 @@ public class GendataController extends BaseController{
             }
             Gendata gendata = new Gendata();
             gendata.setTenant(userLoginDetails.getTenant());
+            gendata.setPacketName(packetName);
+
+
+            String id = this.gendataService.saveAppData(gendata,map);
+            rsmap.put("gendataId", id);
+        }catch(Exception e){
+            logger.error(e, e);
+            rsmap.put("success", false);
+            rsmap.put("message", "系统错误，请联系管理员!");
+            return rsmap;
+        }
+        rsmap.put("success", true);
+
+        return rsmap;
+    }
+
+    @RequestMapping(value = "/generatorByoldPacket")
+    public @ResponseBody Map<String,Object> generatorByoldPacket(HttpServletResponse response, HttpServletRequest request) throws Exception{
+        Map<String,Object> rsmap = new HashMap<String,Object>();
+        try{
+            UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+            String oldcheckBoxTypeValues = request.getParameter("oldcheckBoxTypeValues")==null?"":request.getParameter("oldcheckBoxTypeValues").toString();//选择需要导出的类型
+            String[] oldgeneratorTypeValues= oldcheckBoxTypeValues.split(",");
+
+            String oldpcs = request.getParameter("oldcheckHyyjValues")==null?"":request.getParameter("oldcheckHyyjValues").toString();//会议研究ID
+            String oldgbmcs = request.getParameter("oldcheckGbmcValues")==null?"":request.getParameter("oldcheckGbmcValues").toString();//干部名册ID
+            String oldtjs = request.getParameter("oldcheckGbtjValues")==null?"":request.getParameter("oldcheckGbtjValues").toString();//干部统计ID
+            String oldPacketId = request.getParameter("oldPacketId")==null?"":request.getParameter("oldPacketId").toString();//干部统计ID
+
+
+            String checkBoxTypeValues = request.getParameter("checkBoxTypeValues")==null?"":request.getParameter("checkBoxTypeValues").toString();//选择需要导出的类型
+            String[] generatorTypeValues= checkBoxTypeValues.split(",");
+
+            String pcs = request.getParameter("checkHyyjValues")==null?"":request.getParameter("checkHyyjValues").toString();//会议研究ID
+            String gbmcs = request.getParameter("checkGbmcValues")==null?"":request.getParameter("checkGbmcValues").toString();//干部名册ID
+            String tjs = request.getParameter("checkGbtjValues")==null?"":request.getParameter("checkGbtjValues").toString();//干部统计ID
+            String packetName = request.getParameter("packetName")==null?"":request.getParameter("packetName").toString();//packetName
+
+
+            String appDataPath=resourcesProperties.getProperty("upload.absolute.path")+GendataService.DATA_PATH;
+            File appDataDir = new File(appDataPath);
+            if(appDataDir.exists()==false){
+                appDataDir.mkdirs();
+            }
+            Map<String,String> map = new HashMap<String,String>();
+            if(pcs!=null &&pcs.length()>0){
+                map.put(GendataVo.SHPC_DATA,pcs);
+            }
+
+            if(gbmcs!=null &&gbmcs.length()>0){
+                map.put(GendataVo.GBMC_DATA,gbmcs);
+            }
+
+            if(tjs!=null &&tjs.length()>0){
+                map.put(GendataVo.GBTJ_DATA,tjs);
+            }
+            if(!checkBoxTypeValues.equals("")){
+                for (String generatorTypeValue : generatorTypeValues) {
+                    if(generatorTypeValue.equals(GendataVo.GBCX_DATA)){
+                        map.put(GendataVo.GBCX_DATA,"TRUE");
+                    }else if(generatorTypeValue.equals(GendataVo.ZSCX_DATA)){
+                        map.put(GendataVo.ZSCX_DATA,"TRUE");
+                    }
+                }
+            }
+            Gendata gendata = new Gendata();
+            gendata.setTenant(userLoginDetails.getTenant());
+            gendata.setPacketName(packetName);
+
+
             String id = this.gendataService.saveAppData(gendata,map);
             rsmap.put("gendataId", id);
         }catch(Exception e){
@@ -233,6 +417,7 @@ public class GendataController extends BaseController{
             }
             Gendata gendata = new Gendata();
             gendata.setTenant(userLoginDetails.getTenant());
+            gendata.setPacketName("初始化数据包");
             String id = this.gendataService.saveAppInitData(gendata);
             rsmap.put("gendataId", id);
         }catch(Exception e){
@@ -311,10 +496,14 @@ public class GendataController extends BaseController{
     public @ResponseBody Map<String, Object> delete(@PathVariable("id")String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
-            Gendata gendata = this.gendataService.getByPK(id);
-            if(gendata != null){
-                this.gendataService.delete(gendata);
+            String[] ids = id.split(",");
+            for(int i=0;i<ids.length;i++){
+                Gendata gendata = this.gendataService.getByPK(ids[i]);
+                if(gendata != null){
+                    this.gendataService.delete(gendata);
+                }
             }
+
             map.put("success", true);
         }catch(Exception e){
             map.put("success", false);

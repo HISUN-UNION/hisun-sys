@@ -23,6 +23,7 @@ public class GendataVo {
     private String createTimeValue;
     private String packetMd5;
     private String packetSize;
+    private String packetName;
     public int getIsCurrentPacket() {
         return isCurrentPacket;
     }
@@ -114,5 +115,13 @@ public class GendataVo {
 
     public void setPacketSize(String packetSize) {
         this.packetSize = packetSize;
+    }
+
+    public String getPacketName() {
+        return packetName;
+    }
+
+    public void setPacketName(String packetName) {
+        this.packetName = packetName;
     }
 }

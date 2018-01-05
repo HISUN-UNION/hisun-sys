@@ -24,11 +24,30 @@
 				<div class="portlet-title">
 					<div class="caption">数据包管理</div>
 					<div class="clearfix fr">
-						<a class="btn green" href="javascript:genInitDataPacket()">
-							<i class="icon-plus"></i> 生成初始化数据包
-						</a>
-						<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/gendata/loadGenerator">
-							<i class="icon-plus"></i> 生成数据包
+						<%--<a class="btn green" href="javascript:genInitDataPacket()">--%>
+							<%--<i class="icon-plus"></i> 生成初始化数据包--%>
+						<%--</a>--%>
+						<%--<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/gendata/loadGenerator">--%>
+							<%--<i class="icon-plus"></i> 生成数据包--%>
+						<%--</a>--%>
+						<div class="btn-group">
+							<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+								生成数据包 <i class="icon-angle-down"></i>
+							</a>
+							<ul class="dropdown-menu">
+								<li >
+									<a onclick="genInitDataPacket()">初始化数据包</a>
+								</li>
+								<li>
+									<a  href="${path }/zzb/app/console/gendata/loadGenerator">新数据包</a>
+								</li>
+								<li>
+									<a onclick="generatorDataByOldPacket()">基于原有数据包</a>
+								</li>
+							</ul>
+						</div>
+						<a id="delMore" class="btn green" href="javascript:delMore()">
+							删除
 						</a>
 					</div>
 				</div>
@@ -37,16 +56,20 @@
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
 							<tr>
-								<th>数据包生成时间</th>
+								<th style="width: 20px;"><input type="checkbox" id="allCheck" onchange="dataAllcheckChange()" ></th>
+								<th>数据包名称</th>
+								<th width="150">数据包生成时间</th>
 								<th width="250">MD5</th>
 								<th width="10%">数据包大小</th>
-								<th width="10%">当前数据包</th>
+								<th width="80">当前数据包</th>
 								<th width="190">操作</th>
 							</tr>
 							</thead>
 							<tbody>
 							<c:forEach items="${pager.datas}" var="vo">
 								<tr style="text-overflow:ellipsis;">
+									<td><input type="checkbox" value="${vo.id }" name="dataIds"></td>
+									<td><c:out value="${vo.packetName}"></c:out></td>
 									<td><c:out value="${vo.createTimeValue}"></c:out></td>
 									<td><c:out value="${vo.packetMd5}"></c:out></td>
 									<td><c:out value="${vo.packetSize}"></c:out>字节</td>
@@ -87,7 +110,43 @@
 	})();
 	var myLoading = new MyLoading("${path}",{zindex:20000});
 
+	function dataAllcheckChange(){
+		var allCheck = document.getElementById("allCheck");
+		var checks = document.getElementsByName("dataIds");
+		if(checks){
+			for(var i=0;i<checks.length;i++) {
+				checks[i].checked = allCheck.checked;
+				if (allCheck.checked == true) {
+					checks[i].parentNode.className = "checked";
+				}else{
+					checks[i].parentNode.className = "";
+				}
+			}
+		}
+	}
 
+	function generatorDataByOldPacket(){
+		var checks = document.getElementsByName("dataIds");
+		var oldPacketId = "";
+		var checkedCount = 0;
+		for(var i=0;i<checks.length;i++){
+			if(checks[i].checked==true){
+				checkedCount ++;
+				if(oldPacketId==""){
+					oldPacketId = checks[i].value;
+				}
+			}
+		}
+		if(checkedCount == 0){
+			showTip("提示","请选择一个数据包",2000);
+			return;
+		}
+		if(checkedCount>1){
+			showTip("提示","生成基于原有数据包只能选择一个数据包",2000);
+			return;
+		}
+		window.location.href ="${path }/zzb/app/console/gendata/loadGeneratorByoldPacket?oldPacketId="+oldPacketId;
+	}
 	function pagehref (pageNum ,pageSize){
 		window.location.href ="${path}/zzb/app/console/gendata/?pageNum="+pageNum+"&pageSize="+pageSize;
 	}
@@ -98,6 +157,32 @@
 
 	var del = function(id,itemName){
 		actionByConfirm1(itemName+"的数据包", "${path}/zzb/app/console/gendata/delete/" + id,{} ,function(data,status){
+			if (data.success == true) {
+				showTip("提示","删除成功", 2000);
+				setTimeout(function(){window.location.href = "${path}/zzb/app/console/gendata/"},2000);
+			}else{
+				showTip("提示", data.message, 2000);
+			}
+		});
+	};
+
+	var delMore = function(){
+		var checks = document.getElementsByName("dataIds");
+		var delIds = "";
+		for(var i=0;i<checks.length;i++){
+			if(checks[i].checked==true){
+				if(delIds==""){
+					delIds = checks[i].value;
+				}else{
+					delIds =delIds+","+checks[i].value;
+				}
+			}
+		}
+		if(delIds==""){
+			showTip("提示","请选择要删除的数据包",2000);
+			return;
+		}
+		actionByConfirm1("选择的数据包", "${path}/zzb/app/console/gendata/delete/" + delIds,{} ,function(data,status){
 			if (data.success == true) {
 				showTip("提示","删除成功", 2000);
 				setTimeout(function(){window.location.href = "${path}/zzb/app/console/gendata/"},2000);
