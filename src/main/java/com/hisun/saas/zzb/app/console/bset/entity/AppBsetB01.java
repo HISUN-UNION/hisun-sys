@@ -2,6 +2,7 @@ package com.hisun.saas.zzb.app.console.bset.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA02;
+import com.hisun.saas.zzb.app.console.zscx.entity.AppZscxZs;
 import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
@@ -40,6 +41,10 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
 
     @OneToMany(mappedBy = "appBsetB01", fetch = FetchType.LAZY)
     private List<AppBsetFl2B01> appBsetFl2B01s;
+
+    @OneToMany(mappedBy = "appBsetB01",fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<AppZscxZs> appZscxZses;
 
     @Column(name = "query_code")
     private String queryCode;
@@ -120,6 +125,14 @@ public class AppBsetB01 extends TenantEntity implements Serializable {
 
     public void setQueryCode(String queryCode) {
         this.queryCode = queryCode;
+    }
+
+    public List<AppZscxZs> getAppZscxZses() {
+        return appZscxZses;
+    }
+
+    public void setAppZscxZses(List<AppZscxZs> appZscxZses) {
+        this.appZscxZses = appZscxZses;
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.hisun.saas.zzb.app.console.shpc.service.impl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hisun.base.dao.BaseDao;
+import com.hisun.base.dao.util.CommonConditionQuery;
+import com.hisun.base.dao.util.CommonRestrictions;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
@@ -193,5 +195,33 @@ public class Sha01ServiceImpl extends BaseServiceImpl<Sha01,String> implements S
 
         sb.append(")");
         return sb.toString();
+    }
+
+
+
+    public void matchQueryCondition(CommonConditionQuery query, String uploadMatchingMode, String split, String filename){
+        //按姓名匹配
+        if(uploadMatchingMode!=null && uploadMatchingMode.equals("1")) {
+            query.add(CommonRestrictions.and(" instr( :fname , Sha01.xm) >0", "fname",
+                    filename.replace(".","")));
+            //query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%" + xm + "%"));
+        }else{
+            //按序号匹配
+            int px =-1;
+            if(com.hisun.util.StringUtils.isEmpty(split)==false) {
+                if (filename.indexOf(split) > 0) {
+                    try {
+                        px = Integer.parseInt(filename.substring(0, filename.indexOf(split)));
+                    } catch (Exception e) {}
+                }
+            }else{
+                //尝试用.去分隔
+                try {
+                    px = Integer.parseInt(filename.substring(0, filename.indexOf(".")));
+                } catch (Exception e) {
+                }
+            }
+            query.add(CommonRestrictions.and(" px = :px", "px", px));
+        }
     }
 }

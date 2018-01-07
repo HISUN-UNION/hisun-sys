@@ -26,10 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -47,28 +44,28 @@ public class Sha01gbrmspbController extends BaseController {
     private String uploadAbsolutePath;
 
 
-
-    @RequestMapping(value="/ajax/uploadFile")
-    public @ResponseBody
-    Map<String,Object> upload(String sha01Id, @RequestParam(value="gbrmspbFile",required=false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @RequestMapping(value = "/ajax/uploadFile")
+    public
+    @ResponseBody
+    Map<String, Object> upload(String sha01Id, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file, HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-        Map<String,Object> map = new HashMap<String,Object>();
-        if(file==null || file.isEmpty()){
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (file == null || file.isEmpty()) {
             map.put("code", -1);
             map.put("message", "文件没有内容");
             return map;
         }
 
-        try{
+        try {
             String fileName = file.getOriginalFilename();
-            if(fileName.endsWith(".doc") ||fileName.endsWith(".DOC") ||fileName.endsWith(".docx") ||fileName.endsWith(".DOCX") ){
-                String fileDir = uploadAbsolutePath+Sha01gbrmspbService.ATTS_PATH;
-                File _fileDir = new File( fileDir);
+            if (fileName.endsWith(".doc") || fileName.endsWith(".DOC") || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
+                String fileDir = uploadAbsolutePath + Sha01gbrmspbService.ATTS_PATH;
+                File _fileDir = new File(fileDir);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
                 //原附件存储路径
-                String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID()+"_"+fileName;
+                String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID() + "_" + fileName;
                 String saveRealPath = uploadAbsolutePath + savePath;
 
                 //模板路径
@@ -83,29 +80,29 @@ public class Sha01gbrmspbController extends BaseController {
                     Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
                     sha01gbrmspb.setFilepath(savePath);
                     sha01gbrmspb.setSha01(sha01);
-                    this.sha01gbrmspbService.saveFromWord(sha01gbrmspb ,saveRealPath,wordTemplatePath);
+                    this.sha01gbrmspbService.saveFromWord(sha01gbrmspb, saveRealPath, wordTemplatePath);
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);
                 }
-            }else{
+            } else {
                 map.put("code", -1);
                 map.put("message", "请上传word!");
                 return map;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             map.put("code", -1);
             map.put("message", "读取文件错误!");
             return map;
         }
-        try{
+        try {
 
-        }catch(GenericException e){
+        } catch (GenericException e) {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", e.getMessage());
             return map;
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", "系统错误，请联系管理员");
@@ -117,7 +114,6 @@ public class Sha01gbrmspbController extends BaseController {
 
 
     /**
-     *
      * @param shpcId
      * @param uploadMatchingMode //批量上传匹配方式 0按序号匹配 1按姓名匹配
      * @param file
@@ -126,66 +122,49 @@ public class Sha01gbrmspbController extends BaseController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value="/ajax/batch/upload")
-    public @ResponseBody
-    Map<String,Object> batchUpload(String shpcId, String uploadMatchingMode,@RequestParam(value="gbrmspbFile",required=false) MultipartFile file,
-                                   HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    @RequestMapping(value = "/ajax/batch/upload")
+    public
+    @ResponseBody
+    Map<String, Object> batchUpload(String shpcId, String uploadMatchingMode, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
+                                    HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-        Map<String,Object> map = new HashMap<String,Object>();
-        if(file==null || file.isEmpty()){
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (file == null || file.isEmpty()) {
             map.put("code", -1);
             map.put("message", "文件没有内容");
             return map;
 
         }
         //模板路径
-        String gbrmsbpAttsPath = uploadAbsolutePath+ Sha01gbrmspbService.ATTS_PATH;
+        String gbrmsbpAttsPath = uploadAbsolutePath + Sha01gbrmspbService.ATTS_PATH;
         String wordTemplatePath = gbrmsbpAttsPath + "gbrmspb.docx";
-        try{
+        try {
             String fileName = file.getOriginalFilename();
-            if(fileName.toLowerCase().endsWith(".zip")){
+            if (fileName.toLowerCase().endsWith(".zip")) {
                 File _fileDir = new File(gbrmsbpAttsPath);
                 if (_fileDir.exists() == false) {
                     _fileDir.mkdirs();
                 }
                 //原zip存储路径
-                String zipFilePath = gbrmsbpAttsPath + UUIDUtil.getUUID()+".zip";
+                String zipFilePath = gbrmsbpAttsPath + UUIDUtil.getUUID() + ".zip";
                 File zipFile = new File(zipFilePath);
                 FileOutputStream fos = new FileOutputStream(zipFile);
                 fos.write(file.getBytes());
                 fos.flush();
                 fos.close();
 
-                String tmpFilePath =  gbrmsbpAttsPath+UUIDUtil.getUUID()+File.separator;
+                String tmpFilePath = gbrmsbpAttsPath + UUIDUtil.getUUID() + File.separator;
                 //解压到临时目录
-                CompressUtil.unzip(zipFilePath,tmpFilePath);
+                CompressUtil.unzip(zipFilePath, tmpFilePath);
                 //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
                 File tempFiles = new File(tmpFilePath);
-                if(tempFiles!=null){
-                    for(File f : tempFiles.listFiles()){
-                        if(f.isDirectory()) continue;//如果是目录则跳过
-                        String fname = f.getName();
+                if (tempFiles != null) {
+                    for (File f : tempFiles.listFiles()) {
+                        if (f.isDirectory()) continue;//如果是目录则跳过
+                        String filename = f.getName();
                         CommonConditionQuery query = new CommonConditionQuery();
                         //按姓名匹配
-                        if(uploadMatchingMode!=null && uploadMatchingMode.equals("1")) {
-                            String xm = fname.substring(0, fname.lastIndexOf("."));
-                            query.add(CommonRestrictions.and(" instr( :xm , Sha01.xm) >0", "xm", "%" + xm + "%"));
-                            //query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%" + xm + "%"));
-                        }else{
-                            //按序号匹配
-                            int px =-1;
-                            if(fname.indexOf(".")>0){
-                                try {
-                                    px = Integer.parseInt(fname.substring(0, fname.indexOf(".")));
-                                }catch(Exception e){}
-                            }
-                            if(px==-1&& fname.indexOf("、")>0){
-                                try {
-                                    px = Integer.parseInt(fname.substring(0, fname.indexOf("、")));
-                                }catch(Exception e){}
-                            }
-                            query.add(CommonRestrictions.and(" px = :px", "px", px));
-                        }
+                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, null, filename);
                         query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
                         query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
                         List<Sha01> sha01s = this.sha01Service.list(query, null);
@@ -218,26 +197,26 @@ public class Sha01gbrmspbController extends BaseController {
 //                sha01gbrmspb.setFilepath(savePath);
 //                sha01gbrmspb.setSha01(sha01);
 //                this.sha01gbrmspbService.saveFromWord(sha01gbrmspb ,savePath,wordTemplatePath);
-            }else{
+            } else {
                 map.put("code", -1);
                 map.put("message", "请上传ZIP!");
                 return map;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
 
             map.put("code", -1);
             map.put("message", "读取文件错误!");
             return map;
         }
-        try{
+        try {
 
-        }catch(GenericException e){
+        } catch (GenericException e) {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", e.getMessage());
             return map;
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", "系统错误，请联系管理员");
@@ -248,24 +227,168 @@ public class Sha01gbrmspbController extends BaseController {
     }
 
 
+    @RequestMapping(value = "/ajax/batch/match/save")
+    public
+    @ResponseBody
+    Map<String, Object> matchSave(String shpcId, String uploadMatchingMode, String tmpFilePath,
+                                  HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (tmpFilePath == null || tmpFilePath.isEmpty()) {
+            map.put("code", -1);
+            map.put("message", "文件没有内容");
+            return map;
+
+        }
+        //模板路径
+        String gbrmsbpAttsPath = uploadAbsolutePath + Sha01gbrmspbService.ATTS_PATH;
+        String wordTemplatePath = gbrmsbpAttsPath + "gbrmspb.docx";
+        try {
+                //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
+                File tempFiles = new File(tmpFilePath);
+                if (tempFiles != null) {
+                    for (File f : tempFiles.listFiles()) {
+                        if (f.isDirectory()) continue;//如果是目录则跳过
+                        String filename = f.getName();
+                        CommonConditionQuery query = new CommonConditionQuery();
+                        //按姓名匹配
+                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, null, filename);
+                        query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
+                        query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+                        List<Sha01> sha01s = this.sha01Service.list(query, null);
+                        if (sha01s != null && sha01s.size() > 0) {
+                            String ext = f.getName().substring(f.getName().lastIndexOf("."));
+                            String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID() + ext;
+                            String saveRealPath = uploadAbsolutePath + savePath;
+                            File desFile = new File(saveRealPath);
+                            FileUtils.copyFile(f, desFile);
+                            Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
+                            sha01gbrmspb.setFilepath(savePath);
+                            sha01gbrmspb.setSha01(sha01s.get(0));
+                            this.sha01gbrmspbService.saveFromWord(sha01gbrmspb, saveRealPath, wordTemplatePath);
+                        }
+                    }
+                }
+                FileUtils.deleteDirectory(tempFiles);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            map.put("code", -1);
+            map.put("message", "读取文件错误!");
+            return map;
+        }
+        map.put("code", 1);
+        return map;
+    }
 
 
-    @RequestMapping(value="/ajax/down")
-    public void templateDown(String sha01Id,HttpServletRequest req, HttpServletResponse resp) throws Exception{
+    @RequestMapping(value = "/ajax/batch/match")
+    public
+    @ResponseBody
+    Map<String, Object> batchMatch(String shpcId, String
+            uploadMatchingMode, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
+                                   HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        Map<String, String> matchMap = new LinkedHashMap<>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (file == null || file.isEmpty()) {
+            map.put("code", -1);
+            map.put("message", "文件没有内容");
+            return map;
+
+        }
+        //模板路径
+        String gbrmsbpAttsPath = uploadAbsolutePath + Sha01gbrmspbService.ATTS_PATH;
+        String wordTemplatePath = gbrmsbpAttsPath + "gbrmspb.docx";
+        try {
+            String fileName = file.getOriginalFilename();
+            if (fileName.toLowerCase().endsWith(".zip")) {
+                File _fileDir = new File(gbrmsbpAttsPath);
+                if (_fileDir.exists() == false) {
+                    _fileDir.mkdirs();
+                }
+                //原zip存储路径
+                String zipFilePath = gbrmsbpAttsPath + UUIDUtil.getUUID() + ".zip";
+                File zipFile = new File(zipFilePath);
+                FileOutputStream fos = new FileOutputStream(zipFile);
+                fos.write(file.getBytes());
+                fos.flush();
+                fos.close();
+
+                String tmpFilePath = gbrmsbpAttsPath + UUIDUtil.getUUID() + File.separator;
+                //解压到临时目录
+                CompressUtil.unzip(zipFilePath, tmpFilePath);
+                //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
+                File tempFiles = new File(tmpFilePath);
+                int filecount = 0;
+                if (tempFiles != null) {
+                    for (File f : tempFiles.listFiles()) {
+                        if (f.isDirectory()) continue;//如果是目录则跳过
+                        String filename = f.getName();
+                        CommonConditionQuery query = new CommonConditionQuery();
+                        //按姓名匹配
+                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, null, filename);
+                        query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
+                        query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+                        List<Sha01> sha01s = this.sha01Service.list(query, null);
+                        if (sha01s != null && sha01s.size() > 0) {
+                            matchMap.put(sha01s.get(0).getXm(), filename);
+                            filecount++;
+                        }
+                    }
+                }
+                map.put("tmpFilePath", tmpFilePath);
+                map.put("fileCount", filecount);
+                map.put("matchCount", matchMap.size());
+                map.put("matchResult", matchMap);
+                FileUtils.deleteQuietly(zipFile);
+            } else {
+                map.put("code", -1);
+                map.put("message", "请上传ZIP!");
+                return map;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            map.put("code", -1);
+            map.put("message", "读取文件错误!");
+            return map;
+        }
+        try {
+
+        } catch (GenericException e) {
+            logger.error(e, e);
+            map.put("code", -1);
+            map.put("message", e.getMessage());
+            return map;
+        } catch (Exception e) {
+            logger.error(e, e);
+            map.put("code", -1);
+            map.put("message", "系统错误，请联系管理员");
+            return map;
+        }
+        map.put("code", 1);
+        return map;
+    }
+
+
+    @RequestMapping(value = "/ajax/down")
+    public void templateDown(String sha01Id, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
-        if(sha01.getGbrmspbs()!=null &&sha01.getGbrmspbs().size()>0){//修改
+        if (sha01.getGbrmspbs() != null && sha01.getGbrmspbs().size() > 0) {//修改
             Sha01gbrmspb sha01gbrmspb = sha01.getGbrmspbs().get(0);
             resp.setContentType("multipart/form-data");
             //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
-            resp.setHeader("Content-Disposition", "attachment;fileName="+encode(sha01gbrmspb.getFilepath().substring(sha01gbrmspb.getFilepath().lastIndexOf(File.separator)+1)));
-            OutputStream output=resp.getOutputStream();
-            byte[] b= FileUtils.readFileToByteArray(new File(uploadAbsolutePath+sha01gbrmspb.getFilepath()));
+            resp.setHeader("Content-Disposition", "attachment;fileName=" + encode(sha01gbrmspb.getFilepath().substring(sha01gbrmspb.getFilepath().lastIndexOf(File.separator) + 1)));
+            OutputStream output = resp.getOutputStream();
+            byte[] b = FileUtils.readFileToByteArray(new File(uploadAbsolutePath + sha01gbrmspb.getFilepath()));
             output.write(b);
             output.flush();
             output.close();
         }
 
     }
+
     private String encode(String filename) throws UnsupportedEncodingException {
         if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
             filename = URLEncoder.encode(filename, "UTF-8");
@@ -275,5 +398,5 @@ public class Sha01gbrmspbController extends BaseController {
         return filename;
     }
 
-    
+
 }

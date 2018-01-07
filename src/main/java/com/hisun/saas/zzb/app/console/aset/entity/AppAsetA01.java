@@ -1,6 +1,7 @@
 package com.hisun.saas.zzb.app.console.aset.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.zzb.app.console.zscx.entity.AppZscxZsA01;
 import com.hisun.util.DateUtil;
 import com.hisun.util.StringUtils;
 import org.hibernate.annotations.Cascade;
@@ -106,6 +107,10 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     @OrderBy("shgx_px asc ")
     private List<AppAsetA36> appAsetA36s;
+
+    @OneToMany(mappedBy = "appAsetA01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<AppZscxZsA01> appZscxZsA01s;
 
 
     public String getId() {
@@ -411,6 +416,11 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
         this.appAsetA36s = appAsetA36s;
     }
 
+    public List<AppZscxZsA01> getAppZscxZsA01s() {
+        return appZscxZsA01s;
+    }
 
-
+    public void setAppZscxZsA01s(List<AppZscxZsA01> appZscxZsA01s) {
+        this.appZscxZsA01s = appZscxZsA01s;
+    }
 }

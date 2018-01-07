@@ -1,6 +1,7 @@
 package com.hisun.saas.zzb.app.console.zscx.entity;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -30,7 +31,8 @@ public class AppZscxZs extends TenantEntity implements Serializable {
 
     @ManyToOne(optional = true,fetch = FetchType.LAZY)
     @JoinColumn(name = "b01_id")
-    private AppZscxB01 appZscxB01;
+    private AppBsetB01 appBsetB01;
+
     @OneToMany(mappedBy = "appZscxZs",fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<AppZscxZsA01> appZscxZsA01s;
@@ -84,15 +86,13 @@ public class AppZscxZs extends TenantEntity implements Serializable {
         this.cqb = cqb;
     }
 
-
-    public AppZscxB01 getAppZscxB01() {
-        return appZscxB01;
+    public AppBsetB01 getAppBsetB01() {
+        return appBsetB01;
     }
 
-    public void setAppZscxB01(AppZscxB01 appZscxB01) {
-        this.appZscxB01 = appZscxB01;
+    public void setAppBsetB01(AppBsetB01 appBsetB01) {
+        this.appBsetB01 = appBsetB01;
     }
-
 
     public List<AppZscxZsA01> getAppZscxZsA01s() {
         return appZscxZsA01s;

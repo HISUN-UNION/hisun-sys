@@ -16,6 +16,7 @@ import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
 import com.hisun.saas.zzb.app.console.shtp.service.ShtpsjService;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.FileUtil;
+import com.hisun.util.StringUtils;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WordUtil;
 import org.apache.commons.beanutils.BeanUtils;
@@ -377,5 +378,8 @@ public class Sha01Controller extends BaseController {
         return map;
 
     }
+
+
+
 
 }

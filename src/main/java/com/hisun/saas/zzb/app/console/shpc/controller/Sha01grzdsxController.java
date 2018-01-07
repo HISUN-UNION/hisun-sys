@@ -187,9 +187,8 @@ public class Sha01grzdsxController extends BaseController {
                         CommonConditionQuery query = new CommonConditionQuery();
                         //按姓名匹配
                         if(uploadMatchingMode!=null && uploadMatchingMode.equals("1")) {
-                            String xm = fname.substring(0, fname.lastIndexOf("."));
-                            query.add(CommonRestrictions.and(" instr( :xm , Sha01.xm) >0", "xm", "%" + xm + "%"));
-                            //query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%" + xm + "%"));
+                            query.add(CommonRestrictions.and(" instr( :fname , Sha01.xm) >0", "fname",
+                                    fname.replace(".","")));
                         }else{
                             //按序号匹配
                             int px =-1;
