@@ -290,6 +290,7 @@ public class Sha01gbrmspbController extends BaseController {
                                    HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, String> matchMap = new LinkedHashMap<>();
+        List<String> noMatchFilenames = new ArrayList<String>();
         Map<String, Object> map = new HashMap<String, Object>();
         if (file == null || file.isEmpty()) {
             map.put("code", -1);
@@ -333,14 +334,17 @@ public class Sha01gbrmspbController extends BaseController {
                         List<Sha01> sha01s = this.sha01Service.list(query, null);
                         if (sha01s != null && sha01s.size() > 0) {
                             matchMap.put(sha01s.get(0).getXm(), filename);
-                            filecount++;
+                        }else{
+                            noMatchFilenames.add(filename);
                         }
+                        filecount++;
                     }
                 }
                 map.put("tmpFilePath", tmpFilePath);
                 map.put("fileCount", filecount);
                 map.put("matchCount", matchMap.size());
                 map.put("matchResult", matchMap);
+                map.put("noMatchFilenames",noMatchFilenames);
                 FileUtils.deleteQuietly(zipFile);
             } else {
                 map.put("code", -1);
