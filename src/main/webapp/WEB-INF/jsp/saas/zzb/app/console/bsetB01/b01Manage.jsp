@@ -99,7 +99,7 @@
 				<%--<li id="m_add" onclick="addTreeNode('1');">添加分类</li>--%>
 				<%--<li id="mJG_add" onclick="addTreeNode('0');">添加机构</li>--%>
 				<%--<li id="m_eddit" onclick="editTreeNode()">修改</li>--%>
-				<%--<li id="m_del" onclick="deleteTreeNode();">删除</li>--%>
+				<li id="m_del" onclick="deleteTreeNode();">删除</li>
 			</ul>
 		</div>
 		<input type="hidden" id="treeId" value="">
@@ -569,13 +569,13 @@
 	function showRMenu(type, x, y, haveStart) {
 		$("#rMenu ul").show();
 //		if (type=="root") {
-//			$("#m_del").hide();
+			$("#m_del").hide();
 //			$("#m_eddit").hide();
 //			$("#m_add").show();
 //			$("#mJG_add").show();
 //		} else{
 //			$("#mJG_add").show();
-//			$("#m_del").show();
+			$("#m_del").show();
 //			$("#m_eddit").show();
 //			$("#m_add").show();
 //

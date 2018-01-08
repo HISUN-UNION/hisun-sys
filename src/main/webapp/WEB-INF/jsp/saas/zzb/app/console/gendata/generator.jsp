@@ -46,7 +46,7 @@
 		<div id="packetNameGroup" class="control-group">
 			<label class="control-label" style="width:100px">数据包名称<span class="required">*</span></label>
 			<div class="controls" style="margin-left:100px">
-				<input type="text" class="span6 m-wrap" name="packetName" required maxlength="200" id="packetName" />
+				<input type="text" class="span6 m-wrap" name="packetName" required maxlength="200" id="packetName" value="${packetName}" />
 			</div>
 
 		</div>
