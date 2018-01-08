@@ -68,7 +68,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
     public String saveAppInitData(Gendata gendata) throws Exception {
         //初始化数据目录
         String uuid = UUIDUtil.getUUID();
-        String dataDir = uploadAbsolutePath + GendataService.DATA_PATH + uuid + File.separator;
+        String dataDir = uploadAbsolutePath + GendataService.DATA_PATH + uuid;
         String appDataZipPath = GendataService.DATA_PATH + UUIDUtil.getUUID() + ".zip";
         String appDataZipRealPath = uploadAbsolutePath + appDataZipPath;
 
@@ -81,14 +81,14 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         dirs.add(attsdir);
         //初始化非机构化数据存储目录
         this.initAppStoreDir(dirs);
-        String sqliteDB = dbdir + GendataService.SQLITE_DB_NAME;
+        String sqliteDB = dbdir + File.separator+GendataService.SQLITE_DB_NAME;
         //初始化sqlite数据库
         this.initAppSqliteDB(sqliteDB);
         //生成配置数据包
-        this.newAppConfigData(dbdir + GendataService.SQLITE_DB_NAME);
+        this.newAppConfigData(sqliteDB);
 
         //压缩数据文件
-        CompressUtil.zip(appDataZipRealPath, dataDir, GendataService.DATA_PACKET_NAME);
+        CompressUtil.zip(appDataZipRealPath, dataDir+File.separator, GendataService.DATA_PACKET_NAME);
         gendata.setPath(appDataZipPath);
 
         File f = new File(appDataZipRealPath);
@@ -108,7 +108,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         //初始化数据目录
         String uuid = UUIDUtil.getUUID();
-        String dataDir = uploadAbsolutePath + GendataService.DATA_PATH + uuid + File.separator;
+        String dataDir = uploadAbsolutePath + GendataService.DATA_PATH + uuid ;
         String appDataZipPath = GendataService.DATA_PATH + UUIDUtil.getUUID() + ".zip";
         String appDataZipRealPath = uploadAbsolutePath + appDataZipPath;
 
@@ -121,15 +121,15 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         dirs.add(attsdir);
         //初始化非机构化数据存储目录
         this.initAppStoreDir(dirs);
-        String sqliteDB = dbdir + GendataService.SQLITE_DB_NAME;
+        String sqliteDB = dbdir + File.separator+GendataService.SQLITE_DB_NAME;
         //初始化sqlite数据库
         this.initAppSqliteDB(sqliteDB);
         //根据页面选择,生成业务数据包
         this.newAppData(gendata,selectedMap,sqliteDB,imgdir,attsdir);
         //生成配置数据包
-        this.newAppConfigData(dbdir + GendataService.SQLITE_DB_NAME);
+        this.newAppConfigData(sqliteDB);
         //压缩数据文件
-        CompressUtil.zip(appDataZipRealPath, dataDir, GendataService.DATA_PACKET_NAME);
+        CompressUtil.zip(appDataZipRealPath, dataDir+File.separator, GendataService.DATA_PACKET_NAME);
         gendata.setPath(appDataZipPath);
 
         File f = new File(appDataZipRealPath);
@@ -231,9 +231,9 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
             if(oldPacketFile.exists()){
                 //解压原有数据包到指定目录
                 String uuid = UUIDUtil.getUUID();
-                String unzipDir = uploadAbsolutePath + GendataService.DATA_PATH + uuid+File.separator;
-                CompressUtil.unzip(oldPacketFile.getAbsolutePath(),unzipDir);
-                String oldDataDir = unzipDir+GendataService.DATA_PACKET_NAME+File.separator;
+                String unzipDir = uploadAbsolutePath + GendataService.DATA_PATH + uuid;
+                CompressUtil.unzip(oldPacketFile.getAbsolutePath(),unzipDir+File.separator);
+                String oldDataDir = unzipDir+File.separator+GendataService.DATA_PACKET_NAME+File.separator;
                 List<String> dirs = new ArrayList<>();
                 String imgdir = oldDataDir+ GendataService.IMG_PATH;
                 dirs.add(imgdir);
@@ -351,7 +351,10 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         for(String sql : clearSqls){
             sqliteDBUtil.update(sqliteDB,sql);
         }
-        FileUtils.deleteDirectory(new File(storePath+GendataService.ATTS_PATH+ShpcService.ATTS_PATH));
+        String attspath = storePath+GendataService.ATTS_PATH+ShpcService.ATTS_PATH;
+        String imgpath = storePath+GendataService.IMG_PATH+ShpcService.ATTS_PATH;
+        FileUtils.deleteDirectory(new File(attspath));
+        FileUtils.deleteDirectory(new File(imgpath));
     }
 
     private void clearGbmcDataInSqliteDB(String sqliteDB,String storePath) throws SQLException,

@@ -12,11 +12,11 @@ import java.util.Map;
 public interface GendataService extends BaseService<Gendata,String>{
 
    public static String DATA_PATH = File.separator+"appdata"+File.separator;
-   public static String IMG_PATH="img"+File.separator;
+   public static String IMG_PATH=File.separator+"img"+File.separator;
    public static String APP_IMG_PATH="img/";
-   public static String ATTS_PATH="atts"+File.separator;
+   public static String ATTS_PATH=File.separator+"atts"+File.separator;
    public static String APP_ATTS_PATH="atts/";
-   public static String DB_PATH="db"+File.separator;
+   public static String DB_PATH=File.separator+"db"+File.separator;
    public static String APP_DB_PATH="db/";
    public static String SQLITE_DB_NAME="zzb-app.db";
    public static String DATA_PACKET_NAME="zzb-app-android";
