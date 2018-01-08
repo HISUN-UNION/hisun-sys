@@ -355,9 +355,10 @@
 		dataType = treeNode.dataType;
 		if(treeNode==null || dataType != "fl") {
 			loadRightPage(treeNode.id);
-		}else if(treeNode.getParentNode()==null ||treeNode.getParentNode()==undefined){
-			loadRightPage("allA01");
 		}
+//		else if(treeNode.getParentNode()==null ||treeNode.getParentNode()==undefined){
+//			loadRightPage("allA01");
+//		}
 	}
 
 	function pagehref(pageNum ,pageSize){

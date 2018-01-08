@@ -21,6 +21,8 @@ import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01Vo;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.saas.zzb.app.console.util.GzjlUtil;
+import com.hisun.saas.zzb.app.console.zscx.entity.AppZscxZs;
+import com.hisun.saas.zzb.app.console.zscx.service.AppZscxZsService;
 import com.hisun.util.DateUtil;
 import com.hisun.util.UUIDUtil;
 import com.hisun.util.WebUtil;
@@ -59,6 +61,9 @@ public class AppAsetA01Controller extends BaseController {
     private AppAsetA02Service appAsetA02Service;
     @Resource
     private AppBsetB01Service appBsetB01Service;
+
+    @Resource
+    private AppZscxZsService appZscxZsService;
 
     @Value("${upload.absolute.path}")
     private String uploadAbsolutePath;
@@ -105,17 +110,6 @@ public class AppAsetA01Controller extends BaseController {
             for (AppAsetA01 a01 : appAsetA01s) {
                 AppAsetA01Vo vo = new AppAsetA01Vo();
                 BeanUtils.copyProperties(vo, a01);
-//                List<AppAsetA02Vo> appAsetA02Vos = new ArrayList<AppAsetA02Vo>();
-//                List<AppAsetA02> appAsetA02s = a01.getAppAsetA02s();
-//                if(appAsetA02s!=null){
-//                    for(AppAsetA02 a02 : appAsetA02s){
-//                        AppAsetA02Vo a02Vo = new AppAsetA02Vo();
-//                        BeanUtils.copyProperties(a02Vo, a02);
-//                        a02Vo.setB0101(a02.getAppBsetB01().getB0101());
-//                        appAsetA02Vos.add(a02Vo);
-//                    }
-//                }
-//                vo.setAppAsetA02Vos(appAsetA02Vos);
                 appAsetA01Vos.add(vo);
             }
             PagerVo<AppAsetA01Vo> pagerVo = new PagerVo<AppAsetA01Vo>(appAsetA01Vos, total, pageNum, pageSize);
@@ -130,6 +124,53 @@ public class AppAsetA01Controller extends BaseController {
             map.put("success", false);
         }
         return new ModelAndView("saas/zzb/app/console/asetA01/a01/list", map);
+
+    }
+
+    @RequestMapping(value = "/ajax/listByZscx")
+    public ModelAndView getListByZscx(String b01Id,String zsId, String xmQuery,
+                                @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        Map<String, Object> map = Maps.newHashMap();
+        try {
+            List<Object> paramList = Lists.newArrayList();
+            String hql = " from AppAsetA01 a01 inner join a01.appZscxZsA01s zsA01 inner join zsA01.appZscxZs zs where 1=1 ";
+            String zwmc = "";
+            if (StringUtils.isNotBlank(zsId)) {
+                paramList.add(zsId);
+                hql = hql + " and zs.id = ?";
+                AppZscxZs appZscxZs = this.appZscxZsService.getByPK(zsId);
+                zwmc = appZscxZs.getZwmc();
+            }
+
+            if (xmQuery != null && !xmQuery.equals("")) {
+                paramList.add("%" + xmQuery + "%");
+                hql = hql + " and a01.xm like ?";
+            }
+            hql = hql + " and a01.tombstone =? order by a01.a01Px ";
+            paramList.add(0);
+            int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
+            List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql, paramList, pageNum,
+                    pageSize);
+            List<AppAsetA01Vo> appAsetA01Vos = new ArrayList<AppAsetA01Vo>();
+            for (AppAsetA01 a01 : appAsetA01s) {
+                AppAsetA01Vo vo = new AppAsetA01Vo();
+                BeanUtils.copyProperties(vo, a01);
+                appAsetA01Vos.add(vo);
+            }
+            PagerVo<AppAsetA01Vo> pagerVo = new PagerVo<AppAsetA01Vo>(appAsetA01Vos, total, pageNum, pageSize);
+
+            map.put("pager", pagerVo);
+            map.put("b01Id", b01Id);
+            map.put("zsId", zsId);
+            map.put("xmQuery", xmQuery);
+            map.put("zwmc", zwmc);
+            map.put("success", true);
+        } catch (Exception e) {
+            logger.error(e, e);
+            map.put("success", false);
+        }
+        return new ModelAndView("saas/zzb/app/console/zscx/a01/list", map);
 
     }
 
@@ -266,7 +307,31 @@ public class AppAsetA01Controller extends BaseController {
         }
         return new ModelAndView("/saas/zzb/app/console/asetA01/a01/view", map);
     }
+    @RequestMapping(value = "ajax/viewByZscx")
+    public ModelAndView viewByZscx(@RequestParam(value = "id") String id, @RequestParam(value = "b01Id") String b01Id,@RequestParam(value = "zsId") String zsId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            AppAsetA01 a01 = this.appAsetA01Service.getByPK(id);
+            AppAsetA01Vo a01Vo = new AppAsetA01Vo();
+            if (a01 == null) {
+                logger.error("数据不存在");
+                throw new GenericException("数据不存在");
+            }
+            BeanUtils.copyProperties(a01Vo, a01);
+            if (a01.getGzjlStr() != null && !a01.getGzjlStr().equals("")) {
+                a01Vo.setGzjlStrs(GzjlUtil.matchGzjlStr(a01.getGzjlStr()));
+            }
+            map.put("a01Vo", a01Vo);
+            map.put("b01Id", b01Id);
+            map.put("zsId", zsId);
 
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("msg", "查看失败！");
+            throw new GenericException(e);
+        }
+        return new ModelAndView("/saas/zzb/app/console/zscx/a01/view", map);
+    }
     /**
      * 保存信息
      *
