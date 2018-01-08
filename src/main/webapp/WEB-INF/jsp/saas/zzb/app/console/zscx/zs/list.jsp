@@ -270,7 +270,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/appZscxZsA01/ajax/list",
+			url:"${path}/zzb/app/console/asetA01/ajax/listByZscx",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'

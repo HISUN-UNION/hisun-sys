@@ -32,27 +32,30 @@
     <div class="mainone">
 
         <div class="mainoneleft">
-            <img class="imgtp" width="180" height="200" src="${path}/zzb/app/console/appZscxZsA01/${a01Vo.id}/photo?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" />
+            <img class="imgtp" width="180" height="200" src="${path}/zzb/app/console/asetA01/${a01Vo.id}/photo?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}" />
         </div>
         <div class="clearfix fr">
-            <a class="btn red" href="javascript:del('${a01Vo.xm }')"><i class=" icon-remove-sign"></i>删除</a>
+            <%--<a class="btn red" href="javascript:del('${a01Vo.xm }')"><i class=" icon-remove-sign"></i>删除</a>--%>
+            <a class="btn blue" herf="javascript:void(0)" onclick="fileDown()"><i
+                    class="icon-circle-arrow-down"></i>干部任免审批表</a>
+
             <a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
         </div>
-        <div class="mainoneright">
-            <div class="Fullname">${a01Vo.xm}aaa</div>
-            <div class="gerenintrodu">${a01Vo.csny}生，${a01Vo.jg}人，${a01Vo.cjgzsj}参加工作，${a01Vo.rdsj}加入中国共产党。</div>
+        <div class="mainoneright" style="width: 560px;">
+            <div class="Fullname">${a01Vo.xm}</div>
+            <div class="gerenintrodu">${a01Vo.csnyStr}生，${a01Vo.jg}人，${a01Vo.cjgzsjStr}参加工作，${a01Vo.rdsjStr}加入中国共产党。</div>
             <ul class="ulonleftjx">
-                <li><span>全日制学历学位及专业：</span>${a01Vo.qrzxlxwjzy}</li>
-                <li><span>&nbsp;&nbsp;&nbsp;在职学历学位及专业：</span>${a01Vo.zzxlxwjzy}</li>
+                <li><span>全日制学历学位及专业：</span>${a01Vo.gbrmspbQrzxlxw}${a01Vo.gbrmspbQrzByyxAndZy}</li>
+                <li><span>&nbsp;&nbsp;&nbsp;在职学历学位及专业：</span></span>${a01Vo.gbrmspbZzxlxw}${a01Vo.gbrmspbZzByyxAndZy}</li>
             </ul>
         </div>
     </div>
-    <%--<div class="maintwo">--%>
-        <%--<h1 class="tith1">工作经历</h1>--%>
-        <%--<c:forEach items="${a01Vo.gzjlVos}" var="vo">--%>
-            <%--<p><c:out value="${vo.jlsm}"></c:out></p>--%>
-        <%--</c:forEach>--%>
-    <%--</div>--%>
+    <div class="maintwo">
+        <h1 class="tith1">工作经历</h1>
+        <c:forEach items="${a01Vo.gzjlStrs}" var="gzjlStr">
+            <p>${gzjlStr}</p>
+        </c:forEach>
+    </div>
 
 </div>
 
@@ -119,13 +122,17 @@
         });
     }
 
-    function gbrmspbDown() {
-        window.open("${path }/zzb/app/console/GbMca01/gbrmspb/ajax/down?gbMcA01Id=${a01Vo.id}");
+    function fileDown() {
+        //if("${a01Vo.filepath}"==""){
+        //     showTip("提示", "没有可下载的任免审批表!", 2000);
+        // }else{
+        window.open("${path }/zzb/app/console/asetA01/ajax/down?id=${a01Vo.id}");
+        // }
     }
 
 
-     function del(itemName){
-        actionByConfirm1(itemName, "${path}/zzb/app/console/appZscxZsA01/delete/${a01Vo.id}",{} ,function(data,status){
+    function del(itemName){
+        actionByConfirm1(itemName, "${path}/zzb/app/console/asetA01/delete/${a01Vo.id}",{} ,function(data,status){
             if (data.success == true) {
                 showTip("提示","删除成功", 1000);
                 returnList();
@@ -140,7 +147,7 @@
         $.ajax({
             async:false,
             type:"POST",
-            url:"${path}/zzb/app/console/appZscxZsA01/ajax/list",
+            url:"${path}/zzb/app/console/asetA01/ajax/listByZscx",
             dataType : "html",
             headers:{
                 "OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'

@@ -14,7 +14,7 @@
 
 	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 	<!-- END PAGE LEVEL STYLES -->
-	<title>"${zwmc}" 干部</title>
+	<title>${zwmc} 干部列表</title>
 	<style type="text/css">
 		form {
 			margin: 0 0 0px;
@@ -29,27 +29,40 @@
 			<form class=""id="importForm" enctype="multipart/form-data">
 				<input type="hidden" name="b01Id" value="${b01Id}"/>
 				<div class="portlet-title">
-					<div class="caption">"${zwmc}" 干部</div>
+					<div class="caption">${zwmc} 干部列表</div>
 					<div class="clearfix fr">
-							<%--<span class="controllerClass btn green file_but" >--%>
-								<%--<i class="icon-circle-arrow-up"></i>上传干部--%>
-								<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
-							<%--</span>--%>
-							<%--<span class="controllerClass btn green file_but" >--%>
-								<%--<i class="icon-circle-arrow-up"></i>批量上传人员审批表--%>
-								<%--<input class="file_progress" type="file" name="moreAttFile" id="btn-moreAttTemplate">--%>
-							<%--</span>--%>
-								<%--<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/appZscxZsA01/add">--%>
-									<%--<i class="icon-plus"></i> 添加--%>
-								<%--</a>--%>
-								<a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
+						<a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
+						<%--<div class="btn-group">--%>
+						<%--<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">--%>
+						<%--导入数据 <i class="icon-angle-down"></i>--%>
+						<%--</a>--%>
+						<%--<ul class="dropdown-menu">--%>
+						<%--<li >--%>
+						<%--<a onclick="uploadFile('gbrmspb')">从公务员管理系统(浙大网新)</a>--%>
+						<%--<input type="file" style="display: none" name="gbrmspbFile" id="btn-gbrmspb"/>--%>
+						<%--</li>--%>
+						<%--<li>--%>
+						<%--<a onclick="uploadFile('dascqk')">从组织综合业务平台(广州三零)</a>--%>
+						<%--<input type="file" style="display: none" name="dascqkFile" id="btn-dascqk"/>--%>
+						<%--</li>--%>
+						<%--<li>--%>
+						<%--<a onclick="uploadFile('kccl')">从干部管理系统(长沙远望)</a>--%>
+						<%--<input type="file"  style="display: none" name="kcclFile" id="btn-kccl"/>--%>
+						<%--</li>--%>
+						<%--</ul>--%>
+						<%--</div>--%>
+						<%--<span class="controllerClass btn green file_but" >--%>
+						<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
+						<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
+						<%--</span>--%>
 					</div>
+
 				</div>
 			</form>
 			<div class="clearfix">
 				<div class="control-group">
 					<div id="query" style="float: left;">
-						<form action="${path }/zzb/app/console/appZscxZsA01/ajax/list" method="POST" id="searchForm" name="searchForm">
+						<form action="${path }/zzb/app/console/asetA01/ajax/list" method="POST" id="searchForm" name="searchForm">
 							<input type="hidden" id="b01Id" name="b01Id" value="${b01Id}"/>
 							<input type="hidden" id="zsId" name="zsId" value="${zsId}"/>
 							<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
@@ -63,60 +76,58 @@
 				</div>
 
 			</div>
-				<div class="portlet-body">
-					<table class="table table-striped table-bordered table-hover dataTable table-set">
-						<thead>
-						<tr>
-							<th width="70">姓名</th>
-							<th width="80">职务</th>
-							<th width="60">籍贯</th>
-							<th width="60">出生地</th>
-							<th width="60">出生<br>年月</th>
-							<th width="60">参加工<br>作时间</th>
-							<th width="60">入党<br>时间</th>
-							<th>全日制学历<br>学位及专业
-							</th>
-							<th width="120">在职学历<br>学位及专业
-							</th>
-							<%--<th width="100">专业技<br>术职务--%>
-							<%--</th>--%>
-							<%--<th width="65">任现职<br>务时间--%>
-							<%--</th>--%>
-							<%--<th width="100">任现职<br>级时间--%>
-							<%--</th>--%>
-							<%--<th width="40">操作</th>--%>
-						</tr>
-						</thead>
-						<tbody>
-						<c:forEach items="${pager.datas}" var="vo">
-							<tr style="text-overflow:ellipsis;">
-								<%--<td title="${vo.xm}"><a href="${path}/zzb/app/console/appZscxZsA01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>--%>
-								<td title="${vo.xm}"><a href="javascript:view('${vo.id }')" class=""><c:out value="${vo.xm}"></c:out></a></td>
-								<td title="${vo.zw}"><c:out value="${vo.zw}"></c:out></td>
-								<td><c:out value="${vo.jg}"></c:out></td>
-								<td><c:out value="${vo.csd}"></c:out></td>
-								<td><c:out value="${vo.csny}"></c:out></td>
-								<td><c:out value="${vo.cjgzsj}"></c:out></td>
-								<td><c:out value="${vo.rdsj}"></c:out></td>
-								<td><c:out value="${vo.qrzxlxwjzy}"></c:out></td>
-								<td><c:out value="${vo.zzxlxwjzy}"></c:out></td>
+			<div class="portlet-body">
+				<table class="table table-striped table-bordered table-hover dataTable table-set">
+					<thead>
+					<tr>
+						<th width="60">姓名</th>
+						<th width="40">性别</th>
+						<th width="60">出生<br>年月</th>
+						<th>现任职务</th>
+						<th width="100" style="text-align: center">全日制<br>学历学位
+						</th>
+						<th width="150" style="text-align: center">在职<br>学历学位
+						<th width="80"style="text-align: center">任现职级<br>时间
+						</th>
+						<%--<th width="100">专业技<br>术职务--%>
+						<%--</th>--%>
+						<%--<th width="65">任现职<br>务时间--%>
+						<%--</th>--%>
+						<%--<th width="100">任现职<br>级时间--%>
+						<%--</th>--%>
+						<%--<th width="40">操作</th>--%>
+					</tr>
+					</thead>
+					<tbody>
+					<c:forEach items="${pager.datas}" var="vo">
+						<tr style="text-overflow:ellipsis;">
+							<td title="${vo.xm}"><a href="javascript:view('${vo.id }')" class=""><c:out value="${vo.xm}"></c:out></a></td>
+								<%--<td title="${vo.xm}">--%>
+								<%--<c:out value="${vo.xm}"></c:out>--%>
+								<%--</td>--%>
+							<td title="${vo.xb}" ><c:out value="${vo.xb}"></c:out></td>
+							<td title="${vo.csnyStr}" style="text-align: center"><c:out value="${vo.csnyStr}"></c:out><br>(<c:out value="${vo.nl}"></c:out>岁)</td>
+							<td title="${vo.xrzw}"><c:out value="${vo.xrzw}"></c:out></td>
+							<td ><c:out value="${vo.gbrmspbQrzxlxw}"></c:out></td>
+							<td ><c:out value="${vo.gbrmspbZzxlxw}"></c:out></td>
+							<td ><c:out value="${vo.xrzjsjStr}"></c:out></td>
 								<%--<td><c:out value="${vo.zyjszw}"></c:out></td>--%>
 								<%--<td><c:out value="${vo.xrzwsj}"></c:out></td>--%>
 								<%--<td title="${vo.xrzjsj}"><c:out value="${vo.xrzjsj}"></c:out></td>--%>
 								<%--<td class="Left_alignment">--%>
-									<%--<a href="javascript:del('${vo.id }','${vo.xm}')" class="">删除</a>--%>
+								<%--<a href="javascript:del('${vo.id }','${vo.xm}')" class="">删除</a>--%>
 								<%--</td>--%>
-							</tr>
-						</c:forEach>
-						</tbody>
-					</table>
-					<jsp:include page="/WEB-INF/jsp/common/page.jsp">
-						<jsp:param value="${pager.total }" name="total"/>
-						<jsp:param value="${pager.pageCount }" name="endPage"/>
-						<jsp:param value="${pager.pageSize }" name="pageSize"/>
-						<jsp:param value="${pager.pageNum }" name="page"/>
-					</jsp:include>
-				</div>
+						</tr>
+					</c:forEach>
+					</tbody>
+				</table>
+				<jsp:include page="/WEB-INF/jsp/common/page.jsp">
+					<jsp:param value="${pager.total }" name="total"/>
+					<jsp:param value="${pager.pageCount }" name="endPage"/>
+					<jsp:param value="${pager.pageSize }" name="pageSize"/>
+					<jsp:param value="${pager.pageNum }" name="page"/>
+				</jsp:include>
+			</div>
 		</div>
 		<%-- 表格结束 --%>
 	</div>
@@ -151,7 +162,7 @@
 			}
 			//hideErrorMsg();
 			$("#importForm").ajaxSubmit({
-				url : "${path }/zzb/app/console/appZscxZsA01/ajax/execute?b01Id=${b01Id}",
+				url : "${path }/zzb/app/console/asetA01/ajax/execute?b01Id=${b01Id}",
 				type : "post",
 				headers:{
 					OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
@@ -238,7 +249,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/appZscxZsA01/ajax/list",
+			url:"${path}/zzb/app/console/asetA01/ajax/list",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
@@ -265,7 +276,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/appZscxZsA01/ajax/list",
+			url:"${path}/zzb/app/console/asetA01/ajax/list",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
@@ -287,13 +298,15 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/appZscxZsA01/ajax/view",
+			url:"${path}/zzb/app/console/asetA01/ajax/viewByZscx",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
 			},
 			data:{
-				'id':id
+				'id':id,
+				'b01Id':"${b01Id}",
+				'zsId':"${zsId}"
 			},
 			success:function(html){
 				$("#catalogList").html(html);
@@ -306,10 +319,10 @@
 		});
 	}
 	var del = function(id,itemName){
-		actionByConfirm1(itemName, "${path}/zzb/app/console/appZscxZsA01/delete/" + id,{} ,function(data,status){
+		actionByConfirm1(itemName, "${path}/zzb/app/console/asetA01/delete/" + id,{} ,function(data,status){
 			if (data.success == true) {
 				showTip("提示","删除成功", 2000);
-				setTimeout(function(){window.location.href = "${path}/zzb/app/console/appZscxZsA01/list?b01Id=${b01Id}&mcid=${mcid}"},2000);
+				setTimeout(function(){window.location.href = "${path}/zzb/app/console/asetA01/list?b01Id=${b01Id}&mcid=${mcid}"},2000);
 			}else{
 				showTip("提示", data.message, 2000);
 			}
@@ -323,7 +336,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/appZscxZsA01/ajax/list",
+			url:"${path}/zzb/app/console/asetA01/ajax/list",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
