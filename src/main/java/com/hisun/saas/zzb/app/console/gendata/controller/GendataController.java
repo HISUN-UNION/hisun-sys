@@ -160,7 +160,7 @@ public class GendataController extends BaseController{
                     gbtjVos.add(vo);
                 }
             }
-            String packetName = DateUtil.formatDateByFormat(new Date(), "yyyyMMdd")+"数据包";
+            String packetName = DateUtil.formatDateByFormat(new Date(), "yyyyMMdd HH:mm:ss")+"数据包";
             map.put("packetName", packetName);
             map.put("shpcVos", shpcVos);
             map.put("gbmcVos", gbmcVos);
@@ -259,7 +259,7 @@ public class GendataController extends BaseController{
                     gbtjVos.add(vo);
                 }
             }
-            String packetName = DateUtil.formatDateByFormat(new Date(), "yyyyMMdd")+"数据包";
+            String packetName = DateUtil.formatDateByFormat(new Date(),  "yyyyMMdd HH:mm:ss")+"数据包";
             map.put("packetName", packetName);
 
             map.put("oldPacketName", oldPacketName);
