@@ -97,9 +97,9 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         gendata.setPacketSize(Long.toString(f.length()));
 
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-        BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
-        this.save(gendata);
-        return gendata.getId();
+        EntityWrapper.wrapperSaveBaseProperties(gendata,userLoginDetails);
+        FileUtils.deleteDirectory(new File(dataDir+File.separator));
+        return this.save(gendata);
     }
 
 
@@ -138,7 +138,8 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         gendata.setPacketMd5(Md5Util.getMD5(f));
         gendata.setPacketSize(Long.toString(f.length()));
 
-        BeanTrans.setBaseProperties(gendata, userLoginDetails, "save");
+        EntityWrapper.wrapperSaveBaseProperties(gendata,userLoginDetails);
+        FileUtils.deleteDirectory(new File(dataDir+File.separator));
         return this.save(gendata);
     }
 
@@ -448,6 +449,33 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         in.close();
         isr.close();
         sqliteDBUtil.createTables(sqlite, sb.toString());
+    }
+
+
+    @Override
+    public void delete(Gendata gendata){
+        if(StringUtils.isEmpty(gendata.getPath())==false){
+            try {
+                FileUtils.forceDelete(new File(uploadAbsolutePath + gendata.getPath()));
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        this.gendataDao.delete(gendata);
+
+    }
+
+    @Override
+    public void deleteByPK(String id){
+        Gendata gendata = this.gendataDao.getByPK(id);
+        if(StringUtils.isEmpty(gendata.getPath())==false){
+            try {
+                FileUtils.forceDelete(new File(uploadAbsolutePath + gendata.getPath()));
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        this.gendataDao.delete(gendata);
     }
 
 }
