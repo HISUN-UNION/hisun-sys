@@ -149,7 +149,7 @@ public class Sha01grzdsxController extends BaseController {
     @RequestMapping(value = "/ajax/batch/upload")
     public
     @ResponseBody
-    Map<String, Object> batchUpload(String shpcId,String uploadMatchingMode,@RequestParam(value = "grzdsxFile", required = false) MultipartFile file,
+    Map<String, Object> batchUpload(String shpcId,String uploadMatchingMode,String split,@RequestParam(value = "grzdsxFile", required = false) MultipartFile file,
                                     HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, Object> map = new HashMap<String, Object>();

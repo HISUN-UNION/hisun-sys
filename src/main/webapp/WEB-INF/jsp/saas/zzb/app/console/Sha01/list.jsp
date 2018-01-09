@@ -41,14 +41,33 @@
 				</h3>
 			</div>
 			<div class="modal-body" id="dabzAddDiv">
-				<div >
-					<input type="radio" value="1" checked  name="selectType" id="selectTypeByName">按姓名匹配
-					<input type="radio" value="0" name="selectType" id="selectTypeByNum">按序号匹配
+				<div  style="padding: 15px 0;">
+					<span style="margin-top: 5px; margin-right: 10px; display: inline-block;"><input type="radio" value="1" checked  name="selectType" id="selectTypeByName"  onchange="hiddenSplitDiv(this)">按姓名匹配</span>
+					<span  style="margin-top: 5px; margin-right: 10px; display: inline-block;"><input type="radio" value="0" name="selectType" id="selectTypeByNum" onchange="changeSplitDiv(this)">按序号匹配</span>
+					<span id="splitDiv" style="margin-top: 5px;visibility: hidden">
+						匹配符号<span style="color: red">*</span>
+						<input type="text" class="m-wrap" style="width: 40px" name="split" required maxlength="1" id="split" value="."/>
+					</span>
 				</div>
+
 				<div class="control-group mybutton-group" style="text-align: right;">
 					<button type="button" class="btn green" onclick="uploadBatchFile()"><i class="icon-ok"></i> 确定</button>
 					<button type="button" class="btn btn-default"  data-dismiss="modal"><i class="icon-remove-sign"></i> 取消</button>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="matchResultModal" class="modal container hide fade" tabindex="-1" data-width="700">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="matchResulttitle" >
+					数据包匹配结果
+				</h3>
+			</div>
+			<div class="modal-body" id="matchResultDiv">
 			</div>
 		</div>
 	</div>
@@ -208,8 +227,40 @@
 	<%@ include file="/WEB-INF/jsp/inc/confirmModal.jsp" %>
 	<script type="text/javascript">
 		var uploadMatchingMode = "";//批量上传匹配方式 0按序号匹配 1按姓名匹配
+		var split = "";
 		var unloadOnlyFileOrBatch = "batch";//批量上传还是单个上传 only为单个文件上传 batch为批量上传
 		var a01Id = "";//上传附件的a01Id
+		function changeSplitDiv(obj){
+			if(obj.checked==true){
+				window.document.getElementById("splitDiv").style.visibility = "visible";
+			}
+		}
+		function hiddenSplitDiv(obj){
+			if(obj.checked==true){
+				window.document.getElementById("splitDiv").style.visibility = "hidden";
+			}
+		}
+
+		function matchResult(itemName,url){
+			$("#importForm").ajaxSubmit({
+				url : url,
+				type : "post",
+				headers:{
+					OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+				},
+				dataType : "html",
+				success : function(html){
+					$('#matchResulttitle').text(itemName+'匹配结果');
+					$('#matchResultDiv').html(html);
+					$('#matchResultModal').modal({
+						keyboard: true
+					});
+				},
+				error : function(){
+					showTip("提示","出错了请联系管理员", 1500);
+				}
+			});
+		}
 		(function(){
 			App.init();
 
@@ -299,36 +350,37 @@
 				}
 				var url = "";
 				if(unloadOnlyFileOrBatch =="batch") {
-					url = "${path }/zzb/app/Sha01/gbrmspb/ajax/batch/upload?shpcId=${shpcId}&uploadMatchingMode="+uploadMatchingMode;
+					matchResult("干部任免审批表","${path }/zzb/app/Sha01/gbrmspb/ajax/batch/match?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode);
+					<%--url = "${path }/zzb/app/Sha01/gbrmspb/ajax/batch/upload?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;--%>
 				}else{
 					url = "${path }/zzb/app/Sha01/gbrmspb/ajax/uploadFile?sha01Id="+a01Id;
-				}
-				$("#importForm").ajaxSubmit({
-					url:url ,
-					type: "post",
-					headers: {
-						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
-					},
-					beforeSend: function (XHR) {
-						myLoading.show();
-					},
-					success: function (json) {
-						if (json.code == 1) {
-							showTip("提示","上传成功",2000);
-							searchSubmit();
-						} else if (json.code == -1) {
-							showTip("提示", json.message, 2000);
-						} else {
+					$("#importForm").ajaxSubmit({
+						url:url ,
+						type: "post",
+						headers: {
+							OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
+						},
+						beforeSend: function (XHR) {
+							myLoading.show();
+						},
+						success: function (json) {
+							if (json.code == 1) {
+								showTip("提示","上传成功",2000);
+								searchSubmit();
+							} else if (json.code == -1) {
+								showTip("提示", json.message, 2000);
+							} else {
+								showTip("提示", "出错了,请检查网络!", 2000);
+							}
+						},
+						error: function (arg1, arg2, arg3) {
 							showTip("提示", "出错了,请检查网络!", 2000);
+						},
+						complete: function (XHR, TS) {
+							myLoading.hide();
 						}
-					},
-					error: function (arg1, arg2, arg3) {
-						showTip("提示", "出错了,请检查网络!", 2000);
-					},
-					complete: function (XHR, TS) {
-						myLoading.hide();
-					}
-				});
+					});
+				}
 			}
 
 			//考察材料附件
@@ -362,7 +414,7 @@
 				}
 				var url = "";
 				if(unloadOnlyFileOrBatch =="batch") {
-					url = "${path }/zzb/app/Sha01/kccl/ajax/batch/upload?shpcId=${shpcId}&uploadMatchingMode="+uploadMatchingMode;
+					url = "${path }/zzb/app/Sha01/kccl/ajax/batch/match?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;
 				}else{
 					url = "${path }/zzb/app/Sha01/kccl/ajax/uploadFile?sha01Id="+a01Id;
 				}
@@ -426,7 +478,7 @@
 				}
 				var url = "";
 				if(unloadOnlyFileOrBatch =="batch") {
-					url = "${path }/zzb/app/Sha01/dascqk/ajax/batch/upload?shpcId=${shpcId}&uploadMatchingMode="+uploadMatchingMode;
+					url = "${path }/zzb/app/Sha01/dascqk/ajax/batch/upload?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;
 				}else{
 					url = "${path }/zzb/app/Sha01/dascqk/ajax/uploadFile?sha01Id="+a01Id;
 				}
@@ -490,7 +542,7 @@
 				}
 				var url = "";
 				if(unloadOnlyFileOrBatch =="batch") {
-					url = "${path }/zzb/app/Sha01/grzdsx/ajax/batch/upload?shpcId=${shpcId}&uploadMatchingMode="+uploadMatchingMode;
+					url = "${path }/zzb/app/Sha01/grzdsx/ajax/batch/upload?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;
 				}else{
 					url = "${path }/zzb/app/Sha01/grzdsx/ajax/uploadFile?sha01Id="+a01Id;
 				}
@@ -555,6 +607,7 @@
 		}
 		function uploadBatchFile(){
 			$('#selectTypeModal').modal('hide');
+			split =  $("#split").val()
 			uploadMatchingMode = $("input[name='selectType']:checked").val();
 			unloadOnlyFileOrBatch = "batch";
 			document.getElementById("btn-"+selectfileName).click();

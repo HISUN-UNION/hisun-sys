@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -125,7 +126,7 @@ public class Sha01gbrmspbController extends BaseController {
     @RequestMapping(value = "/ajax/batch/upload")
     public
     @ResponseBody
-    Map<String, Object> batchUpload(String shpcId, String uploadMatchingMode, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
+    Map<String, Object> batchUpload(String shpcId, String uploadMatchingMode,String split, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
                                     HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, Object> map = new HashMap<String, Object>();
@@ -164,7 +165,7 @@ public class Sha01gbrmspbController extends BaseController {
                         String filename = f.getName();
                         CommonConditionQuery query = new CommonConditionQuery();
                         //按姓名匹配
-                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, null, filename);
+                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, split, filename);
                         query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
                         query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
                         List<Sha01> sha01s = this.sha01Service.list(query, null);
@@ -230,7 +231,7 @@ public class Sha01gbrmspbController extends BaseController {
     @RequestMapping(value = "/ajax/batch/match/save")
     public
     @ResponseBody
-    Map<String, Object> matchSave(String shpcId, String uploadMatchingMode, String tmpFilePath,
+    Map<String, Object> matchSave(String shpcId, String uploadMatchingMode,String split, String tmpFilePath,
                                   HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, Object> map = new HashMap<String, Object>();
@@ -285,8 +286,8 @@ public class Sha01gbrmspbController extends BaseController {
     @RequestMapping(value = "/ajax/batch/match")
     public
     @ResponseBody
-    Map<String, Object> batchMatch(String shpcId, String
-            uploadMatchingMode, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
+    ModelAndView batchMatch(String shpcId, String
+            uploadMatchingMode,String split, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
                                    HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, String> matchMap = new LinkedHashMap<>();
@@ -295,7 +296,7 @@ public class Sha01gbrmspbController extends BaseController {
         if (file == null || file.isEmpty()) {
             map.put("code", -1);
             map.put("message", "文件没有内容");
-            return map;
+            return null;
 
         }
         //模板路径
@@ -328,7 +329,7 @@ public class Sha01gbrmspbController extends BaseController {
                         String filename = f.getName();
                         CommonConditionQuery query = new CommonConditionQuery();
                         //按姓名匹配
-                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, null, filename);
+                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, split, filename);
                         query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
                         query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
                         List<Sha01> sha01s = this.sha01Service.list(query, null);
@@ -340,23 +341,29 @@ public class Sha01gbrmspbController extends BaseController {
                         filecount++;
                     }
                 }
+
+                map.put("shpcId", shpcId);
+                map.put("uploadMatchingMode", uploadMatchingMode);
+                map.put("split", split);
+
                 map.put("tmpFilePath", tmpFilePath);
                 map.put("fileCount", filecount);
                 map.put("matchCount", matchMap.size());
+                map.put("nomatchCount", filecount-matchMap.size());
                 map.put("matchResult", matchMap);
                 map.put("noMatchFilenames",noMatchFilenames);
                 FileUtils.deleteQuietly(zipFile);
             } else {
                 map.put("code", -1);
                 map.put("message", "请上传ZIP!");
-                return map;
+                return null;
             }
         } catch (Exception e) {
             e.printStackTrace();
 
             map.put("code", -1);
             map.put("message", "读取文件错误!");
-            return map;
+            return null;
         }
         try {
 
@@ -364,15 +371,15 @@ public class Sha01gbrmspbController extends BaseController {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", e.getMessage());
-            return map;
+            return null;
         } catch (Exception e) {
             logger.error(e, e);
             map.put("code", -1);
             map.put("message", "系统错误，请联系管理员");
-            return map;
+            return null;
         }
         map.put("code", 1);
-        return map;
+        return new ModelAndView("/saas/zzb/app/console/Sha01/matchResult", map);
     }
 
 
