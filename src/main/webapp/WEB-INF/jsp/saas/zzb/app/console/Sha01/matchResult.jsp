@@ -25,9 +25,9 @@
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tbody>
 				<tr>
-					<td>总文件：${fileCount}</td>
-					<td>匹配成功文件：${matchCount}</td>
-					<td>匹配失败文件：${nomatchCount}</td>
+					<td>上传文件：${fileCount}个</td>
+					<td>匹配成功：${matchCount}个</td>
+					<td>未匹配：${nomatchCount}个</td>
 				</tr>
 				</tbody>
 			</table>
@@ -48,7 +48,7 @@
 					</div>
 				</div>
 				<div class="" style="width:32%; float:right; border-bottom:solid 1px #e1e6eb;border-right:solid 1px #e1e6eb;">
-					<div class="pipeititle" style="border-right: none;">匹配失败文件</div>
+					<div class="pipeititle" style="border-right: none;">未匹配文件</div>
 					<div style="max-height:215px; overflow: auto;">
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabpipeifailure">
 							<tbody>
