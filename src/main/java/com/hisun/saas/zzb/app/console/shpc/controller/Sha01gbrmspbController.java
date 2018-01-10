@@ -253,13 +253,13 @@ public class Sha01gbrmspbController extends BaseController {
                         String filename = f.getName();
                         CommonConditionQuery query = new CommonConditionQuery();
                         //按姓名匹配
-                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, null, filename);
+                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, split, filename);
                         query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
                         query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
                         List<Sha01> sha01s = this.sha01Service.list(query, null);
                         if (sha01s != null && sha01s.size() > 0) {
-                            String ext = f.getName().substring(f.getName().lastIndexOf("."));
-                            String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID() + ext;
+                            String ext = FileUtil.getExtend(f.getName());
+                            String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID() +"."+ ext;
                             String saveRealPath = uploadAbsolutePath + savePath;
                             File desFile = new File(saveRealPath);
                             FileUtils.copyFile(f, desFile);
@@ -321,10 +321,11 @@ public class Sha01gbrmspbController extends BaseController {
                 //解压到临时目录
                 CompressUtil.unzip(zipFilePath, tmpFilePath);
                 //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
-                File tempFiles = new File(tmpFilePath);
+                File tempFile = new File(tmpFilePath);
                 int filecount = 0;
-                if (tempFiles != null) {
-                    for (File f : tempFiles.listFiles()) {
+                if (tempFile != null) {
+                    List<File> files = FileUtil.listFilesOrderByName(tempFile);
+                    for (File f : files) {
                         if (f.isDirectory()) continue;//如果是目录则跳过
                         String filename = f.getName();
                         CommonConditionQuery query = new CommonConditionQuery();

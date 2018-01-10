@@ -8,11 +8,9 @@ import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01gbrmspb;
+import com.hisun.saas.zzb.app.console.shpc.entity.Sha01grzdsx;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01kccl;
-import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
-import com.hisun.saas.zzb.app.console.shpc.service.Sha01dascqkService;
-import com.hisun.saas.zzb.app.console.shpc.service.Sha01gbrmspbService;
-import com.hisun.saas.zzb.app.console.shpc.service.Sha01kcclService;
+import com.hisun.saas.zzb.app.console.shpc.service.*;
 import com.hisun.util.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhouying on 2017/9/8.
@@ -254,6 +250,177 @@ public class Sha01kcclController extends BaseController {
         map.put("code", 1);
         return map;
     }
+
+
+
+
+    @RequestMapping(value = "/ajax/batch/match/save")
+    public
+    @ResponseBody
+    Map<String, Object> matchSave(String shpcId, String uploadMatchingMode,String split, String tmpFilePath,
+                                  HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (tmpFilePath == null || tmpFilePath.isEmpty()) {
+            map.put("code", -1);
+            map.put("message", "文件没有内容");
+            return map;
+
+        }
+        try {
+            //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
+            File tempFiles = new File(tmpFilePath);
+            if (tempFiles != null) {
+                for (File f : tempFiles.listFiles()) {
+                    if (f.isDirectory()) continue;//如果是目录则跳过
+                    String filename = f.getName();
+                    CommonConditionQuery query = new CommonConditionQuery();
+                    //按姓名匹配
+                    this.sha01Service.matchQueryCondition(query, uploadMatchingMode, split, filename);
+                    query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
+                    query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+                    List<Sha01> sha01s = this.sha01Service.list(query, null);
+                    if (sha01s != null && sha01s.size() > 0) {
+                        String ext = FileUtil.getExtend(f.getName());
+                        String savePath = Sha01kcclService.ATTS_PATH + UUIDUtil.getUUID() +"."+ext;
+                        String saveRealPath = uploadAbsolutePath + savePath;
+                        File desFile = new File(saveRealPath);
+                        FileUtils.copyFile(f, desFile);
+                        //处理
+                        String pdfPath = Sha01kcclService.ATTS_PATH+ UUIDUtil.getUUID()+".pdf";
+                        String pdfRealPath = uploadAbsolutePath+pdfPath;
+                        WordConvertUtil.newInstance().convert(saveRealPath,pdfRealPath,WordConvertUtil.PDF);
+                        Sha01 sha01 = sha01s.get(0);
+                        if(sha01.getKccls()!=null &&sha01.getKccls().size()>0){//修改
+                            Sha01kccl sha01kccl = sha01.getKccls().get(0);
+                            sha01kccl.setPath(savePath);
+                            sha01kccl.setSha01(sha01);
+                            sha01kccl.setFile2imgPath(pdfPath);
+                            this.sha01kcclService.update(sha01kccl);
+                        }else{//创建
+                            Sha01kccl sha01kccl = new Sha01kccl();
+                            sha01kccl.setPath(savePath);
+                            sha01kccl.setSha01(sha01);
+                            sha01kccl.setFile2imgPath(pdfPath);
+                            this.sha01kcclService.save(sha01kccl);
+                        }
+                    }
+                }
+            }
+            FileUtils.deleteDirectory(tempFiles);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            map.put("code", -1);
+            map.put("message", "读取文件错误!");
+            return map;
+        }
+        map.put("code", 1);
+        return map;
+    }
+
+
+    @RequestMapping(value = "/ajax/batch/match")
+    public
+    @ResponseBody
+    ModelAndView batchMatch(String shpcId, String
+            uploadMatchingMode, String split, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
+                            HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+        Map<String, String> matchMap = new LinkedHashMap<>();
+        List<String> noMatchFilenames = new ArrayList<String>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (file == null || file.isEmpty()) {
+            map.put("code", -1);
+            map.put("message", "文件没有内容");
+            return null;
+
+        }
+        //模板路径
+        String attsPath = uploadAbsolutePath + Sha01kcclService.ATTS_PATH;
+        try {
+            String fileName = file.getOriginalFilename();
+            if (fileName.toLowerCase().endsWith(".zip")) {
+                File _fileDir = new File(attsPath);
+                if (_fileDir.exists() == false) {
+                    _fileDir.mkdirs();
+                }
+                //原zip存储路径
+                String zipFilePath = attsPath + UUIDUtil.getUUID() + ".zip";
+                File zipFile = new File(zipFilePath);
+                FileOutputStream fos = new FileOutputStream(zipFile);
+                fos.write(file.getBytes());
+                fos.flush();
+                fos.close();
+
+                String tmpFilePath = attsPath + UUIDUtil.getUUID() + File.separator;
+                //解压到临时目录
+                CompressUtil.unzip(zipFilePath, tmpFilePath);
+                //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
+                File tempFile = new File(tmpFilePath);
+                int filecount = 0;
+                if (tempFile != null) {
+                    List<File> files = FileUtil.listFilesOrderByName(tempFile);
+                    for (File f : files) {
+                        if (f.isDirectory()) continue;//如果是目录则跳过
+                        String filename = f.getName();
+                        CommonConditionQuery query = new CommonConditionQuery();
+                        //按姓名匹配
+                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, split, filename);
+                        query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
+                        query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+                        List<Sha01> sha01s = this.sha01Service.list(query, null);
+                        if (sha01s != null && sha01s.size() > 0) {
+                            matchMap.put(sha01s.get(0).getXm(), filename);
+                        }else{
+                            noMatchFilenames.add(filename);
+                        }
+                        filecount++;
+                    }
+                }
+
+                map.put("shpcId", shpcId);
+                map.put("uploadMatchingMode", uploadMatchingMode);
+                map.put("split", split);
+
+                map.put("tmpFilePath", tmpFilePath);
+                map.put("fileCount", filecount);
+                map.put("matchCount", matchMap.size());
+                map.put("nomatchCount", filecount-matchMap.size());
+                map.put("matchResult", matchMap);
+                map.put("noMatchFilenames",noMatchFilenames);
+                FileUtils.deleteQuietly(zipFile);
+            } else {
+                map.put("code", -1);
+                map.put("message", "请上传ZIP!");
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            map.put("code", -1);
+            map.put("message", "读取文件错误!");
+            return null;
+        }
+        try {
+
+        } catch (GenericException e) {
+            logger.error(e, e);
+            map.put("code", -1);
+            map.put("message", e.getMessage());
+            return null;
+        } catch (Exception e) {
+            logger.error(e, e);
+            map.put("code", -1);
+            map.put("message", "系统错误，请联系管理员");
+            return null;
+        }
+        map.put("code", 1);
+        return new ModelAndView("/saas/zzb/app/console/Sha01/matchResult", map);
+    }
+
+
+
 
 
     @RequestMapping(value="/ajax/down")
