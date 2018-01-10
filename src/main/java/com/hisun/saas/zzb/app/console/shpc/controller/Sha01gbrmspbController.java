@@ -56,7 +56,6 @@ public class Sha01gbrmspbController extends BaseController {
             map.put("message", "文件没有内容");
             return map;
         }
-
         try {
             String fileName = file.getOriginalFilename();
             if (fileName.endsWith(".doc") || fileName.endsWith(".DOC") || fileName.endsWith(".docx") || fileName.endsWith(".DOCX")) {
@@ -66,7 +65,8 @@ public class Sha01gbrmspbController extends BaseController {
                     _fileDir.mkdirs();
                 }
                 //原附件存储路径
-                String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID() + "_" + fileName;
+                String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID()
+                        + "." + FileUtil.getExtend(fileName);
                 String saveRealPath = uploadAbsolutePath + savePath;
 
                 //模板路径
@@ -76,12 +76,7 @@ public class Sha01gbrmspbController extends BaseController {
                     fos.write(file.getBytes());
                     fos.flush();
                     fos.close();
-
-                    Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
-                    Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                    sha01gbrmspb.setFilepath(savePath);
-                    sha01gbrmspb.setSha01(sha01);
-                    this.sha01gbrmspbService.saveFromWord(sha01gbrmspb, saveRealPath, wordTemplatePath);
+                    this.sha01gbrmspbService.saveFromWord(sha01Id,saveRealPath, wordTemplatePath);
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);
@@ -126,7 +121,7 @@ public class Sha01gbrmspbController extends BaseController {
     @RequestMapping(value = "/ajax/batch/upload")
     public
     @ResponseBody
-    Map<String, Object> batchUpload(String shpcId, String uploadMatchingMode,String split, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
+    Map<String, Object> batchUpload(String shpcId, String uploadMatchingMode, String split, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
                                     HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, Object> map = new HashMap<String, Object>();
@@ -175,10 +170,10 @@ public class Sha01gbrmspbController extends BaseController {
                             String saveRealPath = uploadAbsolutePath + savePath;
                             File desFile = new File(saveRealPath);
                             FileUtils.copyFile(f, desFile);
-                            Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                            sha01gbrmspb.setFilepath(savePath);
-                            sha01gbrmspb.setSha01(sha01s.get(0));
-                            this.sha01gbrmspbService.saveFromWord(sha01gbrmspb, saveRealPath, wordTemplatePath);
+//                            Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
+//                            sha01gbrmspb.setFilepath(savePath);
+//                            sha01gbrmspb.setSha01(sha01s.get(0));
+                            this.sha01gbrmspbService.saveFromWord(sha01s.get(0).getId(), saveRealPath, wordTemplatePath);
                         }
                     }
                 }
@@ -231,7 +226,7 @@ public class Sha01gbrmspbController extends BaseController {
     @RequestMapping(value = "/ajax/batch/match/save")
     public
     @ResponseBody
-    Map<String, Object> matchSave(String shpcId, String uploadMatchingMode,String split, String tmpFilePath,
+    Map<String, Object> matchSave(String shpcId, String uploadMatchingMode, String split, String tmpFilePath,
                                   HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, Object> map = new HashMap<String, Object>();
@@ -245,32 +240,32 @@ public class Sha01gbrmspbController extends BaseController {
         String gbrmsbpAttsPath = uploadAbsolutePath + Sha01gbrmspbService.ATTS_PATH;
         String wordTemplatePath = gbrmsbpAttsPath + "gbrmspb.docx";
         try {
-                //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
-                File tempFiles = new File(tmpFilePath);
-                if (tempFiles != null) {
-                    for (File f : tempFiles.listFiles()) {
-                        if (f.isDirectory()) continue;//如果是目录则跳过
-                        String filename = f.getName();
-                        CommonConditionQuery query = new CommonConditionQuery();
-                        //按姓名匹配
-                        this.sha01Service.matchQueryCondition(query, uploadMatchingMode, split, filename);
-                        query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
-                        query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
-                        List<Sha01> sha01s = this.sha01Service.list(query, null);
-                        if (sha01s != null && sha01s.size() > 0) {
-                            String ext = FileUtil.getExtend(f.getName());
-                            String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID() +"."+ ext;
-                            String saveRealPath = uploadAbsolutePath + savePath;
-                            File desFile = new File(saveRealPath);
-                            FileUtils.copyFile(f, desFile);
-                            Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                            sha01gbrmspb.setFilepath(savePath);
-                            sha01gbrmspb.setSha01(sha01s.get(0));
-                            this.sha01gbrmspbService.saveFromWord(sha01gbrmspb, saveRealPath, wordTemplatePath);
-                        }
+            //循环目录下的文件,如果在当前批次下找到对应名字的干部,则附加到当前干部下
+            File tempFiles = new File(tmpFilePath);
+            if (tempFiles != null) {
+                for (File f : tempFiles.listFiles()) {
+                    if (f.isDirectory()) continue;//如果是目录则跳过
+                    String filename = f.getName();
+                    CommonConditionQuery query = new CommonConditionQuery();
+                    //按姓名匹配
+                    this.sha01Service.matchQueryCondition(query, uploadMatchingMode, split, filename);
+                    query.add(CommonRestrictions.and(" Sha01.shpc.id = :shpc ", "shpc", shpcId));
+                    query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+                    List<Sha01> sha01s = this.sha01Service.list(query, null);
+                    if (sha01s != null && sha01s.size() > 0) {
+                        String ext = FileUtil.getExtend(f.getName());
+                        String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID() + "." + ext;
+                        String saveRealPath = uploadAbsolutePath + savePath;
+                        File desFile = new File(saveRealPath);
+                        FileUtils.copyFile(f, desFile);
+                        Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
+                        sha01gbrmspb.setFilepath(savePath);
+                        sha01gbrmspb.setSha01(sha01s.get(0));
+                        this.sha01gbrmspbService.saveFromWord(sha01s.get(0).getId(), saveRealPath, wordTemplatePath);
                     }
                 }
-                FileUtils.deleteDirectory(tempFiles);
+            }
+            FileUtils.deleteDirectory(tempFiles);
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -287,8 +282,8 @@ public class Sha01gbrmspbController extends BaseController {
     public
     @ResponseBody
     ModelAndView batchMatch(String shpcId, String
-            uploadMatchingMode,String split, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
-                                   HttpServletRequest req, HttpServletResponse resp) throws IOException {
+            uploadMatchingMode, String split, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
+                            HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, String> matchMap = new LinkedHashMap<>();
         List<String> noMatchFilenames = new ArrayList<String>();
@@ -336,7 +331,7 @@ public class Sha01gbrmspbController extends BaseController {
                         List<Sha01> sha01s = this.sha01Service.list(query, null);
                         if (sha01s != null && sha01s.size() > 0) {
                             matchMap.put(sha01s.get(0).getXm(), filename);
-                        }else{
+                        } else {
                             noMatchFilenames.add(filename);
                         }
                         filecount++;
@@ -350,9 +345,9 @@ public class Sha01gbrmspbController extends BaseController {
                 map.put("tmpFilePath", tmpFilePath);
                 map.put("fileCount", filecount);
                 map.put("matchCount", matchMap.size());
-                map.put("nomatchCount", filecount-matchMap.size());
+                map.put("nomatchCount", filecount - matchMap.size());
                 map.put("matchResult", matchMap);
-                map.put("noMatchFilenames",noMatchFilenames);
+                map.put("noMatchFilenames", noMatchFilenames);
                 FileUtils.deleteQuietly(zipFile);
             } else {
                 map.put("code", -1);

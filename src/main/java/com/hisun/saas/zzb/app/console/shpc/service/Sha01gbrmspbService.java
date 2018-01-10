@@ -13,7 +13,8 @@ public interface Sha01gbrmspbService extends BaseService<Sha01gbrmspb,String> {
 
     String ATTS_PATH = Sha01Service.ATTS_PATH+"gbrmspb"+ File.separator;
     String APP_ATTS_PATH= Sha01Service.APP_ATTS_PATH+"gbrmspb/";
+    String GBRMSPB_TEMPLATE=ATTS_PATH+"gbrmspb.docx";
 
-    String saveFromWord(Sha01gbrmspb gbrmspb , String wordsourcePath,String templatePath) throws Exception;
+    String saveFromWord(String sha01Id,String wordsourcePath,String templatePath) throws Exception;
     String toSqliteInsertSql(Sha01gbrmspb entity);
 }

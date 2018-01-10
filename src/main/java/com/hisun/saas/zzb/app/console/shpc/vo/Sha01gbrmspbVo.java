@@ -2,6 +2,7 @@ package com.hisun.saas.zzb.app.console.shpc.vo;
 
 import com.hisun.saas.sys.tenant.tenant.entity.TenantEntity;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 public class Sha01gbrmspbVo{
 
     private String id;
-    private Sha01Vo sha01;
+    private Sha01Vo sha01Vo;
     private String xm;
     private String xb;
     private String csny;
@@ -34,14 +35,21 @@ public class Sha01gbrmspbVo{
 
 
     private String xwzz;
-    private String  qrz_byyx;
+    private String qrz_byyx;
     private String zz_byyx;
     private String xrzw;
     private String nrzw;
+    private String nmzw;
     private String rmly;
     private String cbdwyj;
     private String spjgyj;
     private String xzjgrmyj;
+
+    private String gzjlStr;
+    private String jcqkStr;
+    private String khjgStr;
+
+
 
 
     public String getId() {
@@ -52,12 +60,12 @@ public class Sha01gbrmspbVo{
         this.id = id;
     }
 
-    public Sha01Vo getSha01() {
-        return sha01;
+    public Sha01Vo getSha01Vo() {
+        return sha01Vo;
     }
 
-    public void setSha01(Sha01Vo sha01) {
-        this.sha01 = sha01;
+    public void setSha01Vo(Sha01Vo sha01Vo) {
+        this.sha01Vo = sha01Vo;
     }
 
     public String getXm() {
@@ -258,5 +266,37 @@ public class Sha01gbrmspbVo{
 
     public void setXzjgrmyj(String xzjgrmyj) {
         this.xzjgrmyj = xzjgrmyj;
+    }
+
+    public String getGzjlStr() {
+        return gzjlStr;
+    }
+
+    public void setGzjlStr(String gzjlStr) {
+        this.gzjlStr = gzjlStr;
+    }
+
+    public String getJcqkStr() {
+        return jcqkStr;
+    }
+
+    public void setJcqkStr(String jcqkStr) {
+        this.jcqkStr = jcqkStr;
+    }
+
+    public String getKhjgStr() {
+        return khjgStr;
+    }
+
+    public void setKhjgStr(String khjgStr) {
+        this.khjgStr = khjgStr;
+    }
+
+    public String getNmzw() {
+        return nmzw;
+    }
+
+    public void setNmzw(String nmzw) {
+        this.nmzw = nmzw;
     }
 }
