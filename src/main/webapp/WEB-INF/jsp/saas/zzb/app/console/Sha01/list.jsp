@@ -414,37 +414,39 @@
 				}
 				var url = "";
 				if(unloadOnlyFileOrBatch =="batch") {
-					url = "${path }/zzb/app/Sha01/kccl/ajax/batch/match?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;
+					matchResult("考察材料","${path }/zzb/app/Sha01/kccl/ajax/batch/match?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode);
+					<%--url = "${path }/zzb/app/Sha01/kccl/ajax/batch/match?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;--%>
 				}else{
 					url = "${path }/zzb/app/Sha01/kccl/ajax/uploadFile?sha01Id="+a01Id;
-				}
-				$("#importForm").ajaxSubmit({
-					url: url,
-					type: "post",
-					headers: {
-						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
-					},
-					beforeSend: function (XHR) {
-						myLoading.show();
-					},
-					success: function (json) {
-						if (json.code == 1) {
-							showTip("提示","上传成功",2000);
-							searchSubmit();
 
-						} else if (json.code == -1) {
-							showTip("提示", json.message, 2000);
-						} else {
+					$("#importForm").ajaxSubmit({
+						url: url,
+						type: "post",
+						headers: {
+							OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
+						},
+						beforeSend: function (XHR) {
+							myLoading.show();
+						},
+						success: function (json) {
+							if (json.code == 1) {
+								showTip("提示","上传成功",2000);
+								searchSubmit();
+
+							} else if (json.code == -1) {
+								showTip("提示", json.message, 2000);
+							} else {
+								showTip("提示", "出错了,请检查网络!", 2000);
+							}
+						},
+						error: function (arg1, arg2, arg3) {
 							showTip("提示", "出错了,请检查网络!", 2000);
+						},
+						complete: function (XHR, TS) {
+							myLoading.hide();
 						}
-					},
-					error: function (arg1, arg2, arg3) {
-						showTip("提示", "出错了,请检查网络!", 2000);
-					},
-					complete: function (XHR, TS) {
-						myLoading.hide();
-					}
-				});
+					});
+				}
 			}
 
 			//档案审查情况附件
@@ -478,37 +480,38 @@
 				}
 				var url = "";
 				if(unloadOnlyFileOrBatch =="batch") {
-					url = "${path }/zzb/app/Sha01/dascqk/ajax/batch/upload?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;
+					matchResult("档案审查情况","${path }/zzb/app/Sha01/dascqk/ajax/batch/match?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode);
+					<%--url = "${path }/zzb/app/Sha01/dascqk/ajax/batch/upload?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;--%>
 				}else{
 					url = "${path }/zzb/app/Sha01/dascqk/ajax/uploadFile?sha01Id="+a01Id;
-				}
-				$("#importForm").ajaxSubmit({
-					url:url,
-					type: "post",
-					headers: {
-						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
-					},
-					beforeSend: function (XHR) {
-						myLoading.show();
-					},
-					success: function (json) {
-						if (json.code == 1) {
-							showTip("提示","上传成功",2000);
-							searchSubmit();
+					$("#importForm").ajaxSubmit({
+						url:url,
+						type: "post",
+						headers: {
+							OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
+						},
+						beforeSend: function (XHR) {
+							myLoading.show();
+						},
+						success: function (json) {
+							if (json.code == 1) {
+								showTip("提示","上传成功",2000);
+								searchSubmit();
 
-						} else if (json.code == -1) {
-							showTip("提示", json.message, 2000);
-						} else {
+							} else if (json.code == -1) {
+								showTip("提示", json.message, 2000);
+							} else {
+								showTip("提示", "出错了,请检查网络!", 2000);
+							}
+						},
+						error: function (arg1, arg2, arg3) {
 							showTip("提示", "出错了,请检查网络!", 2000);
+						},
+						complete: function (XHR, TS) {
+							myLoading.hide();
 						}
-					},
-					error: function (arg1, arg2, arg3) {
-						showTip("提示", "出错了,请检查网络!", 2000);
-					},
-					complete: function (XHR, TS) {
-						myLoading.hide();
-					}
-				});
+					});
+				}
 			}
 
 			//个人重大事项附件
@@ -542,37 +545,39 @@
 				}
 				var url = "";
 				if(unloadOnlyFileOrBatch =="batch") {
-					url = "${path }/zzb/app/Sha01/grzdsx/ajax/batch/upload?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;
+					matchResult("个人重大事项","${path }/zzb/app/Sha01/grzdsx/ajax/batch/match?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode);
+					<%--url = "${path }/zzb/app/Sha01/grzdsx/ajax/batch/upload?shpcId=${shpcId}&split="+split+"&uploadMatchingMode="+uploadMatchingMode;--%>
 				}else{
 					url = "${path }/zzb/app/Sha01/grzdsx/ajax/uploadFile?sha01Id="+a01Id;
-				}
-				$("#importForm").ajaxSubmit({
-					url: url,
-					type: "post",
-					headers: {
-						OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
-					},
-					beforeSend: function (XHR) {
-						myLoading.show();
-					},
-					success: function (json) {
-						if (json.code == 1) {
-							showTip("提示","上传成功",2000);
-							searchSubmit();
 
-						} else if (json.code == -1) {
-							showTip("提示", json.message, 2000);
-						} else {
+					$("#importForm").ajaxSubmit({
+						url: url,
+						type: "post",
+						headers: {
+							OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
+						},
+						beforeSend: function (XHR) {
+							myLoading.show();
+						},
+						success: function (json) {
+							if (json.code == 1) {
+								showTip("提示","上传成功",2000);
+								searchSubmit();
+
+							} else if (json.code == -1) {
+								showTip("提示", json.message, 2000);
+							} else {
+								showTip("提示", "出错了,请检查网络!", 2000);
+							}
+						},
+						error: function (arg1, arg2, arg3) {
 							showTip("提示", "出错了,请检查网络!", 2000);
+						},
+						complete: function (XHR, TS) {
+							myLoading.hide();
 						}
-					},
-					error: function (arg1, arg2, arg3) {
-						showTip("提示", "出错了,请检查网络!", 2000);
-					},
-					complete: function (XHR, TS) {
-						myLoading.hide();
-					}
-				});
+					});
+				}
 			}
 		})();
 

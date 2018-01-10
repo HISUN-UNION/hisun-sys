@@ -353,6 +353,7 @@ public class Sha01gbrmspbController extends BaseController {
                 map.put("nomatchCount", filecount-matchMap.size());
                 map.put("matchResult", matchMap);
                 map.put("noMatchFilenames",noMatchFilenames);
+                map.put("urlValue","gbrmspb");
                 FileUtils.deleteQuietly(zipFile);
             } else {
                 map.put("code", -1);

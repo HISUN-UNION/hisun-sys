@@ -72,7 +72,7 @@
 		$.cloudAjax({
 			async : true,
 			path : '${path}',
-			url : '${path}/zzb/app/Sha01/gbrmspb/ajax/batch/match/save',
+			url : '${path}/zzb/app/Sha01/${urlValue}/ajax/batch/match/save',
 			type : 'post',
 			data : $("#form1").serialize(),
 			headers:{

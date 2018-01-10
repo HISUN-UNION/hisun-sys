@@ -330,7 +330,7 @@ public class Sha01dascqkController extends BaseController {
     public
     @ResponseBody
     ModelAndView batchMatch(String shpcId, String
-            uploadMatchingMode, String split, @RequestParam(value = "gbrmspbFile", required = false) MultipartFile file,
+            uploadMatchingMode, String split, @RequestParam(value = "dascqkFile", required = false) MultipartFile file,
                             HttpServletRequest req, HttpServletResponse resp) throws IOException {
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, String> matchMap = new LinkedHashMap<>();
@@ -395,6 +395,7 @@ public class Sha01dascqkController extends BaseController {
                 map.put("nomatchCount", filecount-matchMap.size());
                 map.put("matchResult", matchMap);
                 map.put("noMatchFilenames",noMatchFilenames);
+                map.put("urlValue","dascqk");
                 FileUtils.deleteQuietly(zipFile);
             } else {
                 map.put("code", -1);
