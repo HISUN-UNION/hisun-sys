@@ -1,5 +1,6 @@
 package com.hisun.saas.zzb.app.console.shpc.service.impl;
 
+import com.aspose.words.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.hisun.base.dao.BaseDao;
@@ -9,19 +10,27 @@ import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
+import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
+import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.shpc.dao.Sha01Dao;
 import com.hisun.saas.zzb.app.console.shpc.entity.*;
 import com.hisun.saas.zzb.app.console.shpc.service.Sha01Service;
+import com.hisun.saas.zzb.app.console.shpc.service.Sha01gbrmspbService;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
-import com.hisun.util.FileUtil;
+import com.hisun.saas.zzb.app.console.shpc.vo.Sha01gbrmspbVo;
+import com.hisun.util.*;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +41,9 @@ import java.util.Map;
 public class Sha01ServiceImpl extends BaseServiceImpl<Sha01,String> implements Sha01Service {
 
     private Sha01Dao sha01Dao;
+
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
 
     @Autowired
     public void setBaseDao(BaseDao<Sha01, String> sha01Dao) {
@@ -138,6 +150,80 @@ public class Sha01ServiceImpl extends BaseServiceImpl<Sha01,String> implements S
         return page;
     }
 
+
+
+    public void saveAsGbrmspb(Sha01 sha01)throws Exception{
+        if(sha01.getGbrmspbs()!=null && sha01.getGbrmspbs().size()>0){
+            Sha01gbrmspb gbrmspb = sha01.getGbrmspbs().get(0);
+            WordUtil wordUtil = WordUtil.newInstance();
+            Document gbrmspbTemplateDoc = wordUtil.read(uploadAbsolutePath + Sha01gbrmspbService.GBRMSPB_TEMPLATE);
+            DocumentBuilder builder = new DocumentBuilder(gbrmspbTemplateDoc);
+
+            Sha01gbrmspbVo sha01gbrmspbVo = new Sha01gbrmspbVo();
+            BeanUtils.copyProperties(sha01gbrmspbVo,gbrmspb);
+            Map<String,Object> gbrmspbFieldMap = ReflectionVoUtil.map(sha01gbrmspbVo);
+
+            NodeCollection tables = gbrmspbTemplateDoc.getChildNodes(NodeType.TABLE, true);
+            int tableIndex = 0;
+            for (Iterator<Table> iterator = tables.iterator(); iterator.hasNext(); ) {
+                Table table = iterator.next();
+                NodeCollection rows = table.getChildNodes(NodeType.ROW, true);
+                int rowIndex = 0;
+                for (Iterator<Row> rowIterator = rows.iterator(); rowIterator.hasNext(); ) {
+                    Row row = rowIterator.next();
+                    NodeCollection cells = row.getChildNodes(NodeType.CELL, true);
+                    int colIndex = 0;
+                    for (Iterator<Cell> cellIterator = cells.iterator(); cellIterator.hasNext(); ) {
+                        Cell cell = cellIterator.next();
+                        String trimText = wordUtil.trim(cell.getText());
+                        builder.moveToCell(tableIndex, rowIndex, colIndex, 0);
+                        if (trimText.startsWith(WordUtil.dataPrefix)) {
+                            String field = wordUtil.getSqlField(trimText);
+                            String value = gbrmspbFieldMap.get(field)==null?"":gbrmspbFieldMap.get(field).toString();
+                            builder.write(value);
+                            gbrmspbTemplateDoc.getRange().replace(trimText, "",
+                                    new FindReplaceOptions(FindReplaceDirection.FORWARD));
+                        } else if (trimText.startsWith(WordUtil.imageSign)) {
+                            if (com.hisun.util.StringUtils.isEmpty(sha01gbrmspbVo.getZppath()) == false) {
+                                builder.insertImage(uploadAbsolutePath + sha01gbrmspbVo.getZppath(), 94, 122);
+                            }
+                            gbrmspbTemplateDoc.getRange().replace(trimText, "",
+                                    new FindReplaceOptions(FindReplaceDirection.FORWARD));
+                        } else if (trimText.startsWith(WordUtil.rangeSign)) {
+                            if (sha01.getShgxes() != null && sha01.getShgxes().size() > 0) {
+                                String field = wordUtil.getSqlField(trimText);
+                                for (int i = 0; i < sha01.getShgxes().size(); i++) {
+                                    if (i > 9) {
+                                        break;
+                                    }//最多取10条数据
+                                    builder.moveToCell(tableIndex, rowIndex + i, colIndex, 0);
+                                    Map<String, Object> shgxFieldMap = ReflectionVoUtil.map(sha01.getShgxes().get(i));
+                                    String value = shgxFieldMap.get(field)==null?"":shgxFieldMap.get(field).toString();
+                                    builder.write(value);
+                                }
+                            }
+                            gbrmspbTemplateDoc.getRange().replace(trimText, "",
+                                    new FindReplaceOptions(FindReplaceDirection.FORWARD));
+                        }
+                        colIndex++;
+                    }
+                    rowIndex++;
+                }
+                tableIndex++;
+            }
+            String saveWordPath = Sha01gbrmspbService.ATTS_PATH+ UUIDUtil.getUUID()+".docx";
+            gbrmspbTemplateDoc.save(uploadAbsolutePath+saveWordPath);
+
+            String pdfPath = Sha01gbrmspbService.ATTS_PATH+UUIDUtil.getUUID()+".pdf";
+            String pdfRealPath = uploadAbsolutePath+pdfPath;
+            WordConvertUtil.newInstance().convert(uploadAbsolutePath+saveWordPath,pdfRealPath,WordConvertUtil.PDF);
+            gbrmspb.setFile2imgPath(pdfPath);
+            FileUtils.forceDelete(new File(uploadAbsolutePath+saveWordPath));
+            this.update(sha01);
+        }
+
+    }
+
     public String toSqliteInsertSql(Sha01 sha01){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");
@@ -203,7 +289,7 @@ public class Sha01ServiceImpl extends BaseServiceImpl<Sha01,String> implements S
         //按姓名匹配
         if(uploadMatchingMode!=null && uploadMatchingMode.equals("1")) {
             query.add(CommonRestrictions.and(" instr( :fname , Sha01.xm) >0", "fname",
-                    filename.replace(".","")));
+                    filename.replace(".","").replace(" ","")));
             //query.add(CommonRestrictions.and(" Sha01.xm like :xm ", "xm", "%" + xm + "%"));
         }else{
             //按序号匹配

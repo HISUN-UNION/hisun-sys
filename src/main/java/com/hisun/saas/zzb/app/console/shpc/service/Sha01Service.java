@@ -4,6 +4,7 @@ import com.hisun.base.dao.util.CommonConditionQuery;
 import com.hisun.base.service.BaseService;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.sys.tenant.tenant.entity.Tenant;
+import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
 import com.hisun.saas.zzb.app.console.shpc.entity.Shpc;
 import com.hisun.saas.zzb.app.console.shpc.vo.Sha01Vo;
@@ -27,4 +28,5 @@ public interface Sha01Service extends BaseService<Sha01,String> {
     PagerVo<Sha01Vo> getSha01VoS(int pageSize, int pageNum, String shpcId, String xmQuery, String noFileQuert);
     String toSqliteInsertSql(Sha01 sha01);
     void matchQueryCondition(CommonConditionQuery query, String uploadMatchingMode, String split, String filename);
+    void saveAsGbrmspb(Sha01 sha01)throws Exception;
 }

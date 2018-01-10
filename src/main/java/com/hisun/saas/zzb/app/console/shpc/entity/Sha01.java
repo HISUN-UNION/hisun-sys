@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -315,4 +316,28 @@ public class Sha01 extends TenantEntity implements Serializable {
         this.jsbs = jsbs;
     }
 
+
+    public void addGbrmspb(Sha01gbrmspb sha01gbrmspb){
+        if(this.gbrmspbs==null){
+            this.gbrmspbs = new ArrayList<>();
+        }
+        sha01gbrmspb.setSha01(this);
+        this.gbrmspbs.add(sha01gbrmspb);
+    }
+
+    public void addShgx(Sha01shgx sha01shgx){
+        if(this.shgxes==null){
+            this.shgxes = new ArrayList<>();
+        }
+        sha01shgx.setSha01(this);
+        this.shgxes.add(sha01shgx);
+    }
+
+    public void addGzjl(Sha01gzjl sha01gzjl){
+        if(this.gzjls==null){
+            this.gzjls = new ArrayList<>();
+        }
+        sha01gzjl.setSha01(this);
+        this.gzjls.add(sha01gzjl);
+    }
 }
