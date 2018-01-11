@@ -135,9 +135,9 @@ public class Sha01gbrmspbServiceImpl extends BaseServiceImpl<Sha01gbrmspb, Strin
         }
        // sha01gbrmspb.setGzjlStr(newGzjlStr.toString());
         this.dealPhoto(sha01gbrmspb, wordsourcePath);
-        this.dealAtts(sha01gbrmspb,wordsourcePath);
+        //this.dealAtts(sha01gbrmspb,wordsourcePath);
         this.sha01Service.update(sha01);
-        //this.sha01Service.saveAsGbrmspb(sha01);
+        this.sha01Service.saveAsGbrmspb(sha01);
 
 //        String id = this.sha01gbrmspbDao.saveFromWord(gbrmspb,dataMap);
 //        gbrmspb = this.sha01gbrmspbDao.getByPK(id);

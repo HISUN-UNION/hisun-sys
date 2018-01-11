@@ -66,7 +66,7 @@ public class Sha01gbrmspbController extends BaseController {
                     _fileDir.mkdirs();
                 }
                 //原附件存储路径
-                String savePath = Sha01gbrmspbService.ATTS_PATH + UUIDUtil.getUUID() + "_" + fileName;
+                String savePath = Sha01gbrmspbService.ATTS_PATH  + UUIDUtil.getUUID() + "." + FileUtil.getExtend(fileName);
                 String saveRealPath = uploadAbsolutePath + savePath;
 
                 //模板路径
@@ -76,12 +76,7 @@ public class Sha01gbrmspbController extends BaseController {
                     fos.write(file.getBytes());
                     fos.flush();
                     fos.close();
-
-                    Sha01 sha01 = this.sha01Service.getByPK(sha01Id);
-                    Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                    sha01gbrmspb.setFilepath(savePath);
-                    sha01gbrmspb.setSha01(sha01);
-                    this.sha01gbrmspbService.saveFromWord(sha01gbrmspb, saveRealPath, wordTemplatePath);
+                    this.sha01gbrmspbService.saveFromWord(sha01Id, saveRealPath, wordTemplatePath);
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new GenericException(e);
@@ -175,10 +170,7 @@ public class Sha01gbrmspbController extends BaseController {
                             String saveRealPath = uploadAbsolutePath + savePath;
                             File desFile = new File(saveRealPath);
                             FileUtils.copyFile(f, desFile);
-                            Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                            sha01gbrmspb.setFilepath(savePath);
-                            sha01gbrmspb.setSha01(sha01s.get(0));
-                            this.sha01gbrmspbService.saveFromWord(sha01gbrmspb, saveRealPath, wordTemplatePath);
+                            this.sha01gbrmspbService.saveFromWord(sha01s.get(0).getId(), saveRealPath, wordTemplatePath);
                         }
                     }
                 }
@@ -263,10 +255,7 @@ public class Sha01gbrmspbController extends BaseController {
                             String saveRealPath = uploadAbsolutePath + savePath;
                             File desFile = new File(saveRealPath);
                             FileUtils.copyFile(f, desFile);
-                            Sha01gbrmspb sha01gbrmspb = new Sha01gbrmspb();
-                            sha01gbrmspb.setFilepath(savePath);
-                            sha01gbrmspb.setSha01(sha01s.get(0));
-                            this.sha01gbrmspbService.saveFromWord(sha01gbrmspb, saveRealPath, wordTemplatePath);
+                            this.sha01gbrmspbService.saveFromWord(sha01s.get(0).getId(), saveRealPath, wordTemplatePath);
                         }
                     }
                 }
