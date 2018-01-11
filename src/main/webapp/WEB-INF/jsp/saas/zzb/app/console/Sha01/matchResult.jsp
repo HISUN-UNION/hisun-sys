@@ -5,8 +5,10 @@
 	.pipeititle{ background-color:#f5f6fa; height:32px; line-height:32px; text-align:center; border:solid 1px #e1e6eb; font-weight:bold;}
 	.tabpipeiSuccess{}
 	.tabpipeiSuccess tr td{ padding:5px 5px; border:solid 1px #e1e6eb;}
+	.tabpipeiSuccess tr th{ padding:5px 5px; border:solid 1px #e1e6eb; border-top:none; }
 	.tabpipeiSuccess tr:first-child td{ border-top:none;}
 	.tabpipeifailure tr td{padding:5px 5px;  border:solid 1px #e1e6eb; border-top:none; border-right:none;}
+	.tabpipeifailure tr th{ padding:5px 5px; border:solid 1px #e1e6eb; border-top:none;border-right:none; }
 </style>
 <c:set var="path" value="${pageContext.request.contextPath}"></c:set>
 <div id="form1Group" class="control-group">
@@ -36,6 +38,12 @@
 					<div class="pipeititle" style="">匹配成功文件</div>
 					<div style="max-height:215px; overflow: auto;">
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabpipeiSuccess">
+							<thead>
+								<tr>
+									<th >姓名</th>
+									<th width="50%">文件名</th>
+								</tr>
+							</thead>
 							<tbody>
 								<c:forEach var="map" items="${matchResult}">
 									<tr>
@@ -51,6 +59,11 @@
 					<div class="pipeititle" style="border-right: none;">未匹配文件</div>
 					<div style="max-height:215px; overflow: auto;">
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabpipeifailure">
+							<%--<thead>--%>
+							<%--<tr>--%>
+								<%--<th>文件名</th>--%>
+							<%--</tr>--%>
+							<%--</thead>--%>
 							<tbody>
 								<c:forEach var="filename" items="${noMatchFilenames}">
 									<tr>
