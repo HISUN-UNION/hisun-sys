@@ -38,7 +38,7 @@
 								</ul>
 							</div>
 
-							<a class="btn green" href="#">
+							<a class="btn green" href="javascript:savaAsGbmc()">
 								另存为“干部名册”
 							</a>
 							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/asetA01Query/queryList">
@@ -99,6 +99,8 @@
 		
 		<%-- END PAGE CONTENT--%>  
 	</div>
+	<script type="text/javascript" src="${path }/js/common/30CloudAjax.js"></script>
+	<script type="text/javascript" src="${path }/js/common/loading.js"></script>
 	<script type="text/javascript">
 		(function(){
 			App.init();
@@ -111,7 +113,31 @@
 		function searchSubmit(){
 			document.searchForm.submit();
 		}
-		
+
+		function savaAsGbmc(){
+			var queryId = "${queryId}";
+			if(queryId==""){
+				showTip("提示","条件不能为空",2000);
+			}else{
+				$.cloudAjax({
+					path : '${path}',
+					url : "${path }/zzb/app/console/asetA01Query/savaAsGbmc",
+					type : "post",
+					data: {"queryId":"${queryId}"},
+					dataType : "json",
+					success : function(data){
+						if(data.success){
+							showTip("提示","成功另存为干部名册",2000);
+						}else{
+							showTip("提示", json.message, 2000);
+						}
+					},
+					error : function(){
+						showTip("提示","出错了请联系管理员",2000);
+					}
+				});
+			}
+		}
 		var del = function(id,itemName){
 			actionByConfirm1(itemName, "${path}/zzb/app/console/asetA01Query/delete/" + id,{} ,function(data,status){
 				if (data.success == true) {

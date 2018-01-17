@@ -22,7 +22,9 @@ public class AppAsetA01Query extends TenantEntity implements Serializable {
     private String id;
     @Column(name = "query_name")
     private String queryName;
-    @Column(name = "query_condition")
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "query_condition",columnDefinition = "TEXT",nullable = true)
     private String queryCondition;
     @Lob
     @Basic(fetch = FetchType.LAZY)
