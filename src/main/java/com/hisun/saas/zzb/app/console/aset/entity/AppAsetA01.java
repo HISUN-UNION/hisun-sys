@@ -24,73 +24,73 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     @Column(name = "id", nullable = false, unique = true, length = 32)
     private String id;
     @Column(name = "xm")
-    private String xm;
+    private String xm; //姓名
     @Column(name = "xb")
-    private String xb;
+    private String xb;//性别
     @Column(name = "csny")
-    private String csny;
+    private String csny;//出生年月
     @Column(name = "nl")
-    private String nl;
+    private String nl;//年龄
     @Column(name = "mz")
-    private String mz;
+    private String mz;//名族
     @Column(name = "zw")
-    private String zw;
+    private String zw;//职务
 
     @Column(name = "csd")
-    private String csd;
+    private String csd;//出生地
     @Column(name = "jg")
-    private String jg;
+    private String jg;//籍贯
     @Column(name = "jkzk")
-    private String jkzk;
+    private String jkzk;//健康状态
 
     @Column(name = "cjgzsj")
-    private String cjgzsj;
+    private String cjgzsj;//参加工作时间
     @Column(name = "rdsj")
-    private String rdsj;
+    private String rdsj;//入党时间
     @Column(name = "qrzxl")
-    private String qrzxl;
+    private String qrzxl;//全日制学历
     @Column(name = "qrzxw")
-    private String qrzxw;
+    private String qrzxw;//全日制学位
     @Column(name = "qrz_byyx")
-    private String qrzByyx;
+    private String qrzByyx;//全日制毕业院校
     @Column(name = "qrz_zy")
-    private String qrzZy;
+    private String qrzZy;//全日制专业
     @Column(name = "zzxl")
-    private String zzxl;
+    private String zzxl;//在职学历
     @Column(name = "zzxw")
-    private String zzxw;
+    private String zzxw;//在职学位
     @Column(name = "zz_byyx")
-    private String zzByyx;
+    private String zzByyx;//在职毕业院校
     @Column(name = "zz_zy")
-    private String zzZy;
+    private String zzZy;//在职专业
 
 
     @Column(name = "zyjszw")
-    private String zyjszw;
+    private String zyjszw;//专业技术职务
     @Column(name = "zytc")
-    private String zytc;
+    private String zytc;//专业特长
 
     @Column(name = "xrzjsj")
-    private String xrzjsj;
+    private String xrzjsj;//现任职级时间
     @Column(name = "xrzwsj")
-    private String xrzwsj;
+    private String xrzwsj;//现任职务时间
 
     @Column(name = "xrzw")
-    private String xrzw;
+    private String xrzw;//现任职务
     @Column(name = "nrzw")
-    private String nrzw;
+    private String nrzw;//拟任职务
     @Column(name = "nmzw")
-    private String nmzw;
+    private String nmzw;//拟免职务
     @Column(name = "file_path")
     private String filepath;
     @Column(name = "file2img_path")
     private String file2ImgPath;
     @Column(name = "gzjl_str")
-    private String gzjlStr;
+    private String gzjlStr;//工作经历
     @Column(name = "jcqk_str")
-    private String jcqkStr;
+    private String jcqkStr;//奖惩情况
     @Column(name = "khjg_str")
-    private String khjgStr;
+    private String khjgStr;//考核结果
 
 
     @Column(name = "a01_px")
