@@ -12,6 +12,8 @@ import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01Vo;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA36Vo;
+import com.hisun.saas.zzb.app.console.gbmc.entity.GbMc;
+import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
 import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01gbrmspb;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
 import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
@@ -24,6 +26,7 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -476,5 +479,6 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01,String> im
         sb.append(")");
         return sb.toString();
     }
+
 
 }

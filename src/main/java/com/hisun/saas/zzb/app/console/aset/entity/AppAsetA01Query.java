@@ -15,6 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "app_aset_a01_query")
 public class AppAsetA01Query extends TenantEntity implements Serializable {
+    public final static int DISPLAY =1;
+    public final static int HIDDEN =0;
     @Id
     @GenericGenerator(name = "generator", strategy = "uuid.hex")
     @GeneratedValue(generator = "generator")
@@ -32,6 +34,8 @@ public class AppAsetA01Query extends TenantEntity implements Serializable {
     private String queryJson;
     @Column(name = "query_sort")
     private int querySort;
+    @Column(name = "is_display")
+    private int isDisplay=HIDDEN;
 
     public String getId() {
         return id;
@@ -71,5 +75,13 @@ public class AppAsetA01Query extends TenantEntity implements Serializable {
 
     public void setQuerySort(int querySort) {
         this.querySort = querySort;
+    }
+
+    public int getIsDisplay() {
+        return isDisplay;
+    }
+
+    public void setIsDisplay(int isDisplay) {
+        this.isDisplay = isDisplay;
     }
 }

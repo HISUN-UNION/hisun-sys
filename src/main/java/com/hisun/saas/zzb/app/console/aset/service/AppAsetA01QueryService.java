@@ -16,5 +16,5 @@ public interface AppAsetA01QueryService extends BaseService<AppAsetA01Query,Stri
 
     Integer getMaxPx() ;
     void updatePx( int oldPx, int newPx);
-
+    void saveAsGbmc(AppAsetA01Query query)throws Exception;
 }

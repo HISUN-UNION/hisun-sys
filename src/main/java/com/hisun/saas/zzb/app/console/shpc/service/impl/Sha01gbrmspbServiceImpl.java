@@ -1,14 +1,9 @@
 package com.hisun.saas.zzb.app.console.shpc.service.impl;
 
-import com.aspose.words.*;
 import com.hisun.base.dao.BaseDao;
 import com.hisun.base.service.impl.BaseServiceImpl;
 import com.hisun.saas.sys.auth.UserLoginDetails;
 import com.hisun.saas.sys.auth.UserLoginDetailsUtil;
-import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01gbrmspb;
-import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
-import com.hisun.saas.zzb.app.console.gbmc.vo.GbMcA01gbrmspbVo;
-import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
 import com.hisun.saas.zzb.app.console.shpc.dao.Sha01gbrmspbDao;
 import com.hisun.saas.zzb.app.console.shpc.entity.Sha01;
@@ -25,8 +20,6 @@ import com.hisun.saas.zzb.app.console.util.EntityWrapper;
 import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.util.*;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.xml.utils.StringBufferPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,7 +28,6 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by zhouying on 2017/9/15.

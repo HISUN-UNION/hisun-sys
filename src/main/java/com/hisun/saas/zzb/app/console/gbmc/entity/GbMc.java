@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,5 +98,13 @@ public class GbMc extends TenantEntity implements Serializable{
 
     public void setMb(String mb) {
         this.mb = mb;
+    }
+
+
+    public void addGbMcA01(GbMcA01 gbMcA01){
+        if(this.gbMcA01s==null){
+            this.gbMcA01s = new ArrayList<>();
+        }
+        this.gbMcA01s.add(gbMcA01);
     }
 }

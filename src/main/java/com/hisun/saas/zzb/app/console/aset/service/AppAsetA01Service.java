@@ -27,4 +27,5 @@ public interface AppAsetA01Service extends BaseService<AppAsetA01,String> {
     void deleteAllData() throws Exception;
     String toSqliteInsertSql(AppAsetA01 entity);
 
+
 }

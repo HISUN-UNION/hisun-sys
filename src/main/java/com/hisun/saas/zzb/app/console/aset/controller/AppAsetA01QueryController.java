@@ -231,17 +231,7 @@ public class AppAsetA01QueryController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             AppAsetA01Query a01Query = this.appAsetA01QueryService.getByPK(queryId);
-            List<Object> paramList = Lists.newArrayList();
-            String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  inner join b01.appBsetFl2B01s fltob01  where 1=1 ";
-            if (StringUtils.isNotBlank(queryId)) {
-                hql = hql + a01Query.getQueryCondition();
-            }
-
-
-            hql = hql + " and a01.tombstone =? order by fltob01.px,b01.px,a02.jtlPx ";
-            paramList.add(0);
-            List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql, paramList, 1,
-                    10000);
+            this.appAsetA01QueryService.saveAsGbmc(a01Query);
             map.put("success", true);
         } catch (Exception e) {
             map.put("success", false);
