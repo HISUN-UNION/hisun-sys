@@ -30,194 +30,207 @@
 							<span class="hidden-480">查询条件设置</span>
 
 						</div>
-						<div class="tools">
-							<a href="javascript:location.reload();" class="reload"></a>
-							<button type="button" class="btn green" onclick="formSubmit()"><i class="icon-ok"></i> 确定</button>
-							<a class="btn" href="${path }/zzb/app/console/asetA01Query/queryList"><i class="icon-remove-sign"></i> 取消</a>
+						<div class="clearfix fr">
+							<button type="button" class="btn green" onclick="formSubmit('query')">查询</button>
+							<button type="button" class="btn green" onclick="saveAndQuery()"><i class="icon-ok"></i>保存并查询</button>
+							<c:if test="${addType eq 'a01List'}">
+								<a class="btn" href="${path }/zzb/app/console/asetA01Query/"><i class="icon-remove-sign"></i> 取消</a>
+							</c:if>
+							<c:if test="${empty addType}">
+								<a class="btn" href="${path }/zzb/app/console/asetA01Query/queryList"><i class="icon-remove-sign"></i> 取消</a>
+							</c:if>
+
 						</div>
+
 					</div>
 
 					<div class="portlet-body form">
 						<!-- BEGIN FORM-->
 						<form action="" class="form-horizontal" id="form1"  method="post">
 							<input type="hidden" id="id" name="id" value="${vo.id}">
-							<dl class="dlattrbute">
-								<dt><a href="###">基本信息</a></dt>
-								<dd>
-									<table  border="0" style="width:100%;" cellPadding="5px">
-										<tr>
-											<td>
-												<div id="queryNameGroup" class="control-group">
-													<label class="control-label"><span class="required">*</span>条件名称</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="queryName" name="queryName" required  maxlength="45" value="${vo.queryName}"/>
-													</div>
-												</div>
-											</td>
-											<td width="50%">
-												<div id="querySortGroup" class="control-group">
-													<label class="control-label"><span class="required">*</span>排序</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="querySort" name="querySort"  number="true" required  maxlength="45" value="${vo.querySort}"/>
-													</div>
-												</div>
-											</td>
-										</tr>
-									</table>
-								</dd>
-							</dl>
-							<dl class="dlattrbute">
-								<dt><a href="###">条件信息</a></dt>
-								<dd>
-									<table  border="0" style="width:100%;" cellPadding="5px">
-										<tr>
-											<td>
-												<div id="xmGroup" class="control-group">
-													<label class="control-label">姓名</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="xm" name="xm"  maxlength="45" value="${vo.xm}"/>
-													</div>
-												</div>
-											</td>
-											<td width="50%">
-												<div id="b01IdGroup" class="control-group">
-													<label class="control-label">单位</label>
-													<div class="controls">
-														<div class="btn-group span12" style="font-size: 12px">
-															<input type="hidden" name="b01Id" id="b01Id" value="${vo.b01Id}"/>
-															<input type="text" id="b0101" name="b0101" readonly="readonly"
-																   class="span8 m-wrap" style="cursor: pointer;" onclick="$('#objectTreeSelDiv').toggle();" value="${vo.b0101}">
-															<div class="span8 m-wrap" style="border:solid 1px #ccc;overflow-y: scroll;overflow-x: auto;position: absolute;
-											top: 100%;left: 0;z-index: 1000;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;height: 200px;background-color: white;" id="objectTreeSelDiv">
-																<ul id="treeDemo" class="ztree" style="margin: 0px;padding: 0px;height: 200px;"></ul>
-															</div>
-														</div>
+							<input type="hidden" id="saveType" name="saveType" value="">
+							<input type="hidden" id="queryName" name="queryName" value=""${vo.queryName}">
+							<input type="hidden" id="querySort" name="querySort" value="${vo.querySort}">
 
-													</div>
+							<div id="conditionModal" class="modal container hide fade" tabindex="-1" data-width="400">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button data-dismiss="modal" class="close"  type="button"></button>
+											<h3 class="modal-title" id="title" >
+												输入查询名称、排序
+											</h3>
+										</div>
+										<div class="modal-body form-horizontal" id="dabzAddDiv">
+											<div class="control-group">
+												<label class="control-label" style=" width: 60px;"><span class="required">*</span>查询名称</label>
+												<div class="controls" style="margin-left: 80px;">
+													<input class="m-wrap" type="text" id="queryNameTmp" name="queryNameTmp"  maxlength="45" value="${vo.queryName}"/>
 												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div id="xbGroup" class="control-group">
-													<label class="control-label">性别</label>
-													<div class="controls">
-														<select class="span8 m-wrap" tabindex="-1" name="xb" id="xb" >
-															<option value="">全部</option>
-															<option value="男" <c:if test="${vo.xb == '男'}">selected="selected"</c:if>>男</option>
-															<option value="女" <c:if test="${vo.xb == '女'}">selected="selected"</c:if>>女</option>
-														</select>
-													</div>
+											</div>
+											<div class="control-group">
+												<label class="control-label"  style=" width: 60px;"><span class="required">*</span>排序</label>
+												<div class="controls" style="margin-left: 80px;">
+													<input class="m-wrap" type="text" id="querySortTmp" name="querySortTmp"  maxlength="45" value="${vo.querySort}"/>
 												</div>
-											</td>
-											<td width="50%">
-												<div id="xrzwGroup" class="control-group">
-													<label class="control-label">现任职务</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="xrzw" name="xrzw"  maxlength="45" value="${vo.xrzw}"/>
-													</div>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div >
-													<label class="control-label">年龄</label>
-													<div class="controls">
-														<span  id="nlStartGroup" style=" display: inline-block;float: left; ">
-															<input class="span8 m-wrap" style="width: 100px;" type="text" id="nlStart" name="nlStart"  maxlength="45" value="${vo.nlStart}"/>
-														</span>
+											</div>
+											<div id="ErrMsg" name="ErrMsg" style="color: red;margin-left: 80px;"></div>
+											<div class="control-group mybutton-group" style="text-align: right;">
+												<button type="button" class="btn green" onclick="formSubmit('save')"><i class="icon-ok"></i> 确定</button>
+												<button type="button" class="btn btn-default"  data-dismiss="modal"><i class="icon-remove-sign"></i> 取消</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 
-														<span  id="nlEndGroup" >
-															--<input class="span8 m-wrap" style="width: 100px;" type="text" id="nlEnd" name="nlEnd"  maxlength="45" value="${vo.nlEnd}"/>
-														</span>
+							<table  border="0" style="width:100%;" cellPadding="5px">
+								<tr>
+									<td>
+										<div id="xmGroup" class="control-group">
+											<label class="control-label">姓名</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="xm" name="xm"  maxlength="45" value="${vo.xm}"/>
+											</div>
+										</div>
+									</td>
+									<td width="50%">
+										<div id="b01IdGroup" class="control-group">
+											<label class="control-label">单位</label>
+											<div class="controls">
+												<div class="btn-group span12" style="font-size: 12px">
+													<input type="hidden" name="b01Id" id="b01Id" value="${vo.b01Id}"/>
+													<input type="text" id="b0101" name="b0101" readonly="readonly"
+														   class="span8 m-wrap" style="cursor: pointer;" onclick="$('#objectTreeSelDiv').toggle();" value="${vo.b0101}">
+													<div class="span8 m-wrap" style="border:solid 1px #ccc;overflow-y: scroll;overflow-x: auto;position: absolute;
+									top: 100%;left: 0;z-index: 1000;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;height: 200px;background-color: white;" id="objectTreeSelDiv">
+														<ul id="treeDemo" class="ztree" style="margin: 0px;padding: 0px;height: 200px;"></ul>
 													</div>
 												</div>
-											</td>
-											<td width="50%">
-												<div id="mzGroup" class="control-group">
-													<label class="control-label">民族</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="mz" name="mz"  maxlength="45" value="${vo.mz}"/>
-													</div>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div id="csdGroup" class="control-group">
-													<label class="control-label">出生地</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="csd" name="csd"  maxlength="45" value="${vo.csd}"/>
-													</div>
-												</div>
-											</td>
-											<td width="50%">
-												<div id="jgGroup" class="control-group">
-													<label class="control-label">籍贯</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="jg" name="jg"  maxlength="45" value="${vo.jg}"/>
-													</div>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div id="qrzxlGroup" class="control-group">
-													<label class="control-label">全日制学历</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="qrzxl" name="qrzxl"  maxlength="45" value="${vo.qrzxl}"/>
-													</div>
-												</div>
-											</td>
-											<td width="50%">
-												<div id="qrzxwGroup" class="control-group">
-													<label class="control-label">全日制学位</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="qrzxw" name="qrzxw"  maxlength="45" value="${vo.qrzxw}"/>
-													</div>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div id="qrzZyGroup" class="control-group">
-													<label class="control-label">全日制专业</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="qrzZy" name="qrzZy"  maxlength="45" value="${vo.qrzZy}"/>
-													</div>
-												</div>
-											</td>
-											<td>
-												<div id="zzxlGroup" class="control-group">
-													<label class="control-label">在职学历</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="zzxl" name="zzxl"  maxlength="45" value="${vo.zzxl}"/>
-													</div>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td width="50%">
-												<div id="zzxwGroup" class="control-group">
-													<label class="control-label">在职学位</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="zzxw" name="zzxw"  maxlength="45" value="${vo.zzxw}"/>
-													</div>
-												</div>
-											</td>
-											<td width="50%">
-												<div id="zzZyGroup" class="control-group">
-													<label class="control-label">在职专业</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="zzZy" name="zzZy"  maxlength="45" value="${vo.zzZy}"/>
-													</div>
-												</div>
-											</td>
-										</tr>
-									</table>
-								</dd>
-							</dl>
+
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div id="xbGroup" class="control-group">
+											<label class="control-label">性别</label>
+											<div class="controls">
+												<select class="span8 m-wrap" tabindex="-1" name="xb" id="xb" >
+													<option value="">全部</option>
+													<option value="男" <c:if test="${vo.xb == '男'}">selected="selected"</c:if>>男</option>
+													<option value="女" <c:if test="${vo.xb == '女'}">selected="selected"</c:if>>女</option>
+												</select>
+											</div>
+										</div>
+									</td>
+									<td width="50%">
+										<div id="xrzwGroup" class="control-group">
+											<label class="control-label">现任职务</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="xrzw" name="xrzw"  maxlength="45" value="${vo.xrzw}"/>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div >
+											<label class="control-label">年龄</label>
+											<div class="controls">
+												<span  id="nlStartGroup" style=" display: inline-block;float: left; ">
+													<input class="span8 m-wrap" style="width: 100px;" type="text" id="nlStart" name="nlStart"  maxlength="45" value="${vo.nlStart}"/>
+												</span>
+
+												<span  id="nlEndGroup" >
+													--<input class="span8 m-wrap" style="width: 100px;" type="text" id="nlEnd" name="nlEnd"  maxlength="45" value="${vo.nlEnd}"/>
+												</span>
+											</div>
+										</div>
+									</td>
+									<td width="50%">
+										<div id="mzGroup" class="control-group">
+											<label class="control-label">民族</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="mz" name="mz"  maxlength="45" value="${vo.mz}"/>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div id="csdGroup" class="control-group">
+											<label class="control-label">出生地</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="csd" name="csd"  maxlength="45" value="${vo.csd}"/>
+											</div>
+										</div>
+									</td>
+									<td width="50%">
+										<div id="jgGroup" class="control-group">
+											<label class="control-label">籍贯</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="jg" name="jg"  maxlength="45" value="${vo.jg}"/>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div id="qrzxlGroup" class="control-group">
+											<label class="control-label">全日制学历</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="qrzxl" name="qrzxl"  maxlength="45" value="${vo.qrzxl}"/>
+											</div>
+										</div>
+									</td>
+									<td width="50%">
+										<div id="qrzxwGroup" class="control-group">
+											<label class="control-label">全日制学位</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="qrzxw" name="qrzxw"  maxlength="45" value="${vo.qrzxw}"/>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div id="qrzZyGroup" class="control-group">
+											<label class="control-label">全日制专业</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="qrzZy" name="qrzZy"  maxlength="45" value="${vo.qrzZy}"/>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div id="zzxlGroup" class="control-group">
+											<label class="control-label">在职学历</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="zzxl" name="zzxl"  maxlength="45" value="${vo.zzxl}"/>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td width="50%">
+										<div id="zzxwGroup" class="control-group">
+											<label class="control-label">在职学位</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="zzxw" name="zzxw"  maxlength="45" value="${vo.zzxw}"/>
+											</div>
+										</div>
+									</td>
+									<td width="50%">
+										<div id="zzZyGroup" class="control-group">
+											<label class="control-label">在职专业</label>
+											<div class="controls">
+												<input class="span8 m-wrap" type="text" id="zzZy" name="zzZy"  maxlength="45" value="${vo.zzZy}"/>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</table>
 						</form>
 					</div>
 
@@ -243,6 +256,19 @@
 //		App.init();
 //
 //	})();
+	var myVld = new EstValidate("form1");
+	function saveAndQuery(){
+		if(checkNlisNum() == false){
+			return;
+		}
+		var bool = myVld.form();
+		if(bool) {
+			document.getElementById("ErrMsg").innerHTML="";
+			$('#conditionModal').modal({
+				keyboard: true
+			});
+		}
+	}
 	var setting = {
 		view : {
 			selectedMulti : false
@@ -345,13 +371,37 @@ function isNumberTmp(str) {
 		}
 		return true;
 	}
-	var myVld = new EstValidate("form1");
-	function formSubmit(){
+	function formSubmit(saveType){
 		if(checkNlisNum() == false){
 			return;
 		}
+		if(saveType=="save"){
+			if($("#queryNameTmp").val()==""){
+//				showTip("提示","请输入条件名称",2000);
+				document.getElementById("ErrMsg").innerHTML  = "请输入查询名称";
+				$("#queryNameTmp").focus();
+				return;
+			}
+			if($("#querySortTmp").val()==""){
+//				showTip("提示","请输入排序",2000);
+				document.getElementById("ErrMsg").innerHTML  = "请输入排序";
+				$("#querySortTmp").focus();
+				return;
+			}else{
+				if(isNumberTmp($("#querySortTmp").val())==false){
+					document.getElementById("ErrMsg").innerHTML  = "排序必须为数字";
+					$("#querySortTmp").focus();
+//					showTip("提示","排序必须为数字",2000);
+					return;
+				}
+			}
+			document.getElementById("ErrMsg").innerHTML="";
+			$("#queryName").val($("#queryNameTmp").val());
+			$("#querySort").val($("#querySortTmp").val());
+		}
 		var bool = myVld.form();
 		if(bool){
+			$("#saveType").val(saveType);
 			$.cloudAjax({
 				path : '${path}',
 				url : "${path }/zzb/app/console/asetA01Query/save",
@@ -360,8 +410,8 @@ function isNumberTmp(str) {
 				dataType : "json",
 				success : function(data){
 					if(data.success){
-						showTip("提示","操作成功",2000);
-						setTimeout(function(){window.location.href = "${path}/zzb/app/console/asetA01Query/queryList"},2000);
+//						showTip("提示","操作成功",2000);
+						window.location.href = "${path}/zzb/app/console/asetA01Query/?queryId="+data.id;
 					}else{
 						showTip("提示", json.message, 2000);
 					}

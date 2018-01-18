@@ -41,10 +41,10 @@
 							<tbody>
 							<c:forEach items="${pager.datas}" var="vo">
 								<tr style="text-overflow:ellipsis;">
-									<td title="${vo.queryName}"><a href="${path}/zzb/app/console/asetA01Query/?queryId=${vo.id }"><c:out value="${vo.queryName}"></c:out></a></td>
+									<td title="${vo.queryName}"><a href="${path}/zzb/app/console/asetA01Query/?queryId=${vo.id }&queryPosition=queryList"><c:out value="${vo.queryName}"></c:out></a></td>
 									<td title="${vo.querySort}" style="text-align: center" ><c:out value="${vo.querySort}"></c:out></td>
 									<td class="Left_alignment">
-										<a href="${path}/zzb/app/console/asetA01Query/?queryId=${vo.id }" class="">查询</a>|
+										<a href="${path}/zzb/app/console/asetA01Query/?queryId=${vo.id }&queryPosition=queryList" class="">查询</a>|
 										<a href="${path}/zzb/app/console/asetA01Query/edit?id=${vo.id }" class="">编辑</a>|
 										<a href="javascript:del('${vo.id }','${vo.queryName}')" class="">删除</a>
 									</td>

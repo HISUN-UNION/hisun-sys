@@ -11,10 +11,76 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 <!-- END PAGE LEVEL STYLES -->
-<title>${queryName} 干部列表</title>
+<title>${queryName}<c:if test="${empty queryId}">干部列表</c:if><c:if test="${!empty queryId}">查询结果</c:if></title>
+	<style type="text/css">
+		/*.dropdown-menu{ height: 300px; overflow: auto;}*/
+		form {
+			margin: 0 0 0px;
+		}
+	</style>
+
 </head>
 <body>
-
+<div id="conditionModal" class="modal container hide fade" tabindex="-1" data-width="400">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="title" >
+					输入查询名称、排序
+				</h3>
+			</div>
+			<div class="modal-body form-horizontal" id="dabzAddDiv">
+				<div class="control-group">
+					<label class="control-label" style=" width: 60px;"><span class="required">*</span>查询名称</label>
+					<div class="controls" style="margin-left: 80px;">
+						<input class="m-wrap" type="text" id="queryName" name="queryName"  maxlength="45" value="${saveQueryName}"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label"  style=" width: 60px;"><span class="required">*</span>排序</label>
+					<div class="controls" style="margin-left: 80px;">
+						<input class="m-wrap" type="text" id="querySort" name="querySort"  maxlength="45" value="${querySort}"/>
+					</div>
+				</div>
+				<div class="control-group mybutton-group" style="text-align: right;">
+					<button type="button" class="btn green" onclick="saveCondition()"><i class="icon-ok"></i> 确定</button>
+					<button type="button" class="btn btn-default"  data-dismiss="modal"><i class="icon-remove-sign"></i> 取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="mcModal" class="modal container hide fade" tabindex="-1" data-width="400">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="mctitle" >
+					输入名册名称、排序
+				</h3>
+			</div>
+			<div class="modal-body form-horizontal" id="mcAddDiv">
+				<div class="control-group">
+					<label class="control-label" style=" width: 60px;"><span class="required">*</span>名册名称</label>
+					<div class="controls" style="margin-left: 80px;">
+						<input class="m-wrap" type="text" id="mcName" name="mcName"  maxlength="45" value="${saveQueryName}"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label"  style=" width: 60px;"><span class="required">*</span>排序</label>
+					<div class="controls" style="margin-left: 80px;">
+						<input class="m-wrap" type="text" id="mcSort" name="mcSort"  maxlength="45" value="99"/>
+					</div>
+				</div>
+				<div class="control-group mybutton-group" style="text-align: right;">
+					<button type="button" class="btn green" onclick="savaAsGbmc()"><i class="icon-ok"></i> 确定</button>
+					<button type="button" class="btn btn-default"  data-dismiss="modal"><i class="icon-remove-sign"></i> 取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 	<div class="container-fluid">
 
 		<div class="row-fluid">
@@ -22,31 +88,70 @@
 				<%-- 表格开始 --%>
 				<div class="portlet box grey">
 					<div class="portlet-title">
-						<div class="caption">${queryName} 干部列表</div>
+						<div class="caption">${queryName}<c:if test="${empty queryId}">干部列表</c:if><c:if test="${!empty queryId}">查询结果</c:if></div>
 						<div class="clearfix fr">
-
+						<c:if test="${!empty queryId}">
+							<button type="button" class="btn green" onclick="saveQuery()"><i class="icon-ok"></i>保存条件</button>
+						</c:if>
+						<c:if test="${empty queryId}">
 							<div class="btn-group">
 								<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
-									选择条件 <i class="icon-angle-down"></i>
+									条件查询 <i class="icon-angle-down"></i>
 								</a>
-								<ul class="dropdown-menu">
+
+								<ul class="dropdown-menu" style="left: -60px;">
+									<li style="border-bottom: dashed 1px #ddd;">
+										<a href="${path }/zzb/app/console/asetA01Query/add?addType=a01List"><b>新条件</b></a>
+									</li>
 									<c:forEach items="${appAsetA01Querys}" var="vo">
 										<li >
 											<a onclick="queryByCondition('${vo.id}')">${vo.queryName}</a>
 										</li>
 									</c:forEach>
+									<li style="border-top: dashed 1px #ddd;">
+										<a href="${path }/zzb/app/console/asetA01Query/queryList"><b>条件管理</b></a>
+									</li>
 								</ul>
 							</div>
+							</c:if>
+							<c:if test="${!empty queryId}">
+								<div class="btn-group">
+									<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+										另存为 <i class="icon-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu">
+										<li >
+											<a href="javascript:loadGbmc()">干部名册</a>
+										</li>
 
-							<a class="btn green" href="javascript:savaAsGbmc()">
-								另存为“干部名册”
-							</a>
-							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/asetA01Query/queryList">
-								条件管理
-							</a>
+									</ul>
+								</div>
+								<c:if test="${empty queryPosition}">
+									<a class="btn" href="${path }/zzb/app/console/asetA01Query/"><i class="icon-undo"></i>返回</a>
+								</c:if>
+								<c:if test="${queryPosition eq 'queryList'}">
+									<a class="btn" href="${path }/zzb/app/console/asetA01Query/queryList"><i class="icon-undo"></i> 返回</a>
+								</c:if>
+							</c:if>
+
 						</div>
 					</div>
-			
+					<div class="clearfix">
+						<div class="control-group">
+							<div id="query" style="float: left;">
+								<form action="${path }/zzb/app/console/asetA01Query/" method="POST" id="searchForm" name="searchForm">
+									<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
+									<input type="hidden" name="queryId" value="${queryId }" id="queryId">
+									<input type="hidden" name="queryPosition" value="${queryPosition }" id="queryPosition">
+									<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
+									<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
+									姓名：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
+									<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
+									<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
+								</form>
+							</div>
+						</div>
+					</div>
 					<div class="portlet-body">
 						<table class="table table-striped table-bordered table-hover dataTable table-set">
 							<thead>
@@ -65,7 +170,7 @@
 							<tbody>
 							<c:forEach items="${pager.datas}" var="vo">
 								<tr style="text-overflow:ellipsis;">
-									<td title="${vo.xm}"><a href="${path}/zzb/app/console/asetA01Query/view?id=${vo.id }&queryId=${queryId}"><c:out value="${vo.xm}"></c:out></a></td>
+									<td title="${vo.xm}"><a href="${path}/zzb/app/console/asetA01Query/view?id=${vo.id }&queryId=${queryId}&queryPosition=${queryPosition}"><c:out value="${vo.xm}"></c:out></a></td>
 										<%--<td title="${vo.xm}">--%>
 										<%--<c:out value="${vo.xm}"></c:out>--%>
 										<%--</td>--%>
@@ -114,29 +219,52 @@
 			document.searchForm.submit();
 		}
 
+
+		function clearData(){
+			$("#xmQuery").val('');
+			document.searchForm.submit();
+		}
 		function savaAsGbmc(){
 			var queryId = "${queryId}";
-			if(queryId==""){
-				showTip("提示","条件不能为空",2000);
-			}else{
-				$.cloudAjax({
-					path : '${path}',
-					url : "${path }/zzb/app/console/asetA01Query/savaAsGbmc",
-					type : "post",
-					data: {"queryId":"${queryId}"},
-					dataType : "json",
-					success : function(data){
-						if(data.success){
-							showTip("提示","成功另存为干部名册",2000);
-						}else{
-							showTip("提示", json.message, 2000);
-						}
-					},
-					error : function(){
-						showTip("提示","出错了请联系管理员",2000);
-					}
-				});
+			if(queryId=="") {
+				showTip("提示", "条件不能为空", 2000);
+				return;
 			}
+			if($("#mcName").val()==""){
+				showTip("提示","请输入名册名称",2000);
+				$("#mcName").focus();
+				return;
+			}
+			if($("#mcSort").val()==""){
+				showTip("提示","请输入排序",2000);
+				$("#mcSort").focus();
+				return;
+			}else{
+				if(isNumberTmp($("#mcSort").val())==false){
+					$("#mcSort").focus();
+					showTip("提示","排序必须为数字",2000);
+					return;
+				}
+			}
+			$.cloudAjax({
+				path : '${path}',
+				url : "${path }/zzb/app/console/asetA01Query/savaAsGbmc",
+				type : "post",
+				data: {"queryId":"${queryId}","mcName":$("#mcName").val(),"mcSort":$("#mcSort").val()},
+				dataType : "json",
+				success : function(data){
+					if(data.success){
+						showTip("提示","成功另存为干部名册",2000);
+
+						setTimeout(searchSubmit(),2000);
+					}else{
+						showTip("提示", json.message, 2000);
+					}
+				},
+				error : function(){
+					showTip("提示","出错了请联系管理员",2000);
+				}
+			});
 		}
 		var del = function(id,itemName){
 			actionByConfirm1(itemName, "${path}/zzb/app/console/asetA01Query/delete/" + id,{} ,function(data,status){
@@ -150,6 +278,70 @@
 		};
 		function queryByCondition(queryId){
 			window.location.href = "${path}/zzb/app/console/asetA01Query/?queryId="+queryId;
+		}
+		function isNumberTmp(str) {
+			var Letters = "0123456789";
+			var Letters2 = "-0123456789";
+			if(str.length==0)
+				return false;
+
+			//对首位进行附加判断
+			if(Letters2.indexOf(str.charAt(0)) == -1){
+				return false;
+			}else{
+				for (i = 1; i < str.length; i++) {
+					var checkChar = str.charAt(i);
+					if (Letters.indexOf(checkChar) == -1)
+						return false;
+				}
+				return true;
+			}
+		}
+		function saveQuery(){
+			$('#conditionModal').modal({
+				keyboard: true
+			});
+		}
+		function saveCondition(){
+			if($("#queryName").val()==""){
+				showTip("提示","请输入条件名称",2000);
+				$("#queryName").focus();
+				return;
+			}
+			if($("#querySort").val()==""){
+				showTip("提示","请输入排序",2000);
+				$("#querySort").focus();
+				return;
+			}else{
+				if(isNumberTmp($("#querySort").val())==false){
+					$("#querySort").focus();
+					showTip("提示","排序必须为数字",2000);
+					return;
+				}
+			}
+			$.cloudAjax({
+				path : '${path}',
+				url : "${path }/zzb/app/console/asetA01Query/saveCondition",
+				type : "post",
+				data: {"id":"${queryId}","queryName":$("#queryName").val(),"querySort":$("#querySort").val()},
+				dataType : "json",
+				success : function(data){
+					if(data.success){
+						showTip("提示","条件保存成功",2000);
+						setTimeout(function(){window.location.href = "${path}/zzb/app/console/asetA01Query/queryList"},2000);
+					}else{
+						showTip("提示", json.message, 2000);
+					}
+				},
+				error : function(){
+					showTip("提示","出错了请联系管理员",2000);
+				}
+			});
+		}
+		function loadGbmc(){
+			$('#mcModal').modal({
+				keyboard: true
+			});
 		}
 	</script>
 </body>

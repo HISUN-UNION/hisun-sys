@@ -39,7 +39,7 @@
                  <a class="btn blue" herf="javascript:void(0)" onclick="fileDown()"><i
                          class="icon-circle-arrow-down"></i>干部任免审批表</a>
 
-            <a class="btn" href="${path }/zzb/app/console/asetA01Query/?queryId=${queryId}"><i class="icon-undo"></i>返回</a>
+            <a class="btn" href="${path }/zzb/app/console/asetA01Query/?queryId=${queryId}&queryPosition=${queryPosition}"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright" style="width: 560px;">
             <div class="Fullname">${a01Vo.xm}</div>

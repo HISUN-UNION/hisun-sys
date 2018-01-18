@@ -64,9 +64,10 @@ public class AppAsetA01QueryServiceImpl extends BaseServiceImpl<AppAsetA01Query,
     public Integer getMaxPx(){
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, Object> arg=new HashMap<String, Object>();
-        String hql = "select max(t.query_sort) as px from app_aset_a01_query t where t.tombstone=(:tombstone) and t.tenant_id=(:tenant_id)  order by  t.query_sort asc";
+        String hql = "select max(t.query_sort) as px from app_aset_a01_query t where t.tombstone=(:tombstone) and t.tenant_id=(:tenant_id) and t.is_display=(:isDisplay) order by  t.query_sort asc";
         arg.put("tombstone", "0");
         arg.put("tenant_id", userLoginDetails.getTenantId());
+        arg.put("isDisplay", AppAsetA01Query.DISPLAY);
         List<Map> maxSorts = this.appAsetA01QueryDao.countReturnMapBySql(hql, arg);
         Integer maxPx = (Integer) maxSorts.get(0).get("px");
         return maxPx;
@@ -85,8 +86,7 @@ public class AppAsetA01QueryServiceImpl extends BaseServiceImpl<AppAsetA01Query,
         } else {
             sql = sql + "t.query_sort=t.query_sort+1";
         }
-
-        sql = sql + " where t.tombstone=(:tombstone) and t.tenant_id=(:tenant_id) ";
+        sql = sql + " where t.tombstone=(:tombstone) and t.tenant_id=(:tenant_id) and t.is_display=(:isDisplay)";
         if(newPx > oldPx) {
             sql = sql + " and t.query_sort<=" + newPx + " and t.query_sort >" + oldPx;
         } else if(newPx == oldPx) {
@@ -97,6 +97,7 @@ public class AppAsetA01QueryServiceImpl extends BaseServiceImpl<AppAsetA01Query,
         Map<String, Object> paramMap=new HashMap<String, Object>();
         paramMap.put("tombstone", "0");
         paramMap.put("tenant_id", userLoginDetails.getTenantId());
+        paramMap.put("isDisplay", AppAsetA01Query.DISPLAY);
         this.appAsetA01QueryDao.update(sql, paramMap);
     }
 

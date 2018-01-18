@@ -68,22 +68,38 @@ public class AppAsetA01QueryController extends BaseController {
 
 
     @RequestMapping(value = "/")
-    public ModelAndView getList(String queryId, String xmQuery,
+    public ModelAndView getList(String queryId, String xmQuery,String queryPosition,
                                 @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         Map<String, Object> map = Maps.newHashMap();
         String queryName = "";
+        String querySort = "1";
+        String saveQueryName = "";
         try {
 
             List<Object> paramList = Lists.newArrayList();
             String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  inner join b01.appBsetFl2B01s fltob01  where 1=1 ";
+
+
             if (StringUtils.isNotBlank(queryId)) {
                 AppAsetA01Query a01 = this.appAsetA01QueryService.getByPK(queryId);
                 queryName = a01.getQueryName();
+
+                if(a01.getIsDisplay() == AppAsetA01Query.HIDDEN){
+                    Integer maxPx = appAsetA01QueryService.getMaxPx()+1;
+                    querySort = maxPx+"";
+                }else{
+                    querySort = a01.getQuerySort()+"";
+                    saveQueryName = queryName;
+                }
+
                 hql = hql + a01.getQueryCondition();
             }
 
-
+            if (xmQuery != null && !xmQuery.equals("")) {
+                paramList.add("%" + xmQuery + "%");
+                hql = hql + " and a01.xm like ?";
+            }
             hql = hql + " and a01.tombstone =? order by fltob01.px,b01.px,a02.jtlPx ";
             paramList.add(0);
             int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
@@ -99,6 +115,7 @@ public class AppAsetA01QueryController extends BaseController {
 
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            query.add(CommonRestrictions.and(" isDisplay = :isDisplay", "isDisplay", AppAsetA01Query.DISPLAY));
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.asc("querySort"));
 
@@ -106,9 +123,14 @@ public class AppAsetA01QueryController extends BaseController {
 
             map.put("pager", pagerVo);
             map.put("queryId", queryId);
+            map.put("queryPosition",queryPosition);
+
             map.put("queryName", queryName);
+            map.put("xmQuery", xmQuery);
             map.put("appAsetA01Querys", appAsetA01Querys);
             map.put("success", true);
+            map.put("querySort", querySort);
+            map.put("saveQueryName", saveQueryName);
         } catch (Exception e) {
             logger.error(e, e);
             map.put("success", false);
@@ -124,6 +146,7 @@ public class AppAsetA01QueryController extends BaseController {
         try {
             CommonConditionQuery query = new CommonConditionQuery();
             query.add(CommonRestrictions.and(" tombstone = :tombstone", "tombstone", 0));
+            query.add(CommonRestrictions.and(" isDisplay = :isDisplay", "isDisplay", AppAsetA01Query.DISPLAY));
             CommonOrderBy orderBy = new CommonOrderBy();
             orderBy.add(CommonOrder.asc("querySort"));
 
@@ -154,7 +177,8 @@ public class AppAsetA01QueryController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/add")
-    public ModelAndView add() throws Exception {
+    public ModelAndView add(String addType) throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
         AppAsetA01QueryVo vo = new AppAsetA01QueryVo();
         Integer maxPx = appAsetA01QueryService.getMaxPx();
         if(maxPx != null){
@@ -162,8 +186,9 @@ public class AppAsetA01QueryController extends BaseController {
         }else{
             vo.setQuerySort(1);
         }
-
-        return new ModelAndView("/saas/zzb/app/console/asetA01/query/addOrEdit", "vo", vo);
+        map.put("vo",vo);
+        map.put("addType",addType);
+        return new ModelAndView("/saas/zzb/app/console/asetA01/query/addOrEdit", map);
     }
 
     @RequestMapping(value = "/selectB01")
@@ -227,7 +252,7 @@ public class AppAsetA01QueryController extends BaseController {
     @RequestMapping(value = "/savaAsGbmc")
     public
     @ResponseBody
-    Map<String, Object> savaAsGbmc(String queryId) {
+    Map<String, Object> savaAsGbmc(String queryId,String mcName,String mcSort) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             AppAsetA01Query a01Query = this.appAsetA01QueryService.getByPK(queryId);
@@ -269,7 +294,7 @@ public class AppAsetA01QueryController extends BaseController {
     }
 
     @RequestMapping(value = "/view")
-    public ModelAndView view(@RequestParam(value = "id") String id, String queryId) {
+    public ModelAndView view(@RequestParam(value = "id") String id, String queryId,String queryPosition) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             AppAsetA01 a01 = this.appAsetA01Service.getByPK(id);
@@ -279,9 +304,13 @@ public class AppAsetA01QueryController extends BaseController {
                 throw new GenericException("数据不存在");
             }
             BeanUtils.copyProperties(a01Vo, a01);
-
+            if (a01.getGzjlStr() != null && !a01.getGzjlStr().equals("")) {
+                a01Vo.setGzjlStrs(GzjlUtil.matchGzjlStr(a01.getGzjlStr()));
+            }
             map.put("a01Vo", a01Vo);
             map.put("queryId", queryId);
+            map.put("queryPosition", queryPosition);
+
         } catch (Exception e) {
             map.put("success", false);
             map.put("msg", "查看失败！");
@@ -299,6 +328,7 @@ public class AppAsetA01QueryController extends BaseController {
     public
     @ResponseBody
     Map<String, Object> save(@ModelAttribute AppAsetA01QueryVo a01Vo, HttpServletRequest req) throws GenericException {
+        String saveType = req.getParameter("saveType")==null?"":req.getParameter("saveType").toString();
         Map<String, Object> map = new HashMap<String, Object>();
         AppAsetA01Query a01 = null;
         int newPx = a01Vo.getQuerySort();
@@ -323,8 +353,10 @@ public class AppAsetA01QueryController extends BaseController {
                 BeanUtils.copyProperties(a01, a01Vo);
 
                 a01.setTenant(userLoginDetails.getTenant());
-                if(oldPx!=newPx) {
-                    this.appAsetA01QueryService.updatePx(oldPx,newPx);
+                if(saveType.equals("save")) {
+                    if (oldPx != newPx) {
+                        this.appAsetA01QueryService.updatePx(oldPx, newPx);
+                    }
                 }
                 String tjjsondataValue = JacksonUtil.nonDefaultMapper().toJson(a01Vo);
                 a01.setQueryJson(tjjsondataValue);
@@ -333,10 +365,18 @@ public class AppAsetA01QueryController extends BaseController {
                     BeanTrans.setBaseProperties(a01, userLoginDetails, "update");
                     this.appAsetA01QueryService.update(a01);
                 } else {
+                    if(saveType.equals("save")){
+                        a01.setIsDisplay(AppAsetA01Query.DISPLAY);
+                    }else{
+                        a01.setIsDisplay(AppAsetA01Query.HIDDEN);
+                        a01.setQueryName("临时");
+                        a01.setQuerySort(-1);
+                    }
                     BeanTrans.setBaseProperties(a01, userLoginDetails, "save");
-                    this.appAsetA01QueryService.save(a01);
+                    id = this.appAsetA01QueryService.save(a01);
                 }
                 map.put("success", true);
+                map.put("id", id);
             }
         } catch (Exception e) {
             throw new GenericException(e);
@@ -414,5 +454,39 @@ public class AppAsetA01QueryController extends BaseController {
         }
         return queryCondition.toString();
     }
+    /**
+     * 调转到修改页面
+     * @return
+     */
+    @RequestMapping(value ="/saveCondition")
+    public @ResponseBody Map<String, Object> saveCondition(String id,String queryName,String querySort) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            AppAsetA01Query a01Query = this.appAsetA01QueryService.getByPK(id);
+            UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+            BeanTrans.setBaseProperties(a01Query, userLoginDetails, "update");
+            a01Query.setQueryName(queryName);
+            a01Query.setQuerySort(Integer.parseInt(querySort));
+            a01Query.setIsDisplay(AppAsetA01Query.DISPLAY);
+            int newPx = Integer.parseInt(querySort);
+            int oldPx = 0;
+            Integer oldPxInteger = this.appAsetA01QueryService.getMaxPx();
+            if(oldPxInteger != null){
+                oldPx = oldPxInteger.intValue();
+            }else{
+                oldPx = 1;
+            }
+            if (oldPx != newPx) {
+                this.appAsetA01QueryService.updatePx(oldPx, newPx);
+            }
 
+            this.appAsetA01QueryService.update(a01Query);
+            map.put("success", true);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", "条件保存失败");
+            throw new GenericException(e);
+        }
+        return map;
+    }
 }
