@@ -96,32 +96,6 @@
 													</div>
 												</div>
 											</td>
-											<td width="50%">
-												<div id="b01IdGroup" class="control-group">
-													<label class="control-label">单位</label>
-													<div class="controls">
-														<div class="btn-group span12" style="font-size: 12px">
-															<input type="hidden" name="b01Id" id="b01Id" value="${vo.b01Id}"/>
-															<input type="text" id="b0101" name="b0101" readonly="readonly"
-																   class="span8 m-wrap" style="cursor: pointer;" onclick="$('#objectTreeSelDiv').toggle();" value="${vo.b0101}">
-															<div class="span8 m-wrap" style="border:solid 1px #ccc;overflow-y: scroll;overflow-x: auto;position: absolute;
-											top: 100%;left: 0;z-index: 1000;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;height: 200px;background-color: white;" id="objectTreeSelDiv">
-																<ul id="treeDemo" class="ztree" style="margin: 0px;padding: 0px;height: 200px;"></ul>
-															</div>
-														</div>
-
-													</div>
-												</div>
-											</td>
-										</tr>
-									</table>
-								</dd>
-							</dl>
-							<dl class="dlattrbute">
-								<dt><a href="###">单位信息</a></dt>
-								<dd>
-									<table  border="0" style="width:100%;" cellPadding="5px">
-										<tr>
 											<td>
 												<div id="xbGroup" class="control-group">
 													<label class="control-label">性别</label>
@@ -131,14 +105,6 @@
 															<option value="男" <c:if test="${vo.xb == '男'}">selected="selected"</c:if>>男</option>
 															<option value="女" <c:if test="${vo.xb == '女'}">selected="selected"</c:if>>女</option>
 														</select>
-													</div>
-												</div>
-											</td>
-											<td width="50%">
-												<div id="xrzwGroup" class="control-group">
-													<label class="control-label">现任职务</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="xrzw" name="xrzw"  maxlength="45" value="${vo.xrzw}"/>
 													</div>
 												</div>
 											</td>
@@ -166,8 +132,17 @@
 													</div>
 												</div>
 											</td>
+
 										</tr>
 										<tr>
+											<td width="50%">
+												<div id="jgGroup" class="control-group">
+													<label class="control-label">籍贯</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="jg" name="jg"  maxlength="45" value="${vo.jg}"/>
+													</div>
+												</div>
+											</td>
 											<td>
 												<div id="csdGroup" class="control-group">
 													<label class="control-label">出生地</label>
@@ -176,11 +151,21 @@
 													</div>
 												</div>
 											</td>
+										</tr>
+										<tr>
 											<td width="50%">
-												<div id="jgGroup" class="control-group">
-													<label class="control-label">籍贯</label>
+												<div id="xrzwGroup" class="control-group">
+													<label class="control-label">现任职务</label>
 													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="jg" name="jg"  maxlength="45" value="${vo.jg}"/>
+														<input class="span8 m-wrap" type="text" id="xrzw" name="xrzw"  maxlength="45" value="${vo.xrzw}"/>
+													</div>
+												</div>
+											</td>
+											<td width="50%">
+												<div id="xrzwGroup" class="control-group">
+													<label class="control-label">&nbsp;</label>
+													<div class="controls">
+														&nbsp;
 													</div>
 												</div>
 											</td>
@@ -204,6 +189,14 @@
 											</td>
 										</tr>
 										<tr>
+											<td width="50%">
+												<div id="qrzbyyxGroup" class="control-group">
+													<label class="control-label">全日制毕业院校</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="qrzByyx" name="qrzByyx"  maxlength="45" value="${vo.qrzByyx}"/>
+													</div>
+												</div>
+											</td>
 											<td>
 												<div id="qrzZyGroup" class="control-group">
 													<label class="control-label">全日制专业</label>
@@ -212,6 +205,9 @@
 													</div>
 												</div>
 											</td>
+
+										</tr>
+										<tr>
 											<td>
 												<div id="zzxlGroup" class="control-group">
 													<label class="control-label">在职学历</label>
@@ -220,8 +216,6 @@
 													</div>
 												</div>
 											</td>
-										</tr>
-										<tr>
 											<td width="50%">
 												<div id="zzxwGroup" class="control-group">
 													<label class="control-label">在职学位</label>
@@ -230,11 +224,84 @@
 													</div>
 												</div>
 											</td>
+
+										</tr>
+										<tr>
+											<td width="50%">
+												<div id="zzbyyxGroup" class="control-group">
+													<label class="control-label">在职毕业院校</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="zzByyx" name="zzByyx"  maxlength="45" value="${vo.zzByyx}"/>
+													</div>
+												</div>
+											</td>
 											<td width="50%">
 												<div id="zzZyGroup" class="control-group">
 													<label class="control-label">在职专业</label>
 													<div class="controls">
 														<input class="span8 m-wrap" type="text" id="zzZy" name="zzZy"  maxlength="45" value="${vo.zzZy}"/>
+													</div>
+												</div>
+											</td>
+
+										</tr>
+									</table>
+								</dd>
+							</dl>
+							<dl class="dlattrbute">
+								<dt><a href="###">单位信息</a></dt>
+								<dd>
+									<table  border="0" style="width:100%;" cellPadding="5px">
+										<tr>
+
+											<td width="50%">
+												<div id="b01IdGroup" class="control-group">
+													<label class="control-label">单位</label>
+													<div class="controls">
+														<div class="btn-group span12" style="font-size: 12px">
+															<input type="hidden" name="b01Id" id="b01Id" value="${vo.b01Id}"/>
+															<input type="text" id="b0101" name="b0101" readonly="readonly"
+																   class="span8 m-wrap" style="cursor: pointer;" onclick="$('#objectTreeSelDiv').toggle();" value="${vo.b0101}">
+															<div class="span8 m-wrap" style="border:solid 1px #ccc;overflow-y: scroll;overflow-x: auto;position: absolute;
+											top: 100%;left: 0;z-index: 1000;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;height: 200px;background-color: white;" id="objectTreeSelDiv">
+																<ul id="treeDemo" class="ztree" style="margin: 0px;padding: 0px;height: 200px;"></ul>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</td>
+											<td>
+												<div id="xmGroup" class="control-group">
+													<label class="control-label">&nbsp;</label>
+													<div class="controls">
+														&nbsp;
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</dd>
+							</dl>
+							<dl class="dlattrbute">
+								<dt><a href="###">工作经历</a></dt>
+								<dd>
+									<table  border="0" style="width:100%;" cellPadding="5px">
+										<tr>
+
+											<td width="50%">
+												<div id="gzjlStrGroup" class="control-group">
+													<label class="control-label">工作经历</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="gzjlStr" name="gzjlStr"  maxlength="45" value="${vo.gzjlStr}"/>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div id="xmGroup" class="control-group">
+													<label class="control-label">&nbsp;</label>
+													<div class="controls">
+														&nbsp;
 													</div>
 												</div>
 											</td>

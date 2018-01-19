@@ -11,15 +11,16 @@ import com.hisun.saas.zzb.app.console.aset.dao.AppAsetA02Dao;
 import com.hisun.saas.zzb.app.console.aset.dao.AppAsetA36Dao;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01;
 import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA01Query;
+import com.hisun.saas.zzb.app.console.aset.entity.AppAsetA02;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01QueryService;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01QueryVo;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA36Vo;
-import com.hisun.saas.zzb.app.console.gbmc.entity.GbMc;
-import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
-import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01gbrmspb;
+import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
+import com.hisun.saas.zzb.app.console.util.EntityWrapper;
+import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.util.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbutils.DbUtils;
@@ -104,11 +105,22 @@ public class AppAsetA01QueryServiceImpl extends BaseServiceImpl<AppAsetA01Query,
 
 
     public void saveAsGbmc(AppAsetA01Query query)throws Exception{
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         //根据Query创建Gbmc
         GbMc gbMc = new GbMc();
         gbMc.setMc(query.getQueryName());
         gbMc.setPx(99);
         gbMc.setIsMl(GbMc.WML);//默认未无目录
+        EntityWrapper.wrapperSaveBaseProperties(gbMc,userLoginDetails);
+
+        GbMcB01 b01= new GbMcB01();
+        b01.setB0101("隐藏目录");
+        b01.setGbMc(gbMc);
+        b01.setIsDisplay(GbMcB01.HIDDEN);
+        b01.setPx(1);
+        EntityWrapper.wrapperSaveBaseProperties(b01,userLoginDetails);
+        gbMc.addGbMcB01(b01);
+
 
         List<Object> paramList = Lists.newArrayList();
         String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  " +
@@ -122,20 +134,57 @@ public class AppAsetA01QueryServiceImpl extends BaseServiceImpl<AppAsetA01Query,
         int dealCount = total/200;
         for(int i=1;i<=dealCount+1;i++) {
             List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql+orderBy, paramList,i,200);
+            int a01px = 1;
             for(AppAsetA01 appAsetA01 : appAsetA01s){
                 GbMcA01 gbMcA01 = new GbMcA01();
                 BeanUtils.copyProperties(gbMcA01,appAsetA01);
+                gbMcA01.setZw(appAsetA01.getXrzw());
+                gbMcA01.setQrzxlxwjzy(appAsetA01.getQrzxl());
+                gbMcA01.setZzxlxwjzy(appAsetA01.getZzxl());
+                gbMcA01.setZppath(appAsetA01.getZpPath());
                 gbMcA01.setId(null);
+                gbMcA01.setGbMcB01(b01);
+                gbMcA01.setPx(a01px);
+
+                //工作经历
+                if(StringUtils.isEmpty(appAsetA01.getGzjlStr())==false){
+                    int px =1;
+                   for(String s : GzjlUtil.matchGzjlStr(appAsetA01.getGzjlStr())) {
+                       GbMcA01gzjl gbMcA01gzjl = new GbMcA01gzjl(s,px);
+                       EntityWrapper.wrapperSaveBaseProperties(gbMcA01gzjl,userLoginDetails);
+                       gbMcA01.addGzjl(gbMcA01gzjl);
+                       px++;
+                   }
+                }
+                //任职时间
+                if(appAsetA01.getAppAsetA02s()!=null && appAsetA01.getAppAsetA02s().size()>0){
+                    String xrzwsj = "";
+                    for(AppAsetA02 appAsetA02 : appAsetA01.getAppAsetA02s()){
+                        xrzwsj+=DateUtil.covertPatternStringToOtherPatternString(appAsetA02.getRzsj(),
+                                DateUtil.yyyyMMdd, DateUtil.yyyydotMM)+"\n";
+                    }
+                    gbMcA01.setXrzwsj(xrzwsj);
+                }
 
                 GbMcA01gbrmspb gbMcA01gbrmspb = new GbMcA01gbrmspb();
                 BeanUtils.copyProperties(gbMcA01gbrmspb,appAsetA01);
+                gbMcA01gbrmspb.setZppath(appAsetA01.getZpPath());
+                gbMcA01gbrmspb.setFile2imgPath(appAsetA01.getFile2ImgPath());
+                gbMcA01gbrmspb.setXlqrz(appAsetA01.getQrzxl());
+                gbMcA01gbrmspb.setXwqrz(appAsetA01.getQrzxw());
+                gbMcA01gbrmspb.setQrz_byyx(appAsetA01.getQrzByyx());
+                gbMcA01gbrmspb.setZz_byyx(appAsetA01.getZzByyx());
+                gbMcA01gbrmspb.setXlzz(appAsetA01.getZzxl());
+                gbMcA01gbrmspb.setXwzz(appAsetA01.getZzxw());
                 gbMcA01gbrmspb.setId(null);
                 gbMcA01.addGbrmspb(gbMcA01gbrmspb);
                 gbMc.addGbMcA01(gbMcA01);
+                a01px++;
             }
+
         }
 
-     this.gbMcService.save(gbMc);
+        this.gbMcService.save(gbMc);
     }
     
 }

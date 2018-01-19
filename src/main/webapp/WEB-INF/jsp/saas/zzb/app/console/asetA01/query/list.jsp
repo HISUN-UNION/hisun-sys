@@ -27,18 +27,18 @@
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close"  type="button"></button>
 				<h3 class="modal-title" id="title" >
-					输入查询名称、排序
+					输入条件查询信息
 				</h3>
 			</div>
 			<div class="modal-body form-horizontal" id="dabzAddDiv">
 				<div class="control-group">
-					<label class="control-label" style=" width: 60px;"><span class="required">*</span>查询名称</label>
+					<label class="control-label" style=" width: 80px;"><span class="required">*</span>查询名称</label>
 					<div class="controls" style="margin-left: 80px;">
 						<input class="m-wrap" type="text" id="queryName" name="queryName"  maxlength="45" value="${saveQueryName}"/>
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label"  style=" width: 60px;"><span class="required">*</span>排序</label>
+					<label class="control-label"  style=" width: 80px;"><span class="required">*</span>排序</label>
 					<div class="controls" style="margin-left: 80px;">
 						<input class="m-wrap" type="text" id="querySort" name="querySort"  maxlength="45" value="${querySort}"/>
 					</div>
@@ -57,18 +57,18 @@
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close"  type="button"></button>
 				<h3 class="modal-title" id="mctitle" >
-					输入名册名称、排序
+					输入名册信息
 				</h3>
 			</div>
 			<div class="modal-body form-horizontal" id="mcAddDiv">
 				<div class="control-group">
-					<label class="control-label" style=" width: 60px;"><span class="required">*</span>名册名称</label>
+					<label class="control-label" style=" width: 80px;"><span class="required">*</span>名册名称</label>
 					<div class="controls" style="margin-left: 80px;">
 						<input class="m-wrap" type="text" id="mcName" name="mcName"  maxlength="45" value="${saveQueryName}"/>
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label"  style=" width: 60px;"><span class="required">*</span>排序</label>
+					<label class="control-label"  style=" width: 80px;"><span class="required">*</span>排序</label>
 					<div class="controls" style="margin-left: 80px;">
 						<input class="m-wrap" type="text" id="mcSort" name="mcSort"  maxlength="45" value="99"/>
 					</div>
@@ -100,16 +100,18 @@
 								</a>
 
 								<ul class="dropdown-menu" style="left: -60px;">
-									<li style="border-bottom: dashed 1px #ddd;">
-										<a href="${path }/zzb/app/console/asetA01Query/add?addType=a01List"><b>新条件</b></a>
+									<li >
+										<a href="${path }/zzb/app/console/asetA01Query/add?addType=a01List">新条件</a>
 									</li>
+									<li class="divider"></li>
 									<c:forEach items="${appAsetA01Querys}" var="vo">
 										<li >
 											<a onclick="queryByCondition('${vo.id}')">${vo.queryName}</a>
 										</li>
 									</c:forEach>
-									<li style="border-top: dashed 1px #ddd;">
-										<a href="${path }/zzb/app/console/asetA01Query/queryList"><b>条件管理</b></a>
+									<li class="divider"></li>
+									<li>
+										<a href="${path }/zzb/app/console/asetA01Query/queryList">条件管理</a>
 									</li>
 								</ul>
 							</div>

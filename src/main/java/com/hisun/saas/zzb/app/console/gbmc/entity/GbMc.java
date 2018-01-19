@@ -39,7 +39,7 @@ public class GbMc extends TenantEntity implements Serializable{
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<GbMcB01> gbMcB01s;
 
-    @OneToMany(mappedBy = "gbMcB01", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "gbMc", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     private List<GbMcA01> gbMcA01s;
 
@@ -105,6 +105,15 @@ public class GbMc extends TenantEntity implements Serializable{
         if(this.gbMcA01s==null){
             this.gbMcA01s = new ArrayList<>();
         }
+        gbMcA01.setGbMc(this);
         this.gbMcA01s.add(gbMcA01);
+    }
+
+    public void addGbMcB01(GbMcB01 gbMcB01){
+        if(this.gbMcB01s==null){
+            this.gbMcB01s = new ArrayList<>();
+        }
+        gbMcB01.setGbMc(this);
+        this.gbMcB01s.add(gbMcB01);
     }
 }

@@ -33,6 +33,11 @@ public class AppAsetA01QueryVo {
     private String xrzw;
     private String qrzZy;
     private String zzZy;
+    private String qrzByyx;
+    private String zzByyx;
+
+    private String gzjlStr;
+
     public String getId() {
         return id;
     }
@@ -207,5 +212,29 @@ public class AppAsetA01QueryVo {
 
     public void setZzZy(String zzZy) {
         this.zzZy = zzZy;
+    }
+
+    public String getZzByyx() {
+        return zzByyx;
+    }
+
+    public void setZzByyx(String zzByyx) {
+        this.zzByyx = zzByyx;
+    }
+
+    public String getQrzByyx() {
+        return qrzByyx;
+    }
+
+    public void setQrzByyx(String qrzByyx) {
+        this.qrzByyx = qrzByyx;
+    }
+
+    public String getGzjlStr() {
+        return gzjlStr;
+    }
+
+    public void setGzjlStr(String gzjlStr) {
+        this.gzjlStr = gzjlStr;
     }
 }
