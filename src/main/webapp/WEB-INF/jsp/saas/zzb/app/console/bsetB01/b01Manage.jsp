@@ -305,21 +305,38 @@
 			node = valiZTree.getSelectedNodes()[0];
 		}
 
+		var msg = "这个操作不能撤消，这将永久删除该机构[" + node.name + "]，删除后将不可恢复，请认真审核确认后再进行操作，确认后请在下面填写你要删除的信息。";
+		var tip = "请输入你要删除的机构名称";
 		if (node.children && node.children.length > 0) {
-			showTip("提示","要删除的节点存在子节点，请先删除子节点", 1500);
-			return false;
+			msg = "这个操作不能撤消，这将永久删除该分类[" + node.name + "]及其下的机构，删除后将不可恢复，请认真审核确认后再进行操作，确认后请在下面填写你要删除的信息。";
+			tip = "请输入你要删除的分类名称";
 		}
 		var id = node.id;
-		var itemName = node.name+"\",删除该机构将删除机构下的干部，\"请确认继续删除";
-
-		actionByConfirm1(itemName, "${path}/zzb/app/console/bset/delete/" + id,{} ,function(data,status){
-			if (data.success == true) {
-				showTip("提示","删除成功", 2000);
+		showPrompModal(node.name,msg,tip,"${path}/zzb/app/console/bset/delete/" + id+"?dataType="+node.dataType,null, function(json){
+			if(json.success == true){
+				showTip("提示","删除“"+node.name+"”成功", 2000);
 				setTimeout(function(){window.location.href = "${path}/zzb/app/console/bset/"},2000);
+				//$("#" + id).parent().parent().remove();
 			}else{
-				showTip("提示", data.message, 2000);
+				showTip("提示", json.message, 2000);
 			}
-		});
+		})
+
+
+		<%--if (node.children && node.children.length > 0) {--%>
+			<%--showTip("提示","要删除的节点存在子节点，请先删除子节点", 1500);--%>
+			<%--return false;--%>
+		<%--}--%>
+		<%--var itemName = node.name+"\",删除该机构将删除机构下的干部，\"请确认继续删除";--%>
+
+		<%--actionByConfirm1(itemName, "${path}/zzb/app/console/bset/delete/" + id,{} ,function(data,status){--%>
+			<%--if (data.success == true) {--%>
+				<%--showTip("提示","删除成功", 2000);--%>
+				<%--setTimeout(function(){window.location.href = "${path}/zzb/app/console/bset/"},2000);--%>
+			<%--}else{--%>
+				<%--showTip("提示", data.message, 2000);--%>
+			<%--}--%>
+		<%--});--%>
 	}
 
 	function loadRightPage(nodeId) {

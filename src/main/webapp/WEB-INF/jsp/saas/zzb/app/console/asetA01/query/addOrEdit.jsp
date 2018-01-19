@@ -162,7 +162,7 @@
 												</div>
 											</td>
 											<td width="50%">
-												<div id="xrzwGroup" class="control-group">
+												<div class="control-group">
 													<label class="control-label">&nbsp;</label>
 													<div class="controls">
 														&nbsp;
@@ -272,7 +272,7 @@
 												</div>
 											</td>
 											<td>
-												<div id="xmGroup" class="control-group">
+												<div class="control-group">
 													<label class="control-label">&nbsp;</label>
 													<div class="controls">
 														&nbsp;
@@ -298,7 +298,7 @@
 												</div>
 											</td>
 											<td>
-												<div id="xmGroup" class="control-group">
+												<div class="control-group">
 													<label class="control-label">&nbsp;</label>
 													<div class="controls">
 														&nbsp;

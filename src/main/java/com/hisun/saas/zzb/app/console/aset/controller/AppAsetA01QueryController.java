@@ -445,12 +445,21 @@ public class AppAsetA01QueryController extends BaseController {
         if(StringUtils.isNotBlank(a01Vo.getXrzw())){
             queryCondition.append(" and a01.xrzw like'%"+a01Vo.getXrzw()+"%'");
         }
+        if(StringUtils.isNotBlank(a01Vo.getQrzByyx())){
+            queryCondition.append(" and a01.qrzByyx like'%"+a01Vo.getQrzByyx()+"%'");
+        }
+        if(StringUtils.isNotBlank(a01Vo.getZzByyx())){
+            queryCondition.append(" and a01.zzByyx like'%"+a01Vo.getZzByyx()+"%'");
+        }
 
         if(StringUtils.isNotBlank(a01Vo.getQrzZy())){
             queryCondition.append(" and a01.qrzZy like'%"+a01Vo.getQrzZy()+"%'");
         }
         if(StringUtils.isNotBlank(a01Vo.getZzZy())){
             queryCondition.append(" and a01.zzZy like'%"+a01Vo.getZzZy()+"%'");
+        }
+        if(StringUtils.isNotBlank(a01Vo.getGzjlStr())){
+            queryCondition.append(" and a01.gzjlStr like'%"+a01Vo.getGzjlStr()+"%'");
         }
         return queryCondition.toString();
     }

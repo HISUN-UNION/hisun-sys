@@ -267,15 +267,19 @@ public class AppBsetB01Controller extends BaseController{
     }
 
     @RequestMapping(value="/delete/{id}")
-    public @ResponseBody Map<String,Object> delete(@PathVariable("id") String id)throws GenericException{
+    public @ResponseBody Map<String,Object> delete(@PathVariable("id") String id,String dataType)throws GenericException{
         Map<String,Object> map = Maps.newHashMap();
         try {
             if (StringUtils.isNoneBlank(id)) {
-                appBsetB01Service.deleteByPK(id);
+                if(dataType.equals("fl")){
+                    this.appBsetFlService.deleteByPK(id);
+                }else {
+                    appBsetB01Service.deleteByPK(id);
+                }
                 map.put("success", true);
             } else {
                 map.put("success", false);
-                map.put("message", "删除失败，参数有误");
+                map.put("message", "删除失败");
             }
         }catch(Exception e){
             logger.error(e, e);
