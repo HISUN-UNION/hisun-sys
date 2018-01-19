@@ -83,154 +83,165 @@
 									</div>
 								</div>
 							</div>
-
-							<table  border="0" style="width:100%;" cellPadding="5px">
-								<tr>
-									<td>
-										<div id="xmGroup" class="control-group">
-											<label class="control-label">姓名</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="xm" name="xm"  maxlength="45" value="${vo.xm}"/>
-											</div>
-										</div>
-									</td>
-									<td width="50%">
-										<div id="b01IdGroup" class="control-group">
-											<label class="control-label">单位</label>
-											<div class="controls">
-												<div class="btn-group span12" style="font-size: 12px">
-													<input type="hidden" name="b01Id" id="b01Id" value="${vo.b01Id}"/>
-													<input type="text" id="b0101" name="b0101" readonly="readonly"
-														   class="span8 m-wrap" style="cursor: pointer;" onclick="$('#objectTreeSelDiv').toggle();" value="${vo.b0101}">
-													<div class="span8 m-wrap" style="border:solid 1px #ccc;overflow-y: scroll;overflow-x: auto;position: absolute;
-									top: 100%;left: 0;z-index: 1000;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;height: 200px;background-color: white;" id="objectTreeSelDiv">
-														<ul id="treeDemo" class="ztree" style="margin: 0px;padding: 0px;height: 200px;"></ul>
+							<dl class="dlattrbute">
+								<dt><a href="###">干部信息</a></dt>
+								<dd>
+									<table  border="0" style="width:100%;" cellPadding="5px">
+										<tr>
+											<td>
+												<div id="xmGroup" class="control-group">
+													<label class="control-label">姓名</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="xm" name="xm"  maxlength="45" value="${vo.xm}"/>
 													</div>
 												</div>
+											</td>
+											<td width="50%">
+												<div id="b01IdGroup" class="control-group">
+													<label class="control-label">单位</label>
+													<div class="controls">
+														<div class="btn-group span12" style="font-size: 12px">
+															<input type="hidden" name="b01Id" id="b01Id" value="${vo.b01Id}"/>
+															<input type="text" id="b0101" name="b0101" readonly="readonly"
+																   class="span8 m-wrap" style="cursor: pointer;" onclick="$('#objectTreeSelDiv').toggle();" value="${vo.b0101}">
+															<div class="span8 m-wrap" style="border:solid 1px #ccc;overflow-y: scroll;overflow-x: auto;position: absolute;
+											top: 100%;left: 0;z-index: 1000;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;height: 200px;background-color: white;" id="objectTreeSelDiv">
+																<ul id="treeDemo" class="ztree" style="margin: 0px;padding: 0px;height: 200px;"></ul>
+															</div>
+														</div>
 
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div id="xbGroup" class="control-group">
-											<label class="control-label">性别</label>
-											<div class="controls">
-												<select class="span8 m-wrap" tabindex="-1" name="xb" id="xb" >
-													<option value="">全部</option>
-													<option value="男" <c:if test="${vo.xb == '男'}">selected="selected"</c:if>>男</option>
-													<option value="女" <c:if test="${vo.xb == '女'}">selected="selected"</c:if>>女</option>
-												</select>
-											</div>
-										</div>
-									</td>
-									<td width="50%">
-										<div id="xrzwGroup" class="control-group">
-											<label class="control-label">现任职务</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="xrzw" name="xrzw"  maxlength="45" value="${vo.xrzw}"/>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div >
-											<label class="control-label">年龄</label>
-											<div class="controls">
-												<span  id="nlStartGroup" style=" display: inline-block;float: left; ">
-													<input class="span8 m-wrap" style="width: 100px;" type="text" id="nlStart" name="nlStart"  maxlength="45" value="${vo.nlStart}"/>
-												</span>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</dd>
+							</dl>
+							<dl class="dlattrbute">
+								<dt><a href="###">单位信息</a></dt>
+								<dd>
+									<table  border="0" style="width:100%;" cellPadding="5px">
+										<tr>
+											<td>
+												<div id="xbGroup" class="control-group">
+													<label class="control-label">性别</label>
+													<div class="controls">
+														<select class="span8 m-wrap" tabindex="-1" name="xb" id="xb" >
+															<option value="">全部</option>
+															<option value="男" <c:if test="${vo.xb == '男'}">selected="selected"</c:if>>男</option>
+															<option value="女" <c:if test="${vo.xb == '女'}">selected="selected"</c:if>>女</option>
+														</select>
+													</div>
+												</div>
+											</td>
+											<td width="50%">
+												<div id="xrzwGroup" class="control-group">
+													<label class="control-label">现任职务</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="xrzw" name="xrzw"  maxlength="45" value="${vo.xrzw}"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div >
+													<label class="control-label">年龄</label>
+													<div class="controls">
+														<span  id="nlStartGroup" style=" display: inline-block;float: left; ">
+															<input class="span8 m-wrap" style="width: 100px;" type="text" id="nlStart" name="nlStart"  maxlength="45" value="${vo.nlStart}"/>
+														</span>
 
-												<span  id="nlEndGroup" >
-													--<input class="span8 m-wrap" style="width: 100px;" type="text" id="nlEnd" name="nlEnd"  maxlength="45" value="${vo.nlEnd}"/>
-												</span>
-											</div>
-										</div>
-									</td>
-									<td width="50%">
-										<div id="mzGroup" class="control-group">
-											<label class="control-label">民族</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="mz" name="mz"  maxlength="45" value="${vo.mz}"/>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div id="csdGroup" class="control-group">
-											<label class="control-label">出生地</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="csd" name="csd"  maxlength="45" value="${vo.csd}"/>
-											</div>
-										</div>
-									</td>
-									<td width="50%">
-										<div id="jgGroup" class="control-group">
-											<label class="control-label">籍贯</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="jg" name="jg"  maxlength="45" value="${vo.jg}"/>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div id="qrzxlGroup" class="control-group">
-											<label class="control-label">全日制学历</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="qrzxl" name="qrzxl"  maxlength="45" value="${vo.qrzxl}"/>
-											</div>
-										</div>
-									</td>
-									<td width="50%">
-										<div id="qrzxwGroup" class="control-group">
-											<label class="control-label">全日制学位</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="qrzxw" name="qrzxw"  maxlength="45" value="${vo.qrzxw}"/>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div id="qrzZyGroup" class="control-group">
-											<label class="control-label">全日制专业</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="qrzZy" name="qrzZy"  maxlength="45" value="${vo.qrzZy}"/>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div id="zzxlGroup" class="control-group">
-											<label class="control-label">在职学历</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="zzxl" name="zzxl"  maxlength="45" value="${vo.zzxl}"/>
-											</div>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td width="50%">
-										<div id="zzxwGroup" class="control-group">
-											<label class="control-label">在职学位</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="zzxw" name="zzxw"  maxlength="45" value="${vo.zzxw}"/>
-											</div>
-										</div>
-									</td>
-									<td width="50%">
-										<div id="zzZyGroup" class="control-group">
-											<label class="control-label">在职专业</label>
-											<div class="controls">
-												<input class="span8 m-wrap" type="text" id="zzZy" name="zzZy"  maxlength="45" value="${vo.zzZy}"/>
-											</div>
-										</div>
-									</td>
-								</tr>
-							</table>
+														<span  id="nlEndGroup" >
+															--<input class="span8 m-wrap" style="width: 100px;" type="text" id="nlEnd" name="nlEnd"  maxlength="45" value="${vo.nlEnd}"/>
+														</span>
+													</div>
+												</div>
+											</td>
+											<td width="50%">
+												<div id="mzGroup" class="control-group">
+													<label class="control-label">民族</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="mz" name="mz"  maxlength="45" value="${vo.mz}"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div id="csdGroup" class="control-group">
+													<label class="control-label">出生地</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="csd" name="csd"  maxlength="45" value="${vo.csd}"/>
+													</div>
+												</div>
+											</td>
+											<td width="50%">
+												<div id="jgGroup" class="control-group">
+													<label class="control-label">籍贯</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="jg" name="jg"  maxlength="45" value="${vo.jg}"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div id="qrzxlGroup" class="control-group">
+													<label class="control-label">全日制学历</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="qrzxl" name="qrzxl"  maxlength="45" value="${vo.qrzxl}"/>
+													</div>
+												</div>
+											</td>
+											<td width="50%">
+												<div id="qrzxwGroup" class="control-group">
+													<label class="control-label">全日制学位</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="qrzxw" name="qrzxw"  maxlength="45" value="${vo.qrzxw}"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div id="qrzZyGroup" class="control-group">
+													<label class="control-label">全日制专业</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="qrzZy" name="qrzZy"  maxlength="45" value="${vo.qrzZy}"/>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div id="zzxlGroup" class="control-group">
+													<label class="control-label">在职学历</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="zzxl" name="zzxl"  maxlength="45" value="${vo.zzxl}"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="50%">
+												<div id="zzxwGroup" class="control-group">
+													<label class="control-label">在职学位</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="zzxw" name="zzxw"  maxlength="45" value="${vo.zzxw}"/>
+													</div>
+												</div>
+											</td>
+											<td width="50%">
+												<div id="zzZyGroup" class="control-group">
+													<label class="control-label">在职专业</label>
+													<div class="controls">
+														<input class="span8 m-wrap" type="text" id="zzZy" name="zzZy"  maxlength="45" value="${vo.zzZy}"/>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</dd>
+							</dl>
 						</form>
 					</div>
 
