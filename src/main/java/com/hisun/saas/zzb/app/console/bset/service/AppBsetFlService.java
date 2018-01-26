@@ -14,4 +14,5 @@ public interface AppBsetFlService extends BaseService<AppBsetFl,String> {
     int saveFromZdwx(DataSource dataSource)throws Exception;
     void deleteAllData()throws Exception;
     String toSqliteInsertSql(AppBsetFl entity);
+    AppBsetFl getTopFl();
 }

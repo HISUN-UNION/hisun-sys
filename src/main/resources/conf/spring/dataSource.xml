@@ -35,13 +35,11 @@
         <!-- 打开removeAbandoned功能 -->
         <property name="removeAbandoned" value="true" />
         <!-- 1200秒，也就是20分钟 -->
-        <property name="removeAbandonedTimeout" value="1200" />
-		
+        <property name="removeAbandonedTimeout" value="7200" />
 		<property name="validationQuery" value="SELECT 'x'" />
 		<property name="testWhileIdle" value="true" />
 		<property name="testOnBorrow" value="false" />
 		<property name="testOnReturn" value="false" />
-
 		<property name="proxyFilters">
 			<list>
 				<ref bean="statFilter" />

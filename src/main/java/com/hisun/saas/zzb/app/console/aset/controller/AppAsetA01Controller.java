@@ -17,8 +17,10 @@ import com.hisun.saas.zzb.app.console.aset.service.AppAsetA02Service;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA02Vo;
 import com.hisun.saas.zzb.app.console.bset.entity.AppBsetB01;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
 import com.hisun.saas.zzb.app.console.bset.service.AppBsetB01Service;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01Vo;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.saas.zzb.app.console.zscx.entity.AppZscxZs;
@@ -61,6 +63,8 @@ public class AppAsetA01Controller extends BaseController {
     private AppAsetA02Service appAsetA02Service;
     @Resource
     private AppBsetB01Service appBsetB01Service;
+    @Resource
+    private AppBsetFlService appBsetFlService;
 
     @Resource
     private AppZscxZsService appZscxZsService;
@@ -83,14 +87,23 @@ public class AppAsetA01Controller extends BaseController {
                                 @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                 @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         Map<String, Object> map = Maps.newHashMap();
+        boolean isHiddenFl = false;
         try {
+            AppBsetFl appBsetFl = this.appBsetFlService.getTopFl();
             List<Object> paramList = Lists.newArrayList();
-            String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  inner join b01.appBsetFl2B01s fltob01  where 1=1 ";
+            String hql = "from AppAsetA01 a01  "
+                         +"inner join a01.appAsetA02s a02 "
+                         +"inner join a02.appBsetB01 b01 ";
+            if(appBsetFl.getIsHidden()== AppBsetFl.DISPLAY){
+                hql +="inner join b01.appBsetFl2B01s fltob01 ";
+            }
+            hql+= "where a01.tombstone =? ";
+            paramList.add(0);
             String b0101 = "";
             if (StringUtils.isNotBlank(b01Id)) {
                 if (!b01Id.equals("allA01")) {
                     paramList.add(b01Id);
-                    hql = hql + " and a02.appBsetB01.id = ?";
+                    hql = hql + " and b01.id = ?";
                     AppBsetB01 appBsetB01 = this.appBsetB01Service.getByPK(b01Id);
                     b0101 = appBsetB01.getB0101();
                 }
@@ -101,8 +114,12 @@ public class AppAsetA01Controller extends BaseController {
                 paramList.add("%" + xmQuery + "%");
                 hql = hql + " and a01.xm like ?";
             }
-            hql = hql + " and a01.tombstone =? order by fltob01.px,b01.px,a02.jtlPx ";
-            paramList.add(0);
+            if(appBsetFl.getIsHidden()== AppBsetFl.DISPLAY) {
+                hql = hql + " order by fltob01.px,b01.px,a02.jtlPx ";
+            }else{
+                hql = hql + " order by b01.queryCode,a02.jtlPx ";
+            }
+
             int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
             List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql, paramList, pageNum,
                     pageSize);

@@ -254,7 +254,9 @@ public class ExchangeActuatorController extends BaseController {
                 this.appBsetFlService.saveFromZdwx(dataSource);
                 this.appBsetB01Service.saveFromZdwx(dataSource);
                 this.appBsetFl2B01Service.saveFromZdwx(dataSource);
-
+                this.appAsetA01Service.saveFromZdwx(dataSource);
+                this.appAsetA02Service.saveFromZdwx(dataSource);
+                this.appAsetA36Service.saveFromZdwx(dataSource);
             } else if (sourceType == ExchangeActuator.source_zzzhywpt) {//从组织综合业务平台(广州三零)
 
             } else if (sourceType == ExchangeActuator.source_gbglxt) {//从干部管理系统(长沙远望)
@@ -301,6 +303,9 @@ public class ExchangeActuatorController extends BaseController {
             ExchangeActuator exchangeActuator = this.exchangeActuatorService.getByPK(id);
             int sourceType = exchangeActuator.getSourceType();
             if (sourceType == ExchangeActuator.source_gwyglxt) {//从公务员管理系统(浙大网新)
+                this.appAsetA01Service.deleteAllData();
+                this.appBsetB01Service.deleteAllData();
+                this.appBsetFlService.deleteAllData();
 
             } else if (sourceType == ExchangeActuator.source_zzzhywpt) {//从组织综合业务平台(广州三零)
 

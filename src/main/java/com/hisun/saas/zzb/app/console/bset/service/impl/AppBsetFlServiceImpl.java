@@ -122,6 +122,15 @@ public class AppBsetFlServiceImpl extends BaseServiceImpl<AppBsetFl,String> impl
         return 1;
     }
 
+
+    public AppBsetFl getTopFl(){
+        List<AppBsetFl> appBsetFls =  this.appBsetFlDao.find("from AppBsetFl fl where fl.parentFl.id is null",null,null);
+        if(appBsetFls!=null && appBsetFls.size()>0){
+            return appBsetFls.get(0);
+        }
+        return null;
+    }
+
     public String toSqliteInsertSql(AppBsetFl entity){
         StringBuffer sb = new StringBuffer("");
         sb.append(" INSERT INTO ");

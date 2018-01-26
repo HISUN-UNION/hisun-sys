@@ -25,9 +25,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.sql.Connection;
 import java.util.*;
 
@@ -141,6 +138,108 @@ public class AppAsetA02ServiceImpl extends BaseServiceImpl<AppAsetA02,String> im
                     this.appAsetA02Dao.executeNativeBulk(fields.append(values).toString(), paramList);
                     order++;
                 }
+            }
+        }
+
+        DbUtils.close(conn);
+        return order;
+    }
+
+
+
+    public int saveFromZdwx(DataSource dataSource)throws Exception{
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+
+        //处理了多少条
+        int order = 0;
+        Connection conn = dataSource.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+
+        int count =0;
+        List<Map<String, Object>> countList = queryRunner.query(conn,
+                " select count(*) as count from a02 where a02.a0255 = '1' and a02.a0201B <>'-1' ", new MapListHandler(),(Object[]) null);
+        for (Iterator<Map<String, Object>> li = countList.iterator(); li.hasNext();) {
+            Map<String, Object> m = li.next();
+            for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
+                Map.Entry<String, Object> e = mi.next();
+                Object value = e.getValue();
+                count = ((Long)value).intValue();
+            }
+        }
+        //每次处理400条
+        int dealCount = count/400;
+        for(int i=0;i<=dealCount;i++){
+            int num = i*400;
+            String sql = " SELECT  * FROM a02 where a02.a0255 = '1' and a02.a0201B <>'-1' limit " + num + ",400";
+            List<Map<String, Object>> list = queryRunner.query(conn, sql, new MapListHandler(),(Object[]) null);
+            for (Iterator<Map<String, Object>> li = list.iterator(); li.hasNext();) {
+                Map<String, Object> m = li.next();
+                StringBuffer fields = new StringBuffer();
+
+                fields.append("insert into app_aset_a02 (");
+                fields.append(" id,tombstone,tenant_id,create_user_id,create_user_name");
+                StringBuffer values = new StringBuffer();
+                values.append(") values (");
+                values.append(" '"+ UUIDUtil.getUUID()+"' ,");
+                values.append(" 0 ");
+                values.append(",'").append(userLoginDetails.getTenant().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUser().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUsername()).append("'");
+                String personCode = "personCode";
+                String b01Id="b01Id";
+                for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
+                    Map.Entry<String, Object> e = mi.next();
+                    String key = e.getKey();
+                    Object value = e.getValue()==null?"":e.getValue();
+                    if(key.equalsIgnoreCase("a0000")){
+                        fields.append(",a01_id");
+                        values.append(",'"+value+"'");
+                        personCode = value.toString();
+                    }else if(key.equalsIgnoreCase("A0225")){
+                        if(StringUtils.isEmpty(value.toString())==false){
+                            fields.append(",jtl_px");
+                            values.append(",'"+value+"'");
+                            fields.append(",px");
+                            values.append(",'"+value+"'");
+                        }else {
+                            fields.append(",jtl_px");
+                            values.append(",'"+99+"'");
+                            fields.append(",px");
+                            values.append(",'"+99+"'");
+                        }
+
+                    }else if(key.equalsIgnoreCase("A0201B")){
+                        fields.append(",b01_id");
+                        values.append(",'"+value+"'");
+                        b01Id = value.toString();
+                    }else if(key.equalsIgnoreCase("A0215A")){
+                        fields.append(",zwmc");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("A001_A0243")){
+                        fields.append(",rzsj");
+                        values.append(",'"+value+"'");
+                    }
+                }
+                values.append(")");
+                //判断干部是否存在
+                CommonConditionQuery query = new CommonConditionQuery();
+                query.add(CommonRestrictions.and(" id = :personCode", "personCode", personCode));
+                List<AppAsetA01> appAsetA01s =  this.appAsetA01Service.list(query,null);
+
+                CommonConditionQuery b01Query = new CommonConditionQuery();
+                b01Query.add(CommonRestrictions.and(" id = :b01Id", "b01Id", b01Id));
+                List<AppBsetB01> appBsetB01s =  this.appBsetB01Service.list(b01Query,null);
+
+                if(appAsetA01s!=null && appAsetA01s.size()>0
+                        && appBsetB01s!=null && appBsetB01s.size()>0) {
+                    List<Object> paramList = new ArrayList<Object>();
+                    this.appAsetA02Dao.executeNativeBulk(fields.append(values).toString(), paramList);
+                    order++;
+                }
+
+               // List<Object> paramList = new ArrayList<Object>();
+               // this.appAsetA02Dao.executeNativeBulk(fields.append(values).toString(), paramList);
+               // order++;
             }
         }
 

@@ -300,7 +300,7 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
 
         int count =0;
         List<Map<String, Object>> countList = queryRunner.query(conn,
-                "select count(*) as count from b01  where b01.status = 1 and b01.b0111 <> '-1' " , new MapListHandler(),(Object[]) null);
+                "select count(*) as count from b01  where b01.b0111 <> '-1' " , new MapListHandler(),(Object[]) null);
         for (Iterator<Map<String, Object>> li = countList.iterator(); li.hasNext();) {
             Map<String, Object> m = li.next();
             for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
@@ -313,7 +313,7 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
         int dealCount = count/400;
         for(int i=0;i<=dealCount;i++){
             int num = i*400;
-            String sql = "select * from b01  where b01.status = 1 and b01.b0111 <> '-1' "
+            String sql = "select * from b01  where b01.b0111 <> '-1' "
                     +"order by b01.b0111 limit "+num+",400";
             List<Map<String, Object>> list = queryRunner.query(conn, sql, new MapListHandler(),(Object[]) null);
             for (Iterator<Map<String, Object>> li = list.iterator(); li.hasNext();) {

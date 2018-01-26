@@ -23,6 +23,7 @@ public interface AppAsetA01Service extends BaseService<AppAsetA01,String> {
     Integer getMaxPx(String b01Id) ;
     void updatePx(String b01Id,int oldPx,int newPx);
     int saveFromYw(DataSource dataSource)throws Exception;
+    int saveFromZdwx(DataSource dataSource)throws Exception;
     void saveAsGbrmspb(AppAsetA01 appAsetA01)throws Exception;
     void deleteAllData() throws Exception;
     String toSqliteInsertSql(AppAsetA01 entity);

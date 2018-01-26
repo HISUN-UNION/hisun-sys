@@ -144,4 +144,102 @@ public class AppAsetA36ServiceImpl extends BaseServiceImpl<AppAsetA36,String> im
 
 
 
+    public int saveFromZdwx(DataSource dataSource)throws Exception{
+        UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
+
+        //处理了多少条
+        int order = 0;
+        Connection conn = dataSource.getConnection();
+        QueryRunner queryRunner = new QueryRunner();
+
+        int count =0;
+        List<Map<String, Object>> countList = queryRunner.query(conn,
+                " select count(*) as count from a36  ", new MapListHandler(),(Object[]) null);
+        for (Iterator<Map<String, Object>> li = countList.iterator(); li.hasNext();) {
+            Map<String, Object> m = li.next();
+            for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
+                Map.Entry<String, Object> e = mi.next();
+                Object value = e.getValue();
+                count = ((Long)value).intValue();
+            }
+        }
+        //每次处理400条
+        int dealCount = count/400;
+        for(int i=0;i<=dealCount;i++){
+            int num = i*400;
+            String sql = " SELECT * FROM a36  limit " + num + ",400";
+            List<Map<String, Object>> list = queryRunner.query(conn, sql, new MapListHandler(),(Object[]) null);
+            for (Iterator<Map<String, Object>> li = list.iterator(); li.hasNext();) {
+                Map<String, Object> m = li.next();
+                StringBuffer fields = new StringBuffer();
+
+                fields.append("insert into app_aset_a36 (");
+                fields.append("tombstone,tenant_id,create_user_id,create_user_name");
+                StringBuffer values = new StringBuffer();
+                values.append(") values (");
+                values.append(" 0 ");
+                values.append(",'").append(userLoginDetails.getTenant().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUser().getId()).append("'")
+                        .append(",'").append(userLoginDetails.getUsername()).append("'");
+                String personCode = "personCode";
+                for (Iterator<Map.Entry<String, Object>> mi = m.entrySet().iterator(); mi.hasNext();) {
+                    Map.Entry<String, Object> e = mi.next();
+                    String key = e.getKey();
+                    Object value = e.getValue()==null?"":e.getValue();
+                    if(key.equalsIgnoreCase("a0000")){
+                        fields.append(",a01_id");
+                        values.append(",'"+value+"'");
+                        personCode = value.toString();
+                    }else if(key.equalsIgnoreCase("a3600")){
+                        fields.append(",id");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("A3601")){
+                        fields.append(",xm");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("A035_A3604A")){
+                        fields.append(",cw");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("A035_A0108")){
+                        Calendar calendar = Calendar.getInstance();
+                        int csn = DateUtil.parseDate(value.toString(), DateUtil.NOCHAR_PATTERN2).getYear();
+                        int currentYear = calendar.get(Calendar.YEAR);
+                        fields.append(",nl");
+                        values.append(",'" + (currentYear - csn - 1) + "'");
+                    }else if(key.equalsIgnoreCase("A035_A3627")){
+                        fields.append(",zzmm");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("A3611")){
+                        fields.append(",gzdwjzw");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("A035_A3607")){
+                        fields.append(",csny");
+                        values.append(",'"+value+"'");
+                    }else if(key.equalsIgnoreCase("sortid")){
+                        fields.append(",shgx_px");
+                        values.append(",'"+value+"'");
+                    }
+                }
+
+                values.append(")");
+                List<Object> paramList = new ArrayList<Object>();
+                this.appAsetA36Dao.executeNativeBulk(fields.append(values).toString(), paramList);
+                order++;
+                //判断干部是否存在
+//                CommonConditionQuery query = new CommonConditionQuery();
+//                query.add(CommonRestrictions.and(" id = :personCode", "personCode", personCode));
+//                List<AppAsetA01> appAsetA01s =  this.appAsetA01Service.list(query,null);
+//
+//                if(appAsetA01s!=null && appAsetA01s.size()>0) {
+//                    List<Object> paramList = new ArrayList<Object>();
+//                    this.appAsetA36Dao.executeNativeBulk(fields.append(values).toString(), paramList);
+//                    order++;
+//                }
+            }
+        }
+
+        DbUtils.close(conn);
+        return order;
+    }
+
+
 }
