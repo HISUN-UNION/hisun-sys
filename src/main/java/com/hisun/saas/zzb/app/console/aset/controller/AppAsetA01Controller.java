@@ -482,4 +482,29 @@ public class AppAsetA01Controller extends BaseController {
         }
         return filename;
     }
+
+    @RequestMapping(value ="/ajax/exportGbrmsp")
+    public @ResponseBody Map<String, Object> exportGbrmsp() {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            List<Object> paramList = Lists.newArrayList();
+            String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01   where  a01.tombstone =?";
+            String orderBy =  "  order by b01.px,a02.jtlPx ";
+            paramList.add(0);
+            int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
+            int dealCount = total/200;
+            for(int i=1;i<=dealCount+1;i++) {
+                List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql+orderBy, paramList,i,200);
+                for(AppAsetA01 appAsetA01 : appAsetA01s){
+                    this.appAsetA01Service.saveAsGbrmspb(appAsetA01);
+                }
+            }
+            map.put("success", true);
+        } catch (Exception e) {
+            map.put("success", false);
+            throw new GenericException(e);
+        }
+        return map;
+    }
 }

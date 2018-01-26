@@ -32,25 +32,16 @@
 					<div class="caption">${b0101} 干部列表</div>
 					<div class="clearfix fr">
 
-						<%--<div class="btn-group">--%>
-							<%--<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">--%>
-								<%--导入数据 <i class="icon-angle-down"></i>--%>
-							<%--</a>--%>
-							<%--<ul class="dropdown-menu">--%>
-								<%--<li >--%>
-									<%--<a onclick="uploadFile('gbrmspb')">从公务员管理系统(浙大网新)</a>--%>
-									<%--<input type="file" style="display: none" name="gbrmspbFile" id="btn-gbrmspb"/>--%>
-								<%--</li>--%>
-								<%--<li>--%>
-									<%--<a onclick="uploadFile('dascqk')">从组织综合业务平台(广州三零)</a>--%>
-									<%--<input type="file" style="display: none" name="dascqkFile" id="btn-dascqk"/>--%>
-								<%--</li>--%>
-								<%--<li>--%>
-									<%--<a onclick="uploadFile('kccl')">从干部管理系统(长沙远望)</a>--%>
-									<%--<input type="file"  style="display: none" name="kcclFile" id="btn-kccl"/>--%>
-								<%--</li>--%>
-							<%--</ul>--%>
-						<%--</div>--%>
+						<div class="btn-group">
+							<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+								干部任免审批表 <i class="icon-angle-down"></i>
+							</a>
+							<ul class="dropdown-menu">
+								<li >
+									<a onclick="exportGbrmsp()">生成</a>
+								</li>
+							</ul>
+						</div>
 						<%--<span class="controllerClass btn green file_but" >--%>
 							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
 							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
@@ -346,6 +337,26 @@
 			error : function(){
 				myLoading.hide();
 				showTip("提示","出错了,请检查网络!",2000);
+			}
+		});
+	}
+	function exportGbrmsp(){
+		$.cloudAjax({
+			path : '${path}',
+			url : "${path }/zzb/app/console/asetA01/ajax/exportGbrmsp",
+			type : "post",
+			data : $("#form1").serialize(),
+			dataType : "json",
+			success : function(data){
+				if(data.success == true){
+					showTip("提示","生成干部任免审批表成功!",2000);
+					//setTimeout(function(){window.location.href = "${path}/zzb/app/console/bwh/"},2000);
+				}else{
+					showTip("提示", "生成干部任免审批表失败!", 2000);
+				}
+			},
+			error : function(){
+				showTip("提示","出错了请联系管理员",2000);
 			}
 		});
 	}
