@@ -42,6 +42,9 @@
 								</li>
 							</ul>
 						</div>
+						<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/asetA01Query/">
+							按条件查询
+						</a>
 						<%--<span class="controllerClass btn green file_but" >--%>
 							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
 							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>

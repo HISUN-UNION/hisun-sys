@@ -115,6 +115,9 @@
 									</li>
 								</ul>
 							</div>
+							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/asetA01/">
+								按机构查询
+							</a>
 							</c:if>
 							<c:if test="${!empty queryId}">
 								<div class="btn-group">
@@ -128,6 +131,9 @@
 
 									</ul>
 								</div>
+								<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/asetA01/">
+									按机构查询
+								</a>
 								<c:if test="${empty queryPosition}">
 									<a class="btn" href="${path }/zzb/app/console/asetA01Query/"><i class="icon-undo"></i>返回</a>
 								</c:if>
