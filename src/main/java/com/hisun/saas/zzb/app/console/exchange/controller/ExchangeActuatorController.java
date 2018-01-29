@@ -251,11 +251,11 @@ public class ExchangeActuatorController extends BaseController {
                         exchangeActuator.getPort(),
                         exchangeActuator.getDatabaseName(),
                         exchangeActuator.getUserName(), exchangeActuator.getPassword());
-                this.appBsetFlService.saveFromZdwx(dataSource);
-                this.appBsetB01Service.saveFromZdwx(dataSource);
-                this.appBsetFl2B01Service.saveFromZdwx(dataSource);
-                this.appAsetA01Service.saveFromZdwx(dataSource);
-                this.appAsetA02Service.saveFromZdwx(dataSource);
+//                this.appBsetFlService.saveFromZdwx(dataSource);
+//                this.appBsetB01Service.saveFromZdwx(dataSource);
+//                this.appBsetFl2B01Service.saveFromZdwx(dataSource);
+//                this.appAsetA01Service.saveFromZdwx(dataSource);
+                //this.appAsetA02Service.saveFromZdwx(dataSource);
                 this.appAsetA36Service.saveFromZdwx(dataSource);
             } else if (sourceType == ExchangeActuator.source_zzzhywpt) {//从组织综合业务平台(广州三零)
 
@@ -272,8 +272,8 @@ public class ExchangeActuatorController extends BaseController {
                 this.appAsetA36Service.saveFromYw(dataSource);
                 //生成干部任免审批表,分批次生成
                 List<Object> paramList = Lists.newArrayList();
-                String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  inner join b01.appBsetFl2B01s fltob01  where  a01.tombstone =?";
-                String orderBy =  "  order by fltob01.px,b01.px,a02.jtlPx ";
+                String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01   where  a01.tombstone =?";
+                String orderBy =  "  order by b01.px,a02.jtlPx ";
                 paramList.add(0);
                 int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
                 int dealCount = total/200;

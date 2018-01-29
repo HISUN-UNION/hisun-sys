@@ -196,23 +196,27 @@ public class AppAsetA36ServiceImpl extends BaseServiceImpl<AppAsetA36,String> im
                     }else if(key.equalsIgnoreCase("A3601")){
                         fields.append(",xm");
                         values.append(",'"+value+"'");
-                    }else if(key.equalsIgnoreCase("A035_A3604A")){
+                    }else if(key.equalsIgnoreCase("A3604A")){
                         fields.append(",cw");
                         values.append(",'"+value+"'");
-                    }else if(key.equalsIgnoreCase("A035_A0108")){
-                        Calendar calendar = Calendar.getInstance();
-                        int csn = DateUtil.parseDate(value.toString(), DateUtil.NOCHAR_PATTERN2).getYear();
-                        int currentYear = calendar.get(Calendar.YEAR);
-                        fields.append(",nl");
-                        values.append(",'" + (currentYear - csn - 1) + "'");
-                    }else if(key.equalsIgnoreCase("A035_A3627")){
+                    }else if(key.equalsIgnoreCase("A3607")){
+                        fields.append(",csny");
+                        if (value.toString().equals("") == false) {
+                            values.append(",'" + value + "'");
+                            Calendar calendar = Calendar.getInstance();
+                            int currentYear = calendar.get(Calendar.YEAR);
+                            calendar.setTime(DateUtil.parseDate(value.toString().substring(0,4), "YYYY"));
+                            int csn = calendar.get(Calendar.YEAR);
+                            fields.append(",nl");
+                            values.append(",'" + (currentYear - csn - 1) + "'");
+                        } else {
+                            values.append(",''");
+                        }
+                    }else if(key.equalsIgnoreCase("A3627")){
                         fields.append(",zzmm");
                         values.append(",'"+value+"'");
                     }else if(key.equalsIgnoreCase("A3611")){
                         fields.append(",gzdwjzw");
-                        values.append(",'"+value+"'");
-                    }else if(key.equalsIgnoreCase("A035_A3607")){
-                        fields.append(",csny");
                         values.append(",'"+value+"'");
                     }else if(key.equalsIgnoreCase("sortid")){
                         fields.append(",shgx_px");

@@ -486,7 +486,6 @@ public class AppAsetA01Controller extends BaseController {
     @RequestMapping(value ="/ajax/exportGbrmsp")
     public @ResponseBody Map<String, Object> exportGbrmsp() {
         Map<String, Object> map = new HashMap<String, Object>();
-
         try {
             List<Object> paramList = Lists.newArrayList();
             String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01   where  a01.tombstone =?";

@@ -38,7 +38,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li >
-									<a onclick="exportGbrmsp()">生成</a>
+									<a onclick="exportGbrmsp()">全部重新生成</a>
 								</li>
 							</ul>
 						</div>

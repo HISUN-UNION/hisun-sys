@@ -414,6 +414,9 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01, String> i
                     else if (key.equalsIgnoreCase("A0192")) {
                         fields.append(",zw");
                         values.append(",'" + value + "'");
+                        fields.append(",xrzw");
+                        values.append(",'" + value + "'");
+
                     } else if (key.equalsIgnoreCase("A0114A")) {
                         fields.append(",csd");
                         values.append(",'" + value + "'");
@@ -475,10 +478,12 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01, String> i
                     } else if (key.equalsIgnoreCase("A0288")) {
                         fields.append(",xrzjsj");
                         values.append(",'" + value + "'");
-                    } else if (key.equalsIgnoreCase("A0192")) {
-                        fields.append(",xrzw");
-                        values.append(",'" + value + "'");
-                    } else if (key.equalsIgnoreCase("A14Z101")) {
+                    }
+//                    else if (key.equalsIgnoreCase("A0192")) {
+//                        fields.append(",xrzw");
+//                        values.append(",'" + value + "'");
+//                    }
+                    else if (key.equalsIgnoreCase("A14Z101")) {
                         fields.append(",jcqk_str");
                         values.append(",'" + value.toString().replace("'","\"") + "'");
                     } else if (key.equalsIgnoreCase("A15Z101")) {
