@@ -35,23 +35,18 @@
     <link href="${path}/css/halflings.css" rel="stylesheet"/>
     <%@include file="/WEB-INF/jsp/inc/servlet.jsp" %>
     <style>
-        .dropdown-menu {
-            background-color: inherit;
-            box-shadow: none;
-            border: none;
-        }
+        .dropdown-menu{ background-color:inherit; box-shadow: none; border:none;}
+        .navigdrop_down{left:-116px;width: 200px;padding: 0;}
+        .navigdrop_down02{left:-27px;padding: 0;width: 120px;}
 
-        .navigdrop_down {
-            left: -116px;
-            width: 200px;
-            padding: 0;
-        }
-
-        .navigdrop_down02 {
-            left: -27px;
-            padding: 0;
-            width: 120px;
-        }
+        .nav_a{ border-radius: 8px; color: #ffffff; float: left; margin-top: 50px; margin-left: 20px; transition: background 0.4s ease-in-out 0s;  width: 200px; padding:15px 10px;}
+        .navig_contact{width:1200px; margin-top:50px;}
+        .dlnavigcont{ height:180px; width: 200px; text-align:center; margin-left:0;}
+        .dlnavigcont dd {padding-top: 1px; width:200px;}
+        .dlnavigcont dt {float: inherit;height: 72px;width: 200px;margin-left:0;}
+        .dlnavigcont dt img{ max-height:72px;}
+        .dlnavigcont dd h4 {font-size: 16px;padding: 5px 0 3px;text-align:center;}
+        .dlnavigcont dd .navp01{ text-align: center;}
     </style>
 </head>
 <body>
@@ -126,12 +121,84 @@
 
     </div>
     <div class="navig_contact">
-        <a class="nav_a" href="/zzb/app/console/bwh/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+        <a class="nav_a" href="/zzb/app/console/bset/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco01.png"></dt>
                 <dd>
-                    <h4>辅助决策APP管理</h4>
-                    <p class="navp01">为领导辅助决策APP提供完整的数据管理以及上会投票统计等功能。</p>
+                    <h4>机构编制</h4>
+                    <p class="navp01">依据“三定”方案建立组织机构树、编制库，这些信息将为开展干部业务工作提供基础数据支撑。</p>
+                </dd>
+            </dl>
+        </a>
+        <a class="nav_a" href="#">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco02.png"></dt>
+                <dd>
+                    <h4>干部管理</h4>
+                    <p class="navp01">干部信息管理用于建立、健全全州人员信息库，确保能够快速、准确的建成全州人员信息库。</p>
+                </dd>
+            </dl>
+        </a>
+        <a class="nav_a" href="###">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco03.png"></dt>
+                <dd>
+                    <h4>选任纪实</h4>
+                    <p class="navp01">干部选任纪实主要基于组织机构库、人员信息库、策略库，为干部选拨任用监督提供数据依据。</p>
+                </dd>
+            </dl>
+        </a>
+        <a class="nav_a" href="###">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco04.png"></dt>
+                <dd>
+                    <h4>干部监督</h4>
+                    <p class="navp01">干部监督系统通过大数据分析和综合分析判断干部个人的有关问题情况进行智能预警和提醒。</p>
+                </dd>
+            </dl>
+        </a>
+        <a class="nav_a" href="###">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco05.png"></dt>
+                <dd>
+                    <h4>干部日常</h4>
+                    <p class="navp01">干部考核主要用于记录干部的日常表现、工作实绩、等信息，并将相关信息自动同步人员信息库。</p>
+                </dd>
+            </dl>
+        </a>
+        <a class="nav_a" href="0227云监控首页.html">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco06.png"></dt>
+                <dd>
+                    <h4>公务员管理</h4>
+                    <p class="navp01">公务员管理系统用于建立、健全全州公务员库，实现公务员实名制管理。</p>
+                </dd>
+            </dl>
+        </a>
+        <a class="nav_a" href="#">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco07.png"></dt>
+                <dd>
+                    <h4>大数据应用</h4>
+                    <p class="navp01">支持多网段物理隔离手工数据交换，并支持与第三方系统（浙大网新、领导决策系统）进行数据交换。</p>
+                </dd>
+            </dl>
+        </a>
+        <a class="nav_a" href="###">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco08.png"></dt>
+                <dd>
+                    <h4>协同办公</h4>
+                    <p class="navp01">干部信息查询用来按单位查询当前单位下的所有干部信息，点击可查看其详细信息。</p>
+                </dd>
+            </dl>
+        </a>
+        <a class="nav_a" href="/zzb/app/console/bwh/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco09.png"></dt>
+                <dd>
+                    <h4>APP数据管理</h4>
+                    <p class="navp01">实现统一的报表管理基础功能，支持报表模板定制和报表数据输出功能，供各系统调用生成需要的报表。</p>
                 </dd>
             </dl>
         </a>

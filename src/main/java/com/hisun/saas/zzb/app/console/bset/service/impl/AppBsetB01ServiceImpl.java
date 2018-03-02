@@ -51,7 +51,7 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
     public Integer getMaxPx(String parentId){
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         Map<String, Object> arg=new HashMap<String, Object>();
-        String hql = "select max(t.px) as px from app_gbcx_b01 t where t.tombstone=(:tombstone) and t.tenant_id=(:tenant_id) ";
+        String hql = "select max(t.px) as px from app_bset_b01 t where t.tombstone=(:tombstone) and t.tenant_id=(:tenant_id) ";
         if(parentId!=null && !parentId.equals("1")) {
             hql = hql+ " and t.parent_id=(:parentId)";
         }else{
@@ -75,7 +75,7 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
      */
     public void updatePx(String parentId,int oldPx,int newPx){
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
-        String sql = "UPDATE app_gbcx_b01 t SET ";
+        String sql = "UPDATE app_bset_b01 t SET ";
         if(newPx > oldPx) {
             sql = sql + "t.px=t.px-1";
         } else {

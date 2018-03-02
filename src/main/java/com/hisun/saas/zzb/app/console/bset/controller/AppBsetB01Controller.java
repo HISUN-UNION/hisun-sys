@@ -29,6 +29,7 @@ import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01;
 import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.util.C3p0Util;
 import com.hisun.util.WebUtil;
+import net.sf.json.JSONObject;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -165,8 +167,8 @@ public class AppBsetB01Controller extends BaseController{
      * 调转到新增页面
      * @return
      */
-    @RequestMapping(value = "/ajax/addOrEdit")
-    public ModelAndView addOrEdit(@RequestParam(value="dataType",required=false)String dataType,@RequestParam(value="parentId",required=false)String parentId,@RequestParam(value="id",required=false)String id) {
+    @RequestMapping(value = "/addOrEditManage")
+    public ModelAndView addOrEditManage(@RequestParam(value="dataType",required=false)String dataType,@RequestParam(value="parentId",required=false)String parentId,@RequestParam(value="id",required=false)String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         AppBsetB01Vo vo = new AppBsetB01Vo();
         try {
@@ -191,13 +193,53 @@ public class AppBsetB01Controller extends BaseController{
                 }
                 vo.setParentId(parentId);
             }
+            map.put("vo", vo);
+            map.put("dataType", dataType);
+            map.put("parentId", parentId);
+            map.put("id", id);
+
         } catch(Exception e) {
             map.put("success", false);
             map.put("msg", "修改失败！");
             throw new GenericException(e);
         }
-        return new ModelAndView("/saas/zzb/app/console/bsetB01/addAndEditB01","vo",vo);
+        return new ModelAndView("/saas/zzb/app/console/bsetB01/addAndEditB01Manage",map);
     }
+
+    @RequestMapping(value="/ajax/addOrEdit")
+    public ModelAndView addOrEdit(@RequestParam(value="dataType",required=false)String dataType,@RequestParam(value="parentId",required=false)String parentId,@RequestParam(value="id",required=false)String id){
+    Map<String, Object> map = new HashMap<String, Object>();
+        AppBsetB01Vo vo = new AppBsetB01Vo();
+        try {
+            if(id==null || id.equals("")) {
+//                Integer maxPx = appBsetB01Service.getMaxPx(parentId);
+//                if (maxPx != null) {
+//                    vo.setPx(maxPx + 1);
+//                } else {
+//                    vo.setPx(1);
+//                }
+//                vo.setDataType(Integer.parseInt(dataType));
+//                vo.setParentId(parentId);
+            }else{
+                AppBsetB01 appGbcxB01 = this.appBsetB01Service.getByPK(id);
+                if (appGbcxB01 == null) {
+                    logger.error("数据不存在");
+                    throw new GenericException("数据不存在");
+                }
+                BeanUtils.copyProperties(vo, appGbcxB01);
+                if (appGbcxB01.getParentB01() != null) {
+                    parentId = appGbcxB01.getParentB01().getId();
+                }
+                vo.setParentId(parentId);
+            }
+            map.put("vo", vo);
+        } catch (Exception e) {
+            throw new GenericException(e);
+        }
+        return new ModelAndView("/saas/zzb/app/console/bsetB01/addAndEditB01",map);
+    }
+
+
 
     /**
      * 调转到新增页面
