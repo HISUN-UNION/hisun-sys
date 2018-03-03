@@ -135,25 +135,25 @@
                 <dt><img src="${path}/images/templateImage/navIco02.png"></dt>
                 <dd>
                     <h4>干部管理</h4>
-                    <p class="navp01">干部信息管理用于建立、健全全州人员信息库，确保能够快速、准确的建成全州人员信息库。</p>
+                    <p class="navp01">干部信息管理用于建立、健全全州人员信息库，并提供按各种条件快速定位查询干部信息,并提供统计、输出各类名册等。</p>
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="###">
+        <a class="nav_a" href="javascript:openGzzzb('gbrm')">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco03.png"></dt>
                 <dd>
                     <h4>选任纪实</h4>
-                    <p class="navp01">干部选任纪实主要基于组织机构库、人员信息库、策略库，为干部选拨任用监督提供数据依据。</p>
+                    <p class="navp01">干部选任纪实主要基于基础数据库，通过大数据分析手段辅助干部选任科室对干部选拔、调整、任免全过程进行信息化管理。</p>
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="###">
+        <a class="nav_a" href="javascript:openGzzzb('gbjd')">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco04.png"></dt>
                 <dd>
                     <h4>干部监督</h4>
-                    <p class="navp01">干部监督系统通过大数据分析和综合分析判断干部个人的有关问题情况进行智能预警和提醒。</p>
+                    <p class="navp01">干部监督主要反映干部出国（境）管理、个人事项报告、审计监察、监督信息、收到惩处、信访举报等方面的情况。</p>
                 </dd>
             </dl>
         </a>
@@ -162,11 +162,11 @@
                 <dt><img src="${path}/images/templateImage/navIco05.png"></dt>
                 <dd>
                     <h4>干部日常</h4>
-                    <p class="navp01">干部考核主要用于记录干部的日常表现、工作实绩、等信息，并将相关信息自动同步人员信息库。</p>
+                    <p class="navp01">干部考核主要用于记录干部的日常表现、工作实绩、关键时刻表现、年度考核、奖惩情况等信息。</p>
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="0227云监控首页.html">
+        <a class="nav_a" href="javascript:openGzzzb('gwygl')">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco06.png"></dt>
                 <dd>
@@ -180,16 +180,25 @@
                 <dt><img src="${path}/images/templateImage/navIco07.png"></dt>
                 <dd>
                     <h4>大数据应用</h4>
-                    <p class="navp01">支持多网段物理隔离手工数据交换，并支持与第三方系统（浙大网新、领导决策系统）进行数据交换。</p>
+                    <p class="navp01">基于人员库、组织机构、编制库，通过大数据分析手段对全市干部进行多维度，多层次分析，为领导科学决策提供科学的、准确的的数据服务。</p>
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="###">
+        <a class="nav_a" href="javascript:openGzzzb('xtbg')">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco08.png"></dt>
                 <dd>
                     <h4>协同办公</h4>
-                    <p class="navp01">干部信息查询用来按单位查询当前单位下的所有干部信息，点击可查看其详细信息。</p>
+                    <p class="navp01">通过图形化定义工作流程、表单、工作环节（岗位）、工作流向以及权限控制，实现单位各种工作流程的网络化应用。</p>
+                </dd>
+            </dl>
+        </a>
+        <a class="nav_a" href="javascript:openGzzzb('zsk')">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco10.png"></dt>
+                <dd>
+                    <h4>知识库</h4>
+                    <p class="navp01">知识资源库是一个方便单位、部门、个人对工作过程文档和历史文件资料分库、分目录管理的，数据集中存储的系统。</p>
                 </dd>
             </dl>
         </a>
@@ -198,7 +207,7 @@
                 <dt><img src="${path}/images/templateImage/navIco09.png"></dt>
                 <dd>
                     <h4>APP数据管理</h4>
-                    <p class="navp01">实现统一的报表管理基础功能，支持报表模板定制和报表数据输出功能，供各系统调用生成需要的报表。</p>
+                    <p class="navp01">为领导辅助决策APP提供完整的数据管理以及上会投票统计等功能。</p>
                 </dd>
             </dl>
         </a>
@@ -278,6 +287,24 @@
                     var end = "<li class=\"external\"><a href=\"${path }/sys/tenant/message/messages?type=all&OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}\">查看所有消息<i class=\"m-icon-swapright\"></i></a></li> ";
                     messages.append(start + conent + end);
                 }, "json", {"OWASP_CSRFTOKEN" : "${sessionScope.OWASP_CSRFTOKEN}"});
+    }
+
+    function openGzzzb(module){
+        var url = ""
+        if(module=="gbrm"){
+            url ="http://localhost:8080/GZZZB/la/index.jsp?showFlag=init&moduleCode=LA_APPOINT_STUFF";
+        }else if(module=="xtbg"){
+            url ="http://localhost:8080/GZZZB/ed/edIndex.jsp?moduleCode=ED_APP";
+        }else if(module=="gwygl"){
+            url ="http://localhost:8080/GZZZB/oa/officialInfoManage/officialInfoIndex.jsp?reportTypeCode=1&moduleCode=OA_REPORT_ZWJS";
+        }else if(module=="gbjd"){
+            url ="http://localhost:8080/GZZZB/pi/maintenance/index.jsp?fromSys=PrLeaderInfo&moduleCode=PR_LEADER_INFO";
+        }else if(module=="gbrc"){
+            url ="http://localhost:8080/GZZZB/ed/edIndex.jsp?moduleCode=ED_APP";
+        }else if(module=="zsk"){
+            url ="http://localhost:8080/GZZZB/rm/resource/rmShouWenIndexMain.jsp?storeroomId=772227561E1E1E0B006BBA7A8AA163CF&storeroomCode=0004";
+        }
+        window.open(url);
     }
 </script>
 </body>

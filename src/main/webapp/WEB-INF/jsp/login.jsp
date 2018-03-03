@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@include file="common/top.jsp"%>
 <link href="${path }/css/login_style.css" rel="stylesheet" type="text/css"/>
-<title>领导辅助决策APP数据管理平台</title>
+<title>干部信息管理大数据应用平台</title>
 </head>
 
 <!-- BEGIN BODY -->
@@ -20,7 +20,7 @@
     <div class="login">
     		<div class="login_header">
             	 <div class="login_header_1000">
-					 <div class="login_logo"><img style="max-height: 46px;" src="${path }/images/templateImage/${loginLogo}"></div>
+					 <div class="login_logo"><img style="margin-top: 10px" src="${path }/images/templateImage/${loginLogo}"></div>
 					 <div class="Customer_name">${loginTitle}</div>
                  </div>
             </div>
@@ -137,7 +137,7 @@
                   
                 </form>
             </div>
-            <div class="login_footer">2014-2017 版权所有©广州三零卫士信息安全有限公司 www.30wish.net </div>
+            <div class="login_footer">2014-2018 版权所有©广东天亿马信息产业股份有限公司</div>
     </div>
 	
 
