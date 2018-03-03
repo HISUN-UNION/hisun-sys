@@ -58,14 +58,25 @@ public class GbcxServiceImpl implements GbcxService {
             }
         }
         //干部信息
+
+        AppBsetFl appBsetFl = this.appBsetFlService.getTopFl();
         List<Object> paramList = Lists.newArrayList();
-        String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  inner join b01.appBsetFl2B01s fltob01  where a01.tombstone =?";
-        String orderBy ="  order by fltob01.px,b01.px,a02.jtlPx ";
+        String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  "
+                + " inner join a02.appBsetB01 b01 ";
+        if(appBsetFl.getIsHidden()== AppBsetFl.DISPLAY){
+            hql +="inner join b01.appBsetFl2B01s fltob01 ";
+        }
+        hql+= " where a01.tombstone =?";
+        if(appBsetFl.getIsHidden()== AppBsetFl.DISPLAY) {
+            hql = hql + " order by fltob01.px,b01.px,a02.jtlPx ";
+        }else{
+            hql = hql + " order by b01.queryCode,a02.jtlPx ";
+        }
         paramList.add(0);
         int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
         int dealCount = total/200;
         for(int i=1;i<=dealCount+1;i++) {
-            List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql+orderBy, paramList,i,200);
+            List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql, paramList,i,200);
             for(AppAsetA01 appAsetA01: appAsetA01s){
                 sqliteDBUtil.insert(sqlite, this.appAsetA01Service.toSqliteInsertSql(appAsetA01));
 //            if(appAsetA01.getZpPath()!=null

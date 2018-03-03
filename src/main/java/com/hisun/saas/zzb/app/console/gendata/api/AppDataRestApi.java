@@ -34,7 +34,6 @@ public class AppDataRestApi {
     private String uploadAbsolutePath;
 
 
-
     @RequestMapping(value = "/update/{appCode}", method = RequestMethod.GET)
     @ResponseBody
     public AppDataVo update(@PathVariable String appCode,HttpServletRequest req) {
@@ -84,8 +83,8 @@ public class AppDataRestApi {
         }
         output.flush();
         output.close();
-
     }
+
     private String encode(String filename) throws UnsupportedEncodingException {
         if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
             filename = URLEncoder.encode(filename, "UTF-8");

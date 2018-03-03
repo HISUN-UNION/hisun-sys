@@ -16,6 +16,8 @@ import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01QueryService;
 import com.hisun.saas.zzb.app.console.aset.service.AppAsetA01Service;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01QueryVo;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA36Vo;
+import com.hisun.saas.zzb.app.console.bset.entity.AppBsetFl;
+import com.hisun.saas.zzb.app.console.bset.service.AppBsetFlService;
 import com.hisun.saas.zzb.app.console.gbmc.entity.*;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcService;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
@@ -51,6 +53,8 @@ public class AppAsetA01QueryServiceImpl extends BaseServiceImpl<AppAsetA01Query,
     private AppAsetA01Service appAsetA01Service;
     @Resource
     private GbMcService gbMcService;
+    @Resource
+    private AppBsetFlService appBsetFlService;
 
 
     @Value("${upload.absolute.path}")
@@ -121,20 +125,35 @@ public class AppAsetA01QueryServiceImpl extends BaseServiceImpl<AppAsetA01Query,
         EntityWrapper.wrapperSaveBaseProperties(b01,userLoginDetails);
         gbMc.addGbMcB01(b01);
 
-
+        AppBsetFl appBsetFl = this.appBsetFlService.getTopFl();
         List<Object> paramList = Lists.newArrayList();
-        String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  inner join a02.appBsetB01 b01  " +
-                "inner join b01.appBsetFl2B01s fltob01  where a01.tombstone =? ";
+
+
+        String hql = " from AppAsetA01 a01  inner join a01.appAsetA02s a02  "
+                + "inner join a02.appBsetB01 b01  ";
+
+
+        if(appBsetFl.getIsHidden()== AppBsetFl.DISPLAY){
+            hql +="inner join b01.appBsetFl2B01s fltob01 ";
+        }
+
+        hql+="where a01.tombstone =? ";
+
         if(StringUtils.isEmpty(query.getQueryCondition())==false){
             hql+=query.getQueryCondition();
         }
-        String orderBy =  "  order by fltob01.px,b01.px,a02.jtlPx ";
+        if(appBsetFl.getIsHidden()== AppBsetFl.DISPLAY) {
+            hql = hql + " order by fltob01.px,b01.px,a02.jtlPx ";
+        }else{
+            hql = hql + " order by b01.queryCode,a02.jtlPx ";
+        }
         paramList.add(0);
         int total = this.appAsetA01Service.count("select  count(distinct a01.id) " + hql, paramList);
         int dealCount = total/200;
+        int a01px = 1;
         for(int i=1;i<=dealCount+1;i++) {
-            List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql+orderBy, paramList,i,200);
-            int a01px = 1;
+            List<AppAsetA01> appAsetA01s = this.appAsetA01Service.list("select  DISTINCT(a01) " + hql, paramList,i,200);
+
             for(AppAsetA01 appAsetA01 : appAsetA01s){
                 GbMcA01 gbMcA01 = new GbMcA01();
                 BeanUtils.copyProperties(gbMcA01,appAsetA01);

@@ -49,7 +49,7 @@
 						<form action="" class="form-horizontal" id="form1"  method="post">
 							<input type="hidden" id="id" name="id" value="${vo.id}">
 							<input type="hidden" id="saveType" name="saveType" value="">
-							<input type="hidden" id="queryName" name="queryName" value=""${vo.queryName}">
+							<input type="hidden" id="queryName" name="queryName" value="${vo.queryName}">
 							<input type="hidden" id="querySort" name="querySort" value="${vo.querySort}">
 
 							<div id="conditionModal" class="modal container hide fade" tabindex="-1" data-width="400">

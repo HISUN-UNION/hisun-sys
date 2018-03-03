@@ -95,7 +95,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         FileInputStream inputStream = new FileInputStream(f);
         gendata.setPacketMd5(DigestUtils.md5Hex(IOUtils.toByteArray(inputStream)));
         gendata.setPacketSize(Long.toString(f.length()));
-
+        inputStream.close();
         UserLoginDetails userLoginDetails = UserLoginDetailsUtil.getUserLoginDetails();
         EntityWrapper.wrapperSaveBaseProperties(gendata,userLoginDetails);
         FileUtils.deleteDirectory(new File(dataDir+File.separator));

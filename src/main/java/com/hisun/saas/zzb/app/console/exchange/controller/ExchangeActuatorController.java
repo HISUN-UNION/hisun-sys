@@ -251,11 +251,11 @@ public class ExchangeActuatorController extends BaseController {
                         exchangeActuator.getPort(),
                         exchangeActuator.getDatabaseName(),
                         exchangeActuator.getUserName(), exchangeActuator.getPassword());
-//                this.appBsetFlService.saveFromZdwx(dataSource);
-//                this.appBsetB01Service.saveFromZdwx(dataSource);
-//                this.appBsetFl2B01Service.saveFromZdwx(dataSource);
-//                this.appAsetA01Service.saveFromZdwx(dataSource);
-                //this.appAsetA02Service.saveFromZdwx(dataSource);
+                this.appBsetFlService.saveFromZdwx(dataSource);
+                this.appBsetB01Service.saveFromZdwx(dataSource);
+                this.appBsetFl2B01Service.saveFromZdwx(dataSource);
+                this.appAsetA01Service.saveFromZdwx(dataSource);
+                this.appAsetA02Service.saveFromZdwx(dataSource);
                 this.appAsetA36Service.saveFromZdwx(dataSource);
             } else if (sourceType == ExchangeActuator.source_zzzhywpt) {//从组织综合业务平台(广州三零)
 
