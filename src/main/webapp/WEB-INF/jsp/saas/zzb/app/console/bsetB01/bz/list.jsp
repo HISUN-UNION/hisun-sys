@@ -14,7 +14,7 @@
 
 	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 	<!-- END PAGE LEVEL STYLES -->
-	<title>${flmc} 机构列表</title>
+	<title>编制情况</title>
 	<style type="text/css">
 		form {
 			margin: 0 0 0px;
@@ -43,58 +43,23 @@
 			<form class=""id="importForm" enctype="multipart/form-data">
 				<input type="hidden" name="queryId" value="${queryId}"/>
 				<div class="portlet-title">
-					<div class="caption">${flmc}</div>
 					<div class="clearfix fr">
-						<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/bset/addOrEditManage?dataType=0&parentId=${queryId}">
+						<a id="sample_editable_1_new" class="btn green" href="#">
 							<i class="icon-plus"></i> 添加
 						</a>
-						<%--<div class="btn-group">--%>
-							<%--<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">--%>
-								<%--导入数据 <i class="icon-angle-down"></i>--%>
-							<%--</a>--%>
-							<%--<ul class="dropdown-menu" style="left: -112px;">--%>
-								<%--<li >--%>
-									<%--<a onclick="importParmenter('gwyglxt')">从公务员管理系统(浙大网新)</a>--%>
-								<%--</li>--%>
-								<%--<li>--%>
-									<%--<a onclick="importParmenter('zzzhywpt')">从组织综合业务平台(广州三零)</a>--%>
-								<%--</li>--%>
-								<%--<li>--%>
-									<%--<a onclick="importParmenter('gbglxt')">从干部管理系统(长沙远望)</a>--%>
-								<%--</li>--%>
-							<%--</ul>--%>
-						<%--</div>--%>
-						<%--<span class="controllerClass btn green file_but" >--%>
-							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
-							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
-						<%--</span>--%>
+
 					</div>
 
 				</div>
 			</form>
-			<div class="clearfix">
-				<div class="control-group">
-					<div id="query" style="float: left;">
-						<form action="${path }/zzb/app/console/bset/ajax/list" method="POST" id="searchForm" name="searchForm">
-							<input type="hidden" id="queryId" name="queryId" value="${queryId}"/>
-							<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
-							<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
-							<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
-							机构名称：<input type="text" class="m-wrap" name="b0101Query" id="b0101Query" value="${b0101Query}" style="width: 100px;" />
-							<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
-							<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
-						</form>
-					</div>
-				</div>
 
-			</div>
 				<div class="portlet-body">
 					<table class="table table-striped table-bordered table-hover dataTable table-set">
 						<thead>
 						<tr>
-							<th>机构名称</th>
-							<th>机构简称</th>
-							<th width="80">排序</th>
+							<th>编制名称</th>
+							<th>编制数</th>
+							<th width="12%">操作</th>
 
 							<%--<th width="100">专业技<br>术职务--%>
 							<%--</th>--%>
@@ -106,21 +71,15 @@
 						</tr>
 						</thead>
 						<tbody>
-						<c:forEach items="${pager.datas}" var="vo">
 							<tr style="text-overflow:ellipsis;">
-								<%--<td title="${vo.xm}"><a href="${path}/zzb/app/console/appGbcxA01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>--%>
-								<td><a href="#"><c:out value="${vo.b0101}"></c:out></a></td>
-								<%--<td><c:out value="${vo.b0101}"></c:out></td>--%>
-								<td>&nbsp;</td>
-								<td><c:out value="${vo.px}"></c:out></td>
-								<%--<td><c:out value="${vo.zyjszw}"></c:out></td>--%>
-								<%--<td><c:out value="${vo.xrzwsj}"></c:out></td>--%>
-								<%--<td title="${vo.xrzjsj}"><c:out value="${vo.xrzjsj}"></c:out></td>--%>
-								<%--<td class="Left_alignment">--%>
-									<%--<a href="javascript:del('${vo.id }','${vo.xm}')" class="">删除</a>--%>
-								<%--</td>--%>
+								<td><a href="#">行政编制</a></td>
+								<td>5</td>
+								<td>
+									<a href="#" class="">编辑</a>|
+									<a href="#" class="">删除</a>
+								</td>
 							</tr>
-						</c:forEach>
+
 						</tbody>
 					</table>
 					<jsp:include page="/WEB-INF/jsp/common/page.jsp">

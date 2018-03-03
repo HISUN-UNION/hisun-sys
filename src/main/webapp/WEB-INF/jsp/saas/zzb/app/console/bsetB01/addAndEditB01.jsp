@@ -7,27 +7,71 @@
 		<input type="hidden" name="dataType" value="${vo.dataType}" id="dataType"/>
 		<input type="hidden" name="parentId" value="${vo.parentId}" id="parentId"/>
 		<input type="hidden" name="id" value="${vo.id }"/>
+		<table  border="0" style="width:100%;" cellPadding="5px">
+			<tr>
+				<td width="50%">
+					<div id="ciNameGroup" class="control-group">
+						<label class="control-label">机构名称<span class="required">*</span></label>
+						<div class="controls">
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+						</div>
+					</div>
+				</td>
+				<td width="50%">
+					<div id="influenceInfoIdGroup" class="control-group">
+						<label class="control-label">机构简称<span class="required">*</span></label>
+						<div class="controls">
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td width="50%">
+					<div id="ciNameGroup" class="control-group">
+						<label class="control-label">机构级别<span class="required">*</span></label>
+						<div class="controls">
+							<select class="span8 m-wrap" type="text" id="influenceInfoId" name="influenceInfoId" required>
+								<option value="">请选择...</option>
+								<option value="">正市级</option>
+								<option value="">副市级</option>
+							</select>
+						</div>
+					</div>
+				</td>
+				<td width="50%">
+					<div id="influenceInfoIdGroup" class="control-group">
+						<label class="control-label">机构管理层<span class="required">*</span></label>
+						<div class="controls">
+							<select class="span8 m-wrap" type="text" id="influenceInfoId" name="influenceInfoId" required>
+								<option value="">请选择...</option>
+								<option value="">省管单位</option>
+								<option value="">市管单位</option>
+							</select>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td width="50%">
+					<div id="ciNameGroup" class="control-group">
+						<label class="control-label">上级机构名称<span class="required">*</span></label>
+						<div class="controls">
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="中国共产党湘西土家族苗族自治州委员会" />
+						</div>
+					</div>
+				</td>
+				<td width="50%">
+					<div id="influenceInfoIdGroup" class="control-group">
+						<label class="control-label">排序<span class="required">*</span></label>
+						<div class="controls">
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="1" />
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
 
-		<div id="b0101Group" class="control-group" style="margin-bottom:20px !important">
-			<label class="control-label" style="width: 70px">名称:<span class="required">*</span></label>
-			<div class="controls" style="margin-left: 90px">
-				<input type="text" class=" m-wrap" name="b0101" required maxlength="200" id="b0101" value="${vo.b0101}" />
-			</div>
-		</div>
-		<div id="pxGroup" class="control-group">
-			<label class="control-label" style="width: 70px">排序:<span class="required">*</span></label>
-			<div class="controls" style="margin-left: 90px">
-				<input type="text" class=" m-wrap" id="px" name="px" number="true"  required maxlength="3"  value="${vo.px}" />
-			</div>
-
-		</div>
-		<div class="control-group mybutton-group" style="text-align: right;">
-
-			<button type="button" class="btn green" onclick="formSubmit()"><i class="icon-ok"></i> 确定</button>
-
-			<button type="button" class="btn btn-default"  data-dismiss="modal"><i class="icon-remove-sign"></i> 取消</button>
-
-		</div>
 	</form>
 </div>
 

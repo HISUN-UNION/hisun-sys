@@ -23,6 +23,8 @@ import com.hisun.saas.zzb.app.console.util.BeanTrans;
 import com.hisun.saas.zzb.app.console.util.EntityWrapper;
 import com.hisun.util.*;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.*;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 /**
@@ -429,7 +432,7 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
     private void initAppSqliteDB(String sqlite) throws Exception {
 
         SqliteDBUtil sqliteDBUtil = SqliteDBUtil.newInstance();
-        sqliteDBUtil.createDatabase(sqlite);
+        Statement statement = sqliteDBUtil.createDatabase(sqlite);
 
         InputStream inputStream = GendataServiceImpl.class.getClassLoader().getResourceAsStream("zzb-app.sql");
         InputStreamReader isr = new InputStreamReader(inputStream);
@@ -448,7 +451,11 @@ public class GendataServiceImpl extends BaseServiceImpl<Gendata, String> impleme
         }
         in.close();
         isr.close();
+        inputStream.close();
         sqliteDBUtil.createTables(sqlite, sb.toString());
+        if(statement!=null) {
+            sqliteDBUtil.closeStatement(statement);
+        }
     }
 
 
