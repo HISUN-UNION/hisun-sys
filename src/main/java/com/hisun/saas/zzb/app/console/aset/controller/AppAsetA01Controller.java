@@ -77,11 +77,74 @@ public class AppAsetA01Controller extends BaseController {
     @RequestMapping(value = "/")
     public ModelAndView list() {
 
-        return new ModelAndView("saas/zzb/app/console/asetA01/a01Manage");
+        return new ModelAndView("saas/zzb/app/console/asetA01/a01QueryManage");
 
 
     }
+//=====================================================干部管理演示使用
+    /**
+     * 干部管理使用
+     * @return
+     */
+    @RequestMapping(value = "/manage")
+    public ModelAndView manage() {
+        return new ModelAndView("saas/zzb/app/console/asetA01/a01Manage");
+    }
+    @RequestMapping(value = "/ajax/manageList")
+    public ModelAndView getManageList(String b01Id, String xmQuery,
+                                @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        Map<String, Object> map = Maps.newHashMap();
+        boolean isHiddenFl = false;
+        try {
+            String b0101 = "";
+            if (StringUtils.isNotBlank(b01Id)) {
+                if (!b01Id.equals("allA01")) {
+                    AppBsetB01 appBsetB01 = this.appBsetB01Service.getByPK(b01Id);
+                    b0101 = appBsetB01.getB0101();
+                }
 
+            }
+            List<AppAsetA01Vo> appAsetA01Vos = new ArrayList<AppAsetA01Vo>();
+            PagerVo<AppAsetA01Vo> pagerVo = new PagerVo<AppAsetA01Vo>(appAsetA01Vos, 3, pageNum, pageSize);
+            map.put("pager", pagerVo);
+            map.put("b0101", b0101);
+            map.put("success", true);
+        } catch (Exception e) {
+            logger.error(e, e);
+            map.put("success", false);
+        }
+        return new ModelAndView("saas/zzb/app/console/asetA01/manage/list", map);
+
+    }
+
+    @RequestMapping(value = "/addManage")
+    public ModelAndView addManage(String b01Id) throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/asetA01/manage/addManage", map);
+    }
+    @RequestMapping(value = "/ajax/addBase")
+    public ModelAndView addBase(String b01Id) throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/asetA01/manage/addBase", map);
+    }
+    @RequestMapping(value = "/xlxw")
+    public ModelAndView xlxwList() {
+        return new ModelAndView("saas/zzb/app/console/asetA01/manage/xlxw/list");
+    }
+    @RequestMapping(value = "/rysgpx")
+    public ModelAndView rysgpxList() {
+        return new ModelAndView("saas/zzb/app/console/asetA01/manage/rysgpx/list");
+    }
+    @RequestMapping(value = "/xxqx")
+    public ModelAndView xxqxList() {
+        return new ModelAndView("saas/zzb/app/console/asetA01/manage/xxqx/list");
+    }
+    @RequestMapping(value = "/gbxxsh")
+    public ModelAndView gbxxshList() {
+        return new ModelAndView("saas/zzb/app/console/asetA01/manage/gbxxsh/list");
+    }
+    //========================================以上为干部管理演示使用==============================
     @RequestMapping(value = "/ajax/list")
     public ModelAndView getList(String b01Id, String xmQuery,
                                 @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,

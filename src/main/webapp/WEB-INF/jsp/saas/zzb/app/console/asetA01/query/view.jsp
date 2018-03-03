@@ -36,9 +36,32 @@
         </div>
         <div class="clearfix fr">
             <%--<a class="btn red" href="javascript:del('${a01Vo.xm }')"><i class=" icon-remove-sign"></i>删除</a>--%>
-                 <a class="btn blue" herf="javascript:void(0)" onclick="fileDown()"><i
-                         class="icon-circle-arrow-down"></i>干部任免审批表</a>
-
+                 <%--<a class="btn blue" herf="javascript:void(0)" onclick="fileDown()"><i--%>
+                         <%--class="icon-circle-arrow-down"></i>干部任免审批表</a>--%>
+                <div class="btn-group">
+                    <a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+                        输出 <i class="icon-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li >
+                            <a onclick="fileDown()">输出word</a>
+                        </li>
+                        <li >
+                            <a onclick="">输出任免表Lrmx</a>
+                        </li>
+                        <li >
+                            <a onclick="">输出任免表Lrm</a>
+                        </li>
+                        <li >
+                            <a onclick="">输出个人数据HZB</a>
+                        </li>
+                        <li >
+                            <a onclick="">输出个人数据7z</a>
+                        </li>
+                    </ul>
+                </div>
+                <a class="btn blue" herf="javascript:void(0)" onclick="">文件库</a>
+                <a class="btn blue" herf="javascript:void(0)" onclick="">档案</a>
             <a class="btn" href="${path }/zzb/app/console/asetA01Query/?queryId=${queryId}&queryPosition=${queryPosition}"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright" style="width: 560px;">

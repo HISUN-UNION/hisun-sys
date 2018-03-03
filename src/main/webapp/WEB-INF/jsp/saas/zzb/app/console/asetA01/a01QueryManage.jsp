@@ -57,7 +57,7 @@
 		.agentdownload li a{ margin:0; font-size:12px; text-align:left; color:#333333;}
 	</style>
 	<!-- END PAGE LEVEL STYLES -->
-	<title>干部管理</title>
+	<title>干部查询</title>
 </head>
 <body>
 <div id="jgModal" class="modal container hide fade" tabindex="-1" data-width="500" >
@@ -323,7 +323,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/asetA01/ajax/manageList",
+			url:"${path}/zzb/app/console/asetA01/ajax/list",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'

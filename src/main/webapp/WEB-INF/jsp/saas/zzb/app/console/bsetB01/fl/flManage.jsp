@@ -57,7 +57,7 @@
 		.agentdownload li a{ margin:0; font-size:12px; text-align:left; color:#333333;}
 	</style>
 	<!-- END PAGE LEVEL STYLES -->
-	<title>干部管理</title>
+	<title>机构分类管理</title>
 </head>
 <body>
 <div id="jgModal" class="modal container hide fade" tabindex="-1" data-width="500" >
@@ -74,6 +74,9 @@
 		</div>
 	</div>
 </div>
+
+
+
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="row-fluid">
@@ -93,10 +96,10 @@
 
 		<div id="rMenu">
 			<ul>
-				<%--<li id="m_add" onclick="addTreeNode('1');">添加分类</li>--%>
+				<li id="m_add" onclick="addTreeNode('1');">添加分类</li>
 				<%--<li id="mJG_add" onclick="addTreeNode('0');">添加机构</li>--%>
 				<%--<li id="m_eddit" onclick="editTreeNode()">修改</li>--%>
-				<%--<li id="m_del" onclick="deleteTreeNode();">删除</li>--%>
+				<li id="m_del" onclick="deleteTreeNode();">删除</li>
 			</ul>
 		</div>
 		<input type="hidden" id="treeId" value="">
@@ -182,7 +185,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/bset/ajax/load/tree",
+			url:"${path}/zzb/app/console/bset/fl/ajax/load/tree",
 			dataType : "json",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
@@ -212,8 +215,8 @@
 						firstNode = parentNode;
 					}
 				}
-				if(firstNode.getParentNode()==null ||firstNode.getParentNode()==undefined){
-					loadRightPage("allA01");
+				if(firstNode==null ||firstNode==undefined){
+					loadRightPage("");
 				}else {
 					loadRightPage(firstNode.id);
 				}
@@ -242,7 +245,7 @@
 //		}
 		var _id = node.id;
 		$.ajax({
-			url : "${path}/zzb/app/console/appGbcxB01/ajax/addOrEdit",
+			url : "${path}/zzb/app/console/bset/fl/ajax/addOrEdit",
 			type : "post",
 			data: {"parentId":_id,"dataType":dataType},
 			headers:{
@@ -276,7 +279,7 @@
 //		}
 		var _id = node.id;
 		$.ajax({
-			url : "${path}/zzb/app/console/appGbcxB01/ajax/addOrEdit",
+			url : "${path}/zzb/app/console/bset/fl/ajax/addOrEdit",
 			type : "post",
 			data: {"id":_id},
 			headers:{
@@ -302,34 +305,51 @@
 			node = valiZTree.getSelectedNodes()[0];
 		}
 
+		var msg = "这个操作不能撤消，这将永久删除该机构[" + node.name + "]，删除后将不可恢复，请认真审核确认后再进行操作，确认后请在下面填写你要删除的信息。";
+		var tip = "请输入你要删除的机构名称";
 		if (node.children && node.children.length > 0) {
-			showTip("提示","要删除的节点存在子节点，请先删除子节点", 1500);
-			return false;
+			msg = "这个操作不能撤消，这将永久删除该分类[" + node.name + "]及其下的机构，删除后将不可恢复，请认真审核确认后再进行操作，确认后请在下面填写你要删除的信息。";
+			tip = "请输入你要删除的分类名称";
 		}
 		var id = node.id;
-		var itemName = node.name+"\",删除该机构将删除机构下的干部，\"请确认继续删除";
-
-		actionByConfirm1(itemName, "${path}/zzb/app/console/appGbcxB01/delete/" + id,{} ,function(data,status){
-			if (data.success == true) {
-				showTip("提示","删除成功", 2000);
-				setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbcx/"},2000);
+		showPrompModal(node.name,msg,tip,"${path}/zzb/app/console/bset/fl/delete/" + id+"?dataType="+node.dataType,null, function(json){
+			if(json.success == true){
+				showTip("提示","删除“"+node.name+"”成功", 2000);
+				setTimeout(function(){window.location.href = "${path}/zzb/app/console/bset/fl/"},2000);
+				//$("#" + id).parent().parent().remove();
 			}else{
-				showTip("提示", data.message, 2000);
+				showTip("提示", json.message, 2000);
 			}
-		});
+		})
+
+
+		<%--if (node.children && node.children.length > 0) {--%>
+			<%--showTip("提示","要删除的节点存在子节点，请先删除子节点", 1500);--%>
+			<%--return false;--%>
+		<%--}--%>
+		<%--var itemName = node.name+"\",删除该机构将删除机构下的干部，\"请确认继续删除";--%>
+
+		<%--actionByConfirm1(itemName, "${path}/zzb/app/console/bset/fl/delete/" + id,{} ,function(data,status){--%>
+			<%--if (data.success == true) {--%>
+				<%--showTip("提示","删除成功", 2000);--%>
+				<%--setTimeout(function(){window.location.href = "${path}/zzb/app/console/bset/fl/"},2000);--%>
+			<%--}else{--%>
+				<%--showTip("提示", data.message, 2000);--%>
+			<%--}--%>
+		<%--});--%>
 	}
 
 	function loadRightPage(nodeId) {
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/asetA01/ajax/manageList",
+			url:"${path}/zzb/app/console/bset/fl/ajax/list",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
 			},
 			data:{
-				'b01Id':nodeId
+				'queryId':nodeId
 			},
 			success:function(html){
 				$("#catalogList").html(html);
@@ -353,12 +373,9 @@
 		}
 
 		dataType = treeNode.dataType;
-		if(treeNode==null || dataType != "fl") {
+		if(treeNode==null || dataType != "1") {
 			loadRightPage(treeNode.id);
 		}
-//		else if(treeNode.getParentNode()==null ||treeNode.getParentNode()==undefined){
-//			loadRightPage("allA01");
-//		}
 	}
 
 	function pagehref(pageNum ,pageSize){
@@ -569,13 +586,13 @@
 	function showRMenu(type, x, y, haveStart) {
 		$("#rMenu ul").show();
 //		if (type=="root") {
-//			$("#m_del").hide();
+			$("#m_del").hide();
 //			$("#m_eddit").hide();
 //			$("#m_add").show();
 //			$("#mJG_add").show();
 //		} else{
 //			$("#mJG_add").show();
-//			$("#m_del").show();
+			$("#m_del").show();
 //			$("#m_eddit").show();
 //			$("#m_add").show();
 //

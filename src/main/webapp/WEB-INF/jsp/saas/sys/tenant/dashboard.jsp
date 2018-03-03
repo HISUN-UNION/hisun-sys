@@ -130,7 +130,7 @@
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="#">
+        <a class="nav_a" href="zzb/app/console/asetA01/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco02.png"></dt>
                 <dd>

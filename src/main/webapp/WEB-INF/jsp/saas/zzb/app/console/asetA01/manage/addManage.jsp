@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>添加机构</title>
+	<title>添加干部</title>
 </head>
 <body>
 <div class="container-fluid">
@@ -16,7 +16,7 @@
 		<div class="portlet box grey ">
 			<div class="portlet-body">
 				<div class="relationbetTop">
-					<div class="relationbetTop_left">添加机构</div>
+					<div class="relationbetTop_left">添加干部</div>
 					<div class="relationbetTop_but">
 
 						<button type="button" class="btn green" onclick=""><i class="icon-ok"></i> 确定</button>
@@ -26,9 +26,13 @@
 				<div class="tabbable tabbable-custom">
 					<ul class="nav nav-tabs" style="font-size: 14px;font-weight: bold;" id="tabs">
 						<li class="active"><a id="#tab_1_1" href="#tab_1_1" data-toggle="tab">基本信息</a></li>
-						<li ><a id="#tab_1_2" href="#tab_1_1" data-toggle="tab">编制情况</a></li>
-						<li><a id="#tab_1_3" href="#tab_1_1" data-toggle="tab">职务管理</a></li>
-
+						<li ><a id="#tab_1_2" href="#tab_1_1" data-toggle="tab">现任职务</a></li>
+						<li><a id="#tab_1_3" href="#tab_1_1" data-toggle="tab">工作经历</a></li>
+						<li><a id="#tab_1_4" href="#tab_1_1" data-toggle="tab">学习经历</a></li>
+						<li><a id="#tab_1_5" href="#tab_1_1" data-toggle="tab">奖惩考核</a></li>
+						<li><a id="#tab_1_6" href="#tab_1_1" data-toggle="tab">社会关系</a></li>
+						<li><a id="#tab_1_7" href="#tab_1_1" data-toggle="tab">联系方式</a></li>
+						<li><a id="#tab_1_8" href="#tab_1_1" data-toggle="tab">其他信息</a></li>
 					</ul>
 					<div class="tab-content" style="border:none; border-top:solid 1px #e4e4e4; padding:10px 0;">
 						<div class="tab-pane active" id="tab_show">
@@ -95,7 +99,7 @@
 	//基本信息
 	function baseLoad(){
 		$.ajax({
-			url : "${path }/zzb/app/console/bset/ajax/addOrEdit",
+			url : "${path }/zzb/app/console/asetA01/ajax/addBase",
 			type : "post",
 			data : {"parentId":"${parentId}","id":"${ciId}"},
 			dataType : "html",
@@ -110,39 +114,14 @@
 	}
 	//资产
 	function bzLoad(){
-		$.ajax({
-			url : "${path}/zzb/app/console/bset/Bz/ajax/list",
-			type : "post",
-			data : {},
-			dataType : "html",
-			success : function(html){
-					var view = $("#tab_show");
-					view.html(html);
 
-			},
-			error : function(arg1, arg2, arg3){
-				showTip("提示","加载资产数据失败");
-			}
-		});
 	}
 
 
 
 	//连接方式
 	function zwLoad(){
-		$.ajax({
-			url : "${path}/zzb/app/console/bset/b09/ajax/list",
-			type : "get",
-			data : {},
-			dataType : "html",
-			success : function(html){
-				var view = $("#tab_show");
-				view.html(html);
-			},
-			error : function(arg1, arg2, arg3){
-				showTip("提示","加载连接方式数据失败");
-			}
-		});
+
 	}
 
 
