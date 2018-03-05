@@ -59,7 +59,9 @@ public class ZscxController extends BaseController {
                     AppBsetB01 appBsetB01 = this.appBsetB01Service.getByPK(b01Id);
                     b0101 = appBsetB01.getB0101();
                 }
-
+            }
+            if(b01Id.equals("001.001")){
+                b01Id = "allZs";
             }
             map.put("b01Id", b01Id);
             map.put("b0101", b0101);

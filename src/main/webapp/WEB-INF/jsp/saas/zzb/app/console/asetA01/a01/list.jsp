@@ -43,9 +43,20 @@
 							</ul>
 						</div>
 						<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/asetA01Query/">
-							按条件查询
-						</a>
-						<%--<span class="controllerClass btn green file_but" >--%>
+						按条件查询
+					</a>
+						<div class="btn-group">
+							<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+								输出 <i class="icon-angle-down"></i>
+							</a>
+							<ul class="dropdown-menu" style="margin-left: -90px">
+								<li >
+									<a onclick="">干部任免审批表</a>
+								</li>
+							</ul>
+						</div>
+							<%--class="icon-circle-arrow-down"></i>干部任免审批表</a>
+                           <%--<span class="controllerClass btn green file_but" >--%>
 							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
 							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
 						<%--</span>--%>

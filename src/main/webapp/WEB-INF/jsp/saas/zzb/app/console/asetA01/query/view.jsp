@@ -44,7 +44,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li >
-                            <a onclick="fileDown()">输出word</a>
+                            <a onclick="fileDown()">输出任免表</a>
                         </li>
                         <li >
                             <a onclick="">输出任免表Lrmx</a>
@@ -60,8 +60,8 @@
                         </li>
                     </ul>
                 </div>
-                <a class="btn blue" herf="javascript:void(0)" onclick="">文件库</a>
-                <a class="btn blue" herf="javascript:void(0)" onclick="">档案</a>
+                <a class="btn blue" herf="javascript:void(0)" onclick="">任免文件</a>
+                <a class="btn blue" herf="javascript:void(0)" onclick="">电子档案</a>
             <a class="btn" href="${path }/zzb/app/console/asetA01Query/?queryId=${queryId}&queryPosition=${queryPosition}"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright" style="width: 560px;">

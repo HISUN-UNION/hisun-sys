@@ -56,34 +56,99 @@
 					<table class="table table-striped table-bordered table-hover dataTable table-set">
 						<thead>
 						<tr>
-							<th>职务名称</th>
-							<th width="100">现配</th>
-							<th width="100">实配</th>
-							<th width="100">超缺编</th>
+							<th width="200">职务名称</th>
+							<th width="100">职务级别</th>
+							<th width="100">编制数</th>
+							<th width="100">现配干部数</th>
+							<th width="100">超缺编情况</th>
+							<th>备注</th>
 							<%--<th width="100">操作</th>--%>
 						</tr>
 						</thead>
 						<tbody>
+						<c:if test="${ b01Id eq 'allZs'}">
 							<tr style="text-overflow:ellipsis;">
-								<td><a href="#" class="">书记</a></td>
+								<td>巡视员</td>
+								<td>正处</td>
+								<td>65</td>
+								<td>60</td>
+								<td>-5</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td>副巡视员</td>
+								<td>副处</td>
+								<td>156</td>
+								<td>150</td>
+								<td>-6</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td colspan="3">合计</td>
+								<td>221</td>
+								<td>210</td>
+								<td>-11</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td colspan="5">注：巡视员缺编5人，副巡视员缺编6人，合计缺编11人</td>
+							</tr>
+						</c:if>
+						<c:if test="${b01Id ne 'allZs'}">
+							<tr style="text-overflow:ellipsis;">
+								<td>部长</td>
+								<td>正处</td>
 								<td>1</td>
 								<td>1</td>
 								<td>0</td>
+								<td>&nbsp;</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td><a href="#" class="">副书记</a></td>
-								<td>4</td>
-								<td>3</td>
-								<td>-1</td>
+								<td>副部长</td>
+								<td>副处</td>
+								<td>5</td>
+								<td>2</td>
+								<td>-3</td>
+								<td>&nbsp;</td>
 							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td>宣传办主任</td>
+								<td>副处</td>
+								<td>1</td>
+								<td>0</td>
+								<td>-1</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td>精神文明办主任</td>
+								<td>副处</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td>互联网信息办主任</td>
+								<td>副处</td>
+								<td>1</td>
+								<td>1</td>
+								<td>0</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td colspan="2">合计</td>
+								<td>9</td>
+								<td>5</td>
+								<td>-4</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td colspan="5">注：副部长缺编3人，宣传办主任缺编1人，合计缺编4人</td>
+							</tr>
+						</c:if>
 						</tbody>
 					</table>
-					<jsp:include page="/WEB-INF/jsp/common/page.jsp">
-						<jsp:param value="${pager.total }" name="total"/>
-						<jsp:param value="${pager.pageCount }" name="endPage"/>
-						<jsp:param value="${pager.pageSize }" name="pageSize"/>
-						<jsp:param value="${pager.pageNum }" name="page"/>
-					</jsp:include>
+
 				</div>
 		</div>
 		<%-- 表格结束 --%>

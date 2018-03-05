@@ -14,7 +14,7 @@
 
 	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 	<!-- END PAGE LEVEL STYLES -->
-	<title>领导机构</title>
+	<title>市四套班子，纪委班子</title>
 	<style type="text/css">
 		form {
 			margin: 0 0 0px;
@@ -43,7 +43,7 @@
 			<form class=""id="importForm" enctype="multipart/form-data">
 				<input type="hidden" name="queryId" value="${queryId}"/>
 				<div class="portlet-title">
-					<div class="caption">领导机构</div>
+					<div class="caption">市四套班子，纪委班子</div>
 					<div class="clearfix fr">
 						<a id="sample_editable_1_new" class="btn green" href="#">
 							<i class="icon-plus"></i> 选择机构

@@ -13,7 +13,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label">机构名称<span class="required">*</span></label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="中国共产党湘西土家族苗族自治州委员会" />
 						</div>
 					</div>
 				</td>
@@ -21,7 +21,7 @@
 					<div id="influenceInfoIdGroup" class="control-group">
 						<label class="control-label">机构简称<span class="required">*</span></label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="湘西州委员会" />
 						</div>
 					</div>
 				</td>
@@ -33,8 +33,8 @@
 						<div class="controls">
 							<select class="span8 m-wrap" type="text" id="influenceInfoId" name="influenceInfoId" required>
 								<option value="">请选择...</option>
-								<option value="">正市级</option>
-								<option value="">副市级</option>
+								<option value="" selected>正处级</option>
+								<option value="">副处级</option>
 							</select>
 						</div>
 					</div>
@@ -46,7 +46,7 @@
 							<select class="span8 m-wrap" type="text" id="influenceInfoId" name="influenceInfoId" required>
 								<option value="">请选择...</option>
 								<option value="">省管单位</option>
-								<option value="">市管单位</option>
+								<option value="" selected>市管单位</option>
 							</select>
 						</div>
 					</div>
@@ -57,7 +57,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label">上级机构名称<span class="required">*</span></label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="中国共产党湘西土家族苗族自治州委员会" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="湘西自治州" />
 						</div>
 					</div>
 				</td>

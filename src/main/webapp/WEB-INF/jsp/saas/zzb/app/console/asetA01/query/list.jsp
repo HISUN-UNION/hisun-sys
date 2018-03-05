@@ -118,6 +118,19 @@
 							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/asetA01/">
 								按机构查询
 							</a>
+							<a id="sample_editable_1_new" class="btn green" href="#">
+								高级查询
+							</a>
+							<div class="btn-group">
+								<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+									输出 <i class="icon-angle-down"></i>
+								</a>
+								<ul class="dropdown-menu" style="margin-left: -90px">
+									<li >
+										<a onclick="">干部任免审批表</a>
+									</li>
+								</ul>
+							</div>
 							</c:if>
 							<c:if test="${!empty queryId}">
 								<div class="btn-group">
@@ -134,6 +147,19 @@
 								<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/asetA01/">
 									按机构查询
 								</a>
+								<a id="sample_editable_1_new" class="btn green" href="#">
+									高级查询
+								</a>
+								<div class="btn-group">
+									<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+										输出 <i class="icon-angle-down"></i>
+									</a>
+									<ul class="dropdown-menu">
+										<li >
+											<a onclick="">干部任免审批表</a>
+										</li>
+									</ul>
+								</div>
 								<c:if test="${empty queryPosition}">
 									<a class="btn" href="${path }/zzb/app/console/asetA01Query/"><i class="icon-undo"></i>返回</a>
 								</c:if>
@@ -141,6 +167,7 @@
 									<a class="btn" href="${path }/zzb/app/console/asetA01Query/queryList"><i class="icon-undo"></i> 返回</a>
 								</c:if>
 							</c:if>
+
 
 						</div>
 					</div>

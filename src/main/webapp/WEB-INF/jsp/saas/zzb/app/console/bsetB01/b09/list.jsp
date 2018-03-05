@@ -69,16 +69,37 @@
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
 								<td><a href="#">书记</a></td>
-								<td>厅局级正职</td>
+								<td>正处</td>
 								<td>1</td>
-								<td>省管以上职务</td>
+								<td>市管职务</td>
 								<td>1</td>
 								<td>
 									<a href="#" class="">编辑</a>|
 									<a href="#" class="">删除</a>
 								</td>
 							</tr>
-						
+							<tr style="text-overflow:ellipsis;">
+								<td><a href="#">副书记</a></td>
+								<td>副处</td>
+								<td>2</td>
+								<td>市管职务</td>
+								<td>2</td>
+								<td>
+									<a href="#" class="">编辑</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td><a href="#">常务</a></td>
+								<td>副处</td>
+								<td>10</td>
+								<td>市管职务</td>
+								<td>3</td>
+								<td>
+									<a href="#" class="">编辑</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					<jsp:include page="/WEB-INF/jsp/common/page.jsp">

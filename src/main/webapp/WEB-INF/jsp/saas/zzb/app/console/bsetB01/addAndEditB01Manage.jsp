@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>添加机构</title>
+	<title>修改机构</title>
 </head>
 <body>
 <div class="container-fluid">
@@ -16,7 +16,7 @@
 		<div class="portlet box grey ">
 			<div class="portlet-body">
 				<div class="relationbetTop">
-					<div class="relationbetTop_left">添加机构</div>
+					<div class="relationbetTop_left">修改机构</div>
 					<div class="relationbetTop_but">
 
 						<button type="button" class="btn green" onclick=""><i class="icon-ok"></i> 确定</button>

@@ -45,7 +45,7 @@
 				<div class="portlet-title">
 					<div class="caption">${flmc}</div>
 					<div class="clearfix fr">
-						<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/bset/addOrEditManage?dataType=0&parentId=${queryId}">
+						<a id="sample_editable_1_new" class="btn green" href="#">
 							<i class="icon-plus"></i> 添加
 						</a>
 						<%--<div class="btn-group">--%>
@@ -109,7 +109,7 @@
 						<c:forEach items="${pager.datas}" var="vo">
 							<tr style="text-overflow:ellipsis;">
 								<%--<td title="${vo.xm}"><a href="${path}/zzb/app/console/appGbcxA01/view?id=${vo.id }"><c:out value="${vo.xm}"></c:out></a></td>--%>
-								<td><a href="#"><c:out value="${vo.b0101}"></c:out></a></td>
+								<td><a href="${path }/zzb/app/console/bset/addOrEditManage?dataType=0&parentId=${queryId}"><c:out value="${vo.b0101}"></c:out></a></td>
 								<%--<td><c:out value="${vo.b0101}"></c:out></td>--%>
 								<td>&nbsp;</td>
 								<td><c:out value="${vo.px}"></c:out></td>

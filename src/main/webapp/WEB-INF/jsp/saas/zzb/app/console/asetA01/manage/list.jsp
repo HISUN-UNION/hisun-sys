@@ -420,6 +420,9 @@
 								</li>
 							</ul>
 						</div>
+						<a id="sample_editable_1_new" class="btn green" href="#">
+							<i class="icon-circle-arrow-up"></i>任免审批表导入
+						</a>
 
 						<%--<span class="controllerClass btn green file_but" >--%>
 							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
