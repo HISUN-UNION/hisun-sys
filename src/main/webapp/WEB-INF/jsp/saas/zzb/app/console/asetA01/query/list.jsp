@@ -118,7 +118,7 @@
 							<a id="sample_editable_1_new" class="btn green" href="${path }/zzb/app/console/asetA01/">
 								按机构查询
 							</a>
-							<a id="sample_editable_1_new" class="btn green" href="#">
+							<a id="sample_editable_1_new" class="btn green" href="javascript:openGjcx()">
 								高级查询
 							</a>
 							<div class="btn-group">
@@ -127,7 +127,10 @@
 								</a>
 								<ul class="dropdown-menu" style="margin-left: -90px">
 									<li >
-										<a onclick="">干部任免审批表</a>
+										<a onclick="">当前查询结果</a>
+										<a onclick="">定制查询结果</a>
+										<a onclick="">任免审批表(多人一表)</a>
+										<a onclick="">任免审批表(一人一表)</a>
 									</li>
 								</ul>
 							</div>
@@ -377,6 +380,9 @@
 			$('#mcModal').modal({
 				keyboard: true
 			});
+		}
+		function openGjcx(){
+			window.open('http://localhost:8080/GZZZB/lq/conditionQuery/CadreQueryListPage_ConditionsInput.jsp?isFor_BZPB=&indexType=市管干部库');
 		}
 	</script>
 </body>

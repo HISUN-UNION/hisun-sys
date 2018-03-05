@@ -51,7 +51,10 @@
 							</a>
 							<ul class="dropdown-menu" style="margin-left: -90px">
 								<li >
-									<a onclick="">干部任免审批表</a>
+									<a onclick="">当前查询结果</a>
+									<a onclick="">定制查询结果</a>
+									<a onclick="">任免审批表(多人一表)</a>
+									<a onclick="">任免审批表(一人一表)</a>
 								</li>
 							</ul>
 						</div>

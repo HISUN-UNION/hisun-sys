@@ -69,7 +69,7 @@
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
 								<td><a href="#">书记</a></td>
-								<td>正处</td>
+								<td>正厅</td>
 								<td>1</td>
 								<td>市管职务</td>
 								<td>1</td>
@@ -80,7 +80,7 @@
 							</tr>
 							<tr style="text-overflow:ellipsis;">
 								<td><a href="#">副书记</a></td>
-								<td>副处</td>
+								<td>副厅</td>
 								<td>2</td>
 								<td>市管职务</td>
 								<td>2</td>
@@ -91,7 +91,7 @@
 							</tr>
 							<tr style="text-overflow:ellipsis;">
 								<td><a href="#">常务</a></td>
-								<td>副处</td>
+								<td>副厅</td>
 								<td>10</td>
 								<td>市管职务</td>
 								<td>3</td>

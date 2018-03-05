@@ -68,7 +68,7 @@
 						<tbody>
 						<c:if test="${ b01Id eq 'allZs'}">
 							<tr style="text-overflow:ellipsis;">
-								<td>巡视员</td>
+								<td>调研员</td>
 								<td>正处</td>
 								<td>65</td>
 								<td>60</td>
@@ -76,7 +76,7 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td>副巡视员</td>
+								<td>副调研员</td>
 								<td>副处</td>
 								<td>156</td>
 								<td>150</td>
@@ -84,14 +84,14 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td colspan="3">合计</td>
+								<td colspan="2">合计</td>
 								<td>221</td>
 								<td>210</td>
 								<td>-11</td>
 								<td>&nbsp;</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td colspan="5">注：巡视员缺编5人，副巡视员缺编6人，合计缺编11人</td>
+								<td colspan="6">注：巡视员缺编5人，副巡视员缺编6人，合计缺编11人</td>
 							</tr>
 						</c:if>
 						<c:if test="${b01Id ne 'allZs'}">
