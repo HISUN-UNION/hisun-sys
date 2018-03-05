@@ -77,11 +77,11 @@
             <div class="bintumain" style="margin-right:0;">
                 <div class="ExpertTitle">事务提醒</div>
                 <ul class="ulshiwutslist">
-                    <li><span><a href="###">查看</a></span><em>1</em><a href="###">试用期试用人员</a></li>
-                    <li><span><a href="###">查看</a></span><em>2</em><a href="###">已超过退休时间人员</a></li>
-                    <li><span><a href="###">查看</a></span><em>3</em><a href="###">即将过生日人员</a></li>
-                    <li><span><a href="###">查看</a></span><em>4</em><a href="###">待转出人员</a></li>
-                    <li><span><a href="###">查看</a></span><em>5</em><a href="###">退回人员</a></li>
+                    <li><span><a href="###">查看</a></span><em>1</em><a href="###">试用期到期人员</a><span>9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li><span><a href="###">查看</a></span><em>2</em><a href="###">已到退休人员</a><span>6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li><span><a href="###">查看</a></span><em>3</em><a href="###">任职满十年</a><span>631&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li><span><a href="###">查看</a></span><em>4</em><a href="###">干部监督提醒</a><span>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li><span><a href="###">查看</a></span><em>5</em><a href="###">其他提醒</a><span>2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
                 </ul>
             </div>
         </div>
@@ -253,7 +253,7 @@
                 orient: 'vertical',
                 x: 'left',
                 top: 18,
-                data:['20~30岁','31~40岁','41~50岁','51~60岁','61~70岁'],
+                data:['35岁及以下','36~40岁','41~45岁','46~50岁','51~55岁','56~60岁','60岁及以上'],
                 itemWidth:18,
                 itemHeight:8,
 
@@ -266,7 +266,7 @@
             },
             series: [
                 {
-                    name:'访问来源',
+                    name:'全市干部年龄结构',
                     type:'pie',
                     //radius: ['50%', '70%'],  空心圆
                     radius : '80%',
@@ -294,11 +294,13 @@
                         }
                     },
                     data:[
-                        {value:1335, name:'20~30岁'},
-                        {value:310, name:'31~40岁'},
-                        {value:234, name:'41~50岁'},
-                        {value:135, name:'51~60岁'},
-                        {value:548, name:'61~70岁'}
+                        {value:1335, name:'35岁及以下'},
+                        {value:310, name:'36~40岁'},
+                        {value:234, name:'41~45岁'},
+                        {value:135, name:'46~50岁'},
+                        {value:548, name:'51~55岁'},
+                        {value:100, name:'56~60岁'},
+                        {value:170, name:'60岁及以上'}
                     ]
                 }
             ]
@@ -335,7 +337,7 @@
             },
             series: [
                 {
-                    name:'访问来源',
+                    name:'全市干部学历结构',
                     type:'pie',
                     //radius: ['50%', '70%'],  空心圆
                     radius : '80%',
@@ -390,7 +392,7 @@
                 orient: 'vertical',
                 x: 'left',
                 top: 18,
-                data:['本科','大专','硕士','博士'],
+                data:['汉族','少数名族'],
                 itemWidth:18,
                 itemHeight:8,
 
@@ -403,7 +405,7 @@
             },
             series: [
                 {
-                    name:'访问来源',
+                    name:'全市干部民族结构',
                     type:'pie',
                     //radius: ['50%', '70%'],  空心圆
                     radius : '80%',
@@ -431,10 +433,8 @@
                         }
                     },
                     data:[
-                        {value:600, name:'本科'},
-                        {value:120, name:'大专'},
-                        {value:362, name:'硕士'},
-                        {value:135, name:'博士'},
+                        {value:7001, name:'汉族'},
+                        {value:10600, name:'少数名族'}
                     ]
                 }
             ]
@@ -561,7 +561,7 @@
             color:["#0088CC","#E09195","#F07608","#9FE4A6", "#8160F1"],
             series : [
                 {
-                    name:'攻击总量',
+                    name:'平均年龄变化趋势',
                     type:'line',
                     smooth:true,
                     itemStyle: {
@@ -576,7 +576,7 @@
                             width : 1
                         }
                     },
-                    data:[0,24,23,75,5,20,58]
+                    data:[36,35.5,33.5,36.5,37,35.5,37.5]
                 }
             ],
         };

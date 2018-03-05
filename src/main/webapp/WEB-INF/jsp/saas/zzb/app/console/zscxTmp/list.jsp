@@ -91,7 +91,7 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td colspan="6">注：巡视员缺编5人，副巡视员缺编6人，合计缺编11人</td>
+								<td colspan="6" style="color: #0b64bc">注：调研员缺编5人，副调研员缺编6人，合计缺编11人</td>
 							</tr>
 						</c:if>
 						<c:if test="${b01Id ne 'allZs'}">
@@ -143,7 +143,7 @@
 								<td>&nbsp;</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td colspan="5">注：副部长缺编3人，宣传办主任缺编1人，合计缺编4人</td>
+								<td colspan="6" style="color: #0b64bc">注：副部长缺编3人，宣传办主任缺编1人，合计缺编4人</td>
 							</tr>
 						</c:if>
 						</tbody>
