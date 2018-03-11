@@ -143,7 +143,7 @@
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco03.png"></dt>
                 <dd>
-                    <h4>选任纪实</h4>
+                    <h4>干部选任纪实</h4>
                     <p class="navp01">干部选任纪实主要基于基础数据库，通过大数据分析手段辅助干部选任科室对干部选拔、调整、任免全过程进行信息化管理。</p>
                 </dd>
             </dl>
@@ -161,17 +161,26 @@
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco05.png"></dt>
                 <dd>
-                    <h4>干部日常</h4>
+                    <h4>干部日常管理</h4>
                     <p class="navp01">干部考核主要用于记录干部的日常表现、工作实绩、关键时刻表现、年度考核、奖惩情况等信息。</p>
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="javascript:openGzzzb('gwygl')">
+        <%--<a class="nav_a" href="javascript:openGzzzb('gwygl')">--%>
+            <%--<dl class="dlnavigcont">--%>
+                <%--<dt><img src="${path}/images/templateImage/navIco06.png"></dt>--%>
+                <%--<dd>--%>
+                    <%--<h4>公务员管理</h4>--%>
+                    <%--<p class="navp01">公务员管理系统用于建立、健全全州公务员库，实现公务员实名制管理。</p>--%>
+                <%--</dd>--%>
+            <%--</dl>--%>
+        <%--</a>--%>
+        <a class="nav_a" href="javascript:openGzzzb('zsk')">
             <dl class="dlnavigcont">
-                <dt><img src="${path}/images/templateImage/navIco06.png"></dt>
+                <dt><img src="${path}/images/templateImage/navIco10.png"></dt>
                 <dd>
-                    <h4>公务员管理</h4>
-                    <p class="navp01">公务员管理系统用于建立、健全全州公务员库，实现公务员实名制管理。</p>
+                    <h4>知识资源库</h4>
+                    <p class="navp01">知识资源库是一个方便单位、部门、个人对工作过程文档和历史文件资料分库、分目录管理的，数据集中存储的系统。</p>
                 </dd>
             </dl>
         </a>
@@ -184,24 +193,15 @@
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="javascript:openGzzzb('xtbg')">
-            <dl class="dlnavigcont">
-                <dt><img src="${path}/images/templateImage/navIco08.png"></dt>
-                <dd>
-                    <h4>协同办公</h4>
-                    <p class="navp01">通过图形化定义工作流程、表单、工作环节（岗位）、工作流向以及权限控制，实现单位各种工作流程的网络化应用。</p>
-                </dd>
-            </dl>
-        </a>
-        <a class="nav_a" href="javascript:openGzzzb('zsk')">
-            <dl class="dlnavigcont">
-                <dt><img src="${path}/images/templateImage/navIco10.png"></dt>
-                <dd>
-                    <h4>知识库</h4>
-                    <p class="navp01">知识资源库是一个方便单位、部门、个人对工作过程文档和历史文件资料分库、分目录管理的，数据集中存储的系统。</p>
-                </dd>
-            </dl>
-        </a>
+        <%--<a class="nav_a" href="javascript:openGzzzb('xtbg')">--%>
+            <%--<dl class="dlnavigcont">--%>
+                <%--<dt><img src="${path}/images/templateImage/navIco08.png"></dt>--%>
+                <%--<dd>--%>
+                    <%--<h4>协同办公</h4>--%>
+                    <%--<p class="navp01">通过图形化定义工作流程、表单、工作环节（岗位）、工作流向以及权限控制，实现单位各种工作流程的网络化应用。</p>--%>
+                <%--</dd>--%>
+            <%--</dl>--%>
+        <%--</a>--%>
         <a class="nav_a" href="/zzb/app/console/bwh/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco09.png"></dt>

@@ -36,7 +36,7 @@
 
     <div class="BigdatamainOne">
         <div class="OperAmount">
-            <p class="Atotal" id="myTargetElement">17601</p>
+            <p class="Atotal" id="myTargetElement">16709</p>
             <p class="AName" style="height:24px; padding-top:15px; padding-bottom:0;">干部总数</p>
         </div>
         <div class="mainright">
@@ -77,9 +77,9 @@
             <div class="bintumain" style="margin-right:0;">
                 <div class="ExpertTitle">事务提醒</div>
                 <ul class="ulshiwutslist">
-                    <li><span><a href="###">查看</a></span><em>1</em><a href="###">试用期到期人员</a><span>9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
-                    <li><span><a href="###">查看</a></span><em>2</em><a href="###">已到退休人员</a><span>6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
-                    <li><span><a href="###">查看</a></span><em>3</em><a href="###">任职满十年</a><span>631&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li><span><a href="###">查看</a></span><em>1</em><a href="###">试用期到期人员</a><span>8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li><span><a href="###">查看</a></span><em>2</em><a href="###">已到退休人员</a><span>36&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li><span><a href="###">查看</a></span><em>3</em><a href="###">任职满十年</a><span>13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
                     <li><span><a href="###">查看</a></span><em>4</em><a href="###">干部监督提醒</a><span>1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
                     <li><span><a href="###">查看</a></span><em>5</em><a href="###">其他提醒</a><span>2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
                 </ul>
@@ -128,7 +128,7 @@
             prefix : '',
             suffix : ''
         };
-        var demo = new CountUp("myTargetElement", 0, 17601, 0, 2.5, options);
+        var demo = new CountUp("myTargetElement", 0, 16709, 0, 2.5, options);
         demo.start();
 
 
@@ -230,7 +230,7 @@
                     name:'总人数',
                     type:'bar',
                     barWidth: '30%',
-                    data:[30, 52, 200, 334, 390, 330, 220, 330, 220]
+                    data:[4, 34, 215, 778, 3770, 5848, 5423, 6, 631]
                 }
             ]
         };
@@ -526,7 +526,7 @@
                             color: "#0a5bad"
                         },
                     },
-                    data : ['2016-05-16', '2016-05-17', '2016-05-18', '2016-05-19', '2016-05-20', '2016-05-21', '2016-05-22']
+                    data : ['2012-03-05', '2013-03-05', '2014-03-05', '2015-03-05', '2016-03-05', '2017-03-05', '2018-03-05']
                 }
             ],
             yAxis : [
@@ -576,7 +576,7 @@
                             width : 1
                         }
                     },
-                    data:[36,35.5,33.5,36.5,37,35.5,37.5]
+                    data:[37.9,37.4,37.2,36.9,36.5,36.3,35.6]
                 }
             ],
         };

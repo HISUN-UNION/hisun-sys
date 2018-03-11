@@ -70,8 +70,14 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     @Column(name = "zytc")
     private String zytc;//专业特长
 
+    @Column(name = "xrzj")
+    private String xrzj;//现任职级
+    @Column(name = "xrzj_code")
+    private String xrzj_code;//现任职级代码
     @Column(name = "xrzjsj")
     private String xrzjsj;//现任职级时间
+
+
     @Column(name = "xrzwsj")
     private String xrzwsj;//现任职务时间
 
@@ -111,6 +117,11 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     @OneToMany(mappedBy = "appAsetA01", fetch = FetchType.LAZY)
     @Cascade({org.hibernate.annotations.CascadeType.ALL})
     private List<AppZscxZsA01> appZscxZsA01s;
+
+
+    @OneToMany(mappedBy = "appAsetA01", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    private List<A17> a17s;
 
 
     public String getId() {
@@ -422,5 +433,29 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
 
     public void setAppZscxZsA01s(List<AppZscxZsA01> appZscxZsA01s) {
         this.appZscxZsA01s = appZscxZsA01s;
+    }
+
+    public List<A17> getA17s() {
+        return a17s;
+    }
+
+    public void setA17s(List<A17> a17s) {
+        this.a17s = a17s;
+    }
+
+    public String getXrzj() {
+        return xrzj;
+    }
+
+    public void setXrzj(String xrzj) {
+        this.xrzj = xrzj;
+    }
+
+    public String getXrzj_code() {
+        return xrzj_code;
+    }
+
+    public void setXrzj_code(String xrzj_code) {
+        this.xrzj_code = xrzj_code;
     }
 }

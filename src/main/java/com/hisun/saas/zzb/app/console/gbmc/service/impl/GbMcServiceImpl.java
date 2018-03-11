@@ -132,12 +132,14 @@ public class GbMcServiceImpl extends BaseServiceImpl<GbMc,String> implements GbM
         sb.append("id");
         sb.append(",mc");
         sb.append(",px");
+        sb.append(",is_ml");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
         sb.append("'"+ StringUtils.trimNull2Empty(entity.getId())+"'");
         sb.append(",'"+ StringUtils.trimNull2Empty(entity.getMc())+"'");
         sb.append(","+entity.getPx());
+        sb.append(",'"+entity.getIsMl()+"'");
         sb.append(")");
         return sb.toString();
     }

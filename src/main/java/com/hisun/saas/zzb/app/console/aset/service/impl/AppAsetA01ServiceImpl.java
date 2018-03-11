@@ -18,6 +18,7 @@ import com.hisun.saas.zzb.app.console.gbmc.entity.GbMcA01gbrmspb;
 import com.hisun.saas.zzb.app.console.gbmc.service.GbMcA01gbrmspbService;
 import com.hisun.saas.zzb.app.console.gendata.entity.Gendata;
 import com.hisun.saas.zzb.app.console.gendata.service.GendataService;
+import com.hisun.saas.zzb.app.console.util.GzjlUtil;
 import com.hisun.util.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbutils.DbUtils;
@@ -253,6 +254,12 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01, String> i
                     } else if (key.equalsIgnoreCase("A000_NDKHJG")) {
                         fields.append(",khjg_str");
                         values.append(",'" + value + "'");
+                    }else if (key.equalsIgnoreCase("A000_a0221")) {
+                        fields.append(",xrzj_code");
+                        values.append(",'" + value + "'");
+                    }else if (key.equalsIgnoreCase("A000_a0221_show")) {
+                        fields.append(",xrzj");
+                        values.append(",'" + value + "'");
                     }
 
 
@@ -270,6 +277,10 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01, String> i
                             if (value.toString().equals("") == false) {
                                 String gzjl = value.toString().replace("~", "-").replace("{", "(").replace("}", ")");
                                 values.append(",'" + gzjl + "'");
+                                List<String> gzjls = GzjlUtil.matchGzjlStr(gzjl);
+                                for(String s : gzjls){
+
+                                }
                             } else {
                                 values.append(",''");
                             }

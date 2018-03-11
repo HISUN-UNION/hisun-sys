@@ -20,7 +20,7 @@
     <div class="login">
     		<div class="login_header">
             	 <div class="login_header_1000">
-					 <div class="login_logo"><img style="margin-top: 10px" src="${path }/images/templateImage/${loginLogo}"></div>
+					 <div class="login_logo"><img style="max-height: 46px;" src="${path }/images/templateImage/${loginLogo}"></div>
 					 <div class="Customer_name">${loginTitle}</div>
                  </div>
             </div>
@@ -137,7 +137,7 @@
                   
                 </form>
             </div>
-            <div class="login_footer">2014-2018 版权所有©广东天亿马信息产业股份有限公司</div>
+            <div class="login_footer">2014-2018 版权所有©上海三零卫士信息安全有限公司</div>
     </div>
 	
 
