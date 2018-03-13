@@ -62,6 +62,7 @@ public class AppAsetA01Vo {
 
     private int a01Px;
     private String zpPath;
+    private String dp;
 
     private String qrzxlxwjzy;
     private String zzxlxwjzy;
@@ -371,6 +372,14 @@ public class AppAsetA01Vo {
 
     public void setGzjlStrs(List<String> gzjlStrs) {
         this.gzjlStrs = gzjlStrs;
+    }
+
+    public String getDp() {
+        return dp;
+    }
+
+    public void setDp(String dp) {
+        this.dp = dp;
     }
 
     public String getGbrmspbCsnyAndNl() {

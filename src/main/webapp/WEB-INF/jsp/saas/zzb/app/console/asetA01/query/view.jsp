@@ -66,7 +66,20 @@
         </div>
         <div class="mainoneright" style="width: 560px;">
             <div class="Fullname">${a01Vo.xm}</div>
-            <div class="gerenintrodu">${a01Vo.csnyStr}生，${a01Vo.jg}人，${a01Vo.cjgzsjStr}参加工作，${a01Vo.rdsjStr}加入中国共产党。</div>
+            <div class="gerenintrodu">${a01Vo.csnyStr}生，${a01Vo.jg}人，${a01Vo.cjgzsjStr}参加工作，
+            <c:if test="${empty a01Vo.dp}">
+                群众
+            </c:if>
+            <c:if test="${!empty a01Vo.dp}">
+                <c:if test="${a01Vo.dp eq '中共党员'}">
+                    ${a01Vo.rdsjStr}加入中国共产党
+                </c:if>
+                <c:if test="${a01Vo.dp ne '中共党员'}">
+                    <c:if test="${!empty a01Vo.rdsjStr}">
+                        ${a01Vo.rdsjStr}加入</c:if>${a01Vo.dp}
+                </c:if>
+            </c:if>
+                。</div>
             <ul class="ulonleftjx">
                 <li><span>全日制学历学位及专业：</span>${a01Vo.gbrmspbQrzxlxw}${a01Vo.gbrmspbQrzByyxAndZy}</li>
                 <li><span>&nbsp;&nbsp;&nbsp;在职学历学位及专业：</span></span>${a01Vo.gbrmspbZzxlxw}${a01Vo.gbrmspbZzByyxAndZy}</li>
