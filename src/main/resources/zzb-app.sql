@@ -361,6 +361,8 @@ create table app_aset_a01 (
   file2img_path varchar(255) default null,
   qrz_zy varchar(100) default null,
   zz_zy varchar(100) default null,
+  xrzj varchar(100) default null,
+  dp varchar(100) default null,
   primary key (id)
 ) ;
 
