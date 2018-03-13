@@ -447,35 +447,74 @@ public class AppAsetA01QueryController extends BaseController {
             queryCondition.append(" and a01.jg like'%"+a01Vo.getJg()+"%'");
         }
         if(StringUtils.isNotBlank(a01Vo.getQrzxl())){
-            queryCondition.append(" and a01.qrzxl like'%"+a01Vo.getQrzxl()+"%'");
+            queryCondition.append(" and (a01.qrzxl like'%"+a01Vo.getQrzxl()+"%' or a01.zzxl like'%"+a01Vo.getQrzxl()+"%')");
         }
         if(StringUtils.isNotBlank(a01Vo.getQrzxw())){
-            queryCondition.append(" and a01.qrzxw like'%"+a01Vo.getQrzxw()+"%'");
+            queryCondition.append(" and (a01.qrzxw like'%"+a01Vo.getQrzxw()+"%' or a01.zzxw like'%"+a01Vo.getQrzxw()+"%')");
         }
-        if(StringUtils.isNotBlank(a01Vo.getZzxl())){
-            queryCondition.append(" and a01.zzxl like'%"+a01Vo.getZzxl()+"%'");
-        }
-        if(StringUtils.isNotBlank(a01Vo.getZzxw())){
-            queryCondition.append(" and a01.zzxw like'%"+a01Vo.getZzxw()+"%'");
-        }
+//        if(StringUtils.isNotBlank(a01Vo.getZzxl())){
+//            queryCondition.append(" and a01.zzxl like'%"+a01Vo.getZzxl()+"%'");
+//        }
+//        if(StringUtils.isNotBlank(a01Vo.getZzxw())){
+//            queryCondition.append(" and a01.zzxw like'%"+a01Vo.getZzxw()+"%'");
+//        }
         if(StringUtils.isNotBlank(a01Vo.getXrzw())){
             queryCondition.append(" and a01.xrzw like'%"+a01Vo.getXrzw()+"%'");
         }
+        //========================处理现任职务时间
+        if(StringUtils.isNotBlank(a01Vo.getXrzwsjStart()) && StringUtils.isNotBlank(a01Vo.getXrzwsjEnd())){
+            queryCondition.append(" and  a01.xrzwsj>="+a01Vo.getXrzwsjStart() +" and a01.xrzwsj<="+a01Vo.getXrzwsjEnd());
+        }
+        if(StringUtils.isNotBlank(a01Vo.getXrzwsjStart()) && !StringUtils.isNotBlank(a01Vo.getXrzwsjEnd())){
+            queryCondition.append(" and  a01.xrzwsj>="+a01Vo.getXrzwsjStart());
+        }
+        if(!StringUtils.isNotBlank(a01Vo.getXrzwsjStart()) && StringUtils.isNotBlank(a01Vo.getXrzwsjEnd())){
+            queryCondition.append(" and a01.xrzwsj<="+a01Vo.getXrzwsjEnd());
+        }
+        //========================处理现任职务时间
+        if(StringUtils.isNotBlank(a01Vo.getXrzj())){
+            if(a01Vo.getXrzj().equals("正处")){
+                queryCondition.append(" and a01.xrzj like'%县处级正职%'");
+            } if(a01Vo.getXrzj().equals("副处")){
+                queryCondition.append(" and a01.xrzj like'%县处级副职%'");
+            }else {
+                queryCondition.append(" and a01.xrzj like'%" + a01Vo.getXrzj() + "%'");
+            }
+        }
+        //========================处理现任职级时间
+        if(StringUtils.isNotBlank(a01Vo.getXrzjsjStart()) && StringUtils.isNotBlank(a01Vo.getXrzjsjEnd())){
+            queryCondition.append(" and  a01.xrzjsj>="+a01Vo.getXrzjsjStart() +" and a01.xrzjsj<="+a01Vo.getXrzjsjEnd());
+        }
+        if(StringUtils.isNotBlank(a01Vo.getXrzjsjStart()) && !StringUtils.isNotBlank(a01Vo.getXrzjsjEnd())){
+            queryCondition.append(" and  a01.xrzjsj>="+a01Vo.getXrzjsjStart());
+        }
+        if(!StringUtils.isNotBlank(a01Vo.getXrzjsjStart()) && StringUtils.isNotBlank(a01Vo.getXrzjsjEnd())){
+            queryCondition.append(" and a01.xrzjsj<="+a01Vo.getXrzjsjEnd());
+        }
+        //========================处理现任职级时间
         if(StringUtils.isNotBlank(a01Vo.getQrzByyx())){
-            queryCondition.append(" and a01.qrzByyx like'%"+a01Vo.getQrzByyx()+"%'");
+            queryCondition.append(" and (a01.qrzByyx like'%"+a01Vo.getQrzByyx()+"%' or a01.zzByyx like'%"+a01Vo.getQrzByyx()+"%')");
         }
-        if(StringUtils.isNotBlank(a01Vo.getZzByyx())){
-            queryCondition.append(" and a01.zzByyx like'%"+a01Vo.getZzByyx()+"%'");
-        }
+//        if(StringUtils.isNotBlank(a01Vo.getZzByyx())){
+//            queryCondition.append(" and a01.zzByyx like'%"+a01Vo.getZzByyx()+"%'");
+//        }
 
         if(StringUtils.isNotBlank(a01Vo.getQrzZy())){
-            queryCondition.append(" and a01.qrzZy like'%"+a01Vo.getQrzZy()+"%'");
+            queryCondition.append(" and (a01.qrzZy like'%"+a01Vo.getQrzZy()+"%' or a01.zzZy like'%"+a01Vo.getQrzZy()+"%')");
         }
-        if(StringUtils.isNotBlank(a01Vo.getZzZy())){
-            queryCondition.append(" and a01.zzZy like'%"+a01Vo.getZzZy()+"%'");
-        }
+//        if(StringUtils.isNotBlank(a01Vo.getZzZy())){
+//            queryCondition.append(" and a01.zzZy like'%"+a01Vo.getZzZy()+"%'");
+//        }
         if(StringUtils.isNotBlank(a01Vo.getGzjlStr())){
-            queryCondition.append(" and a01.gzjlStr like'%"+a01Vo.getGzjlStr()+"%'");
+            String[] gzjlArr = a01Vo.getGzjlStr().split(",");
+            queryCondition.append(" and (");
+            for(int i=0;i<gzjlArr.length;i++) {
+                if(i!=0){
+                    queryCondition.append(" or ");
+                }
+                queryCondition.append(" a01.gzjlStr like'%" + gzjlArr[i] + "%'");
+            }
+            queryCondition.append(" )");
         }
         return queryCondition.toString();
     }

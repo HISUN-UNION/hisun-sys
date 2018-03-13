@@ -37,6 +37,12 @@ public class AppAsetA01QueryVo {
     private String zzByyx;
 
     private String gzjlStr;
+    private String xrzwsjStart;
+    private String xrzwsjEnd;
+    private String xrzj;
+    private String xrzjsjStart;
+    private String xrzjsjEnd;
+
 
     public String getId() {
         return id;
@@ -236,5 +242,45 @@ public class AppAsetA01QueryVo {
 
     public void setGzjlStr(String gzjlStr) {
         this.gzjlStr = gzjlStr;
+    }
+
+    public String getXrzwsjStart() {
+        return xrzwsjStart;
+    }
+
+    public void setXrzwsjStart(String xrzwsjStart) {
+        this.xrzwsjStart = xrzwsjStart;
+    }
+
+    public String getXrzwsjEnd() {
+        return xrzwsjEnd;
+    }
+
+    public void setXrzwsjEnd(String xrzwsjEnd) {
+        this.xrzwsjEnd = xrzwsjEnd;
+    }
+
+    public String getXrzj() {
+        return xrzj;
+    }
+
+    public void setXrzj(String xrzj) {
+        this.xrzj = xrzj;
+    }
+
+    public String getXrzjsjStart() {
+        return xrzjsjStart;
+    }
+
+    public void setXrzjsjStart(String xrzjsjStart) {
+        this.xrzjsjStart = xrzjsjStart;
+    }
+
+    public String getXrzjsjEnd() {
+        return xrzjsjEnd;
+    }
+
+    public void setXrzjsjEnd(String xrzjsjEnd) {
+        this.xrzjsjEnd = xrzjsjEnd;
     }
 }

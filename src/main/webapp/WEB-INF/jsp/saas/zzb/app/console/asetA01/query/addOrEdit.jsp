@@ -163,9 +163,52 @@
 											</td>
 											<td width="50%">
 												<div class="control-group">
-													<label class="control-label">&nbsp;</label>
+													<label class="control-label">现任职务时间</label>
 													<div class="controls">
-														&nbsp;
+														<span  id="xrzwsjStartGroup" style=" display: inline-block;float: left; ">
+															<input class="span8 m-wrap" style="width: 100px;" type="text" id="xrzwsjStart" name="xrzwsjStart"  maxlength="45" value="${vo.xrzwsjStart}"/>
+														</span>
+
+														<span  id="xrzwsjEndGroup" >
+															--<input class="span8 m-wrap" style="width: 100px;" type="text" id="xrzwsjEnd" name="xrzwsjEnd"  maxlength="45" value="${vo.xrzwsjEnd}"/>
+														</span>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="50%">
+												<div id="xrzjGroup" class="control-group">
+													<label class="control-label">现任职级</label>
+													<div class="controls">
+														<select class="span8 m-wrap" tabindex="-1" name="xrzj" id="xrzj" >
+															<option value="">全部</option>
+															<option value="正市" <c:if test="${vo.xrzj == '正市'}">selected="selected"</c:if>>正市</option>
+															<option value="副市" <c:if test="${vo.xrzj == '副市'}">selected="selected"</c:if>>副市</option>
+															<option value="正厅" <c:if test="${vo.xrzj == '正厅'}">selected="selected"</c:if>>正厅</option>
+															<option value="正局" <c:if test="${vo.xrzj == '正局'}">selected="selected"</c:if>>正局</option>
+															<option value="副厅" <c:if test="${vo.xrzj == '副厅'}">selected="selected"</c:if>>副厅</option>
+															<option value="副局" <c:if test="${vo.xrzj == '副局'}">selected="selected"</c:if>>副局</option>
+															<option value="正处" <c:if test="${vo.xrzj == '正处'}">selected="selected"</c:if>>正处</option>
+															<option value="副处" <c:if test="${vo.xrzj == '副处'}">selected="selected"</c:if>>副处</option>
+															<option value="正科" <c:if test="${vo.xrzj == '正科'}">selected="selected"</c:if>>正科</option>
+															<option value="副科" <c:if test="${vo.xrzj == '副科'}">selected="selected"</c:if>>副科</option>
+															<option value="科员" <c:if test="${vo.xrzj == '科员'}">selected="selected"</c:if>>科员</option>
+														</select>
+													</div>
+												</div>
+											</td>
+											<td width="50%">
+												<div class="control-group">
+													<label class="control-label">现任职级时间</label>
+													<div class="controls">
+														<span  id="xrzjsjStartGroup" style=" display: inline-block;float: left; ">
+															<input class="span8 m-wrap" style="width: 100px;" type="text" id="xrzjsjStart" name="xrzjsjStart"  maxlength="45" value="${vo.xrzjsjStart}"/>
+														</span>
+
+														<span  id="xrzjsjEndGroup" >
+															--<input class="span8 m-wrap" style="width: 100px;" type="text" id="xrzjsjEnd" name="xrzjsjEnd"  maxlength="45" value="${vo.xrzjsjEnd}"/>
+														</span>
 													</div>
 												</div>
 											</td>
@@ -173,7 +216,7 @@
 										<tr>
 											<td>
 												<div id="qrzxlGroup" class="control-group">
-													<label class="control-label">全日制学历</label>
+													<label class="control-label">学历</label>
 													<div class="controls">
 														<input class="span8 m-wrap" type="text" id="qrzxl" name="qrzxl"  maxlength="45" value="${vo.qrzxl}"/>
 													</div>
@@ -181,7 +224,7 @@
 											</td>
 											<td width="50%">
 												<div id="qrzxwGroup" class="control-group">
-													<label class="control-label">全日制学位</label>
+													<label class="control-label">学位</label>
 													<div class="controls">
 														<input class="span8 m-wrap" type="text" id="qrzxw" name="qrzxw"  maxlength="45" value="${vo.qrzxw}"/>
 													</div>
@@ -190,8 +233,8 @@
 										</tr>
 										<tr>
 											<td width="50%">
-												<div id="qrzbyyxGroup" class="control-group">
-													<label class="control-label">全日制毕业院校</label>
+												<div id="qrzByyxGroup" class="control-group">
+													<label class="control-label">毕业院校</label>
 													<div class="controls">
 														<input class="span8 m-wrap" type="text" id="qrzByyx" name="qrzByyx"  maxlength="45" value="${vo.qrzByyx}"/>
 													</div>
@@ -199,7 +242,7 @@
 											</td>
 											<td>
 												<div id="qrzZyGroup" class="control-group">
-													<label class="control-label">全日制专业</label>
+													<label class="control-label">专业</label>
 													<div class="controls">
 														<input class="span8 m-wrap" type="text" id="qrzZy" name="qrzZy"  maxlength="45" value="${vo.qrzZy}"/>
 													</div>
@@ -207,44 +250,7 @@
 											</td>
 
 										</tr>
-										<tr>
-											<td>
-												<div id="zzxlGroup" class="control-group">
-													<label class="control-label">在职学历</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="zzxl" name="zzxl"  maxlength="45" value="${vo.zzxl}"/>
-													</div>
-												</div>
-											</td>
-											<td width="50%">
-												<div id="zzxwGroup" class="control-group">
-													<label class="control-label">在职学位</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="zzxw" name="zzxw"  maxlength="45" value="${vo.zzxw}"/>
-													</div>
-												</div>
-											</td>
 
-										</tr>
-										<tr>
-											<td width="50%">
-												<div id="zzbyyxGroup" class="control-group">
-													<label class="control-label">在职毕业院校</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="zzByyx" name="zzByyx"  maxlength="45" value="${vo.zzByyx}"/>
-													</div>
-												</div>
-											</td>
-											<td width="50%">
-												<div id="zzZyGroup" class="control-group">
-													<label class="control-label">在职专业</label>
-													<div class="controls">
-														<input class="span8 m-wrap" type="text" id="zzZy" name="zzZy"  maxlength="45" value="${vo.zzZy}"/>
-													</div>
-												</div>
-											</td>
-
-										</tr>
 									</table>
 								</dd>
 							</dl>
@@ -334,6 +340,37 @@
 //		App.init();
 //
 //	})();
+jQuery(document).ready(function() {
+	App.init();
+	var xrzwsjStart = $("#xrzwsjStart").datepicker({
+		language:  'zh-CN',
+		format: "yyyymmdd",
+		pickerPosition: "bottom-left",
+		weekStart : 1,
+		autoclose : true
+	});
+	var xrzwsjEnd = $("#xrzwsjEnd").datepicker({
+		language:  'zh-CN',
+		format: "yyyymmdd",
+		pickerPosition: "bottom-left",
+		weekStart : 1,
+		autoclose : true
+	});
+	var xrzjsjStart = $("#xrzjsjStart").datepicker({
+		language:  'zh-CN',
+		format: "yyyymmdd",
+		pickerPosition: "bottom-left",
+		weekStart : 1,
+		autoclose : true
+	});
+	var xrzjsjEnd = $("#xrzjsjEnd").datepicker({
+		language:  'zh-CN',
+		format: "yyyymmdd",
+		pickerPosition: "bottom-left",
+		weekStart : 1,
+		autoclose : true
+	});
+});
 	var myVld = new EstValidate("form1");
 	function saveAndQuery(){
 		if(checkNlisNum() == false){
