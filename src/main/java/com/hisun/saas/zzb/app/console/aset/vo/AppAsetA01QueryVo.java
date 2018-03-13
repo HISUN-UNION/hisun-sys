@@ -43,6 +43,9 @@ public class AppAsetA01QueryVo {
     private String xrzjsjStart;
     private String xrzjsjEnd;
 
+    private String dp;
+    private String rdsjStart;
+    private String rdsjEnd;
 
     public String getId() {
         return id;
@@ -282,5 +285,29 @@ public class AppAsetA01QueryVo {
 
     public void setXrzjsjEnd(String xrzjsjEnd) {
         this.xrzjsjEnd = xrzjsjEnd;
+    }
+
+    public String getDp() {
+        return dp;
+    }
+
+    public void setDp(String dp) {
+        this.dp = dp;
+    }
+
+    public String getRdsjStart() {
+        return rdsjStart;
+    }
+
+    public void setRdsjStart(String rdsjStart) {
+        this.rdsjStart = rdsjStart;
+    }
+
+    public String getRdsjEnd() {
+        return rdsjEnd;
+    }
+
+    public void setRdsjEnd(String rdsjEnd) {
+        this.rdsjEnd = rdsjEnd;
     }
 }

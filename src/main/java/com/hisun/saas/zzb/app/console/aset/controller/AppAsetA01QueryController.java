@@ -473,13 +473,13 @@ public class AppAsetA01QueryController extends BaseController {
         }
         //========================处理现任职务时间
         if(StringUtils.isNotBlank(a01Vo.getXrzj())){
-            if(a01Vo.getXrzj().equals("正处")){
-                queryCondition.append(" and a01.xrzj like'%县处级正职%'");
-            } if(a01Vo.getXrzj().equals("副处")){
-                queryCondition.append(" and a01.xrzj like'%县处级副职%'");
-            }else {
+//            if(a01Vo.getXrzj().equals("正处")){
+//                queryCondition.append(" and a01.xrzj like'%县处级正职%'");
+//            } if(a01Vo.getXrzj().equals("副处")){
+//                queryCondition.append(" and a01.xrzj like'%县处级副职%'");
+//            }else {
                 queryCondition.append(" and a01.xrzj like'%" + a01Vo.getXrzj() + "%'");
-            }
+//            }
         }
         //========================处理现任职级时间
         if(StringUtils.isNotBlank(a01Vo.getXrzjsjStart()) && StringUtils.isNotBlank(a01Vo.getXrzjsjEnd())){
@@ -514,8 +514,26 @@ public class AppAsetA01QueryController extends BaseController {
                 }
                 queryCondition.append(" a01.gzjlStr like'%" + gzjlArr[i] + "%'");
             }
-            queryCondition.append(" )");
+            queryCondition.append(")");
         }
+        if(StringUtils.isNotBlank(a01Vo.getDp())){
+            if(a01Vo.getDp().equals("中共党员")) {
+                queryCondition.append(" and a01.dp ='" + a01Vo.getDp() + "'");
+            }else{
+                queryCondition.append(" and a01.dp <>'中共党员'");
+            }
+        }
+        //========================处理入党时间
+        if(StringUtils.isNotBlank(a01Vo.getRdsjStart()) && StringUtils.isNotBlank(a01Vo.getRdsjEnd())){
+            queryCondition.append(" and  a01.rdsj>="+a01Vo.getRdsjStart() +" and a01.rdsj<="+a01Vo.getRdsjEnd());
+        }
+        if(StringUtils.isNotBlank(a01Vo.getRdsjStart()) && !StringUtils.isNotBlank(a01Vo.getRdsjEnd())){
+            queryCondition.append(" and  a01.rdsj>="+a01Vo.getRdsjStart());
+        }
+        if(!StringUtils.isNotBlank(a01Vo.getRdsjStart()) && StringUtils.isNotBlank(a01Vo.getRdsjEnd())){
+            queryCondition.append(" and a01.rdsj<="+a01Vo.getRdsjEnd());
+        }
+        //========================处理现任职级时间
         return queryCondition.toString();
     }
     /**

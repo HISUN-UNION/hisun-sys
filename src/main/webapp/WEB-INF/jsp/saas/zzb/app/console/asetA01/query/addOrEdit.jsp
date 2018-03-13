@@ -63,13 +63,13 @@
 										</div>
 										<div class="modal-body form-horizontal" id="dabzAddDiv">
 											<div class="control-group">
-												<label class="control-label" style=" width: 60px;"><span class="required">*</span>查询名称</label>
+												<label class="control-label" style=" width: 70px;"><span class="required">*</span>查询名称</label>
 												<div class="controls" style="margin-left: 80px;">
 													<input class="m-wrap" type="text" id="queryNameTmp" name="queryNameTmp"  maxlength="45" value="${vo.queryName}"/>
 												</div>
 											</div>
 											<div class="control-group">
-												<label class="control-label"  style=" width: 60px;"><span class="required">*</span>排序</label>
+												<label class="control-label"  style=" width: 70px;"><span class="required">*</span>排序</label>
 												<div class="controls" style="margin-left: 80px;">
 													<input class="m-wrap" type="text" id="querySortTmp" name="querySortTmp"  maxlength="45" value="${vo.querySort}"/>
 												</div>
@@ -183,16 +183,10 @@
 													<div class="controls">
 														<select class="span8 m-wrap" tabindex="-1" name="xrzj" id="xrzj" >
 															<option value="">全部</option>
-															<option value="正市" <c:if test="${vo.xrzj == '正市'}">selected="selected"</c:if>>正市</option>
-															<option value="副市" <c:if test="${vo.xrzj == '副市'}">selected="selected"</c:if>>副市</option>
-															<option value="正厅" <c:if test="${vo.xrzj == '正厅'}">selected="selected"</c:if>>正厅</option>
-															<option value="正局" <c:if test="${vo.xrzj == '正局'}">selected="selected"</c:if>>正局</option>
-															<option value="副厅" <c:if test="${vo.xrzj == '副厅'}">selected="selected"</c:if>>副厅</option>
-															<option value="副局" <c:if test="${vo.xrzj == '副局'}">selected="selected"</c:if>>副局</option>
-															<option value="正处" <c:if test="${vo.xrzj == '正处'}">selected="selected"</c:if>>正处</option>
-															<option value="副处" <c:if test="${vo.xrzj == '副处'}">selected="selected"</c:if>>副处</option>
-															<option value="正科" <c:if test="${vo.xrzj == '正科'}">selected="selected"</c:if>>正科</option>
-															<option value="副科" <c:if test="${vo.xrzj == '副科'}">selected="selected"</c:if>>副科</option>
+															<option value="厅局级正职" <c:if test="${vo.xrzj == '厅局级正职'}">selected="selected"</c:if>>厅局级正职</option>
+															<option value="厅局级副职" <c:if test="${vo.xrzj == '厅局级副职'}">selected="selected"</c:if>>厅局级副职</option>
+															<option value="县处级正职" <c:if test="${vo.xrzj == '县处级正职'}">selected="selected"</c:if>>县处级正职</option>
+															<option value="县处级副职" <c:if test="${vo.xrzj == '县处级副职'}">selected="selected"</c:if>>县处级副职</option>
 															<option value="科员" <c:if test="${vo.xrzj == '科员'}">selected="selected"</c:if>>科员</option>
 														</select>
 													</div>
@@ -208,6 +202,33 @@
 
 														<span  id="xrzjsjEndGroup" >
 															--<input class="span8 m-wrap" style="width: 100px;" type="text" id="xrzjsjEnd" name="xrzjsjEnd"  maxlength="45" value="${vo.xrzjsjEnd}"/>
+														</span>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="50%">
+												<div id="dpGroup" class="control-group">
+													<label class="control-label">党派</label>
+													<div class="controls">
+														<select class="span8 m-wrap" tabindex="-1" name="dp" id="dp" >
+															<option value="">全部</option>
+															<option value="中共党员" <c:if test="${vo.dp == '中共党员'}">selected="selected"</c:if>>中共党员</option>
+															<option value="其他" <c:if test="${vo.dp == '其他'}">selected="selected"</c:if>>其他</option>
+														</select>
+													</div>
+												</div>
+											</td>
+											<td width="50%">
+												<div class="control-group">
+													<label class="control-label">入党时间</label>
+													<div class="controls">
+														<span  id="rdsjStartGroup" style=" display: inline-block;float: left; ">
+															<input class="span8 m-wrap" style="width: 100px;" type="text" id="rdsjStart" name="rdsjStart"  maxlength="45" value="${vo.rdsjStart}"/>
+														</span>
+														<span  id="rdsjEndGroup" >
+															--<input class="span8 m-wrap" style="width: 100px;" type="text" id="rdsjEnd" name="rdsjEnd"  maxlength="45" value="${vo.rdsjEnd}"/>
 														</span>
 													</div>
 												</div>

@@ -98,7 +98,8 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
     @Column(name = "khjg_str")
     private String khjgStr;//考核结果
 
-
+    @Column(name = "dp")
+    private String dp;//党派
     @Column(name = "a01_px")
     private int a01Px;
     @Column(name = "zp_path")
@@ -457,5 +458,13 @@ public class AppAsetA01 extends TenantEntity implements Serializable {
 
     public void setXrzj_code(String xrzj_code) {
         this.xrzj_code = xrzj_code;
+    }
+
+    public String getDp() {
+        return dp;
+    }
+
+    public void setDp(String dp) {
+        this.dp = dp;
     }
 }
