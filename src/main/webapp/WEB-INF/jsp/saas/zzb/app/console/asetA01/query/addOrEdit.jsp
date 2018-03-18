@@ -187,7 +187,13 @@
 															<option value="厅局级副职" <c:if test="${vo.xrzj == '厅局级副职'}">selected="selected"</c:if>>厅局级副职</option>
 															<option value="县处级正职" <c:if test="${vo.xrzj == '县处级正职'}">selected="selected"</c:if>>县处级正职</option>
 															<option value="县处级副职" <c:if test="${vo.xrzj == '县处级副职'}">selected="selected"</c:if>>县处级副职</option>
+															<option value="乡科级正职" <c:if test="${vo.xrzj == '乡科级正职'}">selected="selected"</c:if>>乡科级正职</option>
+
+															<option value="乡科级副职" <c:if test="${vo.xrzj == '乡科级副职'}">selected="selected"</c:if>>乡科级副职</option>
 															<option value="科员" <c:if test="${vo.xrzj == '科员'}">selected="selected"</c:if>>科员</option>
+															<option value="办事员" <c:if test="${vo.xrzj == '办事员'}">selected="selected"</c:if>>办事员</option>
+															<option value="试用期人员" <c:if test="${vo.xrzj == '试用期人员'}">selected="selected"</c:if>>试用期人员</option>
+															<option value="其他" <c:if test="${vo.xrzj == '其他'}">selected="selected"</c:if>>其他</option>
 														</select>
 													</div>
 												</div>
