@@ -205,6 +205,9 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01, String> i
                         } else {
                             values.append(",''");
                         }
+                    }else if (key.equalsIgnoreCase("A000_A0141_SHOW")) {
+                        fields.append(",dp");
+                        values.append(",'" + value + "'");
                     } else if (key.equalsIgnoreCase("A000_A0127_SHOW")) {
                         fields.append(",jkzk");
                         values.append(",'" + value + "'");
@@ -664,6 +667,8 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01, String> i
         sb.append(",file2img_path");
         sb.append(",qrz_zy");
         sb.append(",zz_zy");
+        sb.append(",xrzj");
+        sb.append(",dp");
         sb.append(")");
         sb.append(" VALUES");
         sb.append("(");
@@ -713,6 +718,8 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01, String> i
         }
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getQrzZy()) + "'");
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getZzZy()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXrzj()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getDp()) + "'");
         sb.append(")");
         return sb.toString();
     }
