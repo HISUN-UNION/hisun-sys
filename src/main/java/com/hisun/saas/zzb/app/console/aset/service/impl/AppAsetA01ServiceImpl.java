@@ -718,7 +718,7 @@ public class AppAsetA01ServiceImpl extends BaseServiceImpl<AppAsetA01, String> i
         }
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getQrzZy()) + "'");
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getZzZy()) + "'");
-        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXrzjsj()) + "'");
+        sb.append(",'" + StringUtils.trimNull2Empty(entity.getXrzj()) + "'");
         sb.append(",'" + StringUtils.trimNull2Empty(entity.getDp()) + "'");
         sb.append(")");
         return sb.toString();
