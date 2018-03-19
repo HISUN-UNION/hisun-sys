@@ -121,15 +121,7 @@
 
     </div>
     <div class="navig_contact">
-        <a class="nav_a" href="/zzb/app/console/bset/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
-            <dl class="dlnavigcont">
-                <dt><img src="${path}/images/templateImage/navIco01.png"></dt>
-                <dd>
-                    <h4>机构编制</h4>
-                    <p class="navp01">依据“三定”方案建立组织机构树、编制库，这些信息将为开展干部业务工作提供基础数据支撑。</p>
-                </dd>
-            </dl>
-        </a>
+
         <a class="nav_a" href="zzb/app/console/asetA01/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco02.png"></dt>
@@ -143,7 +135,7 @@
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco03.png"></dt>
                 <dd>
-                    <h4>干部选任纪实</h4>
+                    <h4>干部任免</h4>
                     <p class="navp01">干部选任纪实主要基于基础数据库，通过大数据分析手段辅助干部选任科室对干部选拔、调整、任免全过程进行信息化管理。</p>
                 </dd>
             </dl>
@@ -157,15 +149,24 @@
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="###">
+        <a class="nav_a" href="/zzb/app/console/bset/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
-                <dt><img src="${path}/images/templateImage/navIco05.png"></dt>
+                <dt><img src="${path}/images/templateImage/navIco01.png"></dt>
                 <dd>
-                    <h4>干部日常管理</h4>
-                    <p class="navp01">干部考核主要用于记录干部的日常表现、工作实绩、关键时刻表现、年度考核、奖惩情况等信息。</p>
+                    <h4>机构编制</h4>
+                    <p class="navp01">依据“三定”方案建立组织机构树、编制库，这些信息将为开展干部业务工作提供基础数据支撑。</p>
                 </dd>
             </dl>
         </a>
+        <%--<a class="nav_a" href="###">--%>
+            <%--<dl class="dlnavigcont">--%>
+                <%--<dt><img src="${path}/images/templateImage/navIco05.png"></dt>--%>
+                <%--<dd>--%>
+                    <%--<h4>干部日常管理</h4>--%>
+                    <%--<p class="navp01">干部考核主要用于记录干部的日常表现、工作实绩、关键时刻表现、年度考核、奖惩情况等信息。</p>--%>
+                <%--</dd>--%>
+            <%--</dl>--%>
+        <%--</a>--%>
         <%--<a class="nav_a" href="javascript:openGzzzb('gwygl')">--%>
             <%--<dl class="dlnavigcont">--%>
                 <%--<dt><img src="${path}/images/templateImage/navIco06.png"></dt>--%>
@@ -184,7 +185,7 @@
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="bigdata/dashboard/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+        <a class="nav_a" href="/bigdata/dashboard/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco07.png"></dt>
                 <dd>
