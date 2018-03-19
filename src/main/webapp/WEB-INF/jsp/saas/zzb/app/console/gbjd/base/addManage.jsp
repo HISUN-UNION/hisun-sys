@@ -77,7 +77,7 @@
 			$(this).click(function(){
 				if($(this).attr("id")=="#tab_1_1"){
 					$("[id='#tab_1_1']").tab('show');
-					bzLoad();
+					baseLoad();
 				}else if($(this).attr("id")=="#tab_1_2"){
 					$("[id='#tab_1_2']").tab('show');
 					grsxchLoad();

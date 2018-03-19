@@ -143,8 +143,8 @@
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco03.png"></dt>
                 <dd>
-                    <h4>干部选任纪实</h4>
-                    <p class="navp01">干部选任纪实主要基于基础数据库，通过大数据分析手段辅助干部选任科室对干部选拔、调整、任免全过程进行信息化管理。</p>
+                    <h4>干部任免</h4>
+                    <p class="navp01">干部任免主要基于基础数据库，通过大数据分析手段辅助干部选任科室对干部选拔、调整、任免全过程进行信息化管理。</p>
                 </dd>
             </dl>
         </a>

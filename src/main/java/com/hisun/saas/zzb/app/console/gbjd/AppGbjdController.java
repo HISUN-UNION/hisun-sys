@@ -206,4 +206,8 @@ public class AppGbjdController extends BaseController{
     public ModelAndView ldgbwzEdit(){
         return new ModelAndView("saas/zzb/app/console/gbjd/wz/ldgbwz/edit");
     }
+    @RequestMapping(value = "/ajax/viewGbjd")
+    public ModelAndView viewGbjd(){
+        return new ModelAndView("saas/zzb/app/console/gbjd/viewGbjd");
+    }
 }
