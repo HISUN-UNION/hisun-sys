@@ -32,6 +32,21 @@ public class AppGbjdController extends BaseController{
         Map<String, Object> map = Maps.newHashMap();
         return new ModelAndView("/saas/zzb/app/console/gbjd/base/addManage", map);
     }
+    @RequestMapping(value = "/view1")
+    public ModelAndView view1(String b01Id) throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/gbjd/base/view1", map);
+    }
+    @RequestMapping(value = "/view2")
+    public ModelAndView view2(String b01Id) throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/gbjd/base/view2", map);
+    }
+    @RequestMapping(value = "/view3")
+    public ModelAndView view3(String b01Id) throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/gbjd/base/view3", map);
+    }
     @RequestMapping(value = "/ajax/editBase")
     public ModelAndView editBase(){
         return new ModelAndView("saas/zzb/app/console/gbjd/base/addBase");

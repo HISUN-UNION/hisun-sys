@@ -26,6 +26,10 @@
 		.nav_a{ border-radius: 8px; color: #ffffff; float: left; margin-top: 50px; margin-left: 20px; transition: background 0.4s ease-in-out 0s;  width: 200px; padding:15px 10px;}
 		.navig_contact{width:1200px; margin-top:50px;}
 		.dlnavigcont{ height:180px; width: 200px; text-align:center; margin-left:0;}
+		.nav_a:hover
+		{
+			background-color: #DBEAF9;
+		}
 		.dlnavigcont dd {padding-top: 1px; width:200px;}
 		.dlnavigcont dt {float: inherit;height: 72px;width: 200px;margin-left:0;}
 		.dlnavigcont dt img{ max-height:72px;}
@@ -47,19 +51,19 @@
 		</a>
 		<a class="nav_a" href="zzb/app/console/asetA01/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
 			<dl class="dlnavigcont">
-				<dt><img src="${path}/images/templateImage/wjk2.jpg"></dt>
+				<dt><img src="${path}/images/templateImage/wjk1.jpg"></dt>
 				<dd>
-					<h4>部门文件库</h4>
-					<p class="navp01">用于管理、查看部门文件。</p>
+					<h4>任免文件库</h4>
+					<p class="navp01">用于管理、查看任免文件。</p>
 				</dd>
 			</dl>
 		</a>
 		<a class="nav_a" href="javascript:openGzzzb()">
 			<dl class="dlnavigcont">
-				<dt><img src="${path}/images/templateImage/wjk3.jpg"></dt>
+				<dt><img src="${path}/images/templateImage/wjk1.jpg"></dt>
 				<dd>
-					<h4>个人文件库</h4>
-					<p class="navp01">用于管理、查看个人文件。</p>
+					<h4>编制文件库</h4>
+					<p class="navp01">用于管理、查看编制文件。</p>
 				</dd>
 			</dl>
 		</a>

@@ -66,23 +66,65 @@
 						<tr>
 							<th width="60">姓名</th>
 							<th width="40">性别</th>
+							<th width="60">出生<br>年月</th>
 							<th>单位职务</th>
+							<th width="100" style="text-align: center">全日制<br>学历学位
+							</th>
+							<th width="150" style="text-align: center">在职<br>学历学位
+							<th width="80"style="text-align: center">任现职级<br>时间
 							<th width="90">操作</th>
-							<%--<th width="100">专业技<br>术职务--%>
-							<%--</th>--%>
-							<%--<th width="65">任现职<br>务时间--%>
-							<%--</th>--%>
-							<%--<th width="100">任现职<br>级时间--%>
-							<%--</th>--%>
+
 							<%--<th width="40">操作</th>--%>
 						</tr>
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
-								<td ><a href="${path}/zzb/app/console/gbjd/addManage" class="">张三</a></td>
+								<td ><a href="${path}/zzb/app/console/gbjd/view1" class="">刘洋</a></td>
 								<td  >男</td>
-								<td >民政局副主任</td>
-
+								<td >1963.03<br>(54岁)</td>
+								<td >州委组织部副部长，州委老干部局局长</td>
+								<td >中专</td>
+								<td >中央党校函授本科</td>
+								<td >2009.03</td>
+								<td>
+									<a href="${path}/zzb/app/console/gbjd/addManage" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="${path}/zzb/app/console/gbjd/view2" class="">张翠珍</a></td>
+								<td  >女</td>
+								<td >1963.04<br>(54岁)</td>
+								<td >州委老干部局副局长</td>
+								<td >大专</td>
+								<td >中央党校函授本科</td>
+								<td >2009.07</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="${path}/zzb/app/console/gbjd/view3" class="">王照训</a></td>
+								<td  >男</td>
+								<td >1970.02<br>(47岁)</td>
+								<td >州委老干部局副局长</td>
+								<td >中专</td>
+								<td >中央党校函授本科</td>
+								<td >2011.11</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">彭小平</a></td>
+								<td  >女</td>
+								<td >1960.05<br>(57岁)</td>
+								<td >州委老干部局副处级干部、州级机关离休干部休养所所长</td>
+								<td >中专</td>
+								<td >省委党校函授专科</td>
+								<td >2009.12</td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>

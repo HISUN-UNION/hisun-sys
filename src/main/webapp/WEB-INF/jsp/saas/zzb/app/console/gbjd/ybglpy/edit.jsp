@@ -31,7 +31,8 @@
 
 								</div>
 								<div class="tools">
-									<a href="javascript:location.reload();" class="reload"></a>
+									<button type="button" class="btn green" onclick=""><i class="icon-ok"></i> 确定</button>
+									<a class="btn"  onclick="cancel()"><i class="icon-remove-sign"></i> 取消</a>
 
 								</div>
 							</div>
@@ -42,41 +43,141 @@
 								<form action="${path }/zzb/app/console/bwh/save" class="form-horizontal" id="form1" method="post" enctype="multipart/form-data">
 									<input type="hidden" name="id" value="${shpc.id }" id="id">
 									<input type="hidden" name="filePath" value="${shpc.filePath }" id="filePath">
-
-									<div id="b01IdGroup" class="control-group">
-										<label class="control-label">单位</label>
-										<div class="controls">
-											<div class="btn-group span12" style="font-size: 12px">
-												<input type="hidden" name="b01Id" id="b01Id" value="${vo.b01Id}"/>
-												<input type="text" id="b0101" name="b0101" readonly="readonly"
-													   class="span8 m-wrap" style="cursor: pointer;" onclick="$('#objectTreeSelDiv').toggle();" value="${vo.b0101}">
-												<div class="span8 m-wrap" style="border:solid 1px #ccc;overflow-y: scroll;overflow-x: auto;position: absolute;
+									<table  border="0" style="width:100%;" cellPadding="5px">
+										<tr>
+											<td width="50%" colspan="2">
+												<div id="ciNameGroup" class="control-group">
+													<label class="control-label">选择评议单位<span class="required">*</span></label>
+													<div class="controls">
+														<div class="btn-group span12" style="font-size: 12px">
+															<input type="hidden" name="b01Id" id="b01Id" value="${vo.b01Id}"/>
+															<input type="text" id="b0101" name="b0101" readonly="readonly"
+																   class="span8 m-wrap" style="cursor: pointer;" onclick="$('#objectTreeSelDiv').toggle();" value="州纪委,州委办,州委政策研究室,州委组织部,州委老干部局,州委宣传部,州委政法委">
+															<div class="span8 m-wrap" style="border:solid 1px #ccc;overflow-y: scroll;overflow-x: auto;position: absolute;
 											top: 100%;left: 0;z-index: 1000;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;height: 200px;background-color: white;" id="objectTreeSelDiv">
-													<ul id="treeDemo" class="ztree" style="margin: 0px;padding: 0px;height: 200px;"></ul>
+																<ul id="treeDemo" class="ztree" style="margin: 0px;padding: 0px;height: 200px;"></ul>
+															</div>
+														</div>
+													</div>
 												</div>
-											</div>
+											</td>
 
-										</div>
-									</div>
-									<div class="control-group" id="sjlxGroup">
-										<label class="control-label">人大常委会<span class="required">*</span></label>
-										<div class="controls">
-											<input type="text" class="span6 m-wrap" name="pcmc" required maxlength="200" id="pcmc" value="98"/>
-										</div>
-									</div>
-									<div class="control-group" id="sjlxGroup">
-										<label class="control-label">政协常委会<span class="required">*</span></label>
-										<div class="controls">
-											<input type="text" class="span6 m-wrap" name="pcmc" required maxlength="200" id="pcmc" value="97"/>
-										</div>
-									</div>
-									<div class="control-group">
-										<div class="controls mt10">
-											<button class="btn green" type="button" style="padding:7px 20px;" onclick="formSubmit()">确定</button>
-											<a class="btn" href="${path }/zzb/app/console/gbjd/ybglpy"><i class="icon-remove-sign"></i> 取消</a>
-										</div>
-									</div>
-								</form>
+
+										</tr>
+										<tr>
+											<td width="30%">
+												<div id="ciNameGroup" class="control-group">
+													<label class="control-label">单位名称</label>
+													<div class="controls">
+														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州纪委" />
+													</div>
+												</div>
+											</td>
+											<td width="70%" >
+													<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
+													<div class="controls" style="margin-left:20px">
+														<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="90" />分
+													</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="30%">
+												<div id="ciNameGroup" class="control-group">
+													<label class="control-label">单位名称</label>
+													<div class="controls">
+														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委办" />
+													</div>
+												</div>
+											</td>
+											<td width="70%" >
+												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
+												<div class="controls" style="margin-left:20px">
+													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="88" />分
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="30%">
+												<div id="ciNameGroup" class="control-group">
+													<label class="control-label">单位名称</label>
+													<div class="controls">
+														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委政策研究室" />
+													</div>
+												</div>
+											</td>
+											<td width="70%" >
+												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
+												<div class="controls" style="margin-left:20px">
+													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="88" />分
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="30%">
+												<div id="ciNameGroup" class="control-group">
+													<label class="control-label">单位名称</label>
+													<div class="controls">
+														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委组织部" />
+													</div>
+												</div>
+											</td>
+											<td width="70%" >
+												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
+												<div class="controls" style="margin-left:20px">
+													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="86" />分
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="30%">
+												<div id="ciNameGroup" class="control-group">
+													<label class="control-label">单位名称</label>
+													<div class="controls">
+														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委老干部局" />
+													</div>
+												</div>
+											</td>
+											<td width="70%" >
+												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
+												<div class="controls" style="margin-left:20px">
+													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="85" />分
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="30%">
+												<div id="ciNameGroup" class="control-group">
+													<label class="control-label">单位名称</label>
+													<div class="controls">
+														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委宣传部" />
+													</div>
+												</div>
+											</td>
+											<td width="70%" >
+												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
+												<div class="controls" style="margin-left:20px">
+													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="82" />分
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td width="30%">
+												<div id="ciNameGroup" class="control-group">
+													<label class="control-label">单位名称</label>
+													<div class="controls">
+														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委政法委" />
+													</div>
+												</div>
+											</td>
+											<td width="70%" >
+												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
+												<div class="controls" style="margin-left:20px">
+													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="80" />分
+												</div>
+											</td>
+										</tr>
+										</table>
+																</form>
 							</div>
 
 						</div>
@@ -183,6 +284,10 @@
 		});
 		b01IdObj.val(b01Ids);
 		b0101Obj.val(b0101s);
+	}
+	function cancel(){
+		window.location.href = "${path}/zzb/app/console/gbjd/ybglpy";
+
 	}
 </script>
 </body>

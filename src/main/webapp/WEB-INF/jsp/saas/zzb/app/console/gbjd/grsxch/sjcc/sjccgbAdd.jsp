@@ -33,7 +33,7 @@
 									查核时间：<input type="text" readonly=" " required style="width: 120px;margin: 0px" value="20170904"
 											   id="sjwcsj" name="sjwcsj" >&nbsp;&nbsp;&nbsp;&nbsp;
 									<button class="btn green" type="button" style="padding:7px 20px;" onclick="formSubmit()">确定</button>
-									<a class="btn" href="#"><i class="icon-remove-sign"></i> 取消</a>
+									<a class="btn" href="${path }/zzb/app/console/gbjd/grsxch/zdch"><i class="icon-remove-sign"></i> 取消</a>
 								</div>
 							</div>
 

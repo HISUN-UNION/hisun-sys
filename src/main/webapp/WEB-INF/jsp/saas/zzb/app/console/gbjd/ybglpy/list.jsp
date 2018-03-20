@@ -57,7 +57,7 @@
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
 								<td ><a href="${path}/zzb/app/console/gbjd/ybglpy/edit" class="">2017</a></td>
-								<td  >2</td>
+								<td  >7</td>
 								<td  >2017.03.10</td>
 								<td>
 									<a href="#" class="">修改</a>|

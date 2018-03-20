@@ -92,7 +92,7 @@
 	});
 
 	function cancel(){
-			window.location.href = "${path}/zzb/app/console/bset/";
+			window.location.href = "${path}/zzb/app/console/asetA01/manage";
 
 	}
 
