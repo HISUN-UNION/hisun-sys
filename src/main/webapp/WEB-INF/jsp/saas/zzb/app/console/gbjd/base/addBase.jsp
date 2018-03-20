@@ -23,7 +23,7 @@
 						<div class="controls">
 							<select class="span8 m-wrap" type="text" id="influenceInfoId" name="influenceInfoId" required>
 								<option value="">请选择...</option>
-								<option value="">男</option>
+								<option value=""selected>男</option>
 								<option value="">女</option>
 							</select>
 						</div>
@@ -36,7 +36,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label">出生日期</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="1963.03" />
 						</div>
 					</div>
 				</td>
@@ -66,7 +66,7 @@
 					<div id="influenceInfoIdGroup" class="control-group">
 						<label class="control-label">籍贯</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="湖南龙山" />
 						</div>
 					</div>
 				</td>
@@ -76,7 +76,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label">出生地</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="湖南龙山" />
 						</div>
 					</div>
 				</td>
@@ -84,7 +84,7 @@
 					<div id="influenceInfoIdGroup" class="control-group">
 						<label class="control-label">成长地</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="湖南龙山" />
 						</div>
 					</div>
 				</td>
@@ -102,7 +102,7 @@
 					<div id="influenceInfoIdGroup" class="control-group">
 						<label class="control-label">政治面貌</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="党员" />
 						</div>
 					</div>
 				</td>
@@ -112,7 +112,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label">行政级别</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="副处级" />
 						</div>
 					</div>
 				</td>
@@ -120,7 +120,7 @@
 					<div id="influenceInfoIdGroup" class="control-group">
 						<label class="control-label">职级时间</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="2009.03" />
 						</div>
 					</div>
 				</td>
@@ -148,7 +148,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label">干部状态</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="在职" />
 						</div>
 					</div>
 				</td>
@@ -156,7 +156,7 @@
 					<div id="influenceInfoIdGroup" class="control-group">
 						<label class="control-label">干部管理单位</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="州委组织部" />
 						</div>
 					</div>
 				</td>

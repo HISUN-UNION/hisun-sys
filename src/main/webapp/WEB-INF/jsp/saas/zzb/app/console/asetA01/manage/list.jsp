@@ -473,7 +473,7 @@
 						</thead>
 						<tbody>
 						<tr style="text-overflow:ellipsis;">
-							<td title="龙晓华"><a href="javascript:view('04DB6601-5ECB-4518-9ED5-96420FDB5A82')" class="">龙晓华</a></td>
+							<td title="龙晓华"><a href="javascript:view('53288')" class="">龙晓华</a></td>
 							<td title="女">女</td>
 							<td title="1963.12" style="text-align: center">1963.12<br>(55岁)</td>
 							<td title="州委副书记，州政府州长">州委副书记，州政府州长</td>
@@ -488,7 +488,7 @@
 							</td>
 						</tr>
 						<tr style="text-overflow:ellipsis;">
-							<td title="叶红专"><a href="javascript:view('9FE583E7-3C8C-4BA1-AE0A-D1456C1195B3')" class="">叶红专</a></td>
+							<td title="叶红专"><a href="javascript:void()" class="">叶红专</a></td>
 							<td title="男">男</td>
 							<td title="1958.06" style="text-align: center">1958.06<br>(60岁)</td>
 							<td title="州委书记">州委书记</td>
@@ -503,7 +503,7 @@
 							</td>
 						</tr>
 						<tr style="text-overflow:ellipsis;">
-							<td title="曹普华"><a href="javascript:view('8B4C4132-A83F-48AD-95D0-E90F836BB4C7')" class="">曹普华</a></td>
+							<td title="曹普华"><a href="javascript:void()" class="">曹普华</a></td>
 							<td title="男">男</td>
 							<td title="1966.09" style="text-align: center">1966.09<br>(52岁)</td>
 							<td title="州委副书记，州政协党组副书记，州委统战部部长">州委副书记，州政协党组副书记，州委统战部部长</td>
