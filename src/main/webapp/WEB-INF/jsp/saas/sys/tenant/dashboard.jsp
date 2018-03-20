@@ -131,16 +131,16 @@
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="javascript:openGzzzb('gbrm')">
+        <a class="nav_a" href="/zzb/app/console/gbrm/list/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco03.png"></dt>
                 <dd>
                     <h4>干部任免</h4>
-                    <p class="navp01">干部选任纪实主要基于基础数据库，通过大数据分析手段辅助干部选任科室对干部选拔、调整、任免全过程进行信息化管理。</p>
+                    <p class="navp01">干部任免主要基于基础数据库，通过大数据分析手段辅助干部选任科室对干部选拔、调整、任免全过程进行信息化管理。</p>
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="javascript:openGzzzb('gbjd')">
+        <a class="nav_a" href="/zzb/app/console/gbjd/base/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco04.png"></dt>
                 <dd>
@@ -176,7 +176,7 @@
                 <%--</dd>--%>
             <%--</dl>--%>
         <%--</a>--%>
-        <a class="nav_a" href="javascript:openGzzzb('zsk')">
+        <a class="nav_a" href="/zzb/app/console/zszyk/list/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco10.png"></dt>
                 <dd>

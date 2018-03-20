@@ -27,6 +27,20 @@
 </head>
 
 <body>
+<div id="virwGbjdModal" class="modal container hide fade" tabindex="-1" data-width="700">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close"  type="button"></button>
+                <h3 class="modal-title" id="titleView" >
+                    干部监督情况
+                </h3>
+            </div>
+            <div class="modal-body" id="virwGbjdDiv">
+            </div>
+        </div>
+    </div>
+</div>
 <div class="xwbmain">
 
     <div class="mainone">
@@ -62,7 +76,9 @@
                 </div>
                 <a class="btn blue" herf="javascript:void(0)" onclick="">任免文件</a>
                 <a class="btn blue" herf="javascript:void(0)" onclick="">电子档案</a>
-            <a class="btn" href="${path }/zzb/app/console/asetA01Query/?queryId=${queryId}&queryPosition=${queryPosition}"><i class="icon-undo"></i>返回</a>
+                <a class="btn blue" herf="javascript:void(0)" onclick="viewGbjd()">干部监督</a>
+
+                <a class="btn" href="${path }/zzb/app/console/asetA01Query/?queryId=${queryId}&queryPosition=${queryPosition}"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright" style="width: 560px;">
             <div class="Fullname">${a01Vo.xm}</div>
@@ -201,6 +217,27 @@
             }
         });
 
+    }
+    function viewGbjd(){
+
+        $.ajax({
+            url : "${path}/zzb/app/console/gbjd/ajax/viewGbjd",
+            type : "post",
+            headers:{
+                OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+            },
+            dataType : "html",
+            success : function(html){
+                $('#virwGbjdDiv').html(html);
+//                $('#titleView').text(tjmc);
+                $('#virwGbjdModal').modal({
+                    keyboard: true
+                });
+            },
+            error : function(){
+                showTip("提示","出错了请联系管理员", 1500);
+            }
+        });
     }
 </script>
 </body>

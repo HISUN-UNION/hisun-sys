@@ -14,7 +14,7 @@
 
 	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 	<!-- END PAGE LEVEL STYLES -->
-	<title>责任追究</title>
+	<title>干部任免管理</title>
 	<style type="text/css">
 		form {
 			margin: 0 0 0px;
@@ -26,59 +26,40 @@
 	<div class="row-fluid">
 		<div class="span12 responsive">
 			<%-- 表格开始 --%>
+			<form class=""id="importForm" enctype="multipart/form-data">
+				<input type="hidden" name="b01Id" value="${b01Id}"/>
 				<div class="portlet-title">
+					<div class="caption">干部任免管理</div>
 					<div class="clearfix fr">
 
-						<a id="sample_editable_1_new" class="btn green" href="#">
+						<a id="sample_editable_1_new" class="btn green" href="javascript:openGzzzb()">
 							添加
 						</a>
 
 						<%--<span class="controllerClass btn green file_but" >--%>
-						<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
-						<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
+							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
+							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
 						<%--</span>--%>
 					</div>
 
 				</div>
-				<div class="clearfix">
-					<div class="control-group">
-						<div id="query" style="float: left;">
-							<form action="${path }/zzb/app/console/asetA01/ajax/list" method="POST" id="searchForm" name="searchForm">
-								<input type="hidden" id="b01Id" name="b01Id" value="${b01Id}"/>
-								<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
-								<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
-								<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
-								问责方式：
-								<select class="select_form" tabindex="-1" name="type" id="type" style="width: 100px; margin-bottom: 0px;" >
-									<option value=""></option>
-									<option value="通报" selected>通报</option>
-									<option value="通报">诫勉</option>
-									<option value="组织调整（组织处理）" >组织调整（组织处理）</option>
-									<option value="改组" >纪律处分</option>
-								</select>
-								问责时间：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
-								到<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
-								<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
-								<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
-							</form>
-						</div>
-					</div>
+			</form>
 
-				</div>
 				<div class="portlet-body">
 					<table class="table table-striped table-bordered table-hover dataTable table-set">
 						<thead>
 						<tr>
-							<th width="150">问责时间</th>
-							<th width="150">问责方式</th>
-
+							<th >任免材料名称</th>
+							<th width="90">任免人数</th>
+							<th width="150">创建时间</th>
 							<th width="90">操作</th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
-								<td  ><a href="#" class="">2017.09.18</a></td>
-								<td  >违规</td>
+								<td ><a href="javascript:openGzzzb()" class="">药某同志的任免材料</a></td>
+								<td  >2</td>
+								<td  >2018.03.06</td>
 
 								<td>
 									<a href="#" class="">修改</a>|
@@ -86,8 +67,9 @@
 								</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td  ><a href="#" class="">2017.01.09</a></td>
-								<td  >诫勉</td>
+								<td ><a href="#" class="">20180305-杜某</a></td>
+								<td  >1</td>
+								<td  >2018.03.05</td>
 
 								<td>
 									<a href="#" class="">修改</a>|
@@ -344,6 +326,10 @@
 				showTip("提示","出错了请联系管理员",2000);
 			}
 		});
+	}
+	function openGzzzb(){
+		var url ="http://localhost:8080/GZZZB/la/index.jsp?showFlag=init&moduleCode=LA_APPOINT_STUFF";
+		window.open(url);
 	}
 </script>
 </body>
