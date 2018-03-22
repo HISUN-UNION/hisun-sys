@@ -78,25 +78,129 @@
 							<th >单位职务</th>
 							<th width="150">职级</th>
 							<th width="150">查核结果</th>
+
+							<th width="150">审计报告</th>
+							<th width="150">被查对象情况说明</th>
+
 							<th width="90">操作</th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
-								<td ><a href="${path}/zzb/app/console/gbjd/grsxch/sjccgbAdd" class="">张三</a></td>
-								<td  >市民政局副主任</td>
-								<td  >副处级</td>
+								<td ><a href="${path}/zzb/app/console/gbjd/grsxch/sjccgbAdd" class="">刘洋</a></td>
+								<td  >州委组织部副部长，州委老干部局局长</td>
+								<td  >处级</td>
 								<td  >一致</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>
 								</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td ><a href="#" class="">刘某</a></td>
-								<td  >市民政局副主任科员</td>
-								<td  >科员</td>
-								<td  >不一致</td>
+								<td ><a href="#" class="">张翠珍</a></td>
+								<td  >州委老干部局副局长</td>
+								<td  >副处级</td>
+								<td  >不一致(诫勉)</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">王照训</a></td>
+								<td  >州委老干部局副局长</td>
+								<td  >副处级</td>
+								<td  >一致</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">彭小平</a></td>
+								<td  >州委老干部局副处级干部、州级机关离休干部休养所所长</td>
+								<td  >副处级</td>
+								<td  >一致</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">石利民</a></td>
+								<td  >州委老干部局关工委秘书长（副处级）</td>
+								<td  >副处级</td>
+								<td  >不一致(诫勉)</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">黄华</a></td>
+								<td  >州委宣传部副处级干部</td>
+								<td  >副处级</td>
+								<td  >不一致(诫勉)</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">苏明超</a></td>
+								<td  >州委宣传部副调研员</td>
+								<td  >副处级</td>
+								<td  >不一致(诫勉)</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">向东</a></td>
+								<td  >州委宣传部副调研员</td>
+								<td  >副处级</td>
+								<td  >不一致(诫勉)</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">马本江</a></td>
+								<td  >州委政法委执法监察室主任（副处级）</td>
+								<td  >副处级</td>
+								<td  >不一致(诫勉)</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">欧金忠</a></td>
+								<td  >州委政法委政治部主任（副处级）</td>
+								<td  >副处级</td>
+								<td  >不一致(诫勉)</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>

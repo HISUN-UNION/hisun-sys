@@ -14,7 +14,7 @@
 
 	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 	<!-- END PAGE LEVEL STYLES -->
-	<title>信访举报</title>
+	<title>${b0101} 干部列表</title>
 	<style type="text/css">
 		form {
 			margin: 0 0 0px;
@@ -26,87 +26,96 @@
 	<div class="row-fluid">
 		<div class="span12 responsive">
 			<%-- 表格开始 --%>
+			<form class=""id="importForm" enctype="multipart/form-data">
+				<input type="hidden" name="b01Id" value="${b01Id}"/>
 				<div class="portlet-title">
+					<div class="caption">${b0101} 干部列表</div>
 					<div class="clearfix fr">
 
-						<a id="sample_editable_1_new" class="btn green" href="#">
-							添加
-						</a>
 
-						<%--<span class="controllerClass btn green file_but" >--%>
-						<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
-						<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
+						<div class="btn-group">
+							<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+								输出 <i class="icon-angle-down"></i>
+							</a>
+							<ul class="dropdown-menu" style="margin-left: -90px">
+								<li >
+									<a onclick="">当前查询结果</a>
+									<a onclick="">定制查询结果</a>
+								</li>
+							</ul>
+						</div>
+							<%--class="icon-circle-arrow-down"></i>干部任免审批表</a>
+                           <%--<span class="controllerClass btn green file_but" >--%>
+							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
+							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
 						<%--</span>--%>
 					</div>
 
 				</div>
-				<div class="clearfix">
-					<div class="control-group">
-						<div id="query" style="float: left;">
-							<form action="${path }/zzb/app/console/asetA01/ajax/list" method="POST" id="searchForm" name="searchForm">
-								<input type="hidden" id="b01Id" name="b01Id" value="${b01Id}"/>
-								<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
-								<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
-								<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
-								处理结果：
-								<select class="select_form" tabindex="-1" name="type" id="type" style="width: 100px; margin-bottom: 0px;" >
-									<option value="">全部</option>
-									<option value="">结果属实</option>
-									<option value="">不属实</option>
-									<option value="">待查</option>
-								</select>
-								举报时间：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
-								到<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
-								<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
-								<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
-							</form>
-						</div>
+			</form>
+			<div class="clearfix">
+				<div class="control-group">
+					<div id="query" style="float: left;">
+						<form action="${path }/zzb/app/console/gbjd/ajax/list" method="POST" id="searchForm" name="searchForm">
+							<input type="hidden" id="b01Id" name="b01Id" value="${b01Id}"/>
+							<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
+							<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
+							<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
+							姓名：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
+							<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
+							<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
+						</form>
 					</div>
-
 				</div>
+
+			</div>
 				<div class="portlet-body">
 					<table class="table table-striped table-bordered table-hover dataTable table-set">
 						<thead>
 						<tr>
-							<th width="150">被举报时间</th>
-							<th width="150">举报人</th>
-							<th width="100">处理状态</th>
-							<th width="100">处理结果</th>
-							<th >备注</th>
-							<th width="150">下载报告</th>
-							<th width="90">操作</th>
+							<th width="60">姓名</th>
+							<th width="40">性别</th>
+							<th width="60">出生<br>年月</th>
+							<th>现任职务</th>
+							<th width="100" style="text-align: center">全日制<br>学历学位
+							</th>
+							<th width="150" style="text-align: center">在职<br>学历学位
+							<th width="80"style="text-align: center">任现职级<br>时间
+							</th>
+							<th width="50">操作</th>
+							<%--<th width="100">专业技<br>术职务--%>
+							<%--</th>--%>
+							<%--<th width="65">任现职<br>务时间--%>
+							<%--</th>--%>
+							<%--<th width="100">任现职<br>级时间--%>
+							<%--</th>--%>
+							<%--<th width="40">操作</th>--%>
 						</tr>
 						</thead>
 						<tbody>
+						<c:forEach items="${pager.datas}" var="vo">
 							<tr style="text-overflow:ellipsis;">
-								<td  ><a href="#" class="">2018.01.09</a></td>
-								<td  >王某</td>
-								<td  >已处理</td>
-								<td  >结果属实</td>
-								<td  >换届期间</td>
-								<td  >
-									<a href="#">举报件</a> |
-									<a href="#">调查报告下载</a>
-								</td>
-
+								<td title="${vo.xm}"><a href="javascript:view('${vo.id }')" class=""><c:out value="${vo.xm}"></c:out></a></td>
+								<%--<td title="${vo.xm}">--%>
+									<%--<c:out value="${vo.xm}"></c:out>--%>
+								<%--</td>--%>
+								<td title="${vo.xb}" ><c:out value="${vo.xb}"></c:out></td>
+								<td title="${vo.csnyStr}" style="text-align: center"><c:out value="${vo.csnyStr}"></c:out><br>(<c:out value="${vo.nl}"></c:out>岁)</td>
+								<td title="${vo.xrzw}"><c:out value="${vo.xrzw}"></c:out></td>
+								<td ><c:out value="${vo.gbrmspbQrzxlxw}"></c:out></td>
+								<td ><c:out value="${vo.gbrmspbZzxlxw}"></c:out></td>
+								<td ><c:out value="${vo.xrzjsjStr}"></c:out></td>
 								<td>
-									<a href="#" class="">修改</a>|
-									<a href="#" class="">删除</a>
+									<a href="${path}/zzb/app/console/gbjd/addManage" class="">修改</a>
 								</td>
+								<%--<td><c:out value="${vo.zyjszw}"></c:out></td>--%>
+								<%--<td><c:out value="${vo.xrzwsj}"></c:out></td>--%>
+								<%--<td title="${vo.xrzjsj}"><c:out value="${vo.xrzjsj}"></c:out></td>--%>
+								<%--<td class="Left_alignment">--%>
+									<%--<a href="javascript:del('${vo.id }','${vo.xm}')" class="">删除</a>--%>
+								<%--</td>--%>
 							</tr>
-							<tr style="text-overflow:ellipsis;">
-								<td  >2017.09.10</td>
-								<td  >王某</td>
-								<td  >已处理</td>
-								<td  >不属实</td>
-								<td  >公式期间</td>
-								<td  ><a href="#">举报件</a> |
-									<a href="#">调查报告下载</a></td>
-								<td>
-									<a href="#" class="">修改</a>|
-									<a href="#" class="">删除</a>
-								</td>
-							</tr>
+						</c:forEach>
 						</tbody>
 					</table>
 					<jsp:include page="/WEB-INF/jsp/common/page.jsp">
@@ -237,7 +246,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/asetA01/ajax/list",
+			url:"${path}/zzb/app/console/gbjd/ajax/list",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
@@ -263,7 +272,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/asetA01/ajax/list",
+			url:"${path}/zzb/app/console/gbjd/ajax/list",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
@@ -285,7 +294,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/asetA01/ajax/view",
+			url:"${path}/zzb/app/console/gbjd/ajax/view",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
@@ -305,10 +314,10 @@
 		});
 	}
 	var del = function(id,itemName){
-		actionByConfirm1(itemName, "${path}/zzb/app/console/asetA01/delete/" + id,{} ,function(data,status){
+		actionByConfirm1(itemName, "${path}/zzb/app/console/gbjd/delete/" + id,{} ,function(data,status){
 			if (data.success == true) {
 				showTip("提示","删除成功", 2000);
-				setTimeout(function(){window.location.href = "${path}/zzb/app/console/asetA01/list?b01Id=${b01Id}&mcid=${mcid}"},2000);
+				setTimeout(function(){window.location.href = "${path}/zzb/app/console/gbjd/list?b01Id=${b01Id}&mcid=${mcid}"},2000);
 			}else{
 				showTip("提示", data.message, 2000);
 			}
@@ -322,7 +331,7 @@
 		$.ajax({
 			async:false,
 			type:"POST",
-			url:"${path}/zzb/app/console/asetA01/ajax/list",
+			url:"${path}/zzb/app/console/gbjd/ajax/list",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
@@ -341,7 +350,7 @@
 	function exportGbrmsp(){
 		$.cloudAjax({
 			path : '${path}',
-			url : "${path }/zzb/app/console/asetA01/ajax/exportGbrmsp",
+			url : "${path }/zzb/app/console/gbjd/ajax/exportGbrmsp",
 			type : "post",
 			data : $("#form1").serialize(),
 			dataType : "json",

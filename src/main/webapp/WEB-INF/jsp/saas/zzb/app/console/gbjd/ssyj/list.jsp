@@ -70,8 +70,10 @@
 						<tr>
 							<th width="150">预警时间</th>
 							<th width="150">预警方式</th>
-							<th >处理状态</th>
-							<th width="150">下载预警书</th>
+							<th width="150">处理状态</th>
+							<th width="150">预警书</th>
+							<th width="150">回复函</th>
+
 							<th width="90">操作</th>
 						</tr>
 						</thead>
@@ -80,6 +82,7 @@
 								<td  ><a href="#" class="">2017.09.18</a></td>
 								<td  >函询</td>
 								<td  >已处理</td>
+								<td  ><a href="#" class="">下载</a></td>
 								<td  ><a href="#" class="">下载</a></td>
 								<td>
 									<a href="#" class="">修改</a>|
@@ -90,6 +93,7 @@
 								<td  ><a href="#" class="">2017.01.09</a></td>
 								<td  >提醒</td>
 								<td  >未处理</td>
+								<td  ><a href="#" class="">下载</a></td>
 								<td  ><a href="#" class="">下载</a></td>
 								<td>
 									<a href="#" class="">修改</a>|

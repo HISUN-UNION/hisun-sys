@@ -180,7 +180,7 @@ public class AppBsetB01ServiceImpl extends BaseServiceImpl<AppBsetB01,String> im
         CommonConditionQuery query = new CommonConditionQuery();
 
         CommonOrderBy orderBy = new CommonOrderBy();
-        orderBy.add(CommonOrder.asc("parentFl.px"));
+        //orderBy.add(CommonOrder.asc("parentFl.px"));
         orderBy.add(CommonOrder.asc("px"));
         List<AppBsetFl> sppBsetFls = this.appBsetFlService.list(query, orderBy);
         List<B01TreeVo> b01TreeVoList = Lists.newArrayList();

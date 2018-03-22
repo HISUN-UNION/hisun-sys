@@ -22,15 +22,13 @@
 						<div class="portlet box grey">
 
 							<div class="portlet-title">
-
 								<div class="caption">
 
 									<i class="icon-reorder"></i>
-
 									<span class="hidden-480">修改2017年评议机构</span>
-
 								</div>
 								<div class="tools">
+									<button type="button" class="btn green" onclick=""> 选择机构</button>
 									<button type="button" class="btn green" onclick=""><i class="icon-ok"></i> 确定</button>
 									<a class="btn"  onclick="cancel()"><i class="icon-remove-sign"></i> 取消</a>
 
@@ -43,141 +41,59 @@
 								<form action="${path }/zzb/app/console/bwh/save" class="form-horizontal" id="form1" method="post" enctype="multipart/form-data">
 									<input type="hidden" name="id" value="${shpc.id }" id="id">
 									<input type="hidden" name="filePath" value="${shpc.filePath }" id="filePath">
-									<table  border="0" style="width:100%;" cellPadding="5px">
+									<table class="table table-striped table-bordered table-hover dataTable table-set">
+										<thead>
 										<tr>
-											<td width="50%" colspan="2">
-												<div id="ciNameGroup" class="control-group">
-													<label class="control-label">选择评议单位<span class="required">*</span></label>
-													<div class="controls">
-														<div class="btn-group span12" style="font-size: 12px">
-															<input type="hidden" name="b01Id" id="b01Id" value="${vo.b01Id}"/>
-															<input type="text" id="b0101" name="b0101" readonly="readonly"
-																   class="span8 m-wrap" style="cursor: pointer;" onclick="$('#objectTreeSelDiv').toggle();" value="州纪委,州委办,州委政策研究室,州委组织部,州委老干部局,州委宣传部,州委政法委">
-															<div class="span8 m-wrap" style="border:solid 1px #ccc;overflow-y: scroll;overflow-x: auto;position: absolute;
-											top: 100%;left: 0;z-index: 1000;display: none;float: left;list-style: none;text-shadow: none;padding: 0px;margin: 0px;height: 200px;background-color: white;" id="objectTreeSelDiv">
-																<ul id="treeDemo" class="ztree" style="margin: 0px;padding: 0px;height: 200px;"></ul>
-															</div>
-														</div>
-													</div>
-												</div>
-											</td>
+											<th width="150">评议机构名称</th>
+											<th style="text-align: left">评议分数</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州纪委</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="95"/>分</td>
+										</tr>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州委办</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="88"/>分</td>
+										</tr>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州委政策研究室</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="87"/>分</td>
+										</tr>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州委组织部</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="85"/>分</td>
+										</tr>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州委老干部局</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="84"/>分</td>
+										</tr>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州委宣传部</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="82"/>分</td>
+										</tr>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州委政法委</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="80"/>分</td>
+										</tr>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州委统战部</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="68"/>分</td>
+										</tr>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州直属机关工委</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="68"/>分</td>
+										</tr>
+										<tr style="text-overflow:ellipsis;">
+											<td  >州机构编制委员会办公室</td>
+											<td  style="text-align: left"><input type="text" name="jsonDataVos" placeholder="必填项"	 required style="width: 50px" value="59"/>分</td>
+										</tr>
 
+										</tbody>
+									</table>
 
-										</tr>
-										<tr>
-											<td width="30%">
-												<div id="ciNameGroup" class="control-group">
-													<label class="control-label">单位名称</label>
-													<div class="controls">
-														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州纪委" />
-													</div>
-												</div>
-											</td>
-											<td width="70%" >
-													<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
-													<div class="controls" style="margin-left:20px">
-														<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="90" />分
-													</div>
-											</td>
-										</tr>
-										<tr>
-											<td width="30%">
-												<div id="ciNameGroup" class="control-group">
-													<label class="control-label">单位名称</label>
-													<div class="controls">
-														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委办" />
-													</div>
-												</div>
-											</td>
-											<td width="70%" >
-												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
-												<div class="controls" style="margin-left:20px">
-													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="88" />分
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td width="30%">
-												<div id="ciNameGroup" class="control-group">
-													<label class="control-label">单位名称</label>
-													<div class="controls">
-														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委政策研究室" />
-													</div>
-												</div>
-											</td>
-											<td width="70%" >
-												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
-												<div class="controls" style="margin-left:20px">
-													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="88" />分
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td width="30%">
-												<div id="ciNameGroup" class="control-group">
-													<label class="control-label">单位名称</label>
-													<div class="controls">
-														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委组织部" />
-													</div>
-												</div>
-											</td>
-											<td width="70%" >
-												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
-												<div class="controls" style="margin-left:20px">
-													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="86" />分
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td width="30%">
-												<div id="ciNameGroup" class="control-group">
-													<label class="control-label">单位名称</label>
-													<div class="controls">
-														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委老干部局" />
-													</div>
-												</div>
-											</td>
-											<td width="70%" >
-												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
-												<div class="controls" style="margin-left:20px">
-													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="85" />分
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td width="30%">
-												<div id="ciNameGroup" class="control-group">
-													<label class="control-label">单位名称</label>
-													<div class="controls">
-														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委宣传部" />
-													</div>
-												</div>
-											</td>
-											<td width="70%" >
-												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
-												<div class="controls" style="margin-left:20px">
-													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="82" />分
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td width="30%">
-												<div id="ciNameGroup" class="control-group">
-													<label class="control-label">单位名称</label>
-													<div class="controls">
-														<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" readonly id="ciName" value="州委政法委" />
-													</div>
-												</div>
-											</td>
-											<td width="70%" >
-												<label class="control-label"style="width: 60px">评分<span class="required">*</span></label>
-												<div class="controls" style="margin-left:20px">
-													<input type="text" style="width: 50px" name="ciName" required maxlength="128" id="ciName" value="80" />分
-												</div>
-											</td>
-										</tr>
-										</table>
-																</form>
+								</form>
 							</div>
 
 						</div>

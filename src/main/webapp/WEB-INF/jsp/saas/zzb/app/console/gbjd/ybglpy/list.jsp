@@ -56,11 +56,11 @@
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
-								<td ><a href="${path}/zzb/app/console/gbjd/ybglpy/edit" class="">2017</a></td>
-								<td  >7</td>
+								<td ><a href="${path}/zzb/app/console/gbjd/ybglpy/pyjgList" class="">2017</a></td>
+								<td  >10</td>
 								<td  >2017.03.10</td>
 								<td>
-									<a href="#" class="">修改</a>|
+									<a href="${path}/zzb/app/console/gbjd/ybglpy/edit" class="">修改</a>|
 									<a href="#" class="">导入</a>|
 									<a href="#" class="">删除</a>
 								</td>

@@ -76,7 +76,7 @@
                 </div>
                 <a class="btn blue" herf="javascript:void(0)" onclick="">任免文件</a>
                 <a class="btn blue" herf="javascript:void(0)" onclick="">电子档案</a>
-                <a class="btn blue" herf="javascript:void(0)" onclick="viewGbjd()">干部监督</a>
+                <a class="btn blue" herf="javascript:void(0)" onclick="viewGbjd()">干部监督信息</a>
 
                 <a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
         </div>

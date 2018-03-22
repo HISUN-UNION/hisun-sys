@@ -7,7 +7,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>修改干部监督档案</title>
+	<title>修改干部监督信息档案</title>
 </head>
 <body>
 <div class="container-fluid">
@@ -16,7 +16,7 @@
 		<div class="portlet box grey ">
 			<div class="portlet-body">
 				<div class="relationbetTop">
-					<div class="relationbetTop_left">修改干部监督档案</div>
+					<div class="relationbetTop_left">修改干部监督信息档案</div>
 					<div class="relationbetTop_but">
 
 						<button type="button" class="btn green" onclick=""><i class="icon-ok"></i> 确定</button>

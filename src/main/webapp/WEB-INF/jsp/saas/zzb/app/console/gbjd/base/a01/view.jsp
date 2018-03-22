@@ -76,25 +76,24 @@
                 </div>
                 <a class="btn blue" herf="javascript:void(0)" onclick="">任免文件</a>
                 <a class="btn blue" herf="javascript:void(0)" onclick="">电子档案</a>
-                <a class="btn blue" herf="javascript:void(0)" onclick="viewGbjd()">干部监督信息</a>
 
-                <a class="btn" href="${path }/zzb/app/console/asetA01Query/?queryId=${queryId}&queryPosition=${queryPosition}"><i class="icon-undo"></i>返回</a>
+                <a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright" style="width: 560px;">
             <div class="Fullname">${a01Vo.xm}</div>
             <div class="gerenintrodu">${a01Vo.csnyStr}生，${a01Vo.jg}人，${a01Vo.cjgzsjStr}参加工作，
-            <c:if test="${empty a01Vo.dp}">
-                群众
-            </c:if>
-            <c:if test="${!empty a01Vo.dp}">
-                <c:if test="${a01Vo.dp eq '中共党员'}">
-                    ${a01Vo.rdsjStr}加入中国共产党
+                <c:if test="${empty a01Vo.dp}">
+                    群众
                 </c:if>
-                <c:if test="${a01Vo.dp ne '中共党员'}">
-                    <c:if test="${!empty a01Vo.rdsjStr}">
-                        ${a01Vo.rdsjStr}加入</c:if>${a01Vo.dp}
+                <c:if test="${!empty a01Vo.dp}">
+                    <c:if test="${a01Vo.dp eq '中共党员'}">
+                        ${a01Vo.rdsjStr}加入中国共产党
+                    </c:if>
+                    <c:if test="${a01Vo.dp ne '中共党员'}">
+                        <c:if test="${!empty a01Vo.rdsjStr}">
+                            ${a01Vo.rdsjStr}加入</c:if>${a01Vo.dp}
+                    </c:if>
                 </c:if>
-            </c:if>
                 。</div>
             <ul class="ulonleftjx">
                 <li><span>全日制学历学位及专业：</span>${a01Vo.gbrmspbQrzxlxw}${a01Vo.gbrmspbQrzByyxAndZy}</li>
@@ -102,13 +101,75 @@
             </ul>
         </div>
     </div>
-    <div class="maintwo">
-        <h1 class="tith1">工作经历</h1>
-        <c:forEach items="${a01Vo.gzjlStrs}" var="gzjlStr">
-            <p>${gzjlStr}</p>
-        </c:forEach>
-    </div>
 
+
+    <div class="tabbable tabbable-custom">
+        <ul class="nav nav-tabs" style="font-size: 14px;font-weight: bold;" id="tabs">
+
+            <li class="active"><a id="#tab_1_1" href="#tab_1_1" data-toggle="tab">工作经历</a></li>
+
+            <li><a  id="#tab_1_2" href="#tab_1_2" data-toggle="tab">干部监督信息</a></li>
+        </ul>
+
+        <div class="tab-content">
+
+            <div class="tab-pane active" id="tab_1_1">
+
+                <div class="maintwo">
+                    <c:forEach items="${a01Vo.gzjlStrs}" var="gzjlStr">
+                        <p>${gzjlStr}</p>
+                    </c:forEach>
+                </div>
+
+            </div>
+
+            <div class="tab-pane" id="tab_1_2">
+                <div class="maintwo">
+                    <table class="table table-striped table-bordered table-hover dataTable table-set" id="jsonDataFormTable">
+                        <tr>
+                            <th>个人事项查核情况</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2009年审计报告存在不一致的情况（少报房产一套150平米；少报股票金额60W）</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2007年审计报告存在不一致的情况（少报房产一套120平米；）</a></td>
+                        </tr>
+                        <tr>
+                            <th>经济责任审计</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2016.3.19经济责任审计存在不合规的情况 </a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2015.2经济责任审计存在不合规的情况 </a></td>
+                        </tr>
+                        <tr>
+                            <th>三书预警</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2016.4.24被函询</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2016.4.24被函询</a></td>
+                        </tr>
+                        <tr>
+                            <th>责任追究</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2017.09.10被行政处罚</a></td>
+                        </tr>
+                        <tr>
+                            <th>问责</th>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2017.01.09被问责(诫勉)</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -199,7 +260,7 @@
         $.ajax({
             async:false,
             type:"POST",
-            url:"${path}/zzb/app/console/asetA01/ajax/list",
+            url:"${path}/zzb/app/console/gbjd/ajax/list",
             dataType : "html",
             headers:{
                 "OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
@@ -218,6 +279,7 @@
         });
 
     }
+
     function viewGbjd(){
 
         $.ajax({

@@ -80,30 +80,139 @@
 							<th width="150">职级</th>
 							<th width="150">责任追究方式</th>
 							<th width="150">追究时间</th>
-							<th width="150">追究结果</th>
+							<th width="150">处理状态</th>
+							<th width="100">责任处分书</th>
 							<th width="90">操作</th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
-								<td ><a href="${path}/zzb/app/console/gbjd/zrzj/edit" class="">张三</a></td>
-								<td  >市民政局副主任</td>
+								<td ><a href="${path}/zzb/app/console/gbjd/zrzj/edit" class="">刘洋</a></td>
+								<td  >州委组织部副部长，州委老干部局局长</td>
 								<td  >副处级</td>
 								<td  >纪律处分</td>
 								<td  >2018.01.09</td>
-								<td  >违规</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>
 								</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td ><a href="#" class="">刘某</a></td>
-								<td  >市民政局副主任科员</td>
-								<td  >科员</td>
+								<td ><a href="#" class="">张翠珍</a></td>
+								<td  >州委老干部局副局长</td>
+								<td  >副处级</td>
 								<td  >行政处罚</td>
 								<td  >2017.09.10</td>
-								<td  >不违规</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">王照训</a></td>
+								<td  >州委老干部局副局长</td>
+								<td  >副处级</td>
+								<td  >行政处罚</td>
+								<td  >2017.09.10</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">彭小平</a></td>
+								<td  >州委老干部局副处级干部、州级机关离休干部休养所所长</td>
+								<td  >副处级</td>
+								<td  >纪律处分</td>
+								<td  >2017.09.10</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">石利民</a></td>
+								<td  >州委老干部局关工委秘书长（副处级）</td>
+								<td  >副处级</td>
+								<td  >纪律处分</td>
+								<td  >2017.09.10</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">黄华</a></td>
+								<td  >州委宣传部副处级干部</td>
+								<td  >副处级</td>
+								<td  >刑事追究</td>
+								<td  >2017.09.10</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">苏明超</a></td>
+								<td  >州委宣传部副调研员</td>
+								<td  >副处级</td>
+								<td  >纪律处分</td>
+								<td  >2017.09.10</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">向东</a></td>
+								<td  >州委宣传部副调研员</td>
+
+								<td  >副处级</td>
+								<td  >纪律处分</td>
+								<td  >2017.09.10</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">马本江</a></td>
+								<td  >州委政法委执法监察室主任（副处级）</td>
+								<td  >副处级</td>
+								<td  >组织处理</td>
+								<td  >2017.09.10</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
+								<td>
+									<a href="#" class="">修改</a>|
+									<a href="#" class="">删除</a>
+								</td>
+							</tr>
+							<tr style="text-overflow:ellipsis;">
+								<td ><a href="#" class="">欧金忠</a></td>
+								<td  >州委政法委政治部主任（副处级）</td>
+								<td  >副处级</td>
+								<td  >组织处理</td>
+								<td  >2017.09.10</td>
+								<td  >已处理</td>
+								<td  ><a href="#">下载</a> </td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>

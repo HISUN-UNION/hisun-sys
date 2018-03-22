@@ -55,12 +55,8 @@
 
 										<label class="control-label">问责方式<span class="required">*</span></label>
 										<div class="controls">
-											<select class="span6 m-wrap" id="mb" name="mb"   data-placeholder="Choose a Category" tabindex="1" required>
-												<option value=""></option>
-												<option value="检查" selected>检查</option>
-												<option value="通报">通报</option>
-												<option value="改组" >改组</option>
-											</select>
+											<input type="checkbox"/>检查<input type="checkbox"/>通报<input type="checkbox"/>改组
+
 										</div>
 									</div>
 
@@ -93,11 +89,25 @@
 										</div>
 									</div>
 									<div  id="clFileGroup" class="control-group" >
-										<label class="control-label">处理结果报告</label>
+										<label class="control-label">问责决定书</label>
 										<div class="controls">
 											<input type="file" class="default" name="clFile" id="clFile" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
 											<div class="btn-group" id="gbrmspbDownDiv" <c:if test="${empty shpc.filePath}">
 												 style="visibility:hidden"</c:if>>
+												<a class="btn blue" herf="javascript:void(0)" onclick="fileDown()"><i
+														class="icon-circle-arrow-down"></i>下载文件</a>
+											</div>
+											<p class="textprompt">附件支持的格式有：'doc','docx'</p>
+											<p class="Errorred" id="attachFileError"></p>
+										</div>
+
+									</div>
+									<div  id="clFileGroup" class="control-group" >
+										<label class="control-label">问责回复函</label>
+										<div class="controls">
+											<input type="file" class="default" name="clFile" id="clFile" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
+											<div class="btn-group" id="gbrmspbDownDiv" <c:if test="${empty shpc.filePath}">
+												style="visibility:hidden"</c:if>>
 												<a class="btn blue" herf="javascript:void(0)" onclick="fileDown()"><i
 														class="icon-circle-arrow-down"></i>下载文件</a>
 											</div>

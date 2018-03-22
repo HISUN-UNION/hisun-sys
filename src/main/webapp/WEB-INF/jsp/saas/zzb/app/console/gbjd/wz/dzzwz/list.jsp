@@ -76,23 +76,29 @@
 							<th>被问责单位</th>
 							<th width="150">问责方式</th>
 							<th width="150">问责时间</th>
+							<th width="150">问责决定书</th>
+							<th width="150">问责回复函</th>
 							<th width="90">操作</th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
 								<td ><a href="${path}/zzb/app/console/gbjd/wz/dzzwz/edit" class="">市XX单位</a></td>
-								<td  >检查</td>
+								<td  >检查,通报</td>
 								<td  >2018.01.09</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  ><a href="#">下载</a> </td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>
 								</td>
 							</tr>
 							<tr style="text-overflow:ellipsis;">
-								<td  >市XX单位</td>
+								<td  ><a href="${path}/zzb/app/console/gbjd/wz/dzzwz/edit" class="">市XX单位</a></td>
 								<td  >通报</td>
 								<td  >2017.09.10</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  ><a href="#">下载</a> </td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>

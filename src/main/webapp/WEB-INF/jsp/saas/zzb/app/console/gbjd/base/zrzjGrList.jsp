@@ -72,7 +72,9 @@
 
 							<th width="150">追究时间</th>
 							<th width="150">责任追究方式</th>
-							<th width="150">追究结果</th>
+							<th width="150">处理状态</th>
+							<th width="150">责任处分书</th>
+
 							<th width="90">操作</th>
 						</tr>
 						</thead>
@@ -80,7 +82,8 @@
 							<tr style="text-overflow:ellipsis;">
 								<td  ><a href="#" class="">2018.01.09</a></td>
 								<td  >纪律处分</td>
-								<td  >违规</td>
+								<td  >已处理</td>
+								<td  ><a href="#" class="">下载</a></td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>
@@ -90,7 +93,8 @@
 								<td  ><a href="#" class="">2017.09.10</a></td>
 								<td  >行政处罚</td>
 
-								<td  >不违规</td>
+								<td  >已处理</td>
+								<td  ><a href="#" class="">下载</a></td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>

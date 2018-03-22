@@ -71,15 +71,17 @@
 						<tr>
 							<th width="150">问责时间</th>
 							<th width="150">问责方式</th>
-
+							<th width="100">问责决定书</th>
+							<th width="100">问责回复函</th>
 							<th width="90">操作</th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
 								<td  ><a href="#" class="">2017.09.18</a></td>
-								<td  >违规</td>
-
+								<td>通报,诫勉</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  ><a href="#">下载</a> </td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>
@@ -87,8 +89,9 @@
 							</tr>
 							<tr style="text-overflow:ellipsis;">
 								<td  ><a href="#" class="">2017.01.09</a></td>
-								<td  >诫勉</td>
-
+								<td  >诫勉,组织调整（组织处理）</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  ><a href="#">下载</a> </td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>

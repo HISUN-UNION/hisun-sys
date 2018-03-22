@@ -117,16 +117,16 @@
 									</div>
 									<div class="control-group" id="mbGroup">
 
-										<label class="control-label">处理结果<span class="required">*</span></label>
+										<label class="control-label">处理状态<span class="required">*</span></label>
 										<div class="controls">
 											<select class="span6 m-wrap" id="mb" name="mb"   data-placeholder="Choose a Category" tabindex="1" required>
-												<option value="正常" <c:if test="${shpc.mb eq '广州模板'}">selected</c:if>>正常</option>
-												<option value="异常" <c:if test="${shpc.mb eq '湖南模板'}">selected</c:if>>异常</option>
+												<option value="已处理" <c:if test="${shpc.mb eq '广州模板'}">selected</c:if>>已处理</option>
+												<option value="待处理" <c:if test="${shpc.mb eq '湖南模板'}">selected</c:if>>待处理</option>
 											</select>
 										</div>
 									</div>
 									<div  id="clFileGroup" class="control-group" >
-										<label class="control-label">处理结果报告</label>
+										<label class="control-label">责任处分书</label>
 										<div class="controls">
 											<input type="file" class="default" name="clFile" id="clFile" fileSizeLimit="20" fileType="doc,docx,DOC,DOCX"/>
 											<div class="btn-group" id="gbrmspbDownDiv" <c:if test="${empty shpc.filePath}">

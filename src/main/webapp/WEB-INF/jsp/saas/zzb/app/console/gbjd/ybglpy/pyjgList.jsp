@@ -11,7 +11,6 @@
 	<!-- BEGIN PAGE LEVEL STYLES -->
 	<link rel="stylesheet" href="${path }/css/DT_bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="${path }/css/bootstrap-fileupload.css">
-
 	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 	<!-- END PAGE LEVEL STYLES -->
 	<title>2017年评议机构</title>
@@ -31,13 +30,10 @@
 				<div class="portlet-title">
 					<div class="caption">2017年评议机构</div>
 					<div class="clearfix fr">
-
-						<a id="sample_editable_1_new" class="btn green" href="${path}/zzb/app/console/gbjd/ybglpy/edit">
-							添加
-						</a>
 						<a id="sample_editable_1_new" class="btn green" href="#">
-							导入
+							导出
 						</a>
+						<a class="btn" href="${path }/zzb/app/console/gbjd/ybglpy"><i class="icon-undo"></i>返回</a>
 						<%--<span class="controllerClass btn green file_but" >--%>
 							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
 							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
@@ -46,58 +42,103 @@
 
 				</div>
 			</form>
-				<div class="clearfix">
-					<div class="control-group">
-						<div id="query" style="float: left;">
-							<form action="${path }/zzb/app/console/asetA01/ajax/list" method="POST" id="searchForm" name="searchForm">
-								<input type="hidden" id="b01Id" name="b01Id" value="${b01Id}"/>
-								<input type="hidden" name="OWASP_CSRFTOKEN" value="${sessionScope.OWASP_CSRFTOKEN}"/>
-								<input type="hidden" name="pageNum" value="${pager.pageNum }" id="pageNum">
-								<input type="hidden" name="pageSize" value="${pager.pageSize }" id="pageSize">
-								机构：<input type="text" class="m-wrap" name="xmQuery" id="xmQuery" value="${xmQuery}" style="width: 100px;" />
 
-
-								<button type="button" class="btn Short_but" onclick="searchSubmit()">查询</button>
-								<button type="button" class="btn Short_but" onclick="clearData()">清空</button>
-							</form>
-						</div>
-					</div>
-
+				<div class="clearfix" style="font-size: 14px;"><b>
+					2017年共<font color="#ff4500">10</font>个机构进行评分、其中95以上<font color="#ff4500">1</font> 个；
+					85~94分<font color="#ff4500">3</font>个；70~84分<font color="#ff4500">3</font>个；60~69分<font color="#ff4500">2</font>个；60分以下<font color="#ff4500">1</font>个</b>
 				</div>
 				<div class="portlet-body">
-					<table class="table table-striped table-bordered table-hover dataTable table-set">
-						<thead>
+					<table>
 						<tr>
-							<th >机构名称</th>
-							<th width="60">评议分</th>
-							<th width="90">操作</th>
+							<td width="40%">
+								<table class="table table-striped table-bordered table-hover dataTable table-set">
+									<thead>
+									<tr>
+										<th >机构名称</th>
+										<th width="150">评议分</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州纪委</td>
+										<td  >95分</td>
+									</tr>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州委办</td>
+										<td  >88分</td>
+									</tr>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州委政策研究室</td>
+										<td  >87分</td>
+									</tr>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州委组织部</td>
+										<td  >85分</td>
+									</tr>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州委老干部局</td>
+										<td  >84分</td>
+									</tr>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州委宣传部</td>
+										<td  >82分</td>
+									</tr>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州委政法委</td>
+										<td  >80分</td>
+									</tr>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州委统战部</td>
+										<td  >68分</td>
+									</tr>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州直属机关工委</td>
+										<td  >68分</td>
+									</tr>
+									<tr style="text-overflow:ellipsis;">
+										<td  >州机构编制委员会办公室</td>
+										<td  >59分</td>
+									</tr>
+
+									</tbody>
+								</table>
+
+							</td>
+							<td width="60%">
+								<table width="100%">
+									<tr>
+										<td width="100%" colspan="2">
+											<div class="mainright" style="margin-left:10px; height:230px;border: 0px solid ;">
+												<div style="padding:12px 0 12px 0 ;font-size:14px;text-align:center; ">2017年评分情况</div>
+												<div id="MonitorTopN01" style="width:100%;height:180px;"></div>
+											</div>
+										</td>
+									</tr>
+									<tr  >
+										<td width="100%" colspan="2" height="20px">&nbsp;
+										</td>
+									</tr>
+									<tr  >
+
+										<td width="50%" style="margin-top: 20px">
+											<div class="bintumain">
+												<div class="ExpertTitle" style=" width:300px; margin:0 auto 0 auto;">2017年评分情况</div>
+												<div id="Agedata01" style=" height:200px; width:300px; margin:0 auto 0 auto;"></div>
+											</div>
+										</td>
+										<td width="50%" style="margin-top: 20px">
+											<div class="bintumain">
+												<div class="ExpertTitle" style=" width:300px; margin:0 auto 0 auto;">2016年评分情况</div>
+												<div id="Agedata02" style=" height:200px; width:300px; margin:0 auto 0 auto;"></div>
+											</div>
+										</td>
+									</tr>
+								</table>
+
+							</td>
 						</tr>
-						</thead>
-						<tbody>
-							<tr style="text-overflow:ellipsis;">
-								<td ><a href="#" class="">水电局</a></td>
-								<td  >90</td>
-								<td>
-									<a href="#" class="">修改</a>|
-									<a href="#" class="">删除</a>
-								</td>
-							</tr>
-							<tr style="text-overflow:ellipsis;">
-								<td ><a href="#" class="">民政局</a></td>
-								<td  >89</td>
-								<td>
-									<a href="#" class="">修改</a>|
-									<a href="#" class="">删除</a>
-								</td>
-							</tr>
-						</tbody>
 					</table>
-					<jsp:include page="/WEB-INF/jsp/common/page.jsp">
-						<jsp:param value="${pager.total }" name="total"/>
-						<jsp:param value="${pager.pageCount }" name="endPage"/>
-						<jsp:param value="${pager.pageSize }" name="pageSize"/>
-						<jsp:param value="${pager.pageNum }" name="page"/>
-					</jsp:include>
+
 				</div>
 		</div>
 		<%-- 表格结束 --%>
@@ -106,7 +147,7 @@
 
 <%-- END PAGE CONTENT--%>
 </div>
-
+<script src="${path}/js/echarts3/echarts.min.js" type="text/javascript" ></script>
 <script type="text/javascript">
 	(function(){
 		App.init();
@@ -117,104 +158,246 @@
 			}
 			$(this).val('');
 		});
-		var myLoading = new MyLoading("${path}",{zindex:20000});
-		function ajaxSubmit(){
-			var fileInput = document.getElementById("btn-browseTemplate");
-			if(fileInput.files.length>0){
-				var name = fileInput.files[0].name
-				var arr = name.split(".");
-				if(arr.length<2 || !(arr[arr.length-1]=="doc" || arr[arr.length-1]=="docx"|| arr[arr.length-1]=="DOC"|| arr[arr.length-1]=="DOCX")){
-					showTip("提示","请上传word文件",2000);
-					return;
-				}
-			}else{
-				showTip("提示","请选择文件上传",2000);
-				return;
-			}
-			//hideErrorMsg();
-			$("#importForm").ajaxSubmit({
-				url : "${path }/zzb/app/console/asetA01/ajax/execute?b01Id=${b01Id}",
-				type : "post",
-				headers:{
-					OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
-				},
-				beforeSend:function(XHR){
-					myLoading.show();
-				},
-				success : function(json){
-					if(json.code == 1){
-						searchSubmit()
-						showTip("提示","操作成功",2000);
-					}else if(json.code == -1){
-						showTip("提示", json.message,2000);
-					}else if(json.code == -2){
-						showTip("提示", "导入数据存在错误，请及时下载已标记错误处的日志模板文件",500);
-						//$('#downloanErrorTd').show();
-						//$('#downloanError').attr('href','${path}/sacm/asset/export/downloanError?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&path='+encodeURIComponent(encodeURIComponent(json.path)));
-						//$('#errorMsg').text('导入数据存在错误，请及时下载已标记错误处的日志模板文件');
-					}else{
-						showTip("提示","出错了,请检查网络!",2000);
-					}
-				},
-				error : function(arg1, arg2, arg3){
-					showTip("提示","出错了,请检查网络!",2000);
-				},
-				complete : function(XHR, TS){
-					myLoading.hide();
-				}
-			});
-		}
 
-		//批量上传干部人员审批表
-		$("#btn-moreAttTemplate").bind("change", function (evt) {
-			if ($(this).val()) {
-				gbrmspbSubmit();
-			}
-			$(this).val('');
-		});
-
-		function gbrmspbSubmit() {
-			var fileInput = document.getElementById("btn-moreAttTemplate");
-			if (fileInput.files.length > 0) {
-				var name = fileInput.files[0].name
-				var arr = name.split(".");
-				if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
-					showTip("提示", "请上传zip文件", 2000);
-					return;
-				}
-			} else {
-				showTip("提示", "请选择文件上传", 2000);
-				return;
-			}
-			$("#importForm").ajaxSubmit({
-				url: "${path }/zzb/app/console/GbMca01/gbrmspb/ajax/batch/upload?b01Id=${b01Id}",
-				type: "post",
-				headers: {
-					OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
-				},
-				beforeSend: function (XHR) {
-					myLoading.show();
-				},
-				success: function (json) {
-					if (json.code == 1) {
-						showTip("提示","上传成功",2000);
-						<%--window.location.href="${path}/zzb/app/console/gbmc/a01/list?b01Id=${b01Id}&mcid=${mcid}";--%>
-					} else if (json.code == -1) {
-						showTip("提示", json.message, 2000);
-					} else {
-						showTip("提示", "出错了,请检查网络!", 2000);
-					}
-				},
-				error: function (arg1, arg2, arg3) {
-					showTip("提示", "出错了,请检查网络!", 2000);
-				},
-				complete: function (XHR, TS) {
-					myLoading.hide();
-				}
-			});
-		}
 	})();
+	var myChart1 = echarts.init(document.getElementById('MonitorTopN01'));
+	option1 = {
+		/*title: {
+		 text: '世界人口总量',
+		 subtext: '数据来自网络'
+		 },*/
+		color: ['#007cd5'],
 
+		tooltip: {
+			trigger: 'axis',
+			axisPointer: {
+				type: 'shadow'
+			},
+			backgroundColor: 'rgba(248,248,248,0.7)',     // 提示背景颜色，默认为透明度为0.7的黑色
+			borderColor: '#3f88bb',       // 提示边框颜色
+			borderRadius: 4,           // 提示边框圆角，单位px，默认为4
+			borderWidth: 1,            // 提示边框线宽，单位px，默认为0（无边框）
+			padding: 5,                // 提示内边距，单位px，默认各方向内边距为5，
+			textStyle: {
+				color: '#333333'
+			},
+		},
+
+		grid: {
+			top: '3%',
+			left: '3%',
+			right: '3%',
+			bottom: '1%',
+			containLabel: true
+		},
+		xAxis : [
+			{
+				type : 'category',
+				data : ['95以上','85~94分','70~84分','60~69分','60分以下'],
+				axisLine : {
+					show : true,
+					lineStyle : {
+//						color: '#409fff'
+					}
+				},
+				axisTick : {
+					show : true,
+					lineStyle : {
+//						color: '#0a5bad'
+					}
+				},
+				splitLine : {
+					show : false,
+					lineStyle : {
+//						color: '#ddd'
+					}
+				},
+				axisLabel: {
+					show: true,
+					textStyle: {
+//						color: "#409fff"
+					},
+				},
+				boundaryGap: [0, 0.01]
+			}
+		],
+		yAxis : [
+			{
+				type : 'value',
+				axisLine : {
+					show : true,
+					lineStyle : {
+//						color: '#409fff'
+					}
+				},
+				axisTick : {
+					show : true,
+					lineStyle : {
+//						color: '#0a5bad'
+					}
+				},
+				splitLine : {
+					show : true,
+					lineStyle : {
+//						color: '#073971'
+					}
+				},
+				axisLabel: {
+					show: true,
+					textStyle: {
+//						color: "#409fff"
+					},
+				},
+			}
+		],
+		series : [
+			{
+				name:'总人数',
+				type:'bar',
+				barWidth: '30%',
+				data:[1, 3, 3, 2, 1]
+			}
+		]
+	};
+	myChart1.setOption(option1, true);
+
+	var myChart1 = echarts.init(document.getElementById('Agedata01'));
+	option1 = {
+		color: [
+			"#2ec7c9",
+			"#b6a2de",
+			"#5ab1ef",
+			"#ffb980",
+			"#d87a80",
+		],
+		tooltip: {
+			trigger: 'item',
+			formatter: "{a} <br/>{b}: {c} ({d}%)"
+		},
+		legend: {
+			orient: 'vertical',
+			x: 'left',
+			top: 18,
+			data:['95以上','85~94分','70~84分','60~69分','60分以下'],
+			itemWidth:18,
+			itemHeight:8,
+
+			textStyle:{
+				fontSize: 14,
+//				color: '#fff',
+			},
+
+
+		},
+		series: [
+			{
+				name:'2017年评分情况',
+				type:'pie',
+				//radius: ['50%', '70%'],  空心圆
+				radius : '80%',
+				avoidLabelOverlap: false,
+				label: {
+					normal: {
+						show: false,
+						position: 'center'
+					},
+					emphasis: {
+						show: true,
+						textStyle: {
+							fontSize: '30',
+							fontWeight: 'bold'
+						}
+					}
+				},
+				center:[
+					180,
+					90
+				],
+				labelLine: {
+					normal: {
+						show: false
+					}
+				},
+				data:[
+					{value:2, name:'95以上'},
+					{value:3, name:'85~94分'},
+					{value:3, name:'70~84分'},
+					{value:2, name:'60~69分'},
+					{value:1, name:'60分以下'}
+				]
+			}
+		]
+	};
+	myChart1.setOption(option1, true);
+
+	var myChart2 = echarts.init(document.getElementById('Agedata02'));
+	option2 = {
+		color: [
+			"#2ec7c9",
+			"#b6a2de",
+			"#5ab1ef",
+			"#ffb980",
+			"#d87a80",
+		],
+		tooltip: {
+			trigger: 'item',
+			formatter: "{a} <br/>{b}: {c} ({d}%)"
+		},
+		legend: {
+			orient: 'vertical',
+			x: 'left',
+			top: 18,
+			data:['95以上','85~94分','70~84分','60~69分','60分以下'],
+			itemWidth:18,
+			itemHeight:8,
+
+			textStyle:{
+				fontSize: 14,
+//				color: '#fff',
+			},
+
+
+		},
+		series: [
+			{
+				name:'2016年评分情况',
+				type:'pie',
+				//radius: ['50%', '70%'],  空心圆
+				radius : '80%',
+				avoidLabelOverlap: false,
+				label: {
+					normal: {
+						show: false,
+						position: 'center'
+					},
+					emphasis: {
+						show: true,
+						textStyle: {
+							fontSize: '30',
+							fontWeight: 'bold'
+						}
+					}
+				},
+				center:[
+					180,
+					90
+				],
+				labelLine: {
+					normal: {
+						show: false
+					}
+				},
+				data:[
+					{value:1, name:'95以上'},
+					{value:3, name:'85~94分'},
+					{value:3, name:'70~84分'},
+					{value:2, name:'60~69分'},
+					{value:1, name:'60分以下'}
+				]
+			}
+		]
+	};
+	myChart2.setOption(option2, true);
 	function pagehref (pageNum ,pageSize){
 		<%--window.location.href ="${path}/zzb/app/console/gbmc/a01/list?b01Id=${b01Id}&mcid=${mcid}&pageNum="+pageNum+"&pageSize="+pageSize;--%>
 		$.ajax({

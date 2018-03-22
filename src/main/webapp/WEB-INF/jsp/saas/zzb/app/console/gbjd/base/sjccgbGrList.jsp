@@ -69,6 +69,8 @@
 						<tr>
 							<th width="150">查核时间</th>
 							<th>查核结果</th>
+							<th width="150">审计报告</th>
+							<th width="150">被查对象情况说明</th>
 							<th width="90">操作</th>
 						</tr>
 						</thead>
@@ -76,6 +78,8 @@
 							<tr style="text-overflow:ellipsis;">
 								<td ><a href="#" class="">2017.03.10</a></td>
 								<td  >一致</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>
@@ -84,6 +88,8 @@
 							<tr style="text-overflow:ellipsis;">
 								<td ><a href="#" class="">2016.01.19</a></td>
 								<td  >不一致</td>
+								<td  ><a href="#">下载</a> </td>
+								<td  >无</td>
 								<td>
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>
