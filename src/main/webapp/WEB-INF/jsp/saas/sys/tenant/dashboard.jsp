@@ -140,7 +140,7 @@
                 </dd>
             </dl>
         </a>
-        <a class="nav_a" href="/zzb/app/console/gbjd/base/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+        <a class="nav_a" href="zzb/app/console/gbjd/dashboard?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco04.png"></dt>
                 <dd>

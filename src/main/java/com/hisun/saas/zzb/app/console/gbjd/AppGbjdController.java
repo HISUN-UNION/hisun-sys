@@ -39,8 +39,11 @@ public class AppGbjdController extends BaseController{
     @Resource
     private AppBsetFlService appBsetFlService;
 
+    @RequestMapping(value = "/dashboard")
+    public ModelAndView dashboard(){
+        return new ModelAndView("saas/zzb/app/console/gbjd/dashboard");
+    }
 
-    //===============base
     @RequestMapping(value = "/base")
     public ModelAndView base(){
         return new ModelAndView("saas/zzb/app/console/gbjd/base/a01/a01QueryManage");
@@ -150,13 +153,6 @@ public class AppGbjdController extends BaseController{
         return new ModelAndView("saas/zzb/app/console/gbjd/base/addBase");
     }
 
-    @RequestMapping(value = "/ajax/sjccgbGrList")
-    public ModelAndView sjccgbGrList(){
-        Map<String, Object> map = Maps.newHashMap();
-        PagerVo<AppAsetA01Vo> pagerVo = new PagerVo<AppAsetA01Vo>(null, 10, 1, 10);
-        map.put("pager", pagerVo);
-        return new ModelAndView("saas/zzb/app/console/gbjd/base/sjccgbGrList",map);
-    }
     @RequestMapping(value = "/ajax/sjgbGrList")
     public ModelAndView sjgbGrList(){
         Map<String, Object> map = Maps.newHashMap();
