@@ -14,7 +14,7 @@
 
 	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 	<!-- END PAGE LEVEL STYLES -->
-	<title>待办工作方案</title>
+	<title>任免干部列表</title>
 	<style type="text/css">
 		form {
 			margin: 0 0 0px;
@@ -29,16 +29,18 @@
 			<form class=""id="importForm" enctype="multipart/form-data">
 				<input type="hidden" name="b01Id" value="${b01Id}"/>
 				<div class="portlet-title">
-					<div class="caption">待办工作方案</div>
+					<div class="caption">工作方案：20170323-组织部 共 <font color="red">10</font> 人 </div>
 					<div class="clearfix fr">
-
-						<a id="sample_editable_1_new" class="btn green" href="#">
-							新建
-						</a>
 						<a id="sample_editable_1_new" class="btn green" href="#">
 							输出
 						</a>
-
+						<a id="sample_editable_1_new" class="btn green" href="#">
+							公示
+						</a>
+						<a id="sample_editable_1_new" class="btn green" href="#">
+							通知
+						</a>
+						<a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
 						<%--<span class="controllerClass btn green file_but" >--%>
 							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
 							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
@@ -52,39 +54,30 @@
 					<table class="table table-striped table-bordered table-hover dataTable table-set">
 						<thead>
 						<tr>
-							<th >工作方案名称</th>
-							<th width="90">任免人数</th>
-							<th width="150">创建时间</th>
-							<th width="150">方案进度</th>
-							<th width="90">操作</th>
+							<th width="60">姓名</th>
+							<th width="40">性别</th>
+							<th width="60">出生<br>年月</th>
+							<th>现任职务</th>
+							<th width="100"style="text-align: center">全日制<br>学历学位</th>
+							<th width="100"style="text-align: center">在职<br>学历学位</th>
+							<th width="150">拟任免单位职务</th>
+							<th width="90">干部监督情况</th>
+							<th width="80">操作</th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
-								<td ><a href="${path}/zzb/app/console/gbrm/ry/list" class="">20170323-有关干部调整配备建议方案（一）</a></td>
-								<td  >10</td>
-								<td  >2017.03.23</td>
-								<td title="完成2/10">
-									<div class="progress progress-success progress-striped" style="margin-bottom:0px">
-										<div class="bar" style="width: 20%;"></div>
-									</div>
-								</td>
+								<td ><a href="${path}/zzb/app/console/gbrm/ryManage" class="">满延春</a></td>
+								<td  >男</td>
+								<td >1975.09<br>(42岁)</td>
+								<td >州委组织部党员管理科科长</td>
+								<td >大学文学学士</td>
+								<td ></td>
+								<td title="">州委巡察组第三组副组长</td>
+
+								<td style="text-align: center"><i class="icon-info-sign"></i></td>
 								<td>
-									<a href="#" class="">修改</a>|
-									<a href="#" class="">删除</a>
-								</td>
-							</tr>
-							<tr style="text-overflow:ellipsis;">
-								<td ><a href="#" class="">20180305-有关干部调整配备建议方案（二）</a></td>
-								<td  >9</td>
-								<td  >2018.03.05</td>
-								<td title="完成7/9">
-									<div class="progress progress-success progress-striped" style="margin-bottom:0px">
-										<div class="bar" style="width: 78%;"></div>
-									</div>
-								</td>
-								<td>
-									<a href="#" class="">修改</a>|
+									<a href="${path}/zzb/app/console/gbrm/ryManage" class="">修改</a>|
 									<a href="#" class="">删除</a>
 								</td>
 							</tr>

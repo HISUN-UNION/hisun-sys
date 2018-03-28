@@ -14,7 +14,7 @@
 
 	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 	<!-- END PAGE LEVEL STYLES -->
-	<title>待办工作方案</title>
+	<title>征求意见</title>
 	<style type="text/css">
 		form {
 			margin: 0 0 0px;
@@ -24,81 +24,100 @@
 <body>
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span12 responsive">
-			<%-- 表格开始 --%>
-			<form class=""id="importForm" enctype="multipart/form-data">
-				<input type="hidden" name="b01Id" value="${b01Id}"/>
-				<div class="portlet-title">
-					<div class="caption">待办工作方案</div>
-					<div class="clearfix fr">
-
-						<a id="sample_editable_1_new" class="btn green" href="#">
-							新建
-						</a>
-						<a id="sample_editable_1_new" class="btn green" href="#">
-							输出
-						</a>
-
-						<%--<span class="controllerClass btn green file_but" >--%>
-							<%--<i class="icon-circle-arrow-up"></i>清空数据--%>
-							<%--<input class="file_progress" type="file" name="attachFile" id="btn-browseTemplate">--%>
-						<%--</span>--%>
-					</div>
-
+		<div class="portlet-body form">
+			<!-- BEGIN FORM-->
+			<div class="portlet-title">
+				<div class="clearfix fr">
+					<input type="checkbox">已完成材料审核
+					<a class="btn green" href="javascript:void();">
+						保存
+					</a>
+					<a class="btn green" href="javascript:void();">
+						完成该干部任免材料
+					</a>
 				</div>
+
+			</div>
+			<form action="${path }/zzb/app/console/bwh/save" class="form-horizontal" id="form1" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="id" value="${shpc.id }" id="id">
+				<input type="hidden" name="filePath" value="${shpc.filePath }" id="filePath">
+
+						<table  border="0" style="width:100%;" cellPadding="5px">
+
+							<tr>
+								<td>
+									<div id="xmGroup" class="control-group">
+										<label class="control-label">分管部门意见</label>
+										<div class="controls">
+											<textarea class="span11 m-wrap" rows="4"></textarea>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div id="xbGroup" class="control-group">
+										<label class="control-label">常委会意见</label>
+										<div class="controls">
+											<textarea class="span11 m-wrap" rows="4"></textarea>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div id="xmGroup" class="control-group">
+										<label class="control-label">干部科室意见</label>
+										<div class="controls">
+											<textarea class="span11 m-wrap" rows="4"></textarea>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div id="xbGroup" class="control-group">
+										<label class="control-label">审批机关意见</label>
+										<div class="controls">
+											<textarea class="span11 m-wrap" rows="4"></textarea>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div id="xmGroup" class="control-group">
+										<label class="control-label">部长办公会意见</label>
+										<div class="controls">
+											<textarea class="span11 m-wrap" rows="4"></textarea>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div id="xbGroup" class="control-group">
+										<label class="control-label">行政机关意见</label>
+										<div class="controls">
+											<textarea class="span11 m-wrap" rows="4"></textarea>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div id="xmGroup" class="control-group">
+										<label class="control-label">组织部意见</label>
+										<div class="controls">
+											<textarea class="span11 m-wrap" rows="4"></textarea>
+										</div>
+									</div>
+								</td>
+								<td>
+									&nbsp;
+								</td>
+							</tr>
+
+
+						</table>
+
+
 			</form>
-
-				<div class="portlet-body">
-					<table class="table table-striped table-bordered table-hover dataTable table-set">
-						<thead>
-						<tr>
-							<th >工作方案名称</th>
-							<th width="90">任免人数</th>
-							<th width="150">创建时间</th>
-							<th width="150">方案进度</th>
-							<th width="90">操作</th>
-						</tr>
-						</thead>
-						<tbody>
-							<tr style="text-overflow:ellipsis;">
-								<td ><a href="${path}/zzb/app/console/gbrm/ry/list" class="">20170323-有关干部调整配备建议方案（一）</a></td>
-								<td  >10</td>
-								<td  >2017.03.23</td>
-								<td title="完成2/10">
-									<div class="progress progress-success progress-striped" style="margin-bottom:0px">
-										<div class="bar" style="width: 20%;"></div>
-									</div>
-								</td>
-								<td>
-									<a href="#" class="">修改</a>|
-									<a href="#" class="">删除</a>
-								</td>
-							</tr>
-							<tr style="text-overflow:ellipsis;">
-								<td ><a href="#" class="">20180305-有关干部调整配备建议方案（二）</a></td>
-								<td  >9</td>
-								<td  >2018.03.05</td>
-								<td title="完成7/9">
-									<div class="progress progress-success progress-striped" style="margin-bottom:0px">
-										<div class="bar" style="width: 78%;"></div>
-									</div>
-								</td>
-								<td>
-									<a href="#" class="">修改</a>|
-									<a href="#" class="">删除</a>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<jsp:include page="/WEB-INF/jsp/common/page.jsp">
-						<jsp:param value="${pager.total }" name="total"/>
-						<jsp:param value="${pager.pageCount }" name="endPage"/>
-						<jsp:param value="${pager.pageSize }" name="pageSize"/>
-						<jsp:param value="${pager.pageNum }" name="page"/>
-					</jsp:include>
-				</div>
 		</div>
-		<%-- 表格结束 --%>
 	</div>
 </div>
 

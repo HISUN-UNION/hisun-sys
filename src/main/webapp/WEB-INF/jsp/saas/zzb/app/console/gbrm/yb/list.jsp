@@ -14,7 +14,7 @@
 
 	<link href="${path }/css/style.css" rel="stylesheet" type="text/css">
 	<!-- END PAGE LEVEL STYLES -->
-	<title>待办工作方案</title>
+	<title>已办工作方案</title>
 	<style type="text/css">
 		form {
 			margin: 0 0 0px;
@@ -29,12 +29,10 @@
 			<form class=""id="importForm" enctype="multipart/form-data">
 				<input type="hidden" name="b01Id" value="${b01Id}"/>
 				<div class="portlet-title">
-					<div class="caption">待办工作方案</div>
+					<div class="caption">已办工作方案</div>
 					<div class="clearfix fr">
 
-						<a id="sample_editable_1_new" class="btn green" href="#">
-							新建
-						</a>
+
 						<a id="sample_editable_1_new" class="btn green" href="#">
 							输出
 						</a>
@@ -55,39 +53,23 @@
 							<th >工作方案名称</th>
 							<th width="90">任免人数</th>
 							<th width="150">创建时间</th>
-							<th width="150">方案进度</th>
-							<th width="90">操作</th>
+							<th width="150">完成时间</th>
+							<th width="150">操作</th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
-								<td ><a href="${path}/zzb/app/console/gbrm/ry/list" class="">20170323-有关干部调整配备建议方案（一）</a></td>
+								<td ><a href="${path}/zzb/app/console/gbrm/ybry/list" class="">20170323-有关干部调整配备建议方案（一）</a></td>
 								<td  >10</td>
 								<td  >2017.03.23</td>
-								<td title="完成2/10">
-									<div class="progress progress-success progress-striped" style="margin-bottom:0px">
-										<div class="bar" style="width: 20%;"></div>
-									</div>
-								</td>
+								<td  >2017.06.11</td>
 								<td>
+									<a href="#" class="">继续办理</a>|
 									<a href="#" class="">修改</a>|
 									<a href="#" class="">删除</a>
 								</td>
 							</tr>
-							<tr style="text-overflow:ellipsis;">
-								<td ><a href="#" class="">20180305-有关干部调整配备建议方案（二）</a></td>
-								<td  >9</td>
-								<td  >2018.03.05</td>
-								<td title="完成7/9">
-									<div class="progress progress-success progress-striped" style="margin-bottom:0px">
-										<div class="bar" style="width: 78%;"></div>
-									</div>
-								</td>
-								<td>
-									<a href="#" class="">修改</a>|
-									<a href="#" class="">删除</a>
-								</td>
-							</tr>
+
 						</tbody>
 					</table>
 					<jsp:include page="/WEB-INF/jsp/common/page.jsp">
