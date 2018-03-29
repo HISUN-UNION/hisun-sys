@@ -153,6 +153,14 @@ public class AppGbjdController extends BaseController{
         return new ModelAndView("saas/zzb/app/console/gbjd/base/addBase");
     }
 
+    @RequestMapping(value = "/ajax/grsxchGrList")
+    public ModelAndView grsxchGrList(){
+        Map<String, Object> map = Maps.newHashMap();
+        PagerVo<AppAsetA01Vo> pagerVo = new PagerVo<AppAsetA01Vo>(null, 10, 1, 10);
+        map.put("pager", pagerVo);
+        return new ModelAndView("saas/zzb/app/console/gbjd/base/sjccgbGrList",map);
+    }
+
     @RequestMapping(value = "/ajax/sjgbGrList")
     public ModelAndView sjgbGrList(){
         Map<String, Object> map = Maps.newHashMap();

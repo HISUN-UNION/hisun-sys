@@ -126,7 +126,7 @@
 	}
 	function grsxchLoad(){
 		$.ajax({
-			url : "${path }/zzb/app/console/gbjd/ajax/sjccgbGrList",
+			url : "${path }/zzb/app/console/gbjd/ajax/grsxchGrList",
 			type : "post",
 			data : {"parentId":"${parentId}","id":"${ciId}"},
 			dataType : "html",
