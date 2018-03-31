@@ -22,6 +22,20 @@
 	</style>
 </head>
 <body>
+<div id="virwGbjdModal" class="modal container hide fade" tabindex="-1" data-width="700">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="titleView" >
+					干部监督情况
+				</h3>
+			</div>
+			<div class="modal-body" id="virwGbjdDiv">
+			</div>
+		</div>
+	</div>
+</div>
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12 responsive">
@@ -95,7 +109,7 @@
 										<div class="bar" style="width: 75%;"></div>
 									</div>
 								</td>
-								<td style="text-align: center"><i class="icon-info-sign"></i></td>
+								<td style="text-align: center"><i class="icon-info-sign" onclick="viewGbjd()"></i></td>
 								<td>
 									<a href="${path}/zzb/app/console/gbrm/ryManage" class="">修改</a>|
 									<a href="#" class="">删除</a>
@@ -355,6 +369,27 @@
 	function openGzzzb(){
 		var url ="http://localhost:8080/GZZZB/la/index.jsp?showFlag=init&moduleCode=LA_APPOINT_STUFF";
 		window.open(url);
+	}
+	function viewGbjd(){
+
+		$.ajax({
+			url : "${path}/zzb/app/console/gbjd/ajax/viewGbjd",
+			type : "post",
+			headers:{
+				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+			},
+			dataType : "html",
+			success : function(html){
+				$('#virwGbjdDiv').html(html);
+//                $('#titleView').text(tjmc);
+				$('#virwGbjdModal').modal({
+					keyboard: true
+				});
+			},
+			error : function(){
+				showTip("提示","出错了请联系管理员", 1500);
+			}
+		});
 	}
 </script>
 </body>
