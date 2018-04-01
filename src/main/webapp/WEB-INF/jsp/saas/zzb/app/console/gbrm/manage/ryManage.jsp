@@ -22,6 +22,34 @@
 	</style>
 </head>
 <body>
+<div id="viewDaModal" class="modal container hide fade" tabindex="-1" data-width="1010" data-height="600">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="title" >
+					“${a01Vo.xm}”档案图片
+				</h3>
+			</div>
+			<div class="modal-body" id="viewDaDiv" style="background-color: #f1f3f6;">
+			</div>
+		</div>
+	</div>
+</div>
+<div id="virwGbjdModal" class="modal container hide fade" tabindex="-1" data-width="700">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="titleView" >
+					干部监督情况
+				</h3>
+			</div>
+			<div class="modal-body" id="virwGbjdDiv">
+			</div>
+		</div>
+	</div>
+</div>
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12 responsive">
@@ -34,13 +62,13 @@
 						<%--<a class="btn green" href="javascript:void();">--%>
 							<%--保存--%>
 						<%--</a>--%>
-						<a class="btn green" href="javascript:void();">
+						<a class="btn green" href="javascript:viewDa();">
 							电子档案
 						</a>
 						<a class="btn green" href="javascript:void();">
 							任免文件
 						</a>
-						<a class="btn green" href="javascript:void();">
+						<a class="btn green" href="javascript:viewGbjd();">
 							干部监督信息
 						</a>
 						<a class="btn green" href="javascript:void();">
@@ -182,6 +210,49 @@
 			},
 			error : function(arg1, arg2, arg3){
 				showTip("提示","基本信息数据失败");
+			}
+		});
+	}
+	function viewGbjd(){
+		$.ajax({
+			url : "${path}/zzb/app/console/gbjd/ajax/viewGbjd",
+			type : "post",
+			headers:{
+				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+			},
+			dataType : "html",
+			success : function(html){
+				$('#virwGbjdDiv').html(html);
+//                $('#titleView').text(tjmc);
+				$('#virwGbjdModal').modal({
+					keyboard: true
+				});
+			},
+			error : function(){
+				showTip("提示","出错了请联系管理员", 1500);
+			}
+		});
+	}
+	var viewDa = function(){
+		var divHeight = $(window).height()-100;
+		$('#viewDaModal').attr("data-height",divHeight);
+		$.ajax({
+			url:"${path}/zzb/app/console/a38/ajax/viewImgManage",
+			type : "post",
+			data: {},
+			headers:{
+				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+			},
+			dataType : "html",
+			success : function(html){
+				$('#viewDaDiv').html(html);
+
+				$('#viewDaModal').modal({
+					keyboard: true
+				});
+			},
+			error : function(){
+				showTip("提示","出错了请联系管理员", 1500);
 			}
 		});
 	}
