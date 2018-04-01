@@ -176,6 +176,15 @@
                 <%--</dd>--%>
             <%--</dl>--%>
         <%--</a>--%>
+        <a class="nav_a" href=http://localhost:8080/zzb/app/console/a38/dashboard?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+            <dl class="dlnavigcont">
+                <dt><img src="${path}/images/templateImage/navIco05.png"></dt>
+                <dd>
+                    <h4>电子档案</h4>
+                    <p class="navp01">电子档案管理系统要实现了档案管理工作信息化，档案资料图片化，档案查阅无纸化和查阅远程化</p>
+                </dd>
+            </dl>
+        </a>
         <a class="nav_a" href="/zzb/app/console/zszyk/list/?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco10.png"></dt>
@@ -230,15 +239,7 @@
                 <%--</dd>--%>
             <%--</dl>--%>
         <%--</a>--%>
-        <%--<a class="nav_a" href="${path}${isSaas=='1'?'/sacm/host/ci/list':'/sacm/index'}?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">--%>
-            <%--<dl class="dlnavigcont">--%>
-                <%--<dt><img src="${path}/images/templateImage/navIco05.png"></dt>--%>
-                <%--<dd>--%>
-                    <%--<h4>资产管理</h4>--%>
-                    <%--<p class="navp01">“一键任务化”进行资产统计与管理，让你的资产一目了然。</p>--%>
-                <%--</dd>--%>
-            <%--</dl>--%>
-        <%--</a>--%>
+
     </div>
 </div>
 </body>

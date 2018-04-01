@@ -78,10 +78,10 @@
 			$(this).click(function(){
 				if($(this).attr("id")=="#tab_1_2"){
 					$("[id='#tab_1_2']").tab('show');
-					bzLoad();
+					xrzwLoad();
 				}else if($(this).attr("id")=="#tab_1_3"){
 					$("[id='#tab_1_3']").tab('show');
-					zwLoad();
+					gzjlLoad();
 				}else if($(this).attr("id")=="#tab_1_1"){
 					$("[id='#tab_1_1']").tab('show');
 					baseLoad();
@@ -112,16 +112,37 @@
 			}
 		});
 	}
-	//资产
-	function bzLoad(){
-
+	function xrzwLoad(){
+		$.ajax({
+			url : "${path }/zzb/app/console/asetA01/ajax/addXrzwList",
+			type : "post",
+			data : {"parentId":"${parentId}","id":"${ciId}"},
+			dataType : "html",
+			success : function(html){
+				var view = $("#tab_show");
+				view.html(html);
+			},
+			error : function(arg1, arg2, arg3){
+				showTip("提示","基本信息数据失败");
+			}
+		});
 	}
 
 
-
-	//连接方式
-	function zwLoad(){
-
+	function gzjlLoad(){
+		$.ajax({
+			url : "${path }/zzb/app/console/asetA01/ajax/addGzjl",
+			type : "post",
+			data : {"parentId":"${parentId}","id":"${ciId}"},
+			dataType : "html",
+			success : function(html){
+				var view = $("#tab_show");
+				view.html(html);
+			},
+			error : function(arg1, arg2, arg3){
+				showTip("提示","基本信息数据失败");
+			}
+		});
 	}
 
 

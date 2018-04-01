@@ -27,6 +27,20 @@
 </head>
 
 <body>
+<div id="viewDaModal" class="modal container hide fade" tabindex="-1" data-width="1010" data-height="600">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close"  type="button"></button>
+                <h3 class="modal-title" id="title" >
+                    “${a01Vo.xm}”档案图片
+                </h3>
+            </div>
+            <div class="modal-body" id="viewDaDiv" style="background-color: #f1f3f6;">
+            </div>
+        </div>
+    </div>
+</div>
 <div id="virwGbjdModal" class="modal container hide fade" tabindex="-1" data-width="700">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -75,7 +89,7 @@
                     </ul>
                 </div>
                 <a class="btn blue" herf="javascript:void(0)" onclick="">任免文件</a>
-                <a class="btn blue" herf="javascript:void(0)" onclick="">电子档案</a>
+                <a class="btn blue" herf="javascript:void(0)" onclick="view()">电子档案</a>
                 <a class="btn blue" herf="javascript:void(0)" onclick="viewGbjd()">干部监督信息</a>
 
                 <a class="btn" href="${path }/zzb/app/console/asetA01Query/?queryId=${queryId}&queryPosition=${queryPosition}"><i class="icon-undo"></i>返回</a>
@@ -129,7 +143,29 @@
 
 
     });
+    var view = function(){
+        var divHeight = $(window).height()-100;
+        $('#viewDaModal').attr("data-height",divHeight);
+        $.ajax({
+            url:"${path}/zzb/app/console/a38/ajax/viewImgManage",
+            type : "post",
+            data: {},
+            headers:{
+                OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+            },
+            dataType : "html",
+            success : function(html){
+                $('#viewDaDiv').html(html);
 
+                $('#viewDaModal').modal({
+                    keyboard: true
+                });
+            },
+            error : function(){
+                showTip("提示","出错了请联系管理员", 1500);
+            }
+        });
+    }
     var myLoading = new MyLoading("${path}", {zindex: 20000});
     function gbrmspbSubmit() {
         var fileInput = document.getElementById("btn-gbrmspb");

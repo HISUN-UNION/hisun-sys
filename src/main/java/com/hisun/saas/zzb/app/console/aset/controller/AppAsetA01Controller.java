@@ -117,17 +117,72 @@ public class AppAsetA01Controller extends BaseController {
         return new ModelAndView("saas/zzb/app/console/asetA01/manage/list", map);
 
     }
+    @RequestMapping(value = "/ajax/manageList2")
+    public ModelAndView getManageList2(String b01Id, String xmQuery,
+                                      @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        Map<String, Object> map = Maps.newHashMap();
+        boolean isHiddenFl = false;
+        try {
+            String b0101 = "";
+            if (StringUtils.isNotBlank(b01Id)) {
+                if (!b01Id.equals("allA01")) {
+                    AppBsetB01 appBsetB01 = this.appBsetB01Service.getByPK(b01Id);
+                    b0101 = appBsetB01.getB0101();
+                }
 
+            }
+            List<AppAsetA01Vo> appAsetA01Vos = new ArrayList<AppAsetA01Vo>();
+            PagerVo<AppAsetA01Vo> pagerVo = new PagerVo<AppAsetA01Vo>(appAsetA01Vos, 4, pageNum, pageSize);
+            map.put("pager", pagerVo);
+            map.put("b0101", b0101);
+            map.put("success", true);
+        } catch (Exception e) {
+            logger.error(e, e);
+            map.put("success", false);
+        }
+        return new ModelAndView("saas/zzb/app/console/asetA01/manage/list2", map);
+
+    }
     @RequestMapping(value = "/addManage")
     public ModelAndView addManage(String b01Id) throws Exception {
         Map<String, Object> map = Maps.newHashMap();
         return new ModelAndView("/saas/zzb/app/console/asetA01/manage/addManage", map);
     }
+
+
     @RequestMapping(value = "/ajax/addBase")
-    public ModelAndView addBase(String b01Id) throws Exception {
+    public ModelAndView addBase() throws Exception {
         Map<String, Object> map = Maps.newHashMap();
         return new ModelAndView("/saas/zzb/app/console/asetA01/manage/addBase", map);
     }
+    @RequestMapping(value = "/ajax/addXrzwList")
+    public ModelAndView addXrzwList() throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/asetA01/manage/xrzw/list", map);
+    }
+
+    @RequestMapping(value = "/ajax/addXrzw")
+    public ModelAndView addXrzw() throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/asetA01/manage/xrzw/addXrzw", map);
+    }
+    @RequestMapping(value = "/ajax/addGzjl")
+    public ModelAndView addGzjl() throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/asetA01/manage/gzjl/list", map);
+    }
+    @RequestMapping(value = "/ajax/drGbList")
+    public ModelAndView drGbList() throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/asetA01/manage/drgb/list", map);
+    }
+    @RequestMapping(value = "/ajax/importGb")
+    public ModelAndView importGb() throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/asetA01/manage/drgb/importGb", map);
+    }
+
     @RequestMapping(value = "/xlxw")
     public ModelAndView xlxwList() {
         return new ModelAndView("saas/zzb/app/console/asetA01/manage/xlxw/list");
@@ -144,6 +199,7 @@ public class AppAsetA01Controller extends BaseController {
     public ModelAndView gbxxshList() {
         return new ModelAndView("saas/zzb/app/console/asetA01/manage/gbxxsh/list");
     }
+
     //========================================以上为干部管理演示使用==============================
     @RequestMapping(value = "/ajax/list")
     public ModelAndView getList(String b01Id, String xmQuery,

@@ -81,6 +81,20 @@
 		</div>
 	</div>
 </div>
+<div id="gjcxModal" class="modal container hide fade" tabindex="-1" data-width="800">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" >
+					高级查询
+				</h3>
+			</div>
+			<div class="modal-body" id="gjcxAddDiv">
+			</div>
+		</div>
+	</div>
+</div>
 	<div class="container-fluid">
 
 		<div class="row-fluid">
@@ -381,8 +395,28 @@
 				keyboard: true
 			});
 		}
-		function openGjcx(){
-			window.open('http://localhost:8080/GZZZB/lq/conditionQuery/CadreQueryListPage_ConditionsInput.jsp?isFor_BZPB=&indexType=市管干部库');
+//		function openGjcx(){
+//			window.open('http://localhost:8080/GZZZB/lq/conditionQuery/CadreQueryListPage_ConditionsInput.jsp?isFor_BZPB=&indexType=市管干部库');
+//		}
+		var openGjcx = function(){
+			$.ajax({
+				url : "${path}/zzb/app/console/asetA01Query/ajax/gjcx",
+				type : "post",
+				data: {},
+				headers:{
+					OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+				},
+				dataType : "html",
+				success : function(html){
+					$('#gjcxAddDiv').html(html);
+					$('#gjcxModal').modal({
+						keyboard: true
+					});
+				},
+				error : function(){
+					showTip("提示","出错了请联系管理员", 1500);
+				}
+			});
 		}
 	</script>
 </body>

@@ -571,4 +571,10 @@ public class AppAsetA01QueryController extends BaseController {
         }
         return map;
     }
+
+    @RequestMapping(value = "/ajax/gjcx")
+    public ModelAndView gjcx() throws Exception {
+        Map<String, Object> map = Maps.newHashMap();
+        return new ModelAndView("/saas/zzb/app/console/asetA01/query/gjcxManage", map);
+    }
 }

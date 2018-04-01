@@ -532,6 +532,20 @@
 								<a href="#" class="">删除</a>
 							</td>
 						</tr>
+						<tr style="text-overflow:ellipsis;">
+							<td title="向恩明"><a href="javascript:void()" class="">向恩明</a></td>
+							<td title="男">男</td>
+							<td title="1966.09" style="text-align: center">1966.06<br>(51岁)</td>
+							<td title=湘西自治州委常委，湘西自治州人民政府副州长、党组副书记">湘西自治州委常委，湘西自治州人民政府副州长、党组副书记</td>
+							<td>硕士研究生</td>
+							<td>
+							</td>
+							<td>2011.07</td>
+							<td>
+								<a href="#" class="">编辑</a>|
+								<a href="#" class="">删除</a>
+							</td>
+						</tr>
 						</tbody>
 					</table>
 					<jsp:include page="/WEB-INF/jsp/common/page.jsp">
