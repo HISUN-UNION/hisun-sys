@@ -28,7 +28,7 @@
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close"  type="button"></button>
 				<h3 class="modal-title" id="title" >
-					“叶红专”档案图片
+					“红叶专”档案图片
 				</h3>
 			</div>
 			<div class="modal-body" id="jgAddDiv" style="background-color: #f1f3f6;">
@@ -91,7 +91,7 @@
 						</thead>
 						<tbody>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
-							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="javascript:view()">叶红专</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="javascript:view()">红叶专</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD >1962.07.02 </TD>
 							<TD title=州委书记>州委书记 </TD>
@@ -101,7 +101,7 @@
 							</TR>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className='table_tr_dark'" class=table_tr_dark>
 
-							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">叶红专001</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">红叶专001</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD>1962.07.02 </TD>
 							<TD title=州委书记>州委书记 </TD>

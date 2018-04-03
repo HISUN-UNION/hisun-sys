@@ -22,7 +22,7 @@
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close"  type="button"></button>
 				<h3 class="modal-title" id="title" >
-					“叶红专”档案图片
+					“红叶专”档案图片
 				</h3>
 			</div>
 			<div class="modal-body" id="jgAddDiv" style="background-color: #f1f3f6;">

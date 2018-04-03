@@ -94,7 +94,7 @@
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
 							<TD style="TEXT-ALIGN: center"></TD>
 							<TD style="TEXT-ALIGN: center">0002 </TD>
-							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="${path}/zzb/app/console/a38/shBase?loadType=shList">叶红专</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="${path}/zzb/app/console/a38/shBase?loadType=shList">红叶专</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD >1962.07.02 </TD>
 							<TD title=州委书记>州委书记 </TD>
@@ -106,12 +106,12 @@
 								<a href="#">审核通过 </a>|
 								<a href="#">审核不通过 </a>
 							</TD><!--<td  style="text-align:center;" width="5%">
-									<a href="javascript:openFile('58F2F87EC0A800CC2DE33CCA0E6F9647','叶红专');"><font color="blue" style="cursor:hand">导入</font></a>
+									<a href="javascript:openFile('58F2F87EC0A800CC2DE33CCA0E6F9647','红叶专');"><font color="blue" style="cursor:hand">导入</font></a>
 								</td>--></TR>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className='table_tr_dark'" class=table_tr_dark>
 							<TD style="TEXT-ALIGN: center"></TD>
 							<TD style="TEXT-ALIGN: center"></TD>
-							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">叶红专001</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">红叶专001</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD>1962.07.02 </TD>
 							<TD title=州委书记>州委书记 </TD>

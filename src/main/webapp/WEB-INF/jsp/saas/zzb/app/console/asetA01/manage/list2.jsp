@@ -503,7 +503,7 @@
 							</td>
 						</tr>
 						<tr style="text-overflow:ellipsis;">
-							<td title="叶红专"><a href="javascript:void()" class="">叶红专</a></td>
+							<td title="红叶专"><a href="javascript:void()" class="">红叶专</a></td>
 							<td title="男">男</td>
 							<td title="1958.06" style="text-align: center">1958.06<br>(60岁)</td>
 							<td title="州委书记">州委书记</td>

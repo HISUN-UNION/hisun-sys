@@ -31,7 +31,7 @@
 										<tbody>
 											<tr >
 												<th width="30%" style="text-align: right">姓名:</th>
-												<td >叶红专</td>
+												<td >红叶专</td>
 											</tr>
 											<tr >
 												<th width="30%" style="text-align: right">性别:</th>
@@ -43,7 +43,7 @@
 											</tr>
 											<tr >
 												<th width="30%" style="text-align: right">籍贯:</th>
-												<td >叶红专</td>
+												<td >红叶专</td>
 											</tr>
 											<tr >
 												<th width="30%" style="text-align: right">干部状态:</th>

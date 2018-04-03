@@ -41,7 +41,7 @@
 						<a class="btn green" href="javascript:unloadFile()">导入档案</a>
 						<input type="file" style="display: none" name="unloadFile" id="btn-unloadFile"/>
 
-						<a id="sample_editable_1_new" class="btn green" href="#">
+						<a id="sample_editable_1_new" class="btn green" href="javascript:fileDown('list')">
 							输出
 						</a>
 
@@ -108,7 +108,7 @@
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
 							<TD style="TEXT-ALIGN: center"></TD>
 							<TD style="TEXT-ALIGN: center">0002 </TD>
-							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="${path}/zzb/app/console/a38/manage">叶红专</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="${path}/zzb/app/console/a38/manage">红叶专</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD >1962.07.02 </TD>
 							<TD title=州委书记>州委书记 </TD>
@@ -117,13 +117,13 @@
 							<TD style="TEXT-ALIGN: center">副局<BR>(2008.03) </TD>
 							<TD style="TEXT-ALIGN: center" width=40>杜政 </TD>
 							<TD style="TEXT-ALIGN: center">2018.03.29 16:02 </TD>
-							<TD style="TEXT-ALIGN: center"><a href="${path}/zzb/app/console/asetA01Query/view?id=51992&queryId=&queryPosition=da">叶红专 </a></TD><!--<td  style="text-align:center;" width="5%">
-									<a href="javascript:openFile('58F2F87EC0A800CC2DE33CCA0E6F9647','叶红专');"><font color="blue" style="cursor:hand">导入</font></a>
+							<TD style="TEXT-ALIGN: center"><a href="${path}/zzb/app/console/asetA01Query/view?id=51992&queryId=&queryPosition=da">红叶专 </a></TD><!--<td  style="text-align:center;" width="5%">
+									<a href="javascript:openFile('58F2F87EC0A800CC2DE33CCA0E6F9647','红叶专');"><font color="blue" style="cursor:hand">导入</font></a>
 								</td>--></TR>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className='table_tr_dark'" class=table_tr_dark>
 							<TD style="TEXT-ALIGN: center"></TD>
 							<TD style="TEXT-ALIGN: center"></TD>
-							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">叶红专001</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">红叶专001</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD>1962.07.02 </TD>
 							<TD title=州委书记>州委书记 </TD>
@@ -133,7 +133,7 @@
 							<TD style="TEXT-ALIGN: center" width=40>杜政 </TD>
 							<TD style="TEXT-ALIGN: center">2017.07.14 20:33 </TD>
 							<TD style="TEXT-ALIGN: center"></TD><!--<td  style="text-align:center;" width="5%">
-									<a href="javascript:openFile('ED354F89646464C3424EDFEBF1D25A85','叶红专001');"><font color="blue" style="cursor:hand">导入</font></a>
+									<a href="javascript:openFile('ED354F89646464C3424EDFEBF1D25A85','红叶专001');"><font color="blue" style="cursor:hand">导入</font></a>
 								</td>--></TR>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
 							<TD style="TEXT-ALIGN: center"></TD>
@@ -416,6 +416,9 @@
 	function openGzzzb(){
 		var url ="http://localhost:8080/GZZZB/la/index.jsp?showFlag=init&moduleCode=LA_APPOINT_STUFF";
 		window.open(url);
+	}
+	function fileDown(type) {
+		window.open("${path }/zzb/app/console/a38/ajax/down?type="+type);
 	}
 </script>
 </body>

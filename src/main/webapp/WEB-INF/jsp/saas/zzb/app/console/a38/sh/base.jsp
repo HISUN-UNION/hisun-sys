@@ -8,7 +8,7 @@
 		<div class="caption">
 
 
-			<span class="hidden-480">姓名：叶红专</span>
+			<span class="hidden-480">姓名：红叶专</span>
 
 		</div>
 		<div class="portlet-title" style="text-align: right">
@@ -48,7 +48,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label">姓名<span class="required">*</span></label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="叶红专" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="红叶专" />
 						</div>
 					</div>
 				</td>

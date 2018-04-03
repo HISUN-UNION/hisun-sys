@@ -30,7 +30,7 @@
 									<div id="pcmcGroup" class="control-group">
 										<label class="control-label">姓名<span class="required">*</span></label>
 										<div class="controls">
-											<input type="text" class="span10 m-wrap" name="pcmc"  maxlength="200" id="pcmc" value="叶红专"/>
+											<input type="text" class="span10 m-wrap" name="pcmc"  maxlength="200" id="pcmc" value="红叶专"/>
 										</div>
 
 									</div>

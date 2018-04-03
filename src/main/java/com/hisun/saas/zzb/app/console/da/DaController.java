@@ -285,9 +285,9 @@ public class DaController extends BaseController{
     public void fileDown(String type, HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String filePath = "";
         if(type!=null && type.equals("dianzibiaogemulu")){
-            filePath = File.separator+"da"+File.separator+"叶红专的电子档案(20180402).xls";
+            filePath = File.separator+"da"+File.separator+"红叶专的电子档案(20180402).xls";
         }else if(type!=null && type.equals("allDa")) {
-            filePath = File.separator+"da" + File.separator + "叶红专的档案（含图片).rar";
+            filePath = File.separator+"da" + File.separator + "红叶专的档案（含图片).rar";
         }else if(type!=null && type.equals("qianquecail")) {
             filePath = File.separator+"da" + File.separator + "干部档案个人欠缺材料情况表.xls";
         }else if(type!=null && type.equals("dangantupianxiazai")) {
@@ -296,6 +296,8 @@ public class DaController extends BaseController{
             filePath = File.separator+"da" + File.separator + "干部档案目录模板.xls";
         }else if(type!=null && type.equals("daochumilu")) {
             filePath = File.separator+"da" + File.separator + "干部档案目录.xls";
+        }else if(type!=null && type.equals("list")) {
+            filePath = File.separator+"da" + File.separator + "档案列表.xlsx";
         }
         resp.setContentType("multipart/form-data");
         //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)

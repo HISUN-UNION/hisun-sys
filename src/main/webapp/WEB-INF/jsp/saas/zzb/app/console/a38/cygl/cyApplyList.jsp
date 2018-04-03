@@ -28,7 +28,7 @@
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close"  type="button"></button>
 				<h3 class="modal-title" id="title" >
-					“叶红专”档案图片
+					“红叶专”档案图片
 				</h3>
 			</div>
 			<div class="modal-body" id="jgAddDiv" style="background-color: #f1f3f6;">
@@ -111,7 +111,7 @@
 						</thead>
 						<tbody>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
-							<TD style="CURSOR: hand; TEXT-ALIGN: center" >叶红专</TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center" >红叶专</TD>
 							<TD style="TEXT-ALIGN: center" width=40>广州市监察局第三纪检监察室副局级主任 </TD>
 							<TD >个人履历表 </TD>
 							<TD >市委组织部</TD>

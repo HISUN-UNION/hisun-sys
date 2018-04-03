@@ -19,7 +19,7 @@
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close"  type="button"></button>
 				<h3 class="modal-title" id="addTitle" >
-					“叶红专”档案对应的干部信息
+					“红叶专”档案对应的干部信息
 				</h3>
 			</div>
 			<div class="modal-body" id="viewA01Div">
@@ -47,7 +47,7 @@
 	<div class="row-fluid">
 		<div class="portlet box grey ">
 				<div class="relationbetTop" style="height: 10px">
-					<div class="relationbetTop_left">姓名：叶红专</div>
+					<div class="relationbetTop_left">姓名：红叶专</div>
 					<div class="relationbetTop_but">
 						<button type="button" class="btn green" onclick=""><i class="icon-ok"></i> 保存</button>
 						<div class="btn-group" style="padding-bottom: 0px">
