@@ -60,12 +60,12 @@
 		function gbrmspbSubmit() {
 			var fileInput = document.getElementById("btn-unloadFile");
 			if (fileInput.files.length > 0) {
-				var name = fileInput.files[0].name
-				var arr = name.split(".");
-				if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {
-					showTip("提示", "请上传word文件", 2000);
-					return;
-				}
+//				var name = fileInput.files[0].name
+//				var arr = name.split(".");
+//				if (arr.length < 2 || !(arr[arr.length - 1] == "doc" || arr[arr.length - 1] == "docx" || arr[arr.length - 1] == "DOC" || arr[arr.length - 1] == "DOCX")) {
+//					showTip("提示", "请上传word文件", 2000);
+//					return;
+//				}
 			} else {
 				showTip("提示", "请选择文件上传", 2000);
 				return;
