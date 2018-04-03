@@ -32,9 +32,29 @@
 					<div class="caption">档案管理：共<font color="red"> 10 </font>人</div>
 					<div class="clearfix fr">
 
-						<a id="sample_editable_1_new" class="btn green" href="#">
-							新建
-						</a>
+
+						<div class="btn-group" style="padding-bottom: 0px">
+							<a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
+								新建 <i class="icon-angle-down"></i>
+							</a>
+							<ul class="dropdown-menu">
+								<li >
+									<a href="${path}/zzb/app/console/a38/addDaBase">新建</a>
+								</li>
+								<li >
+									<a onclick="unloadFile()">导入Lrmx</a>
+								</li>
+								<li >
+									<a onclick="unloadFile()">导入Lrm</a>
+								</li>
+								<li >
+									<a onclick="unloadFile()">导入HZB</a>
+								</li>
+								<li >
+									<a onclick="unloadFile()">导入7z</a>
+								</li>
+							</ul>
+						</div>
 						<%--<a id="sample_editable_1_new" class="btn green" href="#">--%>
 							<%--高级查询--%>
 						<%--</a>--%>
