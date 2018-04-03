@@ -28,7 +28,7 @@
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close"  type="button"></button>
 				<h3 class="modal-title" id="title" >
-					“戚媚”档案图片
+					“叶红专”档案图片
 				</h3>
 			</div>
 			<div class="modal-body" id="jgAddDiv" style="background-color: #f1f3f6;">
@@ -80,7 +80,7 @@
 						</thead>
 						<tbody>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
-							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="javascript:view()">戚媚</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="javascript:view()">叶红专</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>广州市监察局第三纪检监察室副局级主任 </TD>
 							<TD >120分钟 </TD>
 							<TD >2018.03.31 11:01 </TD>

@@ -68,7 +68,7 @@
                          <%--class="icon-circle-arrow-down"></i>干部任免审批表</a>--%>
                 <div class="btn-group">
                     <a class="btn green dropdown-toggle" data-toggle="dropdown" href="#">
-                        输出 <i class="icon-angle-down"></i>
+                        输出<i class="icon-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">
                         <li >
@@ -92,7 +92,7 @@
                 <a class="btn blue" herf="javascript:void(0)" onclick="view()">电子档案</a>
                 <a class="btn blue" herf="javascript:void(0)" onclick="viewGbjd()">干部监督信息</a>
 
-                <a class="btn" href="${path }/zzb/app/console/asetA01Query/?queryId=${queryId}&queryPosition=${queryPosition}"><i class="icon-undo"></i>返回</a>
+                <a class="btn" href="javascript:returnList()"><i class="icon-undo"></i>返回</a>
         </div>
         <div class="mainoneright" style="width: 560px;">
             <div class="Fullname">${a01Vo.xm}</div>
@@ -232,27 +232,13 @@
     }
 
     function returnList(){
-        $.ajax({
-            async:false,
-            type:"POST",
-            url:"${path}/zzb/app/console/asetA01/ajax/list",
-            dataType : "html",
-            headers:{
-                "OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
-            },
-            data:{
-                'b01Id':"${b01Id}"
-            },
-            success:function(html){
-                $("#catalogList").html(html);
-//				$("#treeId").val(nodeId);
-            },
-            error : function(){
-                myLoading.hide();
-                showTip("提示","出错了,请检查网络!",2000);
-            }
-        });
+       var queryPosition =  "${queryPosition}";
+        if(queryPosition=="da"){
+            window.location.href="  ${path }/zzb/app/console/a38/list";
+        }else{
+            window.location.href="  ${path }/zzb/app/console/asetA01Query/?queryId=${queryId}&queryPosition=${queryPosition}";
 
+        }
     }
     function viewGbjd(){
 

@@ -22,6 +22,35 @@
 	</style>
 </head>
 <body>
+<div id="addZjclModal" class="modal container hide fade" tabindex="-1" data-width="600">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="addTitle" >
+					增加追缴材料
+				</h3>
+			</div>
+			<div class="modal-body" id="addZjclDiv">
+			</div>
+		</div>
+	</div>
+</div>
+<div id="editZjclModal" class="modal container hide fade" tabindex="-1" data-width="600">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" >
+					修改追缴材料
+				</h3>
+			</div>
+			<div class="modal-body" id="editZjclDiv">
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="span12 responsive">
@@ -30,7 +59,7 @@
 					<div class="caption">追缴材料  共<font color="red"> 1 </font>条记录 </div>
 					<div class="clearfix fr">
 
-						<a id="sample_editable_1_new" class="btn green" href="#">
+						<a id="sample_editable_1_new" class="btn green" href="javascript:addZjcl()">
 							添加
 						</a>
 
@@ -46,25 +75,25 @@
 					<table class="table table-striped table-bordered table-hover dataTable table-set">
 						<thead>
 						<tr>
-							<th >材料名称</th>
+							<th  width="150">材料名称</th>
 							<th width="90">材料时间</th>
-							<th width="150">材料大类</th>
-							<th width="250">材料类型</th>
+							<th width="250">材料大类</th>
+							<th>材料类型</th>
 							<th width="150">备注</th>
 							<th width="90">操作</th>
 						</tr>
 						</thead>
 						<tbody>
 							<tr style="text-overflow:ellipsis;">
-								<td ><a href="#" class="">学历材料</a></td>
+								<td ><a href="javascript:editZjcl()" class="">学历材料</a></td>
 								<td  >2001.03.01</td>
-								<td  >学历学位材料</td>
+								<td  title="学历、学位、学绩、培训和专业技术情况材料">学历、学位、学绩、培训和专业技术情况材料</td>
 								<td title="A.大学本（专）科学历需有: ①高校学生登记表 ②高校学生学习成绩登记表 ③高校毕业生登记表" >
 									A.大学本（专）科学历需有: ①高校学生登记表 ②高校学生学习成绩登记表 ③高校毕业生登记表
 								</td>
 								<td  ></td>
 								<td>
-									<a href="#" class="">修改</a>|
+									<a href="javascript:editZjcl()" class="">修改</a>|
 									<a href="#" class="">删除</a>
 								</td>
 							</tr>
@@ -90,108 +119,7 @@
 	(function(){
 		App.init();
 
-		$("#btn-browseTemplate").bind("change",function(evt){
-			if($(this).val()){
-				ajaxSubmit();
-			}
-			$(this).val('');
-		});
-		var myLoading = new MyLoading("${path}",{zindex:20000});
-		function ajaxSubmit(){
-			var fileInput = document.getElementById("btn-browseTemplate");
-			if(fileInput.files.length>0){
-				var name = fileInput.files[0].name
-				var arr = name.split(".");
-				if(arr.length<2 || !(arr[arr.length-1]=="doc" || arr[arr.length-1]=="docx"|| arr[arr.length-1]=="DOC"|| arr[arr.length-1]=="DOCX")){
-					showTip("提示","请上传word文件",2000);
-					return;
-				}
-			}else{
-				showTip("提示","请选择文件上传",2000);
-				return;
-			}
-			//hideErrorMsg();
-			$("#importForm").ajaxSubmit({
-				url : "${path }/zzb/app/console/asetA01/ajax/execute?b01Id=${b01Id}",
-				type : "post",
-				headers:{
-					OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
-				},
-				beforeSend:function(XHR){
-					myLoading.show();
-				},
-				success : function(json){
-					if(json.code == 1){
-						searchSubmit()
-						showTip("提示","操作成功",2000);
-					}else if(json.code == -1){
-						showTip("提示", json.message,2000);
-					}else if(json.code == -2){
-						showTip("提示", "导入数据存在错误，请及时下载已标记错误处的日志模板文件",500);
-						//$('#downloanErrorTd').show();
-						//$('#downloanError').attr('href','${path}/sacm/asset/export/downloanError?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}&path='+encodeURIComponent(encodeURIComponent(json.path)));
-						//$('#errorMsg').text('导入数据存在错误，请及时下载已标记错误处的日志模板文件');
-					}else{
-						showTip("提示","出错了,请检查网络!",2000);
-					}
-				},
-				error : function(arg1, arg2, arg3){
-					showTip("提示","出错了,请检查网络!",2000);
-				},
-				complete : function(XHR, TS){
-					myLoading.hide();
-				}
-			});
-		}
 
-		//批量上传干部人员审批表
-		$("#btn-moreAttTemplate").bind("change", function (evt) {
-			if ($(this).val()) {
-				gbrmspbSubmit();
-			}
-			$(this).val('');
-		});
-
-		function gbrmspbSubmit() {
-			var fileInput = document.getElementById("btn-moreAttTemplate");
-			if (fileInput.files.length > 0) {
-				var name = fileInput.files[0].name
-				var arr = name.split(".");
-				if (arr.length < 2 || !(arr[arr.length - 1] == "zip" || arr[arr.length - 1] == "ZIP")) {
-					showTip("提示", "请上传zip文件", 2000);
-					return;
-				}
-			} else {
-				showTip("提示", "请选择文件上传", 2000);
-				return;
-			}
-			$("#importForm").ajaxSubmit({
-				url: "${path }/zzb/app/console/GbMca01/gbrmspb/ajax/batch/upload?b01Id=${b01Id}",
-				type: "post",
-				headers: {
-					OWASP_CSRFTOKEN: "${sessionScope.OWASP_CSRFTOKEN}"
-				},
-				beforeSend: function (XHR) {
-					myLoading.show();
-				},
-				success: function (json) {
-					if (json.code == 1) {
-						showTip("提示","上传成功",2000);
-						<%--window.location.href="${path}/zzb/app/console/gbmc/a01/list?b01Id=${b01Id}&mcid=${mcid}";--%>
-					} else if (json.code == -1) {
-						showTip("提示", json.message, 2000);
-					} else {
-						showTip("提示", "出错了,请检查网络!", 2000);
-					}
-				},
-				error: function (arg1, arg2, arg3) {
-					showTip("提示", "出错了,请检查网络!", 2000);
-				},
-				complete: function (XHR, TS) {
-					myLoading.hide();
-				}
-			});
-		}
 	})();
 
 	function pagehref (pageNum ,pageSize){
@@ -221,102 +149,45 @@
 
 	}
 
-	function searchSubmit(){
+	var addZjcl = function(){
 		$.ajax({
-			async:false,
-			type:"POST",
-			url:"${path}/zzb/app/console/asetA01/ajax/list",
-			dataType : "html",
-			headers:{
-				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
-			},
-			data : $("#searchForm").serialize(),
-			success:function(html){
-				$("#catalogList").html(html);
-//				$("#treeId").val(nodeId);
-			},
-			error : function(){
-				myLoading.hide();
-				showTip("提示","出错了,请检查网络!",2000);
-			}
-		});
-	}
-
-
-	var view = function(id){
-		$.ajax({
-			async:false,
-			type:"POST",
-			url:"${path}/zzb/app/console/asetA01/ajax/view",
-			dataType : "html",
-			headers:{
-				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
-			},
-			data:{
-				'id':id,
-				'b01Id':"${b01Id}"
-			},
-			success:function(html){
-				$("#catalogList").html(html);
-//				$("#treeId").val(nodeId);
-			},
-			error : function(){
-				myLoading.hide();
-				showTip("提示","出错了,请检查网络!",2000);
-			}
-		});
-	}
-	var del = function(id,itemName){
-		actionByConfirm1(itemName, "${path}/zzb/app/console/asetA01/delete/" + id,{} ,function(data,status){
-			if (data.success == true) {
-				showTip("提示","删除成功", 2000);
-				setTimeout(function(){window.location.href = "${path}/zzb/app/console/asetA01/list?b01Id=${b01Id}&mcid=${mcid}"},2000);
-			}else{
-				showTip("提示", data.message, 2000);
-			}
-		});
-	};
-	function uploadFile(fileName){
-		document.getElementById("btn-"+fileName).click();
-	}
-	function clearData(){
-		$("#xmQuery").val('');
-		$.ajax({
-			async:false,
-			type:"POST",
-			url:"${path}/zzb/app/console/asetA01/ajax/list",
-			dataType : "html",
-			headers:{
-				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
-			},
-			data : $("#searchForm").serialize(),
-			success:function(html){
-				$("#catalogList").html(html);
-//				$("#treeId").val(nodeId);
-			},
-			error : function(){
-				myLoading.hide();
-				showTip("提示","出错了,请检查网络!",2000);
-			}
-		});
-	}
-	function exportGbrmsp(){
-		$.cloudAjax({
-			path : '${path}',
-			url : "${path }/zzb/app/console/asetA01/ajax/exportGbrmsp",
+			url:"${path}/zzb/app/console/a38/ajax/addZjcl",
 			type : "post",
-			data : $("#form1").serialize(),
-			dataType : "json",
-			success : function(data){
-				if(data.success == true){
-					showTip("提示","生成干部任免审批表成功!",2000);
-					//setTimeout(function(){window.location.href = "${path}/zzb/app/console/bwh/"},2000);
-				}else{
-					showTip("提示", "生成干部任免审批表失败!", 2000);
-				}
+			data: {},
+			headers:{
+				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+			},
+			dataType : "html",
+			success : function(html){
+				$('#addZjclDiv').html(html);
+
+				$('#addZjclModal').modal({
+					keyboard: true
+				});
 			},
 			error : function(){
-				showTip("提示","出错了请联系管理员",2000);
+				showTip("提示","出错了请联系管理员", 1500);
+			}
+		});
+	}
+	var editZjcl = function(){
+		$.ajax({
+			url:"${path}/zzb/app/console/a38/ajax/editZjcl",
+			type : "post",
+			data: {},
+			headers:{
+				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+			},
+			dataType : "html",
+			success : function(html){
+				$('#editZjclDiv').html(html);
+
+				$('#editZjclModal').modal({
+					keyboard: true
+				});
+			},
+			error : function(){
+				showTip("提示","出错了请联系管理员", 1500);
 			}
 		});
 	}

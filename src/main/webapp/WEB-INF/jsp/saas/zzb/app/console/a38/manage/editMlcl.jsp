@@ -10,7 +10,7 @@
 
 				<i class="icon-reorder"></i>
 
-				<span class="hidden-480">增加目录材料</span>
+				<span class="hidden-480">修改目录材料</span>
 
 			</div>
 			<div class="tools">
@@ -26,7 +26,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label"><span class="required">*</span>材料名称</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="干部履历表" />
 						</div>
 					</div>
 				</td>
@@ -34,7 +34,7 @@
 					<div id="influenceInfoIdGroup" class="control-group">
 						<label class="control-label">材料制成时间</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="2000.11.02" />
 						</div>
 					</div>
 				</td>
@@ -54,7 +54,7 @@
 						<label class="control-label">材料页数</label>
 						<div class="controls">
 
-								<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+								<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="13" />
 
 						</div>
 					</div>
@@ -94,7 +94,7 @@
 					<div id="influenceInfoIdGroup" class="control-group">
 						<label class="control-label">接收日期</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="200803" />
 						</div>
 					</div>
 				</td>
@@ -104,7 +104,7 @@
 					<label class="control-label"><span class="required">*</span>材料序号</label>
 					<div class="controls">
 
-						<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="2" />
+						<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="1" />
 					</div>
 				</div>
 			</td>
@@ -112,7 +112,7 @@
 				<div id="influenceInfoIdGroup" class="control-group">
 					<label class="control-label">扫描排序</label>
 					<div class="controls">
-						<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="2" />
+						<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="1" />
 					</div>
 				</div>
 			</td>

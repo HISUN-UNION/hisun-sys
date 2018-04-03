@@ -35,9 +35,12 @@
 						<a id="sample_editable_1_new" class="btn green" href="#">
 							新建
 						</a>
-						<a id="sample_editable_1_new" class="btn green" href="#">
-							高级查询
-						</a>
+						<%--<a id="sample_editable_1_new" class="btn green" href="#">--%>
+							<%--高级查询--%>
+						<%--</a>--%>
+						<a class="btn green" href="javascript:unloadFile()">导入档案</a>
+						<input type="file" style="display: none" name="unloadFile" id="btn-unloadFile"/>
+
 						<a id="sample_editable_1_new" class="btn green" href="#">
 							输出
 						</a>
@@ -99,38 +102,38 @@
 							<th width=70>现职级时间</th>
 							<th width="5%">修改者</th>
 							<th width=80>修改时间</th>
-							<th width=70>关联情况</th><!-- <td width="5%" class="table_title_td"><b>导入</b></td> --></TR>
+							<th width=80>关联情况</th>
 						</thead>
 						<tbody>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
 							<TD style="TEXT-ALIGN: center"></TD>
 							<TD style="TEXT-ALIGN: center">0002 </TD>
-							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="${path}/zzb/app/console/a38/manage">戚媚</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="${path}/zzb/app/console/a38/manage">叶红专</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD >1962.07.02 </TD>
-							<TD title=中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员>中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员 </TD>
+							<TD title=州委书记>州委书记 </TD>
 							<TD >2015.03.05 </TD>
 							<TD style="TEXT-ALIGN: center">现职 </TD>
 							<TD style="TEXT-ALIGN: center">副局<BR>(2008.03) </TD>
 							<TD style="TEXT-ALIGN: center" width=40>杜政 </TD>
 							<TD style="TEXT-ALIGN: center">2018.03.29 16:02 </TD>
-							<TD style="TEXT-ALIGN: center"><a href="#">戚媚 </a></TD><!--<td  style="text-align:center;" width="5%">
-									<a href="javascript:openFile('58F2F87EC0A800CC2DE33CCA0E6F9647','戚媚');"><font color="blue" style="cursor:hand">导入</font></a>
+							<TD style="TEXT-ALIGN: center"><a href="${path}/zzb/app/console/asetA01Query/view?id=51992&queryId=&queryPosition=da">叶红专 </a></TD><!--<td  style="text-align:center;" width="5%">
+									<a href="javascript:openFile('58F2F87EC0A800CC2DE33CCA0E6F9647','叶红专');"><font color="blue" style="cursor:hand">导入</font></a>
 								</td>--></TR>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className='table_tr_dark'" class=table_tr_dark>
 							<TD style="TEXT-ALIGN: center"></TD>
 							<TD style="TEXT-ALIGN: center"></TD>
-							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">戚媚001</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">叶红专001</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD>1962.07.02 </TD>
-							<TD title=中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员>中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员 </TD>
+							<TD title=州委书记>州委书记 </TD>
 							<TD>2015.03.06 </TD>
 							<TD style="TEXT-ALIGN: center">现职 </TD>
 							<TD style="TEXT-ALIGN: center"></TD>
 							<TD style="TEXT-ALIGN: center" width=40>杜政 </TD>
 							<TD style="TEXT-ALIGN: center">2017.07.14 20:33 </TD>
 							<TD style="TEXT-ALIGN: center"></TD><!--<td  style="text-align:center;" width="5%">
-									<a href="javascript:openFile('ED354F89646464C3424EDFEBF1D25A85','戚媚001');"><font color="blue" style="cursor:hand">导入</font></a>
+									<a href="javascript:openFile('ED354F89646464C3424EDFEBF1D25A85','叶红专001');"><font color="blue" style="cursor:hand">导入</font></a>
 								</td>--></TR>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
 							<TD style="TEXT-ALIGN: center"></TD>
@@ -281,7 +284,9 @@
 		});
 
 	})();
-
+	function unloadFile(){
+		document.getElementById("btn-unloadFile").click();
+	}
 	function pagehref (pageNum ,pageSize){
 		<%--window.location.href ="${path}/zzb/app/console/gbmc/a01/list?b01Id=${b01Id}&mcid=${mcid}&pageNum="+pageNum+"&pageSize="+pageSize;--%>
 		$.ajax({

@@ -22,10 +22,24 @@
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close"  type="button"></button>
 				<h3 class="modal-title" id="title" >
-					“戚媚”档案图片
+					“叶红专”档案图片
 				</h3>
 			</div>
 			<div class="modal-body" id="jgAddDiv" style="background-color: #f1f3f6;">
+			</div>
+		</div>
+	</div>
+</div>
+<div id="uploadImgModal" class="modal container hide fade" tabindex="-1" data-width="700">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title"  >
+					上传图片
+				</h3>
+			</div>
+			<div class="modal-body" id="uploadImgDiv">
 			</div>
 		</div>
 	</div>
@@ -39,7 +53,7 @@
 				<div class="portlet-title">
 					<div class="caption">简历材料  共<font color="red"> 1 </font>条记录 </div>
 					<div class="clearfix fr">
-						<a id="sample_editable_1_new" class="btn green" href="#">
+						<a id="sample_editable_1_new" class="btn green" href="javascript:add()">
 							<i class="icon-plus"></i> 增加材料
 						</a>
 						<div class="btn-group">
@@ -48,13 +62,13 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li >
-									<a onclick="">加载图片</a>
+									<a onclick="uploadImg()">加载图片</a>
 								</li>
 								<li>
 									<a onclick="">卸载图片</a>
 								</li>
 								<li>
-									<a onclick="">下载图片</a>
+									<a onclick="fileDown('dangantupianxiazai')">下载图片</a>
 								</li>
 							</ul>
 						</div>
@@ -64,18 +78,19 @@
 							</a>
 							<ul class="dropdown-menu" >
 								<li >
-									<a onclick="">下载目录导入模板</a>
+									<a onclick="fileDown('xiazaimludaorumoban')">下载目录导入模板</a>
 								</li>
 								<li>
-									<a onclick="">导入目录</a>
+									<a onclick="unloadFile()">导入目录</a>
+									<input type="file" style="display: none" name="unloadFile" id="btn-unloadFile"/>
 								</li>
 
 							</ul>
 						</div>
 
-						<span class="controllerClass btn green file_but" >
-							<i class="icon-circle-arrow-down"></i>打印目录
-						</span>
+						<a class="controllerClass btn green file_but"  href="javascript:fileDown('daochumilu')">
+							<i class="icon-circle-arrow-down" ></i>打印目录
+						</a>
 					</div>
 
 				</div>
@@ -101,11 +116,11 @@
 								<td>2000.11.02 </td>
 								<td>13</td>
 								<td>13</td>
-								<td><a href="#" class="">加载</a></td>
+								<td><a href="javascript:uploadImg()" class="">加载</a></td>
 								<td><a href="javascript:view()" class="">浏览</a></td>
 								<td st>1</td>
 								<td>
-									<a href="#" class="">修改</a>|
+									<a href="javascript:edit()" class="">修改</a>|
 									<a href="#" class="">删除</a>
 								</td>
 							</tr>
@@ -127,11 +142,57 @@
 </div>
 
 <script type="text/javascript">
-	function edit() {
+	function unloadFile(){
+		document.getElementById("btn-unloadFile").click();
+	}
+	function add() {
 		$.ajax({
 			async:false,
 			type:"POST",
 			url:"${path}/zzb/app/console/a38/ajax/addMlcl",
+			dataType : "html",
+			headers:{
+				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
+			},
+			data:{
+
+			},
+			success:function(html){
+				$("#catalogList").html(html);
+				$("#treeId").val(nodeId);
+			},
+			error : function(){
+				myLoading.hide();
+				showTip("提示","出错了,请检查网络!",2000);
+			}
+		});
+	}
+	var uploadImg = function(){
+		$.ajax({
+			url:"${path}/zzb/app/console/a38/ajax/uploadImg",
+			type : "post",
+			data: {},
+			headers:{
+				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+			},
+			dataType : "html",
+			success : function(html){
+				$('#uploadImgDiv').html(html);
+
+				$('#uploadImgModal').modal({
+					keyboard: true
+				});
+			},
+			error : function(){
+				showTip("提示","出错了请联系管理员", 1500);
+			}
+		});
+	}
+	function edit() {
+		$.ajax({
+			async:false,
+			type:"POST",
+			url:"${path}/zzb/app/console/a38/ajax/editMlcl",
 			dataType : "html",
 			headers:{
 				"OWASP_CSRFTOKEN":'${sessionScope.OWASP_CSRFTOKEN}'
@@ -172,7 +233,9 @@
 			}
 		});
 	}
-
+	function fileDown(type) {
+		window.open("${path }/zzb/app/console/a38/ajax/down?type="+type);
+	}
 </script>
 </body>
 </html>

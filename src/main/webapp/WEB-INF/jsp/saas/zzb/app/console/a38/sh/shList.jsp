@@ -94,10 +94,10 @@
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
 							<TD style="TEXT-ALIGN: center"></TD>
 							<TD style="TEXT-ALIGN: center">0002 </TD>
-							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="${path}/zzb/app/console/a38/shBase?loadType=shList">戚媚</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="${path}/zzb/app/console/a38/shBase?loadType=shList">叶红专</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD >1962.07.02 </TD>
-							<TD title=中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员>中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员 </TD>
+							<TD title=州委书记>州委书记 </TD>
 							<TD >2015.03.05 </TD>
 							<TD style="TEXT-ALIGN: center">现职 </TD>
 							<TD style="TEXT-ALIGN: center">副局<BR>(2008.03) </TD>
@@ -106,15 +106,15 @@
 								<a href="#">审核通过 </a>|
 								<a href="#">审核不通过 </a>
 							</TD><!--<td  style="text-align:center;" width="5%">
-									<a href="javascript:openFile('58F2F87EC0A800CC2DE33CCA0E6F9647','戚媚');"><font color="blue" style="cursor:hand">导入</font></a>
+									<a href="javascript:openFile('58F2F87EC0A800CC2DE33CCA0E6F9647','叶红专');"><font color="blue" style="cursor:hand">导入</font></a>
 								</td>--></TR>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className='table_tr_dark'" class=table_tr_dark>
 							<TD style="TEXT-ALIGN: center"></TD>
 							<TD style="TEXT-ALIGN: center"></TD>
-							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">戚媚001</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">叶红专001</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD>1962.07.02 </TD>
-							<TD title=中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员>中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员 </TD>
+							<TD title=州委书记>州委书记 </TD>
 							<TD>2015.03.06 </TD>
 							<TD style="TEXT-ALIGN: center">现职 </TD>
 							<TD style="TEXT-ALIGN: center"></TD>

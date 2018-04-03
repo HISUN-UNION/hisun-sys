@@ -10,12 +10,20 @@ import com.hisun.base.exception.GenericException;
 import com.hisun.base.vo.PagerVo;
 import com.hisun.saas.zzb.app.console.aset.vo.AppAsetA01Vo;
 import com.hisun.saas.zzb.app.console.bset.vo.B01TreeVo;
+import com.hisun.util.WebUtil;
+import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +35,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/zzb/app/console/a38")
 public class DaController extends BaseController{
-
+    @Value("${upload.absolute.path}")
+    private String uploadAbsolutePath;
     @RequestMapping(value = "/dashboard")
     public ModelAndView dashboard(){
         return new ModelAndView("saas/zzb/app/console/a38/dashboard");
@@ -46,7 +55,10 @@ public class DaController extends BaseController{
         map.put("loadType",loadType);
         return new ModelAndView("saas/zzb/app/console/a38/manage/manage",map);
     }
-
+    @RequestMapping(value = "/addDaBase")
+    public ModelAndView addDaBase(){
+        return new ModelAndView("saas/zzb/app/console/a38/manage/addDaBase");
+    }
     @RequestMapping(value = "/ajax/base")
     public ModelAndView base(){
         return new ModelAndView("saas/zzb/app/console/a38/manage/base");
@@ -260,9 +272,56 @@ public class DaController extends BaseController{
         return new ModelAndView("saas/zzb/app/console/a38/manage/mlxxList",map);
     }
 
+    @RequestMapping(value = "/ajax/viewA01")
+    public ModelAndView viewA01(){
+        return new ModelAndView("saas/zzb/app/console/a38/manage/viewA01");
+    }
+    @RequestMapping(value = "/ajax/zhuanchu")
+    public ModelAndView zhuanzhu(){
+        return new ModelAndView("saas/zzb/app/console/a38/manage/zhuanchu");
+    }
+
+    @RequestMapping(value = "/ajax/down")
+    public void fileDown(String type, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        String filePath = "";
+        if(type!=null && type.equals("dianzibiaogemulu")){
+            filePath = File.separator+"da"+File.separator+"叶红专的电子档案(20180402).xls";
+        }else if(type!=null && type.equals("allDa")) {
+            filePath = File.separator+"da" + File.separator + "叶红专的档案（含图片).rar";
+        }else if(type!=null && type.equals("qianquecail")) {
+            filePath = File.separator+"da" + File.separator + "干部档案个人欠缺材料情况表.xls";
+        }else if(type!=null && type.equals("dangantupianxiazai")) {
+            filePath = File.separator+"da" + File.separator + "0002.rar";
+        }else if(type!=null && type.equals("xiazaimludaorumoban")) {
+            filePath = File.separator+"da" + File.separator + "干部档案目录模板.xls";
+        }else if(type!=null && type.equals("daochumilu")) {
+            filePath = File.separator+"da" + File.separator + "干部档案目录.xls";
+        }
+        resp.setContentType("multipart/form-data");
+        //2.设置文件头：最后一个参数是设置下载文件名(假如我们叫a.pdf)
+        resp.setHeader("Content-Disposition", "attachment;fileName=" + encode(filePath.substring(filePath.lastIndexOf(File.separator) + 1)));
+        OutputStream output = resp.getOutputStream();
+        byte[] b = FileUtils.readFileToByteArray(new File(uploadAbsolutePath + filePath));
+        output.write(b);
+        output.flush();
+        output.close();
+    }
+
+    private String encode(String filename) throws UnsupportedEncodingException {
+        if (WebUtil.getRequest().getHeader("User-Agent").toUpperCase().indexOf("MSIE") > 0) {
+            filename = URLEncoder.encode(filename, "UTF-8");
+        } else {
+            filename = new String(filename.getBytes("UTF-8"), "ISO-8859-1");
+        }
+        return filename;
+    }
     @RequestMapping(value = "/ajax/addMlcl")
     public ModelAndView addMlcl(){
         return new ModelAndView("saas/zzb/app/console/a38/manage/addMlcl");
+    }
+    @RequestMapping(value = "/ajax/editMlcl")
+    public ModelAndView editMlcl(){
+        return new ModelAndView("saas/zzb/app/console/a38/manage/editMlcl");
     }
     @RequestMapping(value = "/ajax/uploadImg")
     public ModelAndView uploadImg(){
@@ -286,6 +345,15 @@ public class DaController extends BaseController{
         map.put("pager", pagerVo);
         return new ModelAndView("saas/zzb/app/console/a38/manage/zjclList",map);
     }
+    @RequestMapping(value = "/ajax/editZjcl")
+    public ModelAndView editZjcl(){
+        return new ModelAndView("saas/zzb/app/console/a38/manage/editZjcl");
+    }
+    @RequestMapping(value = "/ajax/addZjcl")
+    public ModelAndView addZjcl(){
+        return new ModelAndView("saas/zzb/app/console/a38/manage/addZjcl");
+    }
+
     @RequestMapping(value = "/shList")
     public ModelAndView shList(){
         Map<String, Object> map = Maps.newHashMap();

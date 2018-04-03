@@ -13,12 +13,41 @@
 	<title>电子档案系统</title>
 </head>
 <body>
+<div id="viewA01Modal" class="modal container hide fade" tabindex="-1" data-width="600">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title" id="addTitle" >
+					“叶红专”档案对应的干部信息
+				</h3>
+			</div>
+			<div class="modal-body" id="viewA01Div">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="zhuanchuModal" class="modal container hide fade" tabindex="-1" data-width="600">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button data-dismiss="modal" class="close"  type="button"></button>
+				<h3 class="modal-title"  >
+					转出档案
+				</h3>
+			</div>
+			<div class="modal-body" id="zhuanchuDiv">
+			</div>
+		</div>
+	</div>
+</div>
 <div class="container-fluid">
 
 	<div class="row-fluid">
 		<div class="portlet box grey ">
 				<div class="relationbetTop" style="height: 10px">
-					<div class="relationbetTop_left">姓名：戚媚</div>
+					<div class="relationbetTop_left">姓名：叶红专</div>
 					<div class="relationbetTop_but">
 						<button type="button" class="btn green" onclick=""><i class="icon-ok"></i> 保存</button>
 						<div class="btn-group" style="padding-bottom: 0px">
@@ -27,7 +56,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li >
-									<a onclick="selectTyle('gbrmspb')">查看干部信息</a>
+									<a onclick="viewA01()">查看干部信息</a>
 								</li>
 								<li>
 									<a onclick="selectTyle('kccl')">提取干部信息</a>
@@ -41,7 +70,7 @@
 						<a id="sample_editable_1_new" class="btn green" href="#">
 							删除
 						</a>
-						<a id="sample_editable_1_new" class="btn green" href="#">
+						<a  class="btn green" href="javascript:zhuanchu()">
 							转出
 						</a>
 						<div class="btn-group" style="padding-bottom: 0px">
@@ -50,13 +79,16 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li >
-									<a onclick="">电子表格目录</a>
+									<a onclick="fileDown('allDa')">整本档案下载(含图片)</a>
+								</li>
+								<li >
+									<a onclick="fileDown('dianzibiaogemulu')">电子表格目录</a>
 								</li>
 								<li>
-									<a onclick="">欠缺材料信息</a>
+									<a onclick="fileDown('qianquecail')">欠缺材料信息</a>
 								</li>
 								<li>
-									<a onclick="">档案图片下载</a>
+									<a onclick="fileDown('dangantupianxiazai')">档案图片下载</a>
 								</li>
 
 							</ul>
@@ -181,8 +213,52 @@
 		});
 	}
 
+	var viewA01 = function(){
+		$.ajax({
+			url:"${path}/zzb/app/console/a38/ajax/viewA01",
+			type : "post",
+			data: {},
+			headers:{
+				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+			},
+			dataType : "html",
+			success : function(html){
+				$('#viewA01Div').html(html);
 
+				$('#viewA01Modal').modal({
+					keyboard: true
+				});
+			},
+			error : function(){
+				showTip("提示","出错了请联系管理员", 1500);
+			}
+		});
+	}
+	var zhuanchu = function(){
+		$.ajax({
+			url:"${path}/zzb/app/console/a38/ajax/zhuanchu",
+			type : "post",
+			data: {},
+			headers:{
+				OWASP_CSRFTOKEN:"${sessionScope.OWASP_CSRFTOKEN}"
+			},
+			dataType : "html",
+			success : function(html){
+				$('#zhuanchuDiv').html(html);
 
+				$('#zhuanchuModal').modal({
+					keyboard: true
+				});
+			},
+			error : function(){
+				showTip("提示","出错了请联系管理员", 1500);
+			}
+		});
+	}
+
+	function fileDown(type) {
+		window.open("${path }/zzb/app/console/a38/ajax/down?type="+type);
+	}
 </script>
 </body>
 </html>

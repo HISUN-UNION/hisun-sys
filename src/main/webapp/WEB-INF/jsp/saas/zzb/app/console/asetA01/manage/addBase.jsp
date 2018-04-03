@@ -154,9 +154,17 @@
 				</td>
 				<td width="50%">
 					<div id="influenceInfoIdGroup" class="control-group">
-						<label class="control-label">干部管理单位</label>
+						<label class="control-label">创建电子档案</label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="" />
+								<span class=""><input type="radio" value="0"
+													  name="tombstone" id="tombstone"></span>
+						是
+
+									<span class="checked"><input type="radio" checked
+																 value="1" name="tombstone" id="tombstone"></span>
+						否
+
+
 						</div>
 					</div>
 				</td>

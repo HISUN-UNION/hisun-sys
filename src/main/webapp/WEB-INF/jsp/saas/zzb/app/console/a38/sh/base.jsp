@@ -8,7 +8,7 @@
 		<div class="caption">
 
 
-			<span class="hidden-480">姓名：戚媚</span>
+			<span class="hidden-480">姓名：叶红专</span>
 
 		</div>
 		<div class="portlet-title" style="text-align: right">
@@ -48,7 +48,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label">姓名<span class="required">*</span></label>
 						<div class="controls">
-							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="戚媚" />
+							<input type="text" class="span8 m-wrap" name="ciName" required maxlength="128" id="ciName" value="叶红专" />
 						</div>
 					</div>
 				</td>
@@ -119,7 +119,7 @@
 					<div id="ciNameGroup" class="control-group">
 						<label class="control-label">单位职务</label>
 						<div class="controls">
-							<textarea class="span8 m-wrap" rows="3">中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员</textarea>
+							<textarea class="span8 m-wrap" rows="3">州委书记</textarea>
 						</div>
 					</div>
 				</td>
@@ -132,7 +132,7 @@
 								<option value="" selected>有档</option>
 								<option value="" >无档需追补</option>
 								<option value="" >无档不需追补</option>
-								<option value="" >抓出</option>
+								<option value="" >转出</option>
 							</select>
 						</div>
 					</div>

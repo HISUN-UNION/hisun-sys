@@ -44,31 +44,31 @@
             <ul class="ulCadreSuperlist">
                 <li>
                     <a href="${path}/zzb/app/console/a38/list">
-                        <img src="${path}/images/templateImage/YMico01.png">
+                        <img src="${path}/images/templateImage/dagl01.png">
                         <p>档案管理</p>
                     </a>
                 </li>
                 <li>
                     <a href="${path}/zzb/app/console/a38/shList">
-                        <img src="${path}/images/templateImage/Gico05.png">
+                        <img src="${path}/images/templateImage/dagl02.png">
                         <p>档案审核</p>
                     </a>
                 </li>
                 <li>
                     <a href="${path}/zzb/app/console/a38/zrManageList">
-                        <img src="${path}/images/templateImage/YMico03.png">
+                        <img src="${path}/images/templateImage/dagl03.png">
                         <p>转入转出</p>
                     </a>
                 </li>
                 <li>
                     <a href="${path}/zzb/app/console/a38/cyApplyList">
-                        <img src="${path}/images/templateImage/YMico04.png">
+                        <img src="${path}/images/templateImage/dagl04.png">
                         <p>查阅管理</p>
                     </a>
                 </li>
                 <li>
                     <a href="${path}/zzb/app/console/a38/catalogTypeManage">
-                        <img src="${path}/images/templateImage/YMico05.png">
+                        <img src="${path}/images/templateImage/dagl05.png">
                         <p>目录管理</p>
                     </a>
                 </li>

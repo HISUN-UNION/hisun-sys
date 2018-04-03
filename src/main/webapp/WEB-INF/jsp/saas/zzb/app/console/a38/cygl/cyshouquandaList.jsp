@@ -28,7 +28,7 @@
 			<div class="modal-header">
 				<button data-dismiss="modal" class="close"  type="button"></button>
 				<h3 class="modal-title" id="title" >
-					“戚媚”档案图片
+					“叶红专”档案图片
 				</h3>
 			</div>
 			<div class="modal-body" id="jgAddDiv" style="background-color: #f1f3f6;">
@@ -91,20 +91,20 @@
 						</thead>
 						<tbody>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className=''">
-							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="javascript:view()">戚媚</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center" ><a href="javascript:view()">叶红专</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD >1962.07.02 </TD>
-							<TD title=中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员>中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员 </TD>
+							<TD title=州委书记>州委书记 </TD>
 							<TD >2015.03.05 </TD>
 							<TD style="TEXT-ALIGN: center">现职 </TD>
 							<TD style="TEXT-ALIGN: center">副局<BR>(2008.03) </TD>
 							</TR>
 						<TR onmouseover="this.className='table_tr_mouse'" onmouseout="this.className='table_tr_dark'" class=table_tr_dark>
 
-							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">戚媚001</a> </TD>
+							<TD style="CURSOR: hand; TEXT-ALIGN: center"><a href="#">叶红专001</a> </TD>
 							<TD style="TEXT-ALIGN: center" width=40>男 </TD>
 							<TD>1962.07.02 </TD>
-							<TD title=中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员>中共广州市纪律检查委员会、广州市监察局第三纪检监察室副局级主任，中共广州市纪律检查委员会委员 </TD>
+							<TD title=州委书记>州委书记 </TD>
 							<TD>2015.03.06 </TD>
 							<TD style="TEXT-ALIGN: center">现职 </TD>
 							<TD style="TEXT-ALIGN: center"></TD>
