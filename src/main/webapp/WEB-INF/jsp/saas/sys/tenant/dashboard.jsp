@@ -176,7 +176,7 @@
                 <%--</dd>--%>
             <%--</dl>--%>
         <%--</a>--%>
-        <a class="nav_a" href=http://localhost:8080/zzb/app/console/a38/dashboard?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
+        <a class="nav_a" href="/zzb/app/console/a38/dashboard?OWASP_CSRFTOKEN=${sessionScope.OWASP_CSRFTOKEN}">
             <dl class="dlnavigcont">
                 <dt><img src="${path}/images/templateImage/navIco05.png"></dt>
                 <dd>
